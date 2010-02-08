@@ -1,0 +1,72 @@
+EEPROM
+
+01 04:  xx      Hersteller-Nummer (04=Jung)
+01 05:  xx xx       Device_type (aus application_program), hier 20 60
+01 07:  xx      Programm Version, hier 01
+
+01 0D:  xx      Run Error, 00=Stop, FF=run
+01 0E:  xx      ROUTECOUNT
+01 11:  xx      ASSOCTABPTR Zeiger auf Assoziations-Tabelle
+01 12:  xx      COMMSTABPTR Zeiger auf Kommunikationsobjekt-Tabelle
+
+01 16:  xx      Länge der Adresstabelle in Anz. Einträgen incl. phys. Addr. (2 Byte pro Eintrag) 
+01 17:  xx xx       physikalische Adresse MSB LSB
+01 19:          Gruppenadressen, unbenutzte mit FF gefüllt (je 2 Byte MSB LSB)
+
+danach:         Assoziationstabelle:
+            1. Byte:    Anzahl Assoziationen
+            2. Byte:    erste Assoziation, Gruppenadresseintrag 
+                    (zB. 01=erste Gruppenadresse s. 01 19)
+                    wenn unbenutzt, dann FE
+            3. Byte:    Kommunikationsobjekt-Nummer
+            4.+5. Byte: wie 2. und 3. Byte für nächsten Eintrag
+            etc.
+
+01 D2:  xx      Entprellzeit, Wert x 0,5ms
+01 D3:  xx      Telegrammratenbegrenzung in Telegramme pro 17 Sekunden
+01 D4:  xx      Verzögerung bei Busspannungswiederkehr, Faktor
+
+01 D7:  xx      Befehl bei Flanken
+            Bit 1   Bit0    Schaltobjekt 1.1 fallende Flanke
+            0       0   keine Reaktion
+            0       1   EIN
+            1       0   AUS
+            1       1   UM
+            
+            Bit 3   Bit2    Schaltobjekt 1.1 steigende Flanke
+            0       0   keine Reaktion
+            0       1   EIN
+            1       0   AUS
+            1       1   UM
+
+            Bit 5   Bit4    Schaltobjekt 1.2 fallende Flanke
+            0       0   keine Reaktion
+            0       1   EIN
+            1       0   AUS
+            1       1   UM
+            
+            Bit 7   Bit6    Schaltobjekt 1.2 steigende Flanke
+            0   0   keine Reaktion
+            0   1   EIN
+            1   0   AUS
+            1   1   UM
+
+01 DB:  xx      Befehl bei Flanken Eingang 2 (s. 01 D7)
+
+01 F6:  xx      Ausgang 1 Reaktion nach Busspannungswiederkehr
+            Bit1    Bit0    
+            0   0   Wert wie vor Spannungsausfall
+            0   1   Kontakt öffnen
+            1   0   Kontakt schliessen
+            Ausgang 2 - 4 wie oben
+
+01 F7:  xx      Ausgang 5 - 8 wie oben
+
+01 F9:  xx      bit 4-7 Basis Verzögerung Ausgang 1 (0=130ms)
+01 FA:  xx      bit 0-3 Basis Verzögerung Ausgang 2
+                bit 4-7 Basis Verzögerung Ausgang 3
+01 FB:  xx      bit 0-3 Basis Verzögerung Ausgang 4
+                bit 4-7 Basis Verzögerung Ausgang 5
+01 FC:  xx      bit 0-3 Basis Verzögerung Ausgang 6
+                bit 4-7 Basis Verzögerung Ausgang 7
+01 FD:  xx      bit 0-3 Basis Verzögerung Ausgang 8

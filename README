@@ -1,0 +1,30 @@
+/** @mainpage
+* Beim AVR ATMega8 sind die folgenden Fuses zu setzen:\n
+*
+* Boot Flash size=128 words Boot address=$1F80
+* SPIEN=on
+* BODLEVEL=Brown-out detection at VCC=2.7V\n
+* SUT_CKSEL=Ext. Crystal/Resonator High Freq.; Start-up time: 1K CK + 0ms\n
+*
+* EXTENDED=0xFF\n
+* HIGH=0xDD\n
+* LOW=0xEE\n
+*
+* If you develop an application you should not use an ISR in that application it can disturb the extreme
+* critical timing in the EIB bus communication. I you need timers you should check instead registers if a
+* special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible
+* and check every condition you can imagine that it is secured that the bus communication is handled correctly.\n
+* Transfers which a very error phrone are:\n
+* * ACKS sent and received (at the end of a telegram)\n
+* * Long communication like programming of group addresses and parameters\n
+* * Receiving of data while a bit is read\n
+*
+* The following functions must exist in each application (take as example fb_relais_app.c):\n
+* * \link fb_relais_app.c#main(void) main(void)\endlink\n
+* * \link fb_relais_app.c#runApplication(struct msg *rxmsg) runApplication(struct msg *rxmsg)\endlink\n
+* * \link fb_relais_app.c#readApplication(struct msg *rxmsg) readApplication(struct msg *rxmsg)\endlink\n
+* * \link fb_relais_app.c#restartApplication(void) restartApplication(void)\endlink\n
+* * \link fb_relais_app.c#setApplicationDefaults(void) setApplicationDefaults(void)\endlink\n
+* 
+* @todo complete list of conditions that must be checked
+*/

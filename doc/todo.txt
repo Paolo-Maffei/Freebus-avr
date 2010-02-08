@@ -1,0 +1,14 @@
+Offene Punkte:
+
+- EEprom Handline: Schreibzugriffe dauern zu lange.
+  Die vorhanden (auskommentierten) IRQ routinen können im Hintergrund ins EEprom schreiben. Dieser Ansatz funktioniert jedoch nicht, da die ETS sofort den soeben
+  geschriebenen Inhalt wieder ausliest. Diese Inhalte kann man zwar cachen und dann der ETS zurückliefern, sodaß dieser Vergleich funktionieren würde.
+  Im ungünstigsten Fall wird danach jedoch die nächste Speicherstelle ausgelesen, während das EEprom noch durch den Schreibzugriff belegt ist.
+  Ansatz: EEprom im RAM emulieren. Parallel dazu sollten die geänderten Bereiche per IRQ im EEPROM gesichert werden.
+- fb_hal.c:
+  Momentan werden die Timer1 + 2 benutzt. Dies sollte sich auf einen Timer reduzieren lassen. Auch sollten die Timerwerte dann nochmal nachgerechnet werden
+- fb_prot.c:
+  - Hier sollten die Bezeichnungen (apdu, ...) noch mal überarbeitet werden. Ziel sollte es sein diese aus der Spec zu entnehmen.
+  - Die Gruppenadressen müssen noch implementiert werden
+
+- Die Ansteuerung der LED + Programmiertaster fehlen noch

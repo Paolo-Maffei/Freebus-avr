@@ -1,0 +1,48 @@
+# Name of target controller 
+# (e.g. 'at90s8515', see the available avr-gcc mmcu 
+# options for possible values)
+MCU?=atmega168p
+
+# id to use with programmer
+# default: PROGRAMMER_MCU=$(MCU)
+# In case the programer used, e.g avrdude, doesn't
+# accept the same MCU name as avr-gcc (for example
+# for ATmega8s, avr-gcc expects 'atmega8' and 
+# avrdude requires 'm8')
+PROGRAMMER_MCU?=m168
+
+# Source files
+# List C/C++/Assembly source files:
+# (list all files to compile, e.g. 'a.c b.cpp as.S'):
+# Use .cc, .cpp or .C suffix for C++ files, use .S
+# (NOT .s !!!) for assembly source code files.
+PRJSRC?=$(DEFAULT_TARGET) ../fb_eeprom.c ../fb_hal.c ../fb_prot.c  \
+          ../lcd-lib.c ../msg_queue.c ../uart.c
+
+# additional includes (e.g. -I/path/to/mydir)
+INC?=-I/usr/local/avr/include -I. -I..
+
+# libraries to link in (e.g. -lmylib)
+LIBS?=
+
+# Optimization level, 
+# use s (size opt), 1, 2, 3 or 0 (off)
+OPTLEVEL?=s
+
+# define additional flags for the compiler
+CUSTOM_CFLAGS?=-g -DDEBUG_UART -Wall
+
+# programmer id--check the avrdude for complete list
+# of available opts.  These should include stk500,
+# avr910, avrisp, bsd, pony and more.  Set this to
+# one of the valid "-c PROGRAMMER-ID" values 
+# described in the avrdude info page.
+# 
+AVRDUDE_PROGRAMMERID?=stk600
+
+# port--serial or parallel port to which your 
+# hardware programmer is attached
+#
+AVRDUDE_PORT?=/dev/ttyS1
+
+# DO NOT DELETE

@@ -1,0 +1,135 @@
+EEPROM
+
+01 04:	xx		Hersteller-Nummer (04=Jung)
+01 05:	xx xx		Device_type (aus application_program), hier 0x20 0x60
+01 07:	xx		Programm Version, hier 01
+
+01 0C:	xx		Applikationsprogramm Nr. (?) immer 0x00
+01 0D:	xx		Run Error, 00=Stop, FF=run
+01 0E:	xx		ROUTECOUNT
+
+01 11:	xx		ASSOCTABPTR Zeiger auf Assoziations-Tabelle
+01 12:	xx		COMMSTABPTR Zeiger auf Kommunikationsobjekt-Tabelle (s.u.)
+
+01 16:	xx		Länge der Adresstabelle in Anz. Einträgen incl. phys. Addr. (2 Byte pro Eintrag) 
+01 17:	xx xx		physikalische Adresse MSB LSB
+01 19:			Gruppenadressen, unbenutzte mit FF gefüllt (je 2 Byte MSB LSB)
+
+danach:			Assoziationstabelle:
+			1. Byte:	Anzahl Assoziationen
+			2. Byte:	erste Assoziation, Gruppenadresseintrag
+					(zB. 01=erste Gruppenadresse s. 01 19)
+					wenn unbenutzt, dann FE
+			3. Byte:	Kommunikationsobjekt-Nummer
+			4.+5. Byte:	wie 2. und 3. Byte für nächsten Eintrag
+			etc.
+
+01 D8:	xx		Zuordnung Zusatzfunktion zu Ausgang 1-8
+			- Bit 0-3 Ausgang Nr. für Zusatzfunktion 1, 0=unbenutzt
+			- Bit 4-7 Ausgang Nr. für Zusatzfunktion 2
+
+01 D9:	xx		Zuordnung Zusatzfunktion zu Ausgang
+			- Bit 0-3 Ausgang Nr. für Zusatzfunktion 3
+			- Bit 4-7 Ausgang Nr. für Zusatzfunktion 4
+			
+01 DA:	xx		Einschaltverzögerung Faktor für	Ausgang 1, 00 = keine Einschaltverzögerung
+01 DB:	xx						Ausgang 2
+  ...							...
+01 E1:	xx						Ausgang 8
+
+01 E2:	xx		Ausschaltverzögerung Faktor für	Ausgang 1, 00 = keine Ausschaltverzögerung
+01 E3:	xx						Ausgang 2
+  ...							...
+01 E9:	xx						Ausgang 8
+
+01 EA:	xx		Zeitschaltfunktion (Bit 0-7 = Ausgang 1-8) 1=Funktion aktiv
+
+
+01 ED:	xx		Zusatzfunktionen:
+			Bit 0-1 Zusfkt.1: 0=Verknüpfung , 1=Sperren, 2=Zwangsstellung
+			Bit 2-3 Zusfkt.2
+			Bit 4-5 Zusfkt.3
+			Bit 6-7 Zusfkt.4
+
+01 EE:	xx		Zusatzfunktionen als Verknüpfungsobjekt
+			- Bit 0-1=Zus.fkt.1: 0=keine Fkt., 1=ODER, 2=UND, 3=UND mit Rückführung
+			- Bit 2-3=Zus.fkt.2
+			- Bit 4-5=Zus.fkt.3
+			- Bit 6-7=Zus.fkt.4
+
+01 EF:	xx		Zusatzfunktion 1+2 als Sperrobjekt
+			- Bit 0-1: Beginn der Sperrung Zus.fkt.1: 0=keine Änderung, 1=aus, 2=ein
+			- Bit 2-3: Ende der Sperrung Zus.fkt.1:   0=keine Änderung, 1=aus, 2=ein
+			- Bit 4-5: Beginn der Sperrung Zus.fkt.2: 0=keine Änderung, 1=aus, 2=ein
+			- Bit 6-7: Ende der Sperrung Zus.fkt.2:   0=keine Änderung, 1=aus, 2=ein
+
+01 F0:	xx		Zusatzfunktion 3+4 als Sperrobjekt
+			- Bit 0-1: Beginn der Sperrung Zus.fkt.3: 0=keine Änderung, 1=aus, 2=ein
+			- Bit 2-3: Ende der Sperrung Zus.fkt.3:   0=keine Änderung, 1=aus, 2=ein
+			- Bit 4-5: Beginn der Sperrung Zus.fkt.4: 0=keine Änderung, 1=aus, 2=ein
+			- Bit 6-7: Ende der Sperrung Zus.fkt.4:   0=keine Änderung, 1=aus, 2=ein
+
+01 F1:	xx		Polarität der Sperrobjekte Bit 0-3 = zusatzfunktion 1-4:
+			Bit=0: "0=freigegeben, 1=gesperrt"
+			Bit=1: "0=gesperrt, 1=freigegeben"
+
+01 F2:	xx		Relaisbetrieb: Bit0-7=Ausgang1-8, 0=Schliesser, 1=Öffner
+
+01 F3:	xx		Rückmeldeobjekt: Bit0-7=Ausgang1-8, 0=nicht invertiert, 1=invertiert
+
+
+
+01 F6:	xx		Ausgang 1 Reaktion nach Busspannungswiederkehr
+			Bit1	Bit0	
+			0 	0	Wert wie vor Spannungsausfall
+			0	1 	Kontakt öffnen
+			1	0	Kontakt schliessen
+			Ausgang 2 - 4 wie oben
+
+01 F7:	xx		Ausgang 5 - 8 wie oben
+
+01 F9:	xx		bit 4-7 Basis Verzögerung Ausgang 1 (0=130ms)
+01 FA:	xx		bit 0-3 Basis Verzögerung Ausgang 2
+			bit 4-7 Basis Verzögerung Ausgang 3
+01 FB:	xx		bit 0-3 Basis Verzögerung Ausgang 4
+			bit 4-7 Basis Verzögerung Ausgang 5
+01 FC:	xx		bit 0-3 Basis Verzögerung Ausgang 6
+			bit 4-7 Basis Verzögerung Ausgang 7
+01 FD:	xx		bit 0-3 Basis Verzögerung Ausgang 8
+
+
+
+Kommunikationsobjekt-Tabelle:
+
+1.Byte:		Anzahl Objekte (a 3 Byte)
+2.Byte:		Zeiger auf RAM-Flag Tabelle (braucht man  nicht wirklich)
+ab 3. Byte folgen die Objektbeschreibungen, immer 3 Byte pro Objekt:
+		1.Byte:	Zeiger auf Wert
+		2.Byte:	Konfigurations-Byte:
+			Bit7:	immer 1
+			Bit6:	Transmission enable (0=no transmission)
+			Bit5:	Value Memory type (0=RAM, 1=EEPROM)
+			Bit4:	Write enable (1=enable)
+			Bit3:	Read enable (1=enable)
+			Bit2:	Communication enable (1=enable)
+			Bit1 und 0:	Transmission Priority
+				11=low operational priority
+				10=high operational priority
+				01=alarm priority
+				00=system priority
+		3.Byte:	Typ-Byte:
+			0=1 Bit
+			1=2 Bit
+			2=3 Bit
+			3=4 Bit
+			4=5 Bit
+			5=6 Bit
+			6=7 Bit
+			7=1 Byte
+			8=2 Byte
+			9=3 Byte
+			10=4 Byte
+			11=6 Byte
+			12=8 Byte
+			13=10 Byte
+			14=14 Byte

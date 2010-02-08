@@ -1,0 +1,155 @@
+Gira 1032  
+2 Kanal Dimmer 
+
+
+EEPROM
+01 04:	xx		Hersteller-Nummer (08=Gira)
+01 05:	xx xx		Device_type (aus application_program), hier 0x30 0x15
+01 07:	xx		Programm Version, hier E3
+
+
+01 8d:  XX		Schaltobjekt K1 bit 3 lesen  flag
+                                bit 2 Kommunikations
+                                bit 4 Schreiben
+                                bit 6 Übertragen
+                                
+01 90:  XX		Schaltobjekt K2 bit 3 lesen  flag
+                                bit 2 Kommunikations
+                                bit 4 Schreiben
+                                bit 6 Übertragen
+                                
+
+01 C2: 	XX 		Grundhellikeit bit 0-3=K1 ,4-7=K2   Standart = 0x44
+
+01 C3:	XX		bit 3=1 Sperren invertiert K1, bit 4=1 Sperren invertiert K2
+				bit 6=Wertrückmeldeobjekt vorhanden K1
+				bit 7=Wertrückmeldeobjekt vorhanden K2
+
+01 C4:	XX		Einschalthellikeit 0-3=K1 ,4-7=K2   Standart = 0xBB
+                    
+				1=Grundhellikeit
+				2=10%
+				3=20%
+				4=30%
+				5=40%
+				6=50%
+				7=60%
+				8=70%
+				9=80%
+				A=90%
+				B=Maximale Hellikeit
+				D=Wert vor dem letzen Ausschalten
+				
+01 C6:	XX		Hellikeitswert andimmen oder anspringen  Bit 3=K1, Bit 7=K2 
+				0=andimmen 
+				1=anspringen
+				Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
+				1=0,5 ms
+				2=8 ms
+				3=130 ms
+				4=2,1 s
+				5=33 s
+				
+01 C8:	XX		Zeit zwischen 2 von 255 Dimmstufen K1
+01 C9:	XX		Zeit zwischen 2 von 255 Dimmstufen K2
+
+01 CB:	XX		Auschalten bei hellikeiswert kleiner als .. K1
+01 CC:	XX		Auschalten bei hellikeiswert kleiner als .. K2
+
+01 CE:	XX		Auschaltfunktion: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
+				1=0,5 ms
+				2=8 ms
+				3=130 ms
+				4=2,1 s
+				5=33 s
+				bit 3=1 Funktion Aktiviert K1
+				bit 7=1 Funktion Aktiviert K2
+01 CF:	XX		Auschaltfunktion: Verzögerung bis zum Ausschalten K1
+01 D0:	XX		Auschaltfunktion: Verzögerung bis zum Ausschalten K2
+
+
+01 D2:	XX		Zeitfunkion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2 
+				1=0,5 ms
+				2=8 ms
+				3=130 ms
+				4=2,1 s
+				5=33 s
+				
+01 D3:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen K1
+01 D4:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen K2
+				
+01 D6:	XX		Zeitfunktion Soft Aus: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
+				1=0,5 ms
+				2=8 ms
+				3=130 ms
+				4=2,1 s
+				5=33 s
+				
+01 D7:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen K1
+01 D8:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen K2
+
+
+01 DA:	XX		Zeit Dimmerfunktion Aktivieren bit 3=k1 bit 7=K2
+
+01 DB:	XX		Zeit Dimmerfunktion Aktivieren:  Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
+				1=0,5 ms
+				2=8 ms
+				3=130 ms
+				4=2,1 s
+				5=33 s
+
+
+01 DC:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen K1
+01 DD:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen K2
+
+
+01 DF:	XX		Sperren Bit 0-3 Hellikeit zubeginn der sperrung , 4-7 Hellikeit ende der Sperrung K1
+				0=Aus
+				1=Grundhellikeit
+				2=10%
+				3=20%
+				4=30%
+				5=40%
+				6=50%
+				7=60%
+				8=70%
+				9=80%
+				A=90%
+				B=Maximale Hellikeit
+				D=Wert vor dem letzen Ausschalten
+
+
+
+01 E0:	XX		Sperren Bit 0-3 Hellikeit zubeginn der sperrung , 4-7 Hellikeit ende der Sperrung K2
+				0=Aus
+				1=Grundhellikeit
+				2=10%
+				3=20%
+				4=30%
+				5=40%
+				6=50%
+				7=60%
+				8=70%
+				9=80%
+				A=90%
+				B=Maximale Hellikeit
+				D=Wert vor dem letzen Ausschalten
+
+
+
+01 E2:	XX		Verhalten bei Busspannungswiederkehr  bit 0-3=K1 ,4-7=K2   Standart = 0xCC
+				0=AUS
+				1=Grundhellikeit
+				2=10%
+				3=20%
+				4=30%
+				5=40%
+				6=50%
+				7=60%
+				8=70%
+				9=80%
+				A=90%
+				B=Maximale Hellikeit
+				C=Hellikeitswert vor Busspannungsausfall
+
+
