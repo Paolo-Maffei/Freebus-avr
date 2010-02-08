@@ -30,6 +30,7 @@
 #ifdef  _FB_PROT_C
 #define PROT_EXT
 #else
+/** Set PROT_EXT to extern to make clear it is include from an external source like a lib */
 #define PROT_EXT    extern
 #endif
 
@@ -70,11 +71,11 @@
 #define DEVICE_NUMBER_HIGH            0x0105  /**< High address for device id                          */
 #define DEVICE_NUMBER_LOW             0x0106  /**< Low address for device id                           */
 #define SOFTWARE_VERSION_NUMBER       0x0107  /**< Version number of the application                   */
-#define APPLICATION_PROGRAMM          0x010C  /**<                                                     */
+#define APPLICATION_PROGRAMM          0x010C  /**< Startadress of the application program              */
 /** @todo delete define */
 #define PORT_A_DIRECTION_BIT          0x010C  ///< Port A Direction Bit Setting
 #define APPLICATION_RUN_STATUS        0x010D  /**< status of the application 0x00=run, 0xFF=stop       */
-#define ROUTECOUNT                    0x010E  /**<                                                     */
+#define ROUTECOUNT                    0x010E  /**< @todo document variable                             */
 #define ASSOCTABPTR                   0x0111  /**< start of associations in eeprom                     */
 #define COMMSTAB_ADDRESS              0x0112  /**< COMMSTAB Pointer                                    */
 #define COUNT_GRP_ADDRESSES           0x0116  /**< number of group addresses stored in EEPROM          */
@@ -105,7 +106,7 @@ struct fbus_hdr {
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
-PROT_EXT uint16_t pa;
+PROT_EXT uint16_t pa;      /**< the physical adress of the controller */
 
 /*************************************************************************
 * FUNCTION PROTOTYPES

@@ -17,7 +17,7 @@
  *
  */
 /**
-* @file   uart.h
+* @file   include/uart.h
 * @author Dirk Opfer, Matthias Fechner
 * @date   Fri Oct 26 17:18:15 2007
 * 

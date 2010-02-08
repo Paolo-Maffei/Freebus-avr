@@ -6,12 +6,16 @@
 
 #define MAX_NUM_TASKS 5
 
+/** 
+* @todo add documentation
+* 
+*/
 class CTask
 {
 	public:
 		CTask(void);
-		virtual void Execute(void) = 0;
-		static void Run (void);
+		virtual void Execute(void) = 0; ///< @todo add documentation
+		static void Run (void); ///< @todo add documentation
 };
 
 //Makros zur Ablaufsteuerung

@@ -57,56 +57,59 @@
      }
 
 /* application parameters */
-#define PORTFUNCTION_12     0x01CE 
-#define PORTFUNCTION_34     0x01CF
-#define PORTFUNCTION_56     0x01D0 
-#define PORTFUNCTION_78     0x01D1 
-#define DEBOUNCE_FACTOR     0x01D2 
-#define POWERONDELAY_FACTOR 0x01D4
+#define PORTFUNCTION_12     0x01CE  ///< @todo add documentation
+#define PORTFUNCTION_34     0x01CF  ///< @todo add documentation
+#define PORTFUNCTION_56     0x01D0  ///< @todo add documentation
+#define PORTFUNCTION_78     0x01D1  ///< @todo add documentation
+#define DEBOUNCE_FACTOR     0x01D2  ///< @todo add documentation 
+#define POWERONDELAY_FACTOR 0x01D4  ///< @todo add documentation
 /* Funktion Schalten */
-#define PORTFUNC_BASEADR    0x01D5
-#define PORTFUNC_EDGEFUNC   0x01D7
+#define PORTFUNC_BASEADR    0x01D5  ///< @todo add documentation
+#define PORTFUNC_EDGEFUNC   0x01D7  ///< @todo add documentation
 /* Funktion Jalousie */
-#define PORTFUNC_T1_FAKTOR  0x01D6
-#define PORTFUNC_T2_FAKTOR  0x01D7
-#define PORTFUNC_JALOMODE   0x01D8
-#define PORTFUNC_T1_BASIS   0x01F6
-#define PORTFUNC_T2_BASIS   0x01FA
+#define PORTFUNC_T1_FAKTOR  0x01D6  ///< @todo add documentation
+#define PORTFUNC_T2_FAKTOR  0x01D7  ///< @todo add documentation
+#define PORTFUNC_JALOMODE   0x01D8  ///< @todo add documentation
+#define PORTFUNC_T1_BASIS   0x01F6  ///< @todo add documentation
+#define PORTFUNC_T2_BASIS   0x01FA  ///< @todo add documentation
 
-#define POWERONDELAY_BASE   0x01FE
+#define POWERONDELAY_BASE   0x01FE  ///< @todo add documentation
 
-#define OBJ_SIZE            8
+#define OBJ_SIZE            8       ///< @todo add documentation
 
+/** @todo add documentation */
 typedef enum
 {
-    eFunc_none,
-    eFunc_schalten,
-    eFunc_dimmen,
-    eFunc_jalousie,
-    eFunc_dimmwertgeber,
-    eFunc_Lichtszene,
-    eFunc_Wertgeber,
-    eFunc_Temperaturwertgeber,
-    eFunc_Helligkeitswertgeber,
-    eFunc_Impulszaehler,
-    eFunc_Schaltzaehler,
+    eFunc_none,                 ///< @todo add documentation
+    eFunc_schalten,             ///< @todo add documentation
+    eFunc_dimmen,               ///< @todo add documentation
+    eFunc_jalousie,             ///< @todo add documentation
+    eFunc_dimmwertgeber,        ///< @todo add documentation
+    eFunc_Lichtszene,           ///< @todo add documentation
+    eFunc_Wertgeber,            ///< @todo add documentation
+    eFunc_Temperaturwertgeber,  ///< @todo add documentation
+    eFunc_Helligkeitswertgeber, ///< @todo add documentation
+    eFunc_Impulszaehler,        ///< @todo add documentation
+    eFunc_Schaltzaehler,        ///< @todo add documentation
 } EFUNC_PORT;
 
-
+/** 
+* @todo add documentation
+*/
 typedef union 
 {
     struct
     {
         uint8_t objectVal_1;
         uint8_t objectVal_2;
-    } Schalten;
+    } Schalten; ///< @todo add documentation
     struct
     {
         uint16_t timer   : 12;
         uint8_t StepVal    : 1;
         uint8_t MoveVal    : 1;
         uint8_t intState   : 2;
-    } Jalousie;
+    } Jalousie; ///< @todo add documentation
 } INTVAL_UNION;
 
 
@@ -117,7 +120,7 @@ extern struct grp_addr_s grp_addr;
 
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                                but will be switched delayed depending on the delay */
-INTVAL_UNION intVal[OBJ_SIZE];
+INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
 
 //static uint8_t portSperre;                /**< ??? */
 //static uint8_t portSperreOld;             /**< ???  */
@@ -126,7 +129,7 @@ static uint16_t currentTime;              /**< defines the current time in 10ms 
 static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
 static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
 
-static uint8_t powerOnDelay;    
+static uint8_t powerOnDelay;              ///< @todo add documentation
 
 
 

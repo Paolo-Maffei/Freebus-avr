@@ -28,10 +28,15 @@
 
 #include "msg_queue.h"
 
+/** @todo add documentation */
 uint8_t restartApplication(void);
+/** @todo add documentation */
 uint8_t runApplication(struct msg *rxmsg);
+/** @todo add documentation */
 uint8_t readApplication(struct msg *rxmsg);
+/** @todo add documentation */
 uint8_t restartApplication(void);
+/** @todo add documentation */
 void setApplicationDefaults(void);
 
 

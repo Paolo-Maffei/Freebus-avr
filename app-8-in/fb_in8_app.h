@@ -29,6 +29,7 @@
 #ifdef _FB_IN8_APP_C
 #define APP_EXT
 #else
+/** Set APP_EXT to extern to make clear it is include from an external source like a lib */
 #define APP_EXT    extern
 #endif
 

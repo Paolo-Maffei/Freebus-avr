@@ -31,17 +31,22 @@
 
 
 
-static unsigned char zl1=0;			// Timer Kanal1  
-static unsigned char zl2=0;			// Timer Kanal2  
-static unsigned int  zl_50hz=0;		// Merker für triggereingang  
-static unsigned char teiler=0;
-
-static unsigned char K1dimmwert_ausgang=0;
-static unsigned char K2dimmwert_ausgang=0;
-
-#define MAXZEIT 1000	//maxzeit bis abbruch i2c
+static unsigned char zl1=0;			///< Timer Kanal1  
+static unsigned char zl2=0;			///< Timer Kanal2  
+static unsigned int  zl_50hz=0;		///< Merker für triggereingang  
+static unsigned char teiler=0;          ///< @todo add documentation
 
 
+static unsigned char K1dimmwert_ausgang=0; ///< @todo add documentation
+static unsigned char K2dimmwert_ausgang=0; ///< @todo add documentation
+
+#define MAXZEIT 1000	///< maxzeit bis abbruch i2c
+
+
+/** 
+* @todo add documentation
+* 
+*/
 void USART_Init(void)
 {
 	unsigned int baud=12;			// 8000000/16/BAUD-1     51  == 9600 baud 8 000 000
@@ -52,7 +57,7 @@ void USART_Init(void)
 	//UCSR1B=UCSR1B |(1<<UCSZ12);		//9 bit
 }
 
-/*******************************************************
+/**
  Public Function: TWIS_ResonseRequired
 
  Purpose: Get the response type to be performed by slave
@@ -68,14 +73,14 @@ void USART_Init(void)
 		TRUE: Yes, response required
 		FALSE: No response required
 
-*******************************************************/
-	unsigned char TWIS_ResonseRequired (unsigned char  *TWI_ResonseType)
-	{
-	*TWI_ResonseType = TWSR;
-	return TWCR & (1<<TWINT);
-	}
+*/
+unsigned char TWIS_ResonseRequired (unsigned char  *TWI_ResonseType)
+{
+    *TWI_ResonseType = TWSR;
+    return TWCR & (1<<TWINT);
+}
 
-/*******************************************************
+/**
  Public Function: TWIS_ReadAck
 
  Purpose: Read a byte from the master and request next byte
@@ -85,7 +90,7 @@ void USART_Init(void)
  Return Value: uint8_t
   	- uint8_t	Read byte
 
-*******************************************************/
+*/
 unsigned char TWIS_ReadAck (void)
 	{
 	unsigned int timeueberlauf=0;
@@ -98,7 +103,7 @@ unsigned char TWIS_ReadAck (void)
 		}
 	return TWDR;
 	}
-/*******************************************************
+/**
  Public Function: TWIS_Stop
 
  Purpose: Stop the TWI Slave Interface
@@ -107,13 +112,13 @@ unsigned char TWIS_ReadAck (void)
 
  Return Value: None
 
-*******************************************************/
+*/
 void TWIS_Stop (void)
 	{
 	TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWSTO)|(1<<TWEA);
 	}
 
-/*******************************************************
+/**
  Public Function: TWIS_ReadNack
 
  Purpose: Read the last byte from the master
@@ -123,7 +128,7 @@ void TWIS_Stop (void)
  Return Value: uint8_t
   	- uint8_t	Read byte
 
-*******************************************************/
+*/
 uint8_t	TWIS_ReadNack (void)
 	{
 	unsigned int timeueberlauf=0;
@@ -138,6 +143,10 @@ uint8_t	TWIS_ReadNack (void)
 	}
 
 
+/** 
+* @todo add documentation
+* 
+*/
 void nulldurchgang(void)
 	{
 	zl1=0;
@@ -149,6 +158,11 @@ void nulldurchgang(void)
 	return;
 	}
 
+/** 
+* @todo add documentation
+* 
+* @return 
+*/
 ISR(TIMER2_COMP_vect)
 {
 	if(zl_50hz<1000)
@@ -178,7 +192,11 @@ ISR(TIMER2_COMP_vect)
 
 
 
-
+/** 
+* @todo add documentation
+* 
+* @return 
+*/
 ISR(INT1_vect)		//steigende flanke auswertung
 {
 	zl_50hz=0;
@@ -193,7 +211,7 @@ ISR(INT1_vect)		//steigende flanke auswertung
 * @return 
 */
 int main(void)
-	{
+{
 	unsigned char TWIS_ResonseType=0;
 	USART_Init();
 	
@@ -223,7 +241,7 @@ int main(void)
 	uart_printf("Programmstart\n");
 
 	while(1)
-		{
+         {
 		PORTC |= (1<<PC3);
 		PORTC &=~(1<<PC3);
 		if (TWIS_ResonseRequired (&TWIS_ResonseType))
@@ -239,4 +257,4 @@ int main(void)
 			}
 		}
 	return 0;
-	}
+}

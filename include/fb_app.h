@@ -29,6 +29,7 @@
 #ifdef _FB_RELAIS_APP_C
 #define FBAPP_EXT
 #else
+/** Set FBAPP_EXT to extern to make clear it is include from an external source like a lib */
 #define FBAPP_EXT    extern
 #endif
 

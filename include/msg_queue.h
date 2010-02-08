@@ -29,6 +29,7 @@
 #ifdef  _MSG_QUEUE_C
 #define MSG_EXT
 #else
+/** Set MSG_EXT to extern to make clear it is include from an external source like a lib */
 #define MSG_EXT    extern
 #endif
 

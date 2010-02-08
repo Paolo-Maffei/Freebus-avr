@@ -42,23 +42,29 @@ enum EIBPRIORITY
 };
 
 
+/** 
+* @todo add documentation
+* 
+*/
 class CMessage
 {
 	public:
 		CMessage ();
+		/** @todo add documentation */
 		void SetOctet (uint8_t pos, uint16_t frame);
+		/** @todo add documentation */
 		uint16_t GetOctet (uint8_t pos);
 
-		CMessage* Next;
-		uint8_t Len; //Gesamtlänge des Telegramms 
-		MESSAGESTATE State;
-		void Dump (uint8_t bExtended);
-		FRAMETYPE GetFrameType ();
-		uint8_t CalcChecksum (void);
-		uint8_t GetChecksum (void);
-		uint8_t IsACK (void);
-		uint8_t IsNAK (void);
-		uint8_t IsBusy (void);
+		CMessage* Next; ///< @todo add documentation
+		uint8_t Len; ///< Gesamtlänge des Telegramms 
+		MESSAGESTATE State; ///< @todo add documentation
+		void Dump (uint8_t bExtended); ///< @todo add documentation
+		FRAMETYPE GetFrameType (); ///< @todo add documentation
+		uint8_t CalcChecksum (void); ///< @todo add documentation
+		uint8_t GetChecksum (void); ///< @todo add documentation
+		uint8_t IsACK (void); ///< @todo add documentation
+		uint8_t IsNAK (void); ///< @todo add documentation
+		uint8_t IsBusy (void); ///< @todo add documentation
 
 		union
 		{
@@ -121,7 +127,7 @@ class CMessage
 				};
 				uint8_t Data[17];
 			} L_Data;
-		} __attribute__ ((packed));
+		} __attribute__ ((packed)); ///< @todo add documentation
 
 
 	private:

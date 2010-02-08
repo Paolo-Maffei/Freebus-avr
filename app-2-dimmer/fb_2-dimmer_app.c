@@ -43,42 +43,42 @@
 #include "util/twi.h"
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
-#define TIMSK TIMSK2
-#define TCCR2 TCCR2B
-#define OCR2 OCR2B
-#define GICR EIMSK
+#define TIMSK TIMSK2  ///< @todo add documentation
+#define TCCR2 TCCR2B  ///< @todo add documentation
+#define OCR2 OCR2B    ///< @todo add documentation
+#define GICR EIMSK    ///< @todo add documentation
 #endif
 
 
-#define MAXDIMMWERT 200
-#define MAXZEIT 60000	//maximalzeit bis zum abbruch i2c
+#define MAXDIMMWERT 200   ///< @todo add documentation
+#define MAXZEIT 60000	///< maximalzeit bis zum abbruch i2c
 
 
 
-static uint8_t zldurch2=0;			// Timer durch 2 (char)
+static uint8_t zldurch2=0;			///< Timer durch 2 (char)
 
-unsigned char dimmenaufab=0;
-unsigned char aufab=0;
-unsigned char dimmgeschwindikeit=0;
-unsigned char mindimmwert_k1=0x10;		//minimaldimmwert von der applikation Ok
-unsigned char anspringen_k1=1;		//andimmen (0) oder anspringen (1) K1
-unsigned char einschathellikeit_k1=MAXDIMMWERT;
-uint8_t gK1helldunkel=0;				//9=heller 0=stop 1=dunkler
-static uint8_t K1dimmwert=0;
-static uint8_t K1dimmwert_ausgang=0;
-unsigned char mk1=0; //merker Kanal1 zum übertragen uber i2c
-unsigned char mk2=0; //merker Kanal2 zum übertragen uber i2c
+unsigned char dimmenaufab=0;  ///< @todo add documentation
+unsigned char aufab=0;  ///< @todo add documentation
+unsigned char dimmgeschwindikeit=0;  ///< @todo add documentation
+unsigned char mindimmwert_k1=0x10;		///< minimaldimmwert von der applikation Ok
+unsigned char anspringen_k1=1;		///< andimmen (0) oder anspringen (1) K1
+unsigned char einschathellikeit_k1=MAXDIMMWERT;  ///< @todo add documentation
+uint8_t gK1helldunkel=0;				///< 9=heller 0=stop 1=dunkler
+static uint8_t K1dimmwert=0;  ///< @todo add documentation
+static uint8_t K1dimmwert_ausgang=0;  ///< @todo add documentation
+unsigned char mk1=0; ///< merker Kanal1 zum übertragen uber i2c
+unsigned char mk2=0; ///< merker Kanal2 zum übertragen uber i2c
 
 
-unsigned char mindimmwert_k2=0x10;		//minimaldimmwert von der applikation Ok
-unsigned char anspringen_k2=1;		//andimmen (0) oder anspringen (1) K1
-unsigned char einschathellikeit_k2=MAXDIMMWERT;
-uint8_t gK2helldunkel=0;				//9=heller 0=stop 1=dunkler
-static uint8_t K2dimmwert=0;
-static uint8_t K2dimmwert_ausgang=0;
+unsigned char mindimmwert_k2=0x10;		///< minimaldimmwert von der applikation Ok
+unsigned char anspringen_k2=1;		///< andimmen (0) oder anspringen (1) K1
+unsigned char einschathellikeit_k2=MAXDIMMWERT;  ///< @todo add documentation
+uint8_t gK2helldunkel=0;				///< 9=heller 0=stop 1=dunkler
+static uint8_t K2dimmwert=0;  ///< @todo add documentation
+static uint8_t K2dimmwert_ausgang=0;  ///< @todo add documentation
 
 //             hellikeit    0,grund,10,20,30,40,50, 60, 70, 80, 90,Max
-unsigned char hellikeit[]={0,25,40,53,67,80,95,120,140,160,180,200,0};
+unsigned char hellikeit[]={0,25,40,53,67,80,95,120,140,160,180,200,0};   ///< @todo add documentation
 
 
 
@@ -517,7 +517,13 @@ unsigned char i2c_wait(void)
 	return 0;
 	}
 
-unsigned char i2c_send(unsigned char daten)
+/** 
+* @todo add documentation
+* 
+* @param daten 
+* 
+* @return 
+*/unsigned char i2c_send(unsigned char daten)
 	{
 	unsigned char err=0;
 	TWDR = daten;
@@ -527,7 +533,12 @@ unsigned char i2c_send(unsigned char daten)
 	return err;
 	}
 
-unsigned char i2c_send_daten(void)
+/** 
+* @todo add documentation
+* 
+* 
+* @return 
+*/unsigned char i2c_send_daten(void)
 	{
 	unsigned char err=0;
 

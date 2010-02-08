@@ -30,6 +30,7 @@
 #ifdef _FB_HAL_C
 #define HAL_EXT
 #else
+/** Set HAL_EXT to extern to make clear it is include from an external source like a lib */
 #define HAL_EXT    extern
 #endif
 
@@ -79,7 +80,7 @@
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
-HAL_EXT uint8_t systemState;
+HAL_EXT uint8_t systemState;         /**< Holds the system state @todo give more detailed explaination */
 
 /*************************************************************************
 * FUNCTION PROTOTYPES

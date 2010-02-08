@@ -29,6 +29,7 @@
 #ifdef _FB_EEPROM_C
 #define EEPROM_EXT
 #else
+/** Set EEPROM_EXT to extern to make clear it is include from an external source like a lib */
 #define EEPROM_EXT    extern
 #endif
 
@@ -50,9 +51,9 @@
 #define USERRAM_BASE_ADR              0x00CE    /**< User RAM startaddress           */
 #define USERRAM_SIZE                  0x0012    /**< Size of user RAM                */
 
-                                                /**< Size of data structur           */
+/** Size of data structur           */
 #define EEPROM_SIZE                   NODEPARAM_SIZE + APPLICATION_MEM_SIZE + USERRAM_SIZE
-#define MAX_EEPROM_SIZE               EEPROM_SIZE - 1    
+#define MAX_EEPROM_SIZE               EEPROM_SIZE - 1    /**< The maximum size of the eeprom usable */
 
 /** Struktur fuer die Default-Parameter */
 typedef struct
