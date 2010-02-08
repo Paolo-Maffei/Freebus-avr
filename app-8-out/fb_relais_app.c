@@ -56,8 +56,7 @@
 * 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%
 * The 74HCT573 is active low, changed to 0x33=51 -> This is about 20% negative duty cycle */
 #define PWM_SETPOINT    0x64 //0x64=100 //0x4B=75 besser aber bei erschütterung nicht okay //=51=20% neg 
-/** How long we hold the relais at 100% before we enable PWM again
-*/
+/** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME  10
 
 

@@ -93,7 +93,7 @@ PROJECTNAME=freebus-avr-8-out
 #INC=
 
 # libraries to link in (e.g. -lmylib)
-#LIBS=
+#LIBS=-lavreib -L../
 
 # Optimization level, 
 # use s (size opt), 1, 2, 3 or 0 (off)
@@ -169,7 +169,7 @@ LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
 	-lm $(LIBS)
 
 ##### executables ####
-CC=avr-gcc -DF_CPU=8000000UL $(CFLAGS)
+CC=avr-gcc
 OBJCOPY=avr-objcopy
 OBJDUMP=avr-objdump
 SIZE=avr-size
@@ -243,7 +243,7 @@ $(DUMPTRG): $(TRG)
 
 
 $(TRG): $(OBJDEPS) 
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS)
+	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 
 #### Generating assembly ####
@@ -298,10 +298,8 @@ gdbinit: $(GDBINITFILE)
 
 $(GDBINITFILE): $(TRG)
 	@echo "file $(TRG)" > $(GDBINITFILE)
-	
 	@echo "target remote localhost:1212" \
 		                >> $(GDBINITFILE)
-	
 	@echo "load"        >> $(GDBINITFILE) 
 	@echo "break main"  >> $(GDBINITFILE)
 	@echo "continue"    >> $(GDBINITFILE)
@@ -316,7 +314,6 @@ clean:
 	$(REMOVE) $(LST) $(GDBINITFILE)
 	$(REMOVE) $(GENASMFILES)
 	$(REMOVE) $(HEXTRG)
-	
 
 
 #####                    EOF                   #####
