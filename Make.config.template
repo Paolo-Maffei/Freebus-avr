@@ -30,7 +30,7 @@ LIBS?=
 OPTLEVEL?=s
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS?=-g -DDEBUG_UART -Wall
+CUSTOM_CFLAGS?=-DF_CPU=8000000UL -g -DDEBUG_UART -Wall
 
 # programmer id--check the avrdude for complete list
 # of available opts.  These should include stk500,
