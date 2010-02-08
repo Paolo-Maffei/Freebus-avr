@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="171,5,293,35"/>
+<area shape="rect" id="node5" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="180,59,284,88"/>
+<area shape="rect" id="node7" href="$fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="157,112,307,141"/>
+</map>

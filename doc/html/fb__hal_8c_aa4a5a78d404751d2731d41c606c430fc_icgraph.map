@@ -1,0 +1,24 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="305,57,439,87"/>
+<area shape="rect" id="node7" href="$fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="156,137,255,167"/>
+<area shape="rect" id="node52" href="$fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="160,5,251,35"/>
+<area shape="rect" id="node5" href="$fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="537,84,580,113"/>
+<area shape="rect" id="node10" href="$fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="329,215,415,244"/>
+<area shape="rect" id="node49" href="$fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="319,111,425,140"/>
+<area shape="rect" id="node12" href="$fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="488,215,629,244"/>
+<area shape="rect" id="node14" href="$fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="935,5,1036,35"/>
+<area shape="rect" id="node16" href="$fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="900,59,1071,88"/>
+<area shape="rect" id="node18" href="$fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="924,165,1047,195"/>
+<area shape="rect" id="node20" href="$fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="677,215,851,244"/>
+<area shape="rect" id="node22" href="$fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="727,111,801,140"/>
+<area shape="rect" id="node29" href="$fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="709,268,819,297"/>
+<area shape="rect" id="node33" href="$fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="703,321,825,351"/>
+<area shape="rect" id="node35" href="$fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="713,375,815,404"/>
+<area shape="rect" id="node45" href="$fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="700,453,828,483"/>
+<area shape="rect" id="node27" href="$fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="924,112,1047,141"/>
+<area shape="rect" id="node31" href="$fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="915,268,1056,297"/>
+<area shape="rect" id="node37" href="$fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="921,373,1049,403"/>
+<area shape="rect" id="node39" href="$fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1120,373,1269,403"/>
+<area shape="rect" id="node41" href="$fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="925,427,1045,456"/>
+<area shape="rect" id="node47" href="$fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="960,480,1011,509"/>
+</map>

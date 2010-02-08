@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$include_2uart_8h.html#a8eaa1ed3292777a3ed02045bd4b612c3" title="Queue a character and start background sending to rs232." alt="" coords="127,85,201,115"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="273,5,348,35"/>
+<area shape="rect" id="node11" href="$lib_2uart_8c.html#aa25838635597c384a49871ab20827191" title="Take the given char and append it to a debug message queue or allocate a new message..." alt="" coords="252,59,369,88"/>
+<area shape="rect" id="node13" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="269,112,352,141"/>
+<area shape="rect" id="node15" href="$lib_2uart_8c.html#ae932bf3c92fedb84aafd92ee88d6b6c1" title="Start the send progress and write all queued data to rs232 interface." alt="" coords="268,165,353,195"/>
+<area shape="rect" id="node7" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="420,5,497,35"/>
+<area shape="rect" id="node9" href="$fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="547,5,600,35"/>
+</map>

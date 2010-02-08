@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="132,5,209,35"/>
+<area shape="rect" id="node5" href="$fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="259,5,312,35"/>
+</map>

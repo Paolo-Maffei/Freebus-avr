@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="96,5,192,35"/>
+<area shape="rect" id="node7" href="$fb__eeprom_8c.html#a6ab1e3cc3c300d12592e39648da8c022" title="Store on byte on eeprom." alt="" coords="111,59,177,88"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="241,5,313,35"/>
+</map>

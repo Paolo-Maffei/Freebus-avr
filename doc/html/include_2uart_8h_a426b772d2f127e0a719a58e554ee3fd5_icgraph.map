@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$lib_2uart_8c.html#ad8f430e070f8be1f5d760156f00bcb69" title="Write a character as hex to rs232 without using the queueing system." alt="" coords="196,5,321,35"/>
+<area shape="rect" id="node5" href="$lib_2uart_8c.html#a0ced476979fd8adeb4b7b55f14328ff6" title="Write a newline to rs232 without using the queueing system." alt="" coords="184,59,333,88"/>
+<area shape="rect" id="node7" href="$lib_2uart_8c.html#a641869f983cd6b508fb6873b377770a2" title="Write a string to the rs232 without using the queueing system." alt="" coords="193,112,324,141"/>
+</map>

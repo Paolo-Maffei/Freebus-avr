@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$lib_2uart_8c.html#a8eaa1ed3292777a3ed02045bd4b612c3" title="Queue a character and start background sending to rs232." alt="" coords="175,59,249,88"/>
+<area shape="rect" id="node5" href="$lib_2uart_8c.html#a1e9aadc7cf5409fa2408900b44ee1f87" title="Queue a character and write it as a hex value to rs232." alt="" coords="311,5,383,35"/>
+<area shape="rect" id="node7" href="$lib_2uart_8c.html#a235e7f4c195d6d877cc0bb2facff043b" title="Queue a newline and write it to the rs232." alt="" coords="300,59,393,88"/>
+<area shape="rect" id="node9" href="$lib_2uart_8c.html#ae52facc0a56086a365bb0018160d8d71" title="Display string on rs232." alt="" coords="309,112,384,141"/>
+</map>

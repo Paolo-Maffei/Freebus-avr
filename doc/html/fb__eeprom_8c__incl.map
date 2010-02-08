@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb_8h.html" title="Define general values used in bus communication." alt="" coords="5,83,48,112"/>
+<area shape="rect" id="node5" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...." alt="" coords="77,237,179,267"/>
+<area shape="rect" id="node7" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like..." alt="" coords="123,160,221,189"/>
+<area shape="rect" id="node10" href="$fb__hal_8h.html" title="Definitions on Hardware Abstration Layer." alt="" coords="233,83,300,112"/>
+<area shape="rect" id="node17" href="$freebus-debug_8h.html" title="Header file to map debugging between several output devices. Possible outputs are..." alt="" coords="392,83,507,112"/>
+<area shape="rect" id="node25" href="$fb__eeprom_8h.html" title="Handling the access and mapping to the eeprom." alt="" coords="531,83,624,112"/>
+<area shape="rect" id="node21" href="$lcd-lib_8h.html" title="lcd&#45;lib.h" alt="" coords="589,160,656,189"/>
+<area shape="rect" id="node23" href="$delay_8h.html" title="Functions to delay the execution." alt="" coords="591,237,655,267"/>
+</map>

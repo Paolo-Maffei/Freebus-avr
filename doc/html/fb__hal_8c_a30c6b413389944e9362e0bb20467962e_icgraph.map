@@ -1,0 +1,32 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$msg__queue_8c.html#ad79d9162c65e803240d20adab3ea60f0" title="Allocate space for a message and return a pointer to it." alt="" coords="108,584,185,613"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="261,219,336,248"/>
+<area shape="rect" id="node29" href="$fb__prot_8c.html#a1ca66f4c62a2c7c7ff2c8ebef64465da" title="Create a new telegram and and return pointer to it." alt="" coords="252,404,345,433"/>
+<area shape="rect" id="node45" href="$fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="244,531,353,560"/>
+<area shape="rect" id="node49" href="$fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="237,584,360,613"/>
+<area shape="rect" id="node51" href="$fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="248,637,349,667"/>
+<area shape="rect" id="node61" href="$fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="235,703,363,732"/>
+<area shape="rect" id="node65" href="$fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="241,781,356,811"/>
+<area shape="rect" id="node7" href="$fb__eeprom_8c.html#a68f918bbf3e9cd0ec46a706bb5c8b9d3" title="Write data to the eeprom cache and trigger background process to write eeprom cache..." alt="" coords="427,219,568,248"/>
+<area shape="rect" id="node21" href="$lib_2uart_8c.html#a8eaa1ed3292777a3ed02045bd4b612c3" title="Queue a character and start background sending to rs232." alt="" coords="460,85,535,115"/>
+<area shape="rect" id="node9" href="$fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="659,272,781,301"/>
+<area shape="rect" id="node11" href="$fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="633,165,807,195"/>
+<area shape="rect" id="node13" href="$fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="668,219,772,248"/>
+<area shape="rect" id="node15" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="869,165,992,195"/>
+<area shape="rect" id="node17" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="879,219,983,248"/>
+<area shape="rect" id="node19" href="$fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="856,272,1005,301"/>
+<area shape="rect" id="node23" href="$lib_2uart_8c.html#a1e9aadc7cf5409fa2408900b44ee1f87" title="Queue a character and write it as a hex value to rs232." alt="" coords="684,112,756,141"/>
+<area shape="rect" id="node25" href="$lib_2uart_8c.html#a235e7f4c195d6d877cc0bb2facff043b" title="Queue a newline and write it to the rs232." alt="" coords="673,5,767,35"/>
+<area shape="rect" id="node27" href="$lib_2uart_8c.html#ae52facc0a56086a365bb0018160d8d71" title="Display string on rs232." alt="" coords="683,59,757,88"/>
+<area shape="rect" id="node31" href="$fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="669,468,771,497"/>
+<area shape="rect" id="node33" href="$fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="635,325,805,355"/>
+<area shape="rect" id="node35" href="$fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="659,403,781,432"/>
+<area shape="rect" id="node37" href="$fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="411,377,584,407"/>
+<area shape="rect" id="node39" href="$fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="460,324,535,353"/>
+<area shape="rect" id="node47" href="$fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="427,532,568,561"/>
+<area shape="rect" id="node53" href="$fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="433,636,561,665"/>
+<area shape="rect" id="node55" href="$fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="645,636,795,665"/>
+<area shape="rect" id="node57" href="$fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="437,689,557,719"/>
+<area shape="rect" id="node63" href="$fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="472,743,523,772"/>
+<area shape="rect" id="node67" href="$fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="476,796,519,825"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__2-dimmer__app_8c.html#aea27d28c99df3d5bfe4525fd86670e51" title="i2c_send_daten" alt="" coords="123,5,235,35"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#a90196e005dcf1018a473941883d5054d" title="Init the message queue system and save default values." alt="" coords="123,59,235,88"/>
+<area shape="rect" id="node7" href="$fb__2-dimmer__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="117,112,240,141"/>
+<area shape="rect" id="node9" href="$fb__2-dimmer__app_8c.html#ae0d35d2336bb54a6ff352c4d6ec1aafd" title="Timer1 is used as application timer." alt="" coords="104,165,253,195"/>
+</map>

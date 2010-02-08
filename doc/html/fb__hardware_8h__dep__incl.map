@@ -1,0 +1,15 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__2-dimmer__app_8c.html" title="Dimmer application based on the Gira 1032 2 channel dimmer." alt="" coords="617,237,831,267"/>
+<area shape="rect" id="node5" href="$fb__in8__app_8c.html" title="The application for 8 binary inputs Manufactorer code is 0x04 = Jung &#160;Device type..." alt="" coords="307,237,451,267"/>
+<area shape="rect" id="node7" href="$fb__relais__app_8c.html" title="The relais application to switch 8 relais Manufactorer code is 0x04 = Jung &#160;Device..." alt="" coords="5,237,171,267"/>
+<area shape="rect" id="node9" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like..." alt="" coords="547,83,691,112"/>
+<area shape="rect" id="node20" href="$fb__prot_8c.html" title="Handle all requests which are EIB bases like write current address or group address..." alt="" coords="195,237,283,267"/>
+<area shape="rect" id="node27" href="$fb__eeprom_8c.html" title="The eeprom is divided into two parts. The complete size of the eeprom is 256+18+24..." alt="" coords="1013,237,1123,267"/>
+<area shape="rect" id="node29" href="$fb__hal_8c.html" title="Freebus Hardware Layer. Implementation of a software&#45; uart + timer handling This..." alt="" coords="475,237,557,267"/>
+<area shape="rect" id="node32" href="$msg__queue_8c.html" title="Management of messagequeues." alt="" coords="872,237,989,267"/>
+<area shape="rect" id="node43" href="$lib_2uart_8c.html" title="Handles communication via uart (polling mode). Is only included if compiled with..." alt="" coords="1037,160,1109,189"/>
+<area shape="rect" id="node11" href="$fb__2-dimmer__app_8h.html" title="app&#45;2&#45;dimmer/fb_2&#45;dimmer_app.h" alt="" coords="699,160,912,189"/>
+<area shape="rect" id="node16" href="$fb__app_8h.html" title="General application definition file." alt="" coords="131,160,245,189"/>
+<area shape="rect" id="node22" href="$fb__hal_8h.html" title="Definitions on Hardware Abstration Layer." alt="" coords="563,160,675,189"/>
+<area shape="rect" id="node34" href="$fb__prot_8h.html" title="Define the protocol specific definitions Implementation of the communication protocol..." alt="" coords="320,160,437,189"/>
+</map>

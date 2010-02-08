@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__prot_8h.html#aa73e24db682143ef1340c4e4e46d7feb" title="That function will be called if a telegram was received completely." alt="" coords="156,5,257,35"/>
+<area shape="rect" id="node7" href="$fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in..." alt="" coords="160,59,253,88"/>
+<area shape="rect" id="node9" href="$msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="457,137,529,167"/>
+<area shape="rect" id="node11" href="$fb__hal_8c.html#abe9ce1ff59cb1eb49f7e651549139764" title="Set the next state while in receiving mode." alt="" coords="307,216,408,245"/>
+<area shape="rect" id="node13" href="$fb__hal_8c.html#a02bd6a0eef1e1be4a306236d886f04bb" title="Postive acknowledge received, dequeue message." alt="" coords="160,163,253,192"/>
+<area shape="rect" id="node19" href="$fb__hal_8c.html#afcdb445c1b6cc3e39d904592286349ee" title="Negative acknowledge received, check repeat counter and if repeat is not expired..." alt="" coords="173,216,240,245"/>
+<area shape="rect" id="node5" href="$fb__prot_8c.html#af4f820be8f1240cee6515133062a2e93" title="Analyse the type of the message (broadcast, direct, group address) and check for..." alt="" coords="313,5,401,35"/>
+<area shape="rect" id="node15" href="$msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="309,163,405,192"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="221,5,344,35"/>
+<area shape="rect" id="node5" href="$fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="196,59,369,88"/>
+<area shape="rect" id="node7" href="$fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="231,112,335,141"/>
+<area shape="rect" id="node9" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="432,59,555,88"/>
+<area shape="rect" id="node11" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="441,112,545,141"/>
+<area shape="rect" id="node13" href="$fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="419,165,568,195"/>
+</map>

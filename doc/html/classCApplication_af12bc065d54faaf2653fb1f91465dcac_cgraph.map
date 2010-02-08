@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classCMessage.html#a9901671dc7873502af6bbe0bf843fa1e" title="CMessage::Dump" alt="" coords="207,112,332,141"/>
+<area shape="rect" id="node5" href="$classCMessage.html#a6b82ddd029f0525131c4eb4380cade9d" title="CMessage::CalcChecksum" alt="" coords="383,5,561,35"/>
+<area shape="rect" id="node7" href="$classCMessage.html#a88ef88f294acc462fa488b185a35bb56" title="CMessage::GetFrameType" alt="" coords="383,59,561,88"/>
+<area shape="rect" id="node9" href="$classCMessage.html#a62df781b3e0ec838e06e1d8fd84919bf" title="CMessage::IsACK" alt="" coords="408,112,536,141"/>
+<area shape="rect" id="node11" href="$classCMessage.html#a019ad1fc0cbcd11dac75f1f2add02d2c" title="CMessage::IsBusy" alt="" coords="407,165,537,195"/>
+<area shape="rect" id="node13" href="$classCMessage.html#a1e92763e926407ae1298a7b73d0bca0e" title="CMessage::IsNAK" alt="" coords="408,219,536,248"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$lcd-lib_8c.html#ac86567882f677c3ea60730d172d86072" title="Display a character as digit." alt="" coords="127,5,196,35"/>
+<area shape="rect" id="node5" href="$lcd-lib_8c.html#aebffee1fce6172fdae085e26c81f1299" title="Display a char as hex." alt="" coords="128,59,195,88"/>
+<area shape="rect" id="node7" href="$lcd-lib_8c.html#a8ffdfcac7638368ff04364c14984266e" title="Write a string to the LCD." alt="" coords="127,112,196,141"/>
+</map>

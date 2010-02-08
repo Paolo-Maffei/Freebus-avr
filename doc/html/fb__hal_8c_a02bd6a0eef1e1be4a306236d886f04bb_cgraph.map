@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="149,5,245,35"/>
+<area shape="rect" id="node7" href="$fb__hal_8c.html#abe9ce1ff59cb1eb49f7e651549139764" title="Set the next state while in receiving mode." alt="" coords="147,59,248,88"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="297,5,369,35"/>
+</map>
