@@ -16,21 +16,24 @@ PROGRAMMER_MCU?=m168
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S
 # (NOT .s !!!) for assembly source code files.
-PRJSRC?=$(DEFAULT_TARGET) ../fb_eeprom.c ../fb_hal.c ../fb_prot.c  \
-          ../lcd-lib.c ../msg_queue.c ../uart.c
+PRJSRC?=$(DEFAULT_TARGET)
 
 # additional includes (e.g. -I/path/to/mydir)
-INC?=-I/usr/local/avr/include -I. -I..
-
-# libraries to link in (e.g. -lmylib)
-LIBS?=
+INC?=-I/usr/local/avr/include -I. -I.. -I../include/
 
 # Optimization level, 
 # use s (size opt), 1, 2, 3 or 0 (off)
 OPTLEVEL?=s
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS?=-DF_CPU=8000000UL -g -DDEBUG_UART -Wall
+CUSTOM_CFLAGS?=-DF_CPU=8000000UL -g -Wall -DDEBUG_UART
+
+# libraries to link in (e.g. -lmylib)
+ifneq (,$(findstring DDEBUG_UART,$(CUSTOM_CFLAGS)))
+      LIBS?=-lavreibdebug -L..
+else
+      LIBS?=-lavreib -L..
+endif
 
 # programmer id--check the avrdude for complete list
 # of available opts.  These should include stk500,

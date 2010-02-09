@@ -10,4 +10,9 @@ hex:
 
 clean:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
+
+avrlib:
+	$(MAKE) -C lib
+	$(MAKE) -C lib install
+
 # DO NOT DELETE
