@@ -26,7 +26,7 @@ INC?=-I/usr/local/avr/include -I. -I.. -I../include/
 OPTLEVEL?=s
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS?=-DF_CPU=8000000UL -g -Wall -DDEBUG_UART
+CUSTOM_CFLAGS?=-DF_CPU=8000000UL -g -Wall
 
 # libraries to link in (e.g. -lmylib)
 ifneq (,$(findstring DDEBUG_UART,$(CUSTOM_CFLAGS)))
