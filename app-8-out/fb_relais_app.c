@@ -239,10 +239,10 @@ uint8_t restartApplication(void)
     SET_IO_IO7(IO_OUTPUT);
     SET_IO_IO8(IO_OUTPUT);
 #if (HARDWARETEST != 1)
-    SET_IO_RES1(IO_INPUT);
-    SET_IO_RES2(IO_INPUT);
-    SET_IO_RES3(IO_INPUT);
-    SET_IO_RES4(IO_INPUT);
+    SET_IO_RES1(IO_OUTPUT);
+    SET_IO_RES2(IO_OUTPUT);
+    SET_IO_RES3(IO_OUTPUT);
+    SET_IO_RES4(IO_OUTPUT);
 #else
     /* Port configuration for hardwaretest */
     SET_IO_RES1(IO_OUTPUT);
@@ -663,7 +663,6 @@ int main(void)
 
     /* config application hardware */
     (void)restartApplication();
-
 
 #ifdef HARDWARETEST
     sendTestTelegram();
