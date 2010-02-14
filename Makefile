@@ -15,4 +15,7 @@ avrlib:
 	$(MAKE) -C lib
 	$(MAKE) -C lib install
 
+avrlib-clean:
+	$(MAKE) -C lib clean
+
 # DO NOT DELETE
