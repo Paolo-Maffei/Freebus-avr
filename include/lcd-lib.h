@@ -38,10 +38,10 @@
 #define LCD_PIN_E			7             ///< on which port number is the e pin connected
 
 #define LCD_ON				0x0C          ///< switch LCD on
-#define LCD_OFF			0x08          ///< switch LCD off
+#define LCD_OFF			    0x08          ///< switch LCD off
 #define LCD_CURSOR_ON		0x0A          ///< switch cursor on LCD on
 #define LCD_CURSOR_OFF		0x08          ///< switch cursor on LCD off
-#define LCD_CURSOR_BLINK	     0x09          ///< set cursor to blink mode
+#define LCD_CURSOR_BLINK	0x09          ///< set cursor to blink mode
 #define LCD_CURSOR_NOBLINK	0x08          ///< disable blink mode of cursor
 
 #define LCD_CLEAR			0x01          ///< clear the LCD

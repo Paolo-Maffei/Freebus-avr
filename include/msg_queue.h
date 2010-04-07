@@ -63,13 +63,13 @@ enum emsg_state {
 
 /** Container that store messages */
 struct msg {
-          enum emsg_state state;               ///< Status of the message, see here emsg_state
-          uint8_t	flags;                     ///< Flags for message, e.g. MSG_AUTOFREE or MSG_HI_PRIO
-          uint8_t	*handler;                  ///< Which function should called if message will be handled
-          uint8_t	len;                       ///< Length of the data which is stored
-          uint8_t data[MSG_MAX_DATA_LENGTH];   ///< The message itself
-          uint8_t repeat;                      ///< Counter which will be used in EIB sending to count amount of repeats (max resend until repeat==0)
-          struct msg *next;                    ///< Pointer to next message
+    enum emsg_state state;               ///< Status of the message, see here emsg_state
+    uint8_t	flags;                     ///< Flags for message, e.g. MSG_AUTOFREE or MSG_HI_PRIO
+    uint8_t	*handler;                  ///< Which function should called if message will be handled
+    uint8_t	len;                       ///< Length of the data which is stored
+    uint8_t data[MSG_MAX_DATA_LENGTH];   ///< The message itself
+    uint8_t repeat;                      ///< Counter which will be used in EIB sending to count amount of repeats (max resend until repeat==0)
+    struct msg *next;                    ///< Pointer to next message
 };
 
 /**************************************************************************

@@ -1,34 +1,34 @@
 /* $Id$ */
 /*
-*      __________  ________________  __  _______
-*     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
-*  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
-*  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
-*
-*  This program is free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License version 2 as
-*  published by the Free Software Foundation.
-*/
+ *      __________  ________________  __  _______
+ *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
+ *    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
+ *   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
+ *  /_/   /_/ |_/_____/_____/_____/\____//____/  
+ *                                      
+ *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
+ *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.
+ */
 /**
-* @file   fb_relais_app.c
-* @author Matthias Fechner, Christian Bode
-* @date   Sat Jan 05 17:44:47 2008
-* 
-* @brief  The relais application to switch 8 relais
-* Manufactorer code is 0x04 = Jung\n
-* Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
-*/
+ * @file   fb_relais_app.c
+ * @author Matthias Fechner, Christian Bode
+ * @date   Sat Jan 05 17:44:47 2008
+ * 
+ * @brief  The relais application to switch 8 relais
+ * Manufactorer code is 0x04 = Jung\n
+ * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
+ */
 #ifndef _FB_RELAIS_APP_C
 #define _FB_RELAIS_APP_C
 
 
 /*************************************************************************
-* INCLUDES
-*************************************************************************/
+ * INCLUDES
+ *************************************************************************/
 #include "fb.h"
 #include "fb_hardware.h"
 #include "freebus-debug.h"
@@ -41,31 +41,31 @@
 #include "fb_relais_app.h"
 
 /**************************************************************************
-* DEFINITIONS
-**************************************************************************/
+ * DEFINITIONS
+ **************************************************************************/
 /** Reset the internal variables used for the application timer and reload the timer itself
-* @todo check if move of currentTime to this function really does not introduce a bug
-*/
-#define RESET_RELOAD_APPLICATION_TIMER() {                              \
-          currentTimeOverflow=0;                                        \
-          currentTimeOverflowBuffer=0;                                  \
-          currentTime=0;                                                \
-          RELOAD_APPLICATION_TIMER();                                   \
-     }
+ * @todo check if move of currentTime to this function really does not introduce a bug
+ */
+#define RESET_RELOAD_APPLICATION_TIMER() {      \
+        currentTimeOverflow=0;                  \
+        currentTimeOverflowBuffer=0;            \
+        currentTime=0;                          \
+        RELOAD_APPLICATION_TIMER();             \
+    }
 /** configure pwm timer, we use timer2 for this
-* 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%
-* The 74HCT573 is active low, changed to 0x33=51 -> This is about 20% negative duty cycle */
+ * 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%
+ * The 74HCT573 is active low, changed to 0x33=51 -> This is about 20% negative duty cycle */
 #define PWM_SETPOINT    0x64 //0x64=100 //0x4B=75 besser aber bei erschütterung nicht okay //=51=20% neg 
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME  10
 
 
 /**************************************************************************
-* DECLARATIONS
-**************************************************************************/
+ * DECLARATIONS
+ **************************************************************************/
 extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
-                                               but will be switched delayed depending on the delay */
+                                             but will be switched delayed depending on the delay */
 static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
 static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
 static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
@@ -77,31 +77,31 @@ uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
-{
-    { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
-    { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
-    { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
-    { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
-    { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
-    { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
-    { APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
+    {
+        { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
+        { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
+        { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
+        { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
+        { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
+        { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
+        { APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
 
-    { 0x0000,                  0x00 },    /**< default is off                               */
-    { 0x01EA,                  0x00 },    /**< no timer active                              */
-    { 0x01F6,                  0x55 },    /**< don't save status at power loss (number 1-4) */
-    { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
-    { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
+        { 0x0000,                  0x00 },    /**< default is off                               */
+        { 0x01EA,                  0x00 },    /**< no timer active                              */
+        { 0x01F6,                  0x55 },    /**< don't save status at power loss (number 1-4) */
+        { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
+        { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
 
-    { PA_ADDRESS_HIGH,         0x11 },    /**< default address is 1.1.51                    */
-    { PA_ADDRESS_LOW,          0x33 },    /**<                                              */   
+        { PA_ADDRESS_HIGH,         0x11 },    /**< default address is 1.1.51                    */
+        { PA_ADDRESS_LOW,          0x33 },    /**<                                              */   
 
-    { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
-};
+        { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
+    };
 
 
 /*************************************************************************
-* FUNCTION PROTOTYPES
-**************************************************************************/
+ * FUNCTION PROTOTYPES
+ **************************************************************************/
 void timerOverflowFunction(void);
 void switchObjects(void);
 void switchPorts(uint8_t port);
@@ -112,16 +112,16 @@ void hardwaretest(void);
 #endif
 
 /**************************************************************************
-* IMPLEMENTATION
-**************************************************************************/
+ * IMPLEMENTATION
+ **************************************************************************/
 
 /** 
-* Timer1 is used as application timer. It increase the variable currentTime every 130ms and currentTimeOverflow if
-* currentTime runs over 16-bit.
-* 
-* @return 
-* @todo test interrupt lock in this function that it is not disturbing TX and RX of telegrams
-*/
+ * Timer1 is used as application timer. It increase the variable currentTime every 130ms and currentTimeOverflow if
+ * currentTime runs over 16-bit.
+ * 
+ * @return 
+ * @todo test interrupt lock in this function that it is not disturbing TX and RX of telegrams
+ */
 void timerOverflowFunction(void)
 {
     uint8_t needToSwitch = 0; 
@@ -129,23 +129,18 @@ void timerOverflowFunction(void)
 
     /* check if programm is running */
     if(eeprom_ParamRead(APPLICATION_RUN_STATUS) != 0xFF)
-    {
         return;
-    }
      
-    if(currentTime == 0xFFFF)
-    {
+    if(currentTime == 0xFFFF) {
         currentTime = 0;
         currentTimeOverflow++;
-    }else
-    {
+    } else {
         currentTime++;
     }
      
     /* check if we can enable PWM */
     /* if waitToPWM==1 enable PWM, 0==no change */
-    if(waitToPWM == 1)
-    {
+    if(waitToPWM == 1) {
         DEBUG_PUTS("PWM");
         DEBUG_NEWLINE();
         ENABLE_PWM(PWM_SETPOINT);
@@ -153,20 +148,15 @@ void timerOverflowFunction(void)
 
     /* check if we need to lower PWM delay mode */
     if(waitToPWM > 0)
-    {
         waitToPWM--;
-    }
      
     /* now check if we have to switch a port */
-    for(i=0; i<=7; i++)
-    {
-        if(timerRunning & (1<<i))
-        {
+    for(i=0; i<=7; i++) {
+        if(timerRunning & (1<<i)) {
             // DEBUG_PUTHEX(timerRunning);
             // we need to check timer for port i
             /** @todo Problem bei einem Timerueberlauf !!! */
-            if((delayValues[i] != 0) && (currentTime >= delayValues[i]))
-            {
+            if((delayValues[i] != 0) && (currentTime >= delayValues[i])) {
                 // we need to switch the port delete delay pin
                 // DEBUG_PUTS("SDP");
                 DEBUG_PUTHEX(i);
@@ -178,13 +168,9 @@ void timerOverflowFunction(void)
                 needToSwitch   = 1;                     // force switch of IOs
 
                 if(portValue & (1<<i))                  // set IO to the new value
-                {
                     portValue &= ~((uint8_t)(1U<<i));
-                }
                 else
-                {
                     portValue |= (1<<i);
-                }
 
                 ENABLE_IRQS;
                 // DEBUG_PUTHEX(portValue);
@@ -195,8 +181,7 @@ void timerOverflowFunction(void)
         }
     }
 
-    if(needToSwitch)
-    {
+    if(needToSwitch) {
         // DEBUG_PUTS("IRQ");
         switchObjects();
     }
@@ -205,20 +190,20 @@ void timerOverflowFunction(void)
 }
 
 /** 
-* ISR is called if on TIMER1 the comparator B matches the defined condition.
-* 
-*/
+ * ISR is called if on TIMER1 the comparator B matches the defined condition.
+ * 
+ */
 ISR(TIMER1_COMPB_vect)
 {
-     return;
+    return;
 }
 
 /** 
-* Function is called when microcontroller gets power or if the application must be restarted.
-* It restores data like in the parameters defined.
-* 
-* @return FB_ACK or FB_NACK
-*/
+ * Function is called when microcontroller gets power or if the application must be restarted.
+ * It restores data like in the parameters defined.
+ * 
+ * @return FB_ACK or FB_NACK
+ */
 uint8_t restartApplication(void)
 {
     uint8_t i,temp;
@@ -262,19 +247,15 @@ uint8_t restartApplication(void)
     // check if at power loss we have to restore old values (see 0x01F6) and do it here
     portValue = eeprom_ParamRead(0x0000);
     initialPortValue = ((uint16_t)eeprom_ParamRead(0x01F7) << 8) | ((uint16_t)eeprom_ParamRead(0x01F6));
-    for(i=0; i<=7; i++)
-    {
+    for(i=0; i<=7; i++) {
         temp = (initialPortValue>>(i*2)) & 0x03;
         // DEBUG_PUTHEX(temp);
-        if(temp == 0x01)
-        {
+        if(temp == 0x01) {
             // open contact
             portValue &= (uint8_t)(~(1U<<i));
             // DEBUG_PUTHEX(i);
             // DEBUG_PUTS("P");
-        }
-        else if(temp == 0x02)
-        {
+        } else if(temp == 0x02) {
             // close contact
             portValue |= (1<<i);
             // DEBUG_PUTHEX(i);
@@ -294,12 +275,12 @@ uint8_t restartApplication(void)
 } /* restartApplication() */
 
 /** 
-* Read status from port and return it.
-* 
-* @param rxmsg 
-* 
-* @return 
-*/
+ * Read status from port and return it.
+ * 
+ * @param rxmsg 
+ * 
+ * @return 
+ */
 uint8_t readApplication(struct msg *rxmsg)
 {
     struct fbus_hdr *hdr =( struct fbus_hdr *) rxmsg->data;
@@ -316,31 +297,26 @@ uint8_t readApplication(struct msg *rxmsg)
     assocTabPtr = eeprom_ParamRead(ASSOCTABPTR);
     countAssociations = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr);
  
-    for(i=0; i<countAssociations; i++)
-    {
+    for(i=0; i<countAssociations; i++) {
         numberInGroupAddress = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2));
 
         // check if valid group address reference
         if(numberInGroupAddress == 0xFE)
-        {
             continue;
-        }
 
         commObjectNumber = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2) + 1);
 
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
         // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7))
-        {
+        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
             // found group address
 
             /** @todo check if read value is allowed */
             struct msg * resp = AllocMsgI();
             if(!resp)
-            {
                 return FB_NACK;
-            }
+
             /** @todo declaration hides hdr line 268 */
             // struct fbus_hdr * hdr = (struct fbus_hdr *) resp->data;
             hdr = (struct fbus_hdr *) resp->data;
@@ -359,9 +335,7 @@ uint8_t readApplication(struct msg *rxmsg)
             hdr->apci    = 0x40 + ((portValue & (1<<commObjectNumber)) ? 1 : 0);
 
             fb_hal_txqueue_msg(resp);
-        }
-        else if((commObjectNumber > 7) && (commObjectNumber < 12))
-        {
+        } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
             // additinal function
             /** @todo write part additional functions */
             // DEBUG_PUTS("ZF");
@@ -372,13 +346,13 @@ uint8_t readApplication(struct msg *rxmsg)
 }   /* readApplication() */
 
 /** 
-* Function is called if A_GroupValue_Write is received. The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
-* Read all parameters in that function and set global variables.
-*
-* @param rxmsg 
-* 
-* @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
-*/
+ * Function is called if A_GroupValue_Write is received. The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
+ * Read all parameters in that function and set global variables.
+ *
+ * @param rxmsg 
+ * 
+ * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
+ */
 uint8_t runApplication(struct msg *rxmsg)
 {
     struct fbus_hdr * hdr= (struct fbus_hdr *) rxmsg->data;
@@ -405,22 +379,19 @@ uint8_t runApplication(struct msg *rxmsg)
     /** @todo handle data with more then 6 bit */
     data = (hdr->apci) & 0x3F;
      
-    for(i=0; i<countAssociations; i++)
-    {
+    for(i=0; i<countAssociations; i++) {
         numberInGroupAddress = eeprom_ParamRead(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2));
 
         // check if valid group address reference
         if(numberInGroupAddress == 0xFE)
-        {
             continue;
-        }
+
         commObjectNumber = eeprom_ParamRead(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2)+1);
 
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
         // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7))
-        {
+        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
             // found group address
 
             // read communication object (3 Byte)
@@ -435,13 +406,9 @@ uint8_t runApplication(struct msg *rxmsg)
             // read delay base, 0=130ms, 1=260 and so on
             delayBase        = eeprom_ParamRead(0x01F9+((commObjectNumber+1)>>1));
             if((commObjectNumber & 0x01) == 0x01)
-            {
                 delayBase&=0x0F;
-            }
             else
-            {
                 delayBase = (delayBase & 0xF0)>>4;
-            }               
 
             /** @todo check if object is blocked and/or write is enabled */
 
@@ -453,29 +420,26 @@ uint8_t runApplication(struct msg *rxmsg)
 
             // check if we must switch off a port where timers are running
             if((!delayFactorOff) && (data == 0))
-            {
-                DEBUG_PUTC('K');
-                delayValues[commObjectNumber] = 0;
-                timerRunning &= ~(1<<commObjectNumber);
-            }
+                {
+                    DEBUG_PUTC('K');
+                    delayValues[commObjectNumber] = 0;
+                    timerRunning &= ~(1<<commObjectNumber);
+                }
                
             // check for delayed switch off
-            if(portValue & (1<<commObjectNumber) && delayFactorOff && !(timerActive & (1<<commObjectNumber)) && (data==0))
-            {
+            if(portValue & (1<<commObjectNumber) && delayFactorOff && !(timerActive & (1<<commObjectNumber)) && (data==0)) {
                 // switch of but delayed
                 delayValues[commObjectNumber] = (uint16_t)(1<<delayBase)*(uint16_t)delayFactorOff;
             }
 
             // check if we have a delayed switch on
-            if(((portValue & (1<<commObjectNumber)) == 0x00) && delayFactorOn && (data == 1))
-            {
+            if(((portValue & (1<<commObjectNumber)) == 0x00) && delayFactorOn && (data == 1)) {
                 // switch on but delayed
                 delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOn;
             }
                
             // check if we have a timer function
-            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1))
-            {
+            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1)) {
                 // special case (switch on immediatly and off after a defined time
                 DEBUG_PUTS("Fl");
                 portValue |= (1<<commObjectNumber);
@@ -485,12 +449,10 @@ uint8_t runApplication(struct msg *rxmsg)
 
             /** @todo check how to handle switch off if timer is currently active (0x01EB) */
             // check who to handle off telegramm while in timer modus
-            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0))
-            {
+            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
                 DEBUG_PUTS("TK");
                 // only switch off if on 0x01EB the value is equal zero
-                if(!(eeprom_ParamRead(0x01EB) & (1<<commObjectNumber)))
-                {
+                if(!(eeprom_ParamRead(0x01EB) & (1<<commObjectNumber))) {
                     delayValues[commObjectNumber] = 0;
                     timerRunning &= ~(1<<commObjectNumber);
                     portValue    &= ~(1<<commObjectNumber);
@@ -499,32 +461,23 @@ uint8_t runApplication(struct msg *rxmsg)
             DEBUG_PUTHEX(commObjectNumber);
                
             /** check for delays */
-            if(delayValues[commObjectNumber])
-            {
+            if(delayValues[commObjectNumber]) {
                 // DEBUG_PUTC('T');
                 // check if queue is empty and reset timer if it's the first timer which is running
-                if(timerRunning == 0)
-                {
+                if(timerRunning == 0) {
                     // DEBUG_PUTC('R');
                     RESET_RELOAD_APPLICATION_TIMER();
-                }
-                else
-                {
+                } else {
                     // another timer is running add current time to timer value
                     delayValues[commObjectNumber]+=currentTime;
                 }
                 timerRunning |= (1<<commObjectNumber);
-            }
-            else
-            {
+            } else {
                 // no delay is defined so we switch immediatly
-                if(data == 0)
-                {
+                if(data == 0) {
                     // switch port off
                     portValue &= ~(1<<commObjectNumber);
-                }
-                else if(data == 1)
-                {
+                } else if(data == 1) {
                     portValue |= (1<<commObjectNumber);
                 }
     
@@ -532,13 +485,11 @@ uint8_t runApplication(struct msg *rxmsg)
                 // send response telegram to inform other devices that port was switched
                 //sendRespondTelegram(i,(portValue & (1<<i))?1:0, 0x0C);
             }
-        }
-        else if((commObjectNumber > 7) && (commObjectNumber < 12))
-        {
+        } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
             // additinal function
             /** @todo write part additional functions */
-//               DEBUG_PUTS("ZF");
-//               DEBUG_NEWLINE();
+            //               DEBUG_PUTS("ZF");
+            //               DEBUG_NEWLINE();
         }
     }
 
@@ -548,9 +499,9 @@ uint8_t runApplication(struct msg *rxmsg)
 }   /* runApplication() */
 
 /** 
-* Switch the objects to state in portValue and save value to eeprom if necessary.
-* 
-*/
+ * Switch the objects to state in portValue and save value to eeprom if necessary.
+ * 
+ */
 void switchObjects(void)
 {
     uint16_t initialPortValue;
@@ -569,20 +520,17 @@ void switchObjects(void)
 
     /* read saved status and check if it was changed */
     savedValue = eeprom_ParamRead(0x0000);
-    if(savedValue != portValue)
-    {
+    if(savedValue != portValue) {
         // now check if last status must be saved, we write to eeprom only if necessary
         initialPortValue = ((uint16_t)eeprom_ParamRead(0x01F7) << 8) | ((uint16_t)eeprom_ParamRead(0x01F6));
-        for(i=0; i<=7; i++)
-        {
-            if(((initialPortValue>>(i*2)) & 0x03) == 0x0)
-            {
+        for(i=0; i<=7; i++) {
+            if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
                 eeprom_ParamWrite(0x0000, 1, &portValue);
                 DEBUG_PUTS("Sv");
                 break;
             }
         }
-     }
+    }
      
     /* check 0x01F2 for opener or closer and modify data to relect that, then switch the port */
     portOperationMode = eeprom_ParamRead(0x01F2);
@@ -592,11 +540,11 @@ void switchObjects(void)
 }
 
 /**                                                                       
-* switch all of the output pins
-*
-* @param port
-*   
-*/
+ * switch all of the output pins
+ *
+ * @param port
+ *   
+ */
 void switchPorts(uint8_t port)
 {
     SETPIN_IO1((uint8_t)(port & 0x01));
@@ -626,27 +574,27 @@ void switchPorts(uint8_t port)
 }
 
 /**                                                                       
-* The start point of the program, init all libraries, start the bus interface,
-* the application and check the status of the program button.
-*
-* @return 
-*   
-*/
+ * The start point of the program, init all libraries, start the bus interface,
+ * the application and check the status of the program button.
+ *
+ * @return 
+ *   
+ */
 int main(void)
 {
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
-    /* ROM-Check */
-    /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
+        /* ROM-Check */
+        /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
 
-    /* init internal Message System */
-    msg_queue_init();
+        /* init internal Message System */
+        msg_queue_init();
     
 	DEBUG_INIT();
-     DEBUG_NEWLINE();
-     DEBUG_PUTS("V0.1");
-     DEBUG_NEWLINE();
+    DEBUG_NEWLINE();
+    DEBUG_PUTS("V0.1");
+    DEBUG_NEWLINE();
        
     /* init procerssor register */
     fbhal_Init();
@@ -671,19 +619,16 @@ int main(void)
     /***************************/
     /* the main loop / polling */
     /***************************/
-    while(1)
-    {
+    while(1) {
         /* Auswerten des Programmiertasters */
-        if(fbhal_checkProgTaster())
-		{
+        if(fbhal_checkProgTaster()) {
 #ifdef SENDTESTTEL
 			sendTestTelegram();
 #endif
 		}
 
         /* check if 130ms timer is ready */
-        if(TIMER1_OVERRUN)
-        {
+        if(TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
 #ifndef HARDWARETEST
             timerOverflowFunction();
@@ -697,22 +642,22 @@ int main(void)
         // wakeup via interrupt check then the programming button and application timer for an overrun
         // for detailed list see datasheet page 40ff
         // MC need about 6 cyles to wake up at 8 MHZ that are 6*0.125µs
-//        PRR |= (1<<PRADC)|(1<<PRSPI)|(1<<PRTWI);
-//        set_sleep_mode(SLEEP_MODE_IDLE);
-//          sleep_enable();
-//          sleep_cpu();
-//          sleep_disable();
+        //        PRR |= (1<<PRADC)|(1<<PRSPI)|(1<<PRTWI);
+        //        set_sleep_mode(SLEEP_MODE_IDLE);
+        //          sleep_enable();
+        //          sleep_cpu();
+        //          sleep_disable();
     }   /* while(1) */
 
 }   /* main() */
 
 #ifdef HARDWARETEST
 /** 
-* test function: processor and hardware
-* 
-* @return 
-*
-*/
+ * test function: processor and hardware
+ * 
+ * @return 
+ *
+ */
 void hardwaretest(void)
 {
     static uint8_t pinstate = 0x01; 
@@ -721,9 +666,7 @@ void hardwaretest(void)
 
     pinstate = pinstate<<1;
     if(pinstate == 0x00)
-    {
         pinstate = 1;
-    }
     return;
 }
 #endif
