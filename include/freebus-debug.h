@@ -125,22 +125,22 @@
 #endif
 
 #ifdef DEBUG_TIMING
-#define DEBUG_PIN1_ON(x)            SETPIN_IO1_ON     /** Set debugging pin 1 (PB2) to high (set if start bit received)*/
-#define DEBUG_PIN1_OFF(x)           SETPIN_IO1_OFF    /** Set debugging pin 1 (PB2) to low  */
-#define DEBUG_PIN2_ON(x)            SETPIN_IO2_ON     /** Set debugging pin 2 (PC1) to high (set while in interrupt handler) */
-#define DEBUG_PIN2_OFF(x)           SETPIN_IO2_OFF    /** Set debugging pin 2 (PC1) to low  */
-#define DEBUG_PIN3_ON(x)            SETPIN_IO3_ON     /** Set debugging pin 3 (PD3) to low  (set while timer-reading bits) */
-#define DEBUG_PIN3_OFF(x)           SETPIN_IO3_OFF    /** Set debugging pin 3 (PD3) to low  */
-#define DEBUG_PIN4_ON(x)            SETPIN_IO4_ON     /** Set debugging pin 4 (PD5) to high (set while read 35us data range) */
-#define DEBUG_PIN4_OFF(x)           SETPIN_IO4_OFF    /** Set debugging pin 4 (PD5) to low  */
-#define DEBUG_PIN5_ON(x)            SETPIN_IO5_ON     /** Set debugging pin 5 (PD6) to high (set while working on telegram) */
-#define DEBUG_PIN5_OFF(x)           SETPIN_IO5_OFF    /** Set debugging pin 5 (PD6) to low  */
-#define DEBUG_PIN6_ON(x)            SETPIN_IO6_ON     /** Set debugging pin 6 (PD7) to high (set while setting up till bus is free again) */
-#define DEBUG_PIN6_OFF(x)           SETPIN_IO6_OFF    /** Set debugging pin 6 (PD7) to low  */
-#define DEBUG_PIN7_ON(x)            SETPIN_IO7_ON     /** Set debugging pin 7 (PC2) to high (received no bit in 5.1ms free bus) */
-#define DEBUG_PIN7_OFF(x)           SETPIN_IO7_OFF    /** Set debugging pin 7 (PC2) to low  */
-#define DEBUG_PIN8_ON(x)            SETPIN_IO8_ON     /** Set debugging pin 8 (PC3) to high */
-#define DEBUG_PIN8_OFF(x)           SETPIN_IO8_OFF    /** Set debugging pin 8 (PC3) to low  */
+#define DEBUG_PIN1_ON(x)            SETPIN_IO1(1)     /** Set debugging pin 1 (PB2) to high (set if start bit received)*/
+#define DEBUG_PIN1_OFF(x)           SETPIN_IO1(0)     /** Set debugging pin 1 (PB2) to low  */
+#define DEBUG_PIN2_ON(x)            SETPIN_IO2(1)     /** Set debugging pin 2 (PC1) to high (set while in interrupt handler) */
+#define DEBUG_PIN2_OFF(x)           SETPIN_IO2(0)     /** Set debugging pin 2 (PC1) to low  */
+#define DEBUG_PIN3_ON(x)            SETPIN_IO3(1)     /** Set debugging pin 3 (PD3) to low  (set while timer-reading bits) */
+#define DEBUG_PIN3_OFF(x)           SETPIN_IO3(0)     /** Set debugging pin 3 (PD3) to low  */
+#define DEBUG_PIN4_ON(x)            SETPIN_IO4(1)     /** Set debugging pin 4 (PD5) to high (set while read 35us data range) */
+#define DEBUG_PIN4_OFF(x)           SETPIN_IO4(0)     /** Set debugging pin 4 (PD5) to low  */
+#define DEBUG_PIN5_ON(x)            SETPIN_IO5(1)     /** Set debugging pin 5 (PD6) to high (set while working on telegram) */
+#define DEBUG_PIN5_OFF(x)           SETPIN_IO5(0)     /** Set debugging pin 5 (PD6) to low  */
+#define DEBUG_PIN6_ON(x)            SETPIN_IO6(1)     /** Set debugging pin 6 (PD7) to high (set while setting up till bus is free again) */
+#define DEBUG_PIN6_OFF(x)           SETPIN_IO6(0)     /** Set debugging pin 6 (PD7) to low  */
+#define DEBUG_PIN7_ON(x)            SETPIN_IO7(1)     /** Set debugging pin 7 (PC2) to high (received no bit in 5.1ms free bus) */
+#define DEBUG_PIN7_OFF(x)           SETPIN_IO7(0)     /** Set debugging pin 7 (PC2) to low  */
+#define DEBUG_PIN8_ON(x)            SETPIN_IO8(1)     /** Set debugging pin 8 (PC3) to high */
+#define DEBUG_PIN8_OFF(x)           SETPIN_IO8(0)     /** Set debugging pin 8 (PC3) to low  */
 #else
 #define DEBUG_PIN1_ON(x)                              /** No debugging map to nothing */
 #define DEBUG_PIN1_OFF(x)                             /** No debugging map to nothing */
