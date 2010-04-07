@@ -114,7 +114,7 @@ defaultParam[]&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>How long we hold the relais at 100% before we enable PWM again. </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>.</p>
 
 </div>
 </div>
@@ -131,7 +131,7 @@ defaultParam[]&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 <p>configure pwm timer, we use timer2 for this 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100% The 74HCT573 is active low, changed to 0x33=51 -&gt; This is about 20% negative duty cycle </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -150,12 +150,12 @@ defaultParam[]&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
       </table>
 </div>
 <div class="memdoc">
-<b>Value:</b><div class="fragment"><pre class="fragment">{                              \
-          <a class="code" href="fb__2-dimmer__app_8c.html#a992c16185c10aaa026696f26e04706de" title="the amount of overflows from currentTime">currentTimeOverflow</a>=0;                                        \
-          <a class="code" href="fb__in8__app_8c.html#a73a2aaebc44ccbc05d5139074aeddffe" title="is set to one if overflow happened, is 0 if overflow was processed">currentTimeOverflowBuffer</a>=0;                                  \
-          <a class="code" href="fb__2-dimmer__app_8c.html#afb576bf2d1a66b35d1ec422bdd6c3f72" title="defines the current time in 10ms steps (2=20ms)">currentTime</a>=0;                                                \
-          <a class="code" href="freebus-atmega16_8h.html#ad94c3d63204594321771283dc7ec861b" title="Reload the application timer (Timer1) to start from 0.">RELOAD_APPLICATION_TIMER</a>();                                   \
-     }
+<b>Value:</b><div class="fragment"><pre class="fragment">{      \
+        <a class="code" href="fb__2-dimmer__app_8c.html#a992c16185c10aaa026696f26e04706de" title="the amount of overflows from currentTime">currentTimeOverflow</a>=0;                  \
+        <a class="code" href="fb__in8__app_8c.html#a73a2aaebc44ccbc05d5139074aeddffe" title="is set to one if overflow happened, is 0 if overflow was processed">currentTimeOverflowBuffer</a>=0;            \
+        <a class="code" href="fb__2-dimmer__app_8c.html#afb576bf2d1a66b35d1ec422bdd6c3f72" title="defines the current time in 10ms steps (2=20ms)">currentTime</a>=0;                          \
+        <a class="code" href="freebus-atmega16_8h.html#ad94c3d63204594321771283dc7ec861b" title="Reload the application timer (Timer1) to start from 0.">RELOAD_APPLICATION_TIMER</a>();             \
+    }
 </pre></div>
 <p>Reset the internal variables used for the application timer and reload the timer itself. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000068">Todo:</a></b></dt><dd>check if move of currentTime to this function really does not introduce a bug </dd></dl>
@@ -205,7 +205,7 @@ defaultParam[]&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000078">Todo:</a></b></dt><dd>Funktion fuer CRC-Check bei PowerOn fehlt noch </dd></dl>
 </p>
 
-<p>References <a class="el" href="freebus-atmega16_8h_source.html#l00086">CLEAR_TIMER1_OVERRUN</a>, <a class="el" href="freebus-debug_8h_source.html#l00050">DEBUG_INIT</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00136">DISABLE_WATCHDOG</a>, <a class="el" href="fb__eeprom_8c_source.html#l00339">eeprom_Init()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00055">EEPROM_SIZE</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00047">ENABLE_ALL_INTERRUPTS</a>, <a class="el" href="fb__hal_8c_source.html#l00241">fbhal_checkProgTaster()</a>, <a class="el" href="fb__hal_8c_source.html#l01027">fbhal_Init()</a>, <a class="el" href="fb__prot_8c_source.html#l00967">fbprot_Init()</a>, <a class="el" href="msg__queue_8c_source.html#l00149">msg_queue_init()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00136">nodeParam</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00195">restartApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00197">sendTestTelegram()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00083">TIMER1_OVERRUN</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00114">timerOverflowFunction()</a>.</p>
+<p>References <a class="el" href="freebus-atmega16_8h_source.html#l00086">CLEAR_TIMER1_OVERRUN</a>, <a class="el" href="freebus-debug_8h_source.html#l00051">DEBUG_INIT</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00136">DISABLE_WATCHDOG</a>, <a class="el" href="fb__eeprom_8c_source.html#l00302">eeprom_Init()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00055">EEPROM_SIZE</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00047">ENABLE_ALL_INTERRUPTS</a>, <a class="el" href="fb__hal_8c_source.html#l00260">fbhal_checkProgTaster()</a>, <a class="el" href="fb__hal_8c_source.html#l00988">fbhal_Init()</a>, <a class="el" href="fb__prot_8c_source.html#l00904">fbprot_Init()</a>, <a class="el" href="msg__queue_8c_source.html#l00140">msg_queue_init()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00136">nodeParam</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00195">restartApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00218">sendTestTelegram()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00083">TIMER1_OVERRUN</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00114">timerOverflowFunction()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -248,7 +248,7 @@ Here is the call graph for this function:</div>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000073">Todo:</a></b></dt><dd>write part additional functions </dd></dl>
 </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00068">K1dimmwert_ausgang</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00078">K2dimmwert_ausgang</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00068">K1dimmwert_ausgang</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00078">K2dimmwert_ausgang</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -281,7 +281,7 @@ Here is the call graph for this function:</div>
 <p>It restores data like in the parameters defined.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>FB_ACK or FB_NACK </dd></dl>
 
-<p>References <a class="el" href="fb__2-dimmer__app_8c_source.html#l00064">anspringen_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00074">anspringen_k2</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00092">currentTimeOverflow</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00065">einschathellikeit_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00075">einschathellikeit_k2</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00081">hellikeit</a>, <a class="el" href="fb__hal_8h_source.html#l00064">IO_INPUT</a>, <a class="el" href="fb__hal_8h_source.html#l00065">IO_OUTPUT</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00067">K1dimmwert</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00053">MAXDIMMWERT</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00063">mindimmwert_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00073">mindimmwert_k2</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00089">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00058">PWM_SETPOINT</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00089">RELOAD_APPLICATION_TIMER</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
+<p>References <a class="el" href="fb__2-dimmer__app_8c_source.html#l00064">anspringen_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00074">anspringen_k2</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00092">currentTimeOverflow</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00065">einschathellikeit_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00075">einschathellikeit_k2</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00081">hellikeit</a>, <a class="el" href="fb__hal_8h_source.html#l00065">IO_OUTPUT</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00067">K1dimmwert</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00053">MAXDIMMWERT</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00063">mindimmwert_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00073">mindimmwert_k2</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00089">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00058">PWM_SETPOINT</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00089">RELOAD_APPLICATION_TIMER</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -328,7 +328,7 @@ Here is the call graph for this function:</div>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000077">Todo:</a></b></dt><dd>write part additional functions </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__prot_8h_source.html#l00080">COMMSTAB_ADDRESS</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00052">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00062">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="freebus-debug_8h_source.html#l00070">DEBUG_SPACE</a>, <a class="el" href="fb__relais__app_8c_source.html#l00072">delayValues</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00065">einschathellikeit_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00075">einschathellikeit_k2</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00066">gK1helldunkel</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00076">gK2helldunkel</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00081">hellikeit</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00067">K1dimmwert</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00077">K2dimmwert</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00089">portValue</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00099">RESET_RELOAD_APPLICATION_TIMER</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__prot_8h_source.html#l00080">COMMSTAB_ADDRESS</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="freebus-debug_8h_source.html#l00071">DEBUG_SPACE</a>, <a class="el" href="fb__relais__app_8c_source.html#l00072">delayValues</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00065">einschathellikeit_k1</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00075">einschathellikeit_k2</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00066">gK1helldunkel</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00076">gK2helldunkel</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00081">hellikeit</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00067">K1dimmwert</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00077">K2dimmwert</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00089">portValue</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00099">RESET_RELOAD_APPLICATION_TIMER</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -362,9 +362,9 @@ Here is the call graph for this function:</div>
 <p><p>&lt; defines if IO is closer or opener, see address 0x01F2 in eeprom </p>
 </p>
 
-<p>References <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00233">eeprom_ParamWrite()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00060">PWM_DELAY_TIME</a>, <a class="el" href="fb__relais__app_8c_source.html#l00600">switchPorts()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
+<p>References <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00210">eeprom_ParamWrite()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00060">PWM_DELAY_TIME</a>, <a class="el" href="fb__relais__app_8c_source.html#l00548">switchPorts()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00382">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00356">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -410,7 +410,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -447,7 +447,7 @@ Here is the caller graph for this function:</div>
 <p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000070">Todo:</a></b></dt><dd>Problem bei einem Timerueberlauf !!! </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="fb__relais__app_8c_source.html#l00070">currentTimeOverflow</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00062">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb__relais__app_8c_source.html#l00072">delayValues</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00048">DISABLE_IRQS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00049">ENABLE_IRQS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00058">PWM_SETPOINT</a>, <a class="el" href="fb__prot_8c_source.html#l00210">sendTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00091">currentTime</a>, <a class="el" href="fb__relais__app_8c_source.html#l00070">currentTimeOverflow</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__relais__app_8c_source.html#l00072">delayValues</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00048">DISABLE_IRQS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00049">ENABLE_IRQS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00102">ENABLE_PWM</a>, <a class="el" href="fb__relais__app_8c_source.html#l00067">portValue</a>, <a class="el" href="fb__relais__app_8c_source.html#l00058">PWM_SETPOINT</a>, <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00073">timerRunning</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00074">waitToPWM</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -489,7 +489,7 @@ Here is the call graph for this function:</div>
 
 <p>the amount of overflows from currentTime </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -521,7 +521,7 @@ Here is the call graph for this function:</div>
 
 <p>save value for delays </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00382">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00356">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -569,7 +569,7 @@ Here is the call graph for this function:</div>
 <p>defines the port status. </p>
 <p>LSB IO0 and MSB IO8, ports with delay can be set to 1 here but will be switched delayed depending on the delay </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00303">readApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00382">runApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00284">readApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00356">runApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -584,26 +584,26 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 <b>Initial value:</b><div class="fragment"><pre class="fragment">
-{
-    { <a class="code" href="fb__prot_8h.html#a314a39a5464c93e57b4b7f8404e620d7" title="Low address for manufactorer id.">MANUFACTORER_ADR</a>,        0x04 },    
-    { <a class="code" href="fb__prot_8h.html#a559201e80166d584f01e50012b4f4f8e" title="High address for device id.">DEVICE_NUMBER_HIGH</a>,      0x20 },    
-    { <a class="code" href="fb__prot_8h.html#ae8a1cdab4aadd52e37f3e362f096dedb" title="Low address for device id.">DEVICE_NUMBER_LOW</a>,       0x60 },    
-    { <a class="code" href="fb__prot_8h.html#a28bbb8dd649d5e11a3eab04e85611861" title="Version number of the application.">SOFTWARE_VERSION_NUMBER</a>, 0x01 },    
-    { <a class="code" href="fb__prot_8h.html#a36e1203bd35757a2d24c7a7488dc39e2" title="status of the application 0x00=run, 0xFF=stop">APPLICATION_RUN_STATUS</a>,  0xFF },    
-    { <a class="code" href="fb__prot_8h.html#a1a04a1bee4ba608e8febe0e39e7e0f04" title="COMMSTAB Pointer.">COMMSTAB_ADDRESS</a>,        0x9A },    
-    { <a class="code" href="fb__prot_8h.html#a71cf2cef47032f197ff42cdd0341f9e9" title="Startadress of the application program.">APPLICATION_PROGRAMM</a>,    0x00 },    
+    {
+        { <a class="code" href="fb__prot_8h.html#a314a39a5464c93e57b4b7f8404e620d7" title="Low address for manufactorer id.">MANUFACTORER_ADR</a>,        0x04 },    
+        { <a class="code" href="fb__prot_8h.html#a559201e80166d584f01e50012b4f4f8e" title="High address for device id.">DEVICE_NUMBER_HIGH</a>,      0x20 },    
+        { <a class="code" href="fb__prot_8h.html#ae8a1cdab4aadd52e37f3e362f096dedb" title="Low address for device id.">DEVICE_NUMBER_LOW</a>,       0x60 },    
+        { <a class="code" href="fb__prot_8h.html#a28bbb8dd649d5e11a3eab04e85611861" title="Version number of the application.">SOFTWARE_VERSION_NUMBER</a>, 0x01 },    
+        { <a class="code" href="fb__prot_8h.html#a36e1203bd35757a2d24c7a7488dc39e2" title="status of the application 0x00=run, 0xFF=stop">APPLICATION_RUN_STATUS</a>,  0xFF },    
+        { <a class="code" href="fb__prot_8h.html#a1a04a1bee4ba608e8febe0e39e7e0f04" title="COMMSTAB Pointer.">COMMSTAB_ADDRESS</a>,        0x9A },    
+        { <a class="code" href="fb__prot_8h.html#a71cf2cef47032f197ff42cdd0341f9e9" title="Startadress of the application program.">APPLICATION_PROGRAMM</a>,    0x00 },    
 
-    { 0x0000,                  0x00 },    
-    { 0x01EA,                  0x00 },    
-    { 0x01F6,                  0x55 },    
-    { 0x01F7,                  0x55 },    
-    { 0x01F2,                  0x00 },    
+        { 0x0000,                  0x00 },    
+        { 0x01EA,                  0x00 },    
+        { 0x01F6,                  0x55 },    
+        { 0x01F7,                  0x55 },    
+        { 0x01F2,                  0x00 },    
 
-    { <a class="code" href="fb__prot_8h.html#a05146ed1759ff141e4e78a9739ff1bdb" title="high address for the physical address of the device">PA_ADDRESS_HIGH</a>,         0x11 },    
-    { <a class="code" href="fb__prot_8h.html#afe14aac8ca24567289c746da1323d3b8" title="low address for the physical address of the device">PA_ADDRESS_LOW</a>,          0x33 },       
+        { <a class="code" href="fb__prot_8h.html#a05146ed1759ff141e4e78a9739ff1bdb" title="high address for the physical address of the device">PA_ADDRESS_HIGH</a>,         0x11 },    
+        { <a class="code" href="fb__prot_8h.html#afe14aac8ca24567289c746da1323d3b8" title="low address for the physical address of the device">PA_ADDRESS_LOW</a>,          0x33 },       
 
-    { 0xFF,                    0xFF }     
-}
+        { 0xFF,                    0xFF }     
+    }
 </pre></div>
 <p>list of the default parameter for this application </p>
 
@@ -622,7 +622,7 @@ Here is the call graph for this function:</div>
 
 <p>bit is set if timer is running </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00382">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00356">runApplication()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -639,7 +639,7 @@ Here is the call graph for this function:</div>
 
 <p>defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change </p>
 
-<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00222">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__relais__app_8c_source.html#l00207">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>

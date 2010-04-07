@@ -26,7 +26,7 @@
 </div>
 <div class="contents">
 <h1>include/freebus-debug.h File Reference</h1>
-<p>Header file to map debugging between several output devices. Possible outputs are lcd, uart and no debugging. To select the correct output define the compile variable DEBUG_LCD for lcd output DEBUG_UART for uart output HARDWARETEST for a hardware test DEBUG_BUSTIMING to test bus timing SENDTESTTEL if prog button is clicked a test telegram will be send.  
+<p>Header file to map debugging between several output devices. Possible outputs are lcd, uart and no debugging. To select the correct output define the compile variable DEBUG_LCD for lcd output DEBUG_UART for uart output HARDWARETEST for a hardware test DEBUG_TIMING to test bus timing (IO1-IO8 is used to set pin high and low to see what is called) SENDTESTTEL if prog button is clicked a test telegram will be send.  
 <a href="#_details">More...</a></p>
 <code>#include &lt;avr/pgmspace.h&gt;</code><br/>
 <code>#include &quot;<a class="el" href="lcd-lib_8h_source.html">lcd-lib.h</a>&quot;</code><br/>
@@ -72,29 +72,55 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display a space on the device.  <a href="#a62c89a645f3f8f40d781b5af3014d4cd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-debug_8h.html#a89effbeecd0c7ed2c6067aafb3250224">DEBUG_SPACE_BLOCKING</a>()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display a space on the device without using the queueing system.  <a href="#a89effbeecd0c7ed2c6067aafb3250224"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-debug_8h.html#a5190a580bd947d67c6e3759fb34cc2fa">DEBUG_PIN1_ON</a>(x)&nbsp;&nbsp;&nbsp;PORTD |= (1&lt;&lt;5)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set debugging pin 1 to high.  <a href="#a5190a580bd947d67c6e3759fb34cc2fa"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-debug_8h.html#ab9172c2b6b3e6822436305ff5f98e389">DEBUG_PIN1_OFF</a>(x)&nbsp;&nbsp;&nbsp;PORTD &amp;= ~(1&lt;&lt;5)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set debugging pin 1 to low.  <a href="#ab9172c2b6b3e6822436305ff5f98e389"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-debug_8h.html#a4563b96e655a96489fd7facb6e028bfb">DEBUG_PIN2_ON</a>(x)&nbsp;&nbsp;&nbsp;PORTD |= (1&lt;&lt;6)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set debugging pin 2 to high.  <a href="#a4563b96e655a96489fd7facb6e028bfb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-debug_8h.html#a27b12a5553cf849a9a1b7d8fd24ef9b4">DEBUG_PIN2_OFF</a>(x)&nbsp;&nbsp;&nbsp;PORTD &amp;= ~(1&lt;&lt;6)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Set debugging pin 2 to low.  <a href="#a27b12a5553cf849a9a1b7d8fd24ef9b4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5190a580bd947d67c6e3759fb34cc2fa"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN1_ON" ref="a5190a580bd947d67c6e3759fb34cc2fa" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN1_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9172c2b6b3e6822436305ff5f98e389"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN1_OFF" ref="ab9172c2b6b3e6822436305ff5f98e389" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN1_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4563b96e655a96489fd7facb6e028bfb"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN2_ON" ref="a4563b96e655a96489fd7facb6e028bfb" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN2_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27b12a5553cf849a9a1b7d8fd24ef9b4"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN2_OFF" ref="a27b12a5553cf849a9a1b7d8fd24ef9b4" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN2_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f9083533cdf3bdccc17c022bddda887"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN3_ON" ref="a0f9083533cdf3bdccc17c022bddda887" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN3_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae297e936f4fc933fe0f43c63790335b4"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN3_OFF" ref="ae297e936f4fc933fe0f43c63790335b4" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN3_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1f88ce40c35ecf12561e8ec79772cbc"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN4_ON" ref="ad1f88ce40c35ecf12561e8ec79772cbc" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN4_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba9d0053ee84247f4830f9a2cb778b18"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN4_OFF" ref="aba9d0053ee84247f4830f9a2cb778b18" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN4_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2fe19d0a475b10fd920e06459f82c306"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN5_ON" ref="a2fe19d0a475b10fd920e06459f82c306" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN5_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8f87583ff1a75e9f92a6dd3b81fbe51"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN5_OFF" ref="ad8f87583ff1a75e9f92a6dd3b81fbe51" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN5_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae63a173c57c08bc9f4cc4405ab306b51"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN6_ON" ref="ae63a173c57c08bc9f4cc4405ab306b51" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN6_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab25a29192b9d531f3995c4142ea72cd9"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN6_OFF" ref="ab25a29192b9d531f3995c4142ea72cd9" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN6_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab382522897e99500efd1ab25a886c470"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN7_ON" ref="ab382522897e99500efd1ab25a886c470" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN7_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fd02ed0c71caa76f00debb1075e5a94"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN7_OFF" ref="a8fd02ed0c71caa76f00debb1075e5a94" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN7_OFF</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a25d414849a97115f81e8e677c63e9d58"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN8_ON" ref="a25d414849a97115f81e8e677c63e9d58" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN8_ON</b>(x)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae4e0b6c6f0a226818bd85e5ad5105392"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN8_OFF" ref="ae4e0b6c6f0a226818bd85e5ad5105392" args="(x)" -->
+#define&nbsp;</td><td class="memItemRight" valign="bottom"><b>DEBUG_PIN8_OFF</b>(x)</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>Header file to map debugging between several output devices. Possible outputs are lcd, uart and no debugging. To select the correct output define the compile variable DEBUG_LCD for lcd output DEBUG_UART for uart output HARDWARETEST for a hardware test DEBUG_BUSTIMING to test bus timing SENDTESTTEL if prog button is clicked a test telegram will be send. </p>
+<p>Header file to map debugging between several output devices. Possible outputs are lcd, uart and no debugging. To select the correct output define the compile variable DEBUG_LCD for lcd output DEBUG_UART for uart output HARDWARETEST for a hardware test DEBUG_TIMING to test bus timing (IO1-IO8 is used to set pin high and low to see what is called) SENDTESTTEL if prog button is clicked a test telegram will be send. </p>
 <dl class="author"><dt><b>Author:</b></dt><dd>Matthias Fechner </dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>Sun Nov 18 19:01:35 2007</dd></dl>
 <p>If none of them are defined, debugging messages are disabled.</p>
-<p>The following debugging pins can be used:</p>
+<p>The following debugging pins can be used, enable them with DEBUG_TIMING:</p>
 <ul>
-<li>DEBUG_PIN1 = PORTD, PD5</li>
-<li>DEBUG_PIN2 = PORTD, PD6</li>
-<li>DEBUG_PIN3 = PORTD, PD7</li>
-<li>DEBUG_PIN4 = PORTC, PC2</li>
-<li>DEBUG_PIN5 = PORTC, PC3</li>
+<li>DEBUG_PIN1 = PB2</li>
+<li>DEBUG_PIN2 = PC1</li>
+<li>DEBUG_PIN3 = PD3</li>
+<li>DEBUG_PIN4 = PD5</li>
+<li>DEBUG_PIN5 = PD6</li>
+<li>DEBUG_PIN6 = PD7</li>
+<li>DEBUG_PIN7 = PC2</li>
+<li>DEBUG_PIN8 = PC3 </li>
 </ul>
-<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>If UART_DEBUG is enabled, a delay (about 1 second) by turning on switches occurs! </dd></dl>
 <hr/><h2>Define Documentation</h2>
 <a class="anchor" id="a5185df9043a52325ca9deefd1cad4458"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_DIGIT" ref="a5185df9043a52325ca9deefd1cad4458" args="(x)" -->
 <div class="memitem">
@@ -156,7 +182,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a newline on the device. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00700">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00404">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00375">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00849">fb_handlemsg()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00635">main()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00197">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, <a class="el" href="fb__hal_8c_source.html#l00760">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00548">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00644">timer_timeout()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00583">main()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00218">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, <a class="el" href="fb__hal_8c_source.html#l00729">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00543">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00626">timer_timeout()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -178,93 +204,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a newline on the device without using the queueing system. </p>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00356">eeprom_print()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab9172c2b6b3e6822436305ff5f98e389"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN1_OFF" ref="ab9172c2b6b3e6822436305ff5f98e389" args="(x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEBUG_PIN1_OFF</td>
-          <td>(</td>
-          <td class="paramtype">x&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;PORTD &amp;= ~(1&lt;&lt;5)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set debugging pin 1 to low. </p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00361">ISR()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5190a580bd947d67c6e3759fb34cc2fa"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN1_ON" ref="a5190a580bd947d67c6e3759fb34cc2fa" args="(x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEBUG_PIN1_ON</td>
-          <td>(</td>
-          <td class="paramtype">x&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;PORTD |= (1&lt;&lt;5)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set debugging pin 1 to high. </p>
-
-</div>
-</div>
-<a class="anchor" id="a27b12a5553cf849a9a1b7d8fd24ef9b4"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN2_OFF" ref="a27b12a5553cf849a9a1b7d8fd24ef9b4" args="(x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEBUG_PIN2_OFF</td>
-          <td>(</td>
-          <td class="paramtype">x&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;PORTD &amp;= ~(1&lt;&lt;6)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set debugging pin 2 to low. </p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00392">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00760">timer_bus_free()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4563b96e655a96489fd7facb6e028bfb"></a><!-- doxytag: member="freebus&#45;debug.h::DEBUG_PIN2_ON" ref="a4563b96e655a96489fd7facb6e028bfb" args="(x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DEBUG_PIN2_ON</td>
-          <td>(</td>
-          <td class="paramtype">x&nbsp;</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td>&nbsp;&nbsp;&nbsp;PORTD |= (1&lt;&lt;6)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Set debugging pin 2 to high. </p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00392">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00760">timer_bus_free()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00323">eeprom_print()</a>.</p>
 
 </div>
 </div>
@@ -286,7 +226,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a character on the device. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00849">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00361">ISR()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, and <a class="el" href="fb__hal_8c_source.html#l00760">timer_bus_free()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00369">ISR()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, and <a class="el" href="fb__hal_8c_source.html#l00729">timer_bus_free()</a>.</p>
 
 </div>
 </div>
@@ -308,7 +248,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a character on the device without using the queueing system. </p>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00356">eeprom_print()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00323">eeprom_print()</a>.</p>
 
 </div>
 </div>
@@ -330,7 +270,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a character as hex value on the device. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00849">fb_handlemsg()</a>, <a class="el" href="fb__prot_8c_source.html#l00287">read_grp_addr()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00760">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00548">timer_rec_chars()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00729">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00543">timer_rec_chars()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -352,7 +292,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a character as hex value on the device without using the queueing system. </p>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00356">eeprom_print()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00323">eeprom_print()</a>.</p>
 
 </div>
 </div>
@@ -374,7 +314,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a string on the device. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00700">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00404">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00375">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00849">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00241">fbhal_checkProgTaster()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00635">main()</a>, <a class="el" href="fb__prot_8c_source.html#l00287">read_grp_addr()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00303">readApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00382">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00197">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00554">switchObjects()</a>, <a class="el" href="fb__hal_8c_source.html#l00644">timer_timeout()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00260">fbhal_checkProgTaster()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00583">main()</a>, <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00284">readApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00356">runApplication()</a>, <a class="el" href="fb__hal_8c_source.html#l00218">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00505">switchObjects()</a>, <a class="el" href="fb__hal_8c_source.html#l00626">timer_timeout()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00125">timerOverflowFunction()</a>.</p>
 
 </div>
 </div>
@@ -416,7 +356,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Display a space on the device. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00287">read_grp_addr()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>.</p>
 
 </div>
 </div>

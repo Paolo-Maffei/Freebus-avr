@@ -23,7 +23,7 @@
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
-<h1>include/msg_queue.h</h1><a href="msg__queue_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* $Id: msg_queue.h 1739 2010-02-08 15:20:11Z idefix $ */</span>
+<h1>include/msg_queue.h</h1><a href="msg__queue_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* $Id: msg_queue.h 1899 2010-04-07 20:24:16Z idefix $ */</span>
 <a name="l00002"></a>00002 <span class="comment">/*</span>
 <a name="l00003"></a>00003 <span class="comment">*      __________  ________________  __  _______</span>
 <a name="l00004"></a>00004 <span class="comment">*     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/</span>
@@ -74,13 +74,13 @@
 <a name="l00062"></a>00062 };
 <a name="l00063"></a>00063 
 <a name="l00065"></a><a class="code" href="structmsg.html">00065</a> <span class="keyword">struct </span><a class="code" href="structmsg.html" title="Container that store messages.">msg</a> {
-<a name="l00066"></a><a class="code" href="structmsg.html#a5be0cab05503423ed78791fa2e169dae">00066</a>           <span class="keyword">enum</span> <a class="code" href="msg__queue_8h.html#a962c15ff199e164f9cd3a9f88cd7bd27" title="Status of the message.">emsg_state</a> <a class="code" href="structmsg.html#a5be0cab05503423ed78791fa2e169dae" title="Status of the message, see here emsg_state.">state</a>;               
-<a name="l00067"></a><a class="code" href="structmsg.html#a8736cda7667fc6096fc011a0eb957d64">00067</a>           uint8_t   <a class="code" href="structmsg.html#a8736cda7667fc6096fc011a0eb957d64" title="Flags for message, e.g. MSG_AUTOFREE or MSG_HI_PRIO.">flags</a>;                     
-<a name="l00068"></a><a class="code" href="structmsg.html#a722cf08ad66ba1139bc6b96533810bf1">00068</a>           uint8_t   *<a class="code" href="structmsg.html#a722cf08ad66ba1139bc6b96533810bf1" title="Which function should called if message will be handled.">handler</a>;                  
-<a name="l00069"></a><a class="code" href="structmsg.html#a9f80ed48480c54a999ac13700287f880">00069</a>           uint8_t   <a class="code" href="structmsg.html#a9f80ed48480c54a999ac13700287f880" title="Length of the data which is stored.">len</a>;                       
-<a name="l00070"></a><a class="code" href="structmsg.html#a4d5d84257dfd217679a22a7d2ff9dd6f">00070</a>           uint8_t <a class="code" href="structmsg.html#a4d5d84257dfd217679a22a7d2ff9dd6f" title="The message itself.">data</a>[<a class="code" href="msg__queue_8h.html#ad33780df1ab1ea07160e4b5c837473ee" title="Max length of a message.">MSG_MAX_DATA_LENGTH</a>];   
-<a name="l00071"></a><a class="code" href="structmsg.html#a9a24303b4435fd372af8703f37f1d299">00071</a>           uint8_t <a class="code" href="structmsg.html#a9a24303b4435fd372af8703f37f1d299" title="Counter which will be used in EIB sending to count amount of repeats (max resend...">repeat</a>;                      
-<a name="l00072"></a><a class="code" href="structmsg.html#a1f62dc1f252c5dd90aeb4a8063b2b068">00072</a>           <span class="keyword">struct </span><a class="code" href="structmsg.html" title="Container that store messages.">msg</a> *<a class="code" href="structmsg.html#a1f62dc1f252c5dd90aeb4a8063b2b068" title="Pointer to next message.">next</a>;                    
+<a name="l00066"></a><a class="code" href="structmsg.html#a5be0cab05503423ed78791fa2e169dae">00066</a>     <span class="keyword">enum</span> <a class="code" href="msg__queue_8h.html#a962c15ff199e164f9cd3a9f88cd7bd27" title="Status of the message.">emsg_state</a> <a class="code" href="structmsg.html#a5be0cab05503423ed78791fa2e169dae" title="Status of the message, see here emsg_state.">state</a>;               
+<a name="l00067"></a><a class="code" href="structmsg.html#a8736cda7667fc6096fc011a0eb957d64">00067</a>     uint8_t <a class="code" href="structmsg.html#a8736cda7667fc6096fc011a0eb957d64" title="Flags for message, e.g. MSG_AUTOFREE or MSG_HI_PRIO.">flags</a>;                     
+<a name="l00068"></a><a class="code" href="structmsg.html#a722cf08ad66ba1139bc6b96533810bf1">00068</a>     uint8_t *<a class="code" href="structmsg.html#a722cf08ad66ba1139bc6b96533810bf1" title="Which function should called if message will be handled.">handler</a>;                  
+<a name="l00069"></a><a class="code" href="structmsg.html#a9f80ed48480c54a999ac13700287f880">00069</a>     uint8_t <a class="code" href="structmsg.html#a9f80ed48480c54a999ac13700287f880" title="Length of the data which is stored.">len</a>;                       
+<a name="l00070"></a><a class="code" href="structmsg.html#a4d5d84257dfd217679a22a7d2ff9dd6f">00070</a>     uint8_t <a class="code" href="structmsg.html#a4d5d84257dfd217679a22a7d2ff9dd6f" title="The message itself.">data</a>[<a class="code" href="msg__queue_8h.html#ad33780df1ab1ea07160e4b5c837473ee" title="Max length of a message.">MSG_MAX_DATA_LENGTH</a>];   
+<a name="l00071"></a><a class="code" href="structmsg.html#a9a24303b4435fd372af8703f37f1d299">00071</a>     uint8_t <a class="code" href="structmsg.html#a9a24303b4435fd372af8703f37f1d299" title="Counter which will be used in EIB sending to count amount of repeats (max resend...">repeat</a>;                      
+<a name="l00072"></a><a class="code" href="structmsg.html#a1f62dc1f252c5dd90aeb4a8063b2b068">00072</a>     <span class="keyword">struct </span><a class="code" href="structmsg.html" title="Container that store messages.">msg</a> *<a class="code" href="structmsg.html#a1f62dc1f252c5dd90aeb4a8063b2b068" title="Pointer to next message.">next</a>;                    
 <a name="l00073"></a>00073 };
 <a name="l00074"></a>00074 
 <a name="l00075"></a>00075 <span class="comment">/**************************************************************************</span>

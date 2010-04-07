@@ -138,7 +138,7 @@ Include dependency graph for fb_prot.c:</div>
 </ol>
 </li>
 </ul>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000103">Todo:</a></b></dt><dd><p class="startdd">Hier sollten die Bezeichnungen (apdu, ...) noch mal überarbeitet werden. Ziel sollte es sein diese aus der Spec zu entnehmen. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000102">Todo:</a></b></dt><dd><p class="startdd">Hier sollten die Bezeichnungen (apdu, ...) noch mal überarbeitet werden. Ziel sollte es sein diese aus der Spec zu entnehmen. </p>
 <p>Reduce debugging again. </p>
 <p class="enddd">Handle group address zero which is a broadcast to all devices. </p>
 </dd></dl>
@@ -156,7 +156,7 @@ Include dependency graph for fb_prot.c:</div>
 
 <p>Broadcast adress, one-to-all conenction-less. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>.</p>
 
 </div>
 </div>
@@ -173,7 +173,7 @@ Include dependency graph for fb_prot.c:</div>
 
 <p>connect request </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Include dependency graph for fb_prot.c:</div>
 
 <p>Direct adressing, one-to-one. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>.</p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ Include dependency graph for fb_prot.c:</div>
 
 <p>disconnect request </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>.</p>
 
 </div>
 </div>
@@ -224,7 +224,7 @@ Include dependency graph for fb_prot.c:</div>
 
 <p>Group adress. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>.</p>
 
 </div>
 </div>
@@ -270,7 +270,7 @@ Include dependency graph for fb_prot.c:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00331">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00480">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00319">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -309,7 +309,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>FB_ACK: everything is fine, FB_NONE: Response telegram could not be created </dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00331">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00480">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00319">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -347,7 +347,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -384,10 +384,10 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000108">Todo:</a></b></dt><dd>handle message shorter then 6-bit</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000107">Todo:</a></b></dt><dd>handle message shorter then 6-bit</dd></dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00077">APPLICATION_RUN_STATUS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, and <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -425,7 +425,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00331">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8c_source.html#l00480">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00319">fb_new_msg()</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -463,7 +463,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00233">eeprom_ParamWrite()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, and <a class="el" href="fb__prot_8c_source.html#l00480">ncd_resp()</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00210">eeprom_ParamWrite()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, and <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -502,7 +502,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00331">fb_new_msg()</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb_8h_source.html#l00041">SS_PROG</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00319">fb_new_msg()</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb_8h_source.html#l00041">SS_PROG</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -541,7 +541,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00233">eeprom_ParamWrite()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb_8h_source.html#l00041">SS_PROG</a>, and <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>.</p>
+<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__eeprom_8c_source.html#l00210">eeprom_ParamWrite()</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb_8h_source.html#l00041">SS_PROG</a>, and <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -579,7 +579,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00284">eeprom_busy()</a>, and <a class="el" href="fb__hal_8c_source.html#l00327">fb_hal_restart()</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00250">eeprom_busy()</a>, and <a class="el" href="fb__hal_8c_source.html#l00337">fb_hal_restart()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -609,7 +609,7 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 
 <p>Analyse the type of the message (broadcast, direct, group address) and check for physical and group address if the telegram is for us. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000109">Todo:</a></b></dt><dd>must we handle group address 0/0/0 here in a special way?</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000108">Todo:</a></b></dt><dd>must we handle group address 0/0/0 here in a special way?</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>hdr</em>&nbsp;</td><td></td></tr>
@@ -620,7 +620,7 @@ Here is the call graph for this function:</div>
 
 <p>References <a class="el" href="fb__prot_8h_source.html#l00091">grp_addr_s::count</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="fb__prot_8c_source.html#l00064">MSG_BRC</a>, <a class="el" href="fb__prot_8c_source.html#l00067">MSG_CON</a>, <a class="el" href="fb__prot_8c_source.html#l00065">MSG_DAF</a>, <a class="el" href="fb__prot_8c_source.html#l00068">MSG_DIS</a>, <a class="el" href="fb__prot_8c_source.html#l00066">MSG_GRP</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="fb__prot_8h_source.html#l00052">T_BROADCAST_DATA</a>, <a class="el" href="fb__prot_8h_source.html#l00053">T_BROADCAST_DATA_MASK</a>, <a class="el" href="fb__prot_8h_source.html#l00054">T_CONNECT_REQ</a>, <a class="el" href="fb__prot_8h_source.html#l00055">T_CONNECT_REQ_MASK</a>, <a class="el" href="fb__prot_8h_source.html#l00056">T_DISCONNECT_REQ</a>, <a class="el" href="fb__prot_8h_source.html#l00057">T_DISCONNECT_REQ_MASK</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00849">fb_handlemsg()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -658,9 +658,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>, <a class="el" href="fb__hal_8c_source.html#l00119">checksum</a>, <a class="el" href="fb__prot_8c_source.html#l00073">fb_cmd::cmd</a>, <a class="el" href="msg__queue_8h_source.html#l00053">COUNT_ARRAY_ELEMENTS</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00066">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00052">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00062">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="structfb__cmd.html#ab902de246a9c613b16fc041061cfa23e">fb_cmd::func</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8c_source.html#l00074">fb_cmd::mask</a>, <a class="el" href="fb__prot_8c_source.html#l00076">fb_cmd::max_len</a>, <a class="el" href="fb__prot_8c_source.html#l00075">fb_cmd::min_len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8c_source.html#l00072">fb_cmd::state</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>, <a class="el" href="fb__hal_8c_source.html#l00140">checksum</a>, <a class="el" href="fb__prot_8c_source.html#l00073">fb_cmd::cmd</a>, <a class="el" href="msg__queue_8h_source.html#l00053">COUNT_ARRAY_ELEMENTS</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="structfb__cmd.html#ab902de246a9c613b16fc041061cfa23e">fb_cmd::func</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8c_source.html#l00074">fb_cmd::mask</a>, <a class="el" href="fb__prot_8c_source.html#l00076">fb_cmd::max_len</a>, <a class="el" href="fb__prot_8c_source.html#l00075">fb_cmd::min_len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8c_source.html#l00072">fb_cmd::state</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00644">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00626">timer_timeout()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -719,7 +719,7 @@ Here is the caller graph for this function:</div>
 
 <p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, and <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00622">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00509">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00542">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00404">A_PhysicalAddress_Read()</a>, and <a class="el" href="fb__prot_8c_source.html#l00480">ncd_resp()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, and <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -761,10 +761,10 @@ Here is the caller graph for this function:</div>
 <p>Configure and enable all interrupts. </p>
 
 <p><p>&lt; </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000110">Todo:</a></b></dt><dd>do not save group addresses in memory, read it from eeprom to save memory. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000109">Todo:</a></b></dt><dd>do not save group addresses in memory, read it from eeprom to save memory. </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00302">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00356">eeprom_print()</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, and <a class="el" href="fb__prot_8c_source.html#l00287">read_grp_addr()</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00268">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00323">eeprom_print()</a>, <a class="el" href="fb__prot_8h_source.html#l00109">pa</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, and <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__in8__app_8c_source.html#l00870">main()</a>.</p>
 
@@ -824,9 +824,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Position in group address array grp_addr </dd></dl>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00079">ASSOCTABPTR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, and <a class="el" href="fb__prot_8c_source.html#l00210">sendTelegram()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, and <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -865,7 +865,7 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Send aknowledge to certain message. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000107">Todo:</a></b></dt><dd>Not implemented yet</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000106">Todo:</a></b></dt><dd>Not implemented yet</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>rxmsg</em>&nbsp;</td><td>The received telegram</td></tr>
@@ -874,7 +874,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>0 </dd></dl>
 
-<p>References <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, and <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>.</p>
+<p>References <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, and <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -911,9 +911,9 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00331">fb_new_msg()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00319">fb_new_msg()</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00622">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00509">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00542">A_Memory_Read()</a>, and <a class="el" href="fb__prot_8c_source.html#l00594">A_Memory_Write()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, and <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -953,9 +953,9 @@ Here is the caller graph for this function:</div>
 
 <p>Read the group addresses from the eeprom and save them in the struct grp_addr. </p>
 
-<p>References <a class="el" href="fb__prot_8h_source.html#l00091">grp_addr_s::count</a>, <a class="el" href="fb__prot_8h_source.html#l00081">COUNT_GRP_ADDRESSES</a>, <a class="el" href="freebus-debug_8h_source.html#l00062">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00056">DEBUG_PUTS</a>, <a class="el" href="freebus-debug_8h_source.html#l00070">DEBUG_SPACE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00037">FB_MAX_GROUP_ADDR</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, and <a class="el" href="fb__prot_8h_source.html#l00086">START_ADDRESS_GROUP_ADDRESSES</a>.</p>
+<p>References <a class="el" href="fb__prot_8h_source.html#l00091">grp_addr_s::count</a>, <a class="el" href="fb__prot_8h_source.html#l00081">COUNT_GRP_ADDRESSES</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="freebus-debug_8h_source.html#l00071">DEBUG_SPACE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb_8h_source.html#l00037">FB_MAX_GROUP_ADDR</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, and <a class="el" href="fb__prot_8h_source.html#l00086">START_ADDRESS_GROUP_ADDRESSES</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00967">fbprot_Init()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00904">fbprot_Init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1010,7 +1010,7 @@ Here is the caller graph for this function:</div>
 
 <p>Send telegram as response to signal current state of the port to other devices. </p>
 <p>Only necessary if ports are switched inside a timer function.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000104">Todo:</a></b></dt><dd>what source address to send if object has several group addresses?</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000103">Todo:</a></b></dt><dd>what source address to send if object has several group addresses?</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>commObjectNumber</em>&nbsp;</td><td>which port was switched </td></tr>
@@ -1021,10 +1021,10 @@ Here is the caller graph for this function:</div>
 </dl>
 
 <p><p>&lt; </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000105">Todo:</a></b></dt><dd>that is application specific code maybe we should move it to another function </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000104">Todo:</a></b></dt><dd>that is application specific code maybe we should move it to another function </dd></dl>
 </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00251">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00247">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1070,7 +1070,7 @@ Here is the call graph for this function:</div>
 
 <p>Send telegram as response to signal current state of the port to other devices. </p>
 <p>Only necessary if ports are switched inside a timer function.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000106">Todo:</a></b></dt><dd>what source address to send if object has several group addresses?</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000105">Todo:</a></b></dt><dd>what source address to send if object has several group addresses?</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>commObjectNumber</em>&nbsp;</td><td>which port was switched </td></tr>
@@ -1080,7 +1080,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00189">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8c_source.html#l00983">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00251">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8c_source.html#l00946">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__prot_8c_source.html#l00247">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__prot_8h_source.html#l00092">grp_addr_s::ga</a>, <a class="el" href="fb__prot_8c_source.html#l00090">grp_addr</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__in8__app_8c_source.html#l00645">PortFunc_Jalousie()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00497">PortFunc_Switch()</a>, and <a class="el" href="fb__in8__app_8c_source.html#l00181">timerOverflowFunction()</a>.</p>
 
@@ -1130,7 +1130,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8c_source.html#l00083">ucd_stat::addr</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8c_source.html#l00082">ucd_stat::status</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
+<p>References <a class="el" href="fb__prot_8c_source.html#l00083">ucd_stat::addr</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8c_source.html#l00082">ucd_stat::status</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1168,7 +1168,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="fb__prot_8c_source.html#l00083">ucd_stat::addr</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00312">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8c_source.html#l00082">ucd_stat::status</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
+<p>References <a class="el" href="fb__prot_8c_source.html#l00083">ucd_stat::addr</a>, <a class="el" href="fb__prot_8c_source.html#l00084">ucd_stat::count</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb_8h_source.html#l00030">FB_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00322">fb_send_ack()</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, <a class="el" href="fb__prot_8c_source.html#l00082">ucd_stat::status</a>, and <a class="el" href="fb__prot_8c_source.html#l00091">ucd</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1195,7 +1195,7 @@ Here is the call graph for this function:</div>
 
 <p>List of saved group addresses for this controller, see struct <a class="el" href="structgrp__addr__s.html" title="Structure for the group addresses.">grp_addr_s</a> for more information. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00786">check_addr()</a>, <a class="el" href="fb__prot_8c_source.html#l00287">read_grp_addr()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, and <a class="el" href="fb__prot_8c_source.html#l00210">sendTelegram()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00747">check_addr()</a>, <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, and <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1255,7 @@ Here is the call graph for this function:</div>
 
 <p>Used to track transport connections, for this source address, status and counter is saved. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00622">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00542">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00435">T_Connect_Req()</a>, and <a class="el" href="fb__prot_8c_source.html#l00459">T_Disconnect_Req()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00416">T_Connect_Req()</a>, and <a class="el" href="fb__prot_8c_source.html#l00439">T_Disconnect_Req()</a>.</p>
 
 </div>
 </div>
