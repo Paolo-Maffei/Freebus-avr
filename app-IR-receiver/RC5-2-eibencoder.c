@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <avr/interrupt.h>
 #include "megaeib.h"
-#include "megaEIBdecode.h"
+#include "megaeibdecode.h"
 
 //#include "lcd.h"
 //#include <avr/signal.h>
