@@ -13,6 +13,7 @@
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -43,10 +44,12 @@ Include dependency graph for fb_hal.c:</div>
 </div>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a832e9cd092f6ebab14ef4410263d165c">EIB_TX_LOWTIME</a>&nbsp;&nbsp;&nbsp;231U</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a7bb97dbc2abccfc6ec4a1da276be1352">EIB_BIT_TIME</a>&nbsp;&nbsp;&nbsp;104U</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">duration of one bit on the EIB  <a href="#a7bb97dbc2abccfc6ec4a1da276be1352"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a832e9cd092f6ebab14ef4410263d165c">EIB_TX_LOWTIME</a>&nbsp;&nbsp;&nbsp;40U</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">How long we hold the level on that value (35us).  <a href="#a832e9cd092f6ebab14ef4410263d165c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#ac6eb4519f1b43004d78120e297b7cc29">EIB_TX_HIGHTIME</a>&nbsp;&nbsp;&nbsp;195U</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">How long to wait before sending the next bit (69us) EIB_TX_LOWTIME + EIB_TX_HIGHTIME = 104us.  <a href="#ac6eb4519f1b43004d78120e297b7cc29"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#ac6eb4519f1b43004d78120e297b7cc29">EIB_TX_HIGHTIME</a>&nbsp;&nbsp;&nbsp;EIB_BIT_TIME-EIB_TX_LOWTIME</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">for the rest of the time the bus is high  <a href="#ac6eb4519f1b43004d78120e297b7cc29"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#ac7553420ae73a48c64bc99ebae0cb1ed">EIB_NONE_MODE</a>&nbsp;&nbsp;&nbsp;0</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the receive and sending part is in idle mode  <a href="#ac7553420ae73a48c64bc99ebae0cb1ed"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a45a3ce976119aa33a25ed9f6bd62800b">EIB_SEND_MODE</a>&nbsp;&nbsp;&nbsp;(1&lt;&lt;0)</td></tr>
@@ -121,8 +124,10 @@ Include dependency graph for fb_hal.c:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Restart the application by activating the watchdog and block the program.  <a href="#adc42490ec5de72809d53c35e57198de6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#afea150fcd685610cb9f7672fce361e53">ISR</a> (INT0_vect)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A falling edge triggers this interrupt.  <a href="#afea150fcd685610cb9f7672fce361e53"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6">ISR</a> (TIMER0_OVF_vect)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The ISR handles which function must be called.  <a href="#add2d7cdddfb682dcc0391e60cf42c7d6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d">ISR</a> (TIMER0_COMPA_vect)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The ISR handles which function must be called.  <a href="#aec43762dc86e029b395d4e5819192c2d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa513bd38a02761593d0217c8497033ac"></a><!-- doxytag: member="fb_hal.c::ISR" ref="aa513bd38a02761593d0217c8497033ac" args="(TIMER0_COMPB_vect)" -->
+&nbsp;</td><td class="memItemRight" valign="bottom"><b>ISR</b> (TIMER0_COMPB_vect)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0">retrigger_tx</a> (void)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Function is called from message queue system to trigger the interrupt for transmitting data.  <a href="#abc433410f75bf996dab8e7fa672205c0"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b">fb_hal_txqueue_msg</a> (struct <a class="el" href="structmsg.html">msg</a> *tx)</td></tr>
@@ -138,8 +143,6 @@ Include dependency graph for fb_hal.c:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">save the next state while be in transmitting mode  <a href="#a7c331c7fe91b2ca727e65c7262fdc5ae"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static volatile uint16_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a41f5a7da095fd642694f9c6a222ede72">fb_frame</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">the current octet to transmit, including start, parity and stop bit  <a href="#a41f5a7da095fd642694f9c6a222ede72"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">static volatile uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a129da25c28f6ba2df75cbc4be23ef2a4">bitcounter</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">counter of the received bits  <a href="#a129da25c28f6ba2df75cbc4be23ef2a4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static volatile uint16_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a6c6b8bbd9bffb5b0c907b3b903b9ea8f">rxframe</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">hold data of the octet while receiving data. That variable is filled bit per bit.  <a href="#a6c6b8bbd9bffb5b0c907b3b903b9ea8f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">static volatile uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#af342e7c63def35b89b53992fdbd53eb3">fbstat</a></td></tr>
@@ -156,10 +159,12 @@ Include dependency graph for fb_hal.c:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">checksum of the EIB telegram (over all octets)  <a href="#a89896b172be5ecbbe195b793a91fe4f4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a895b38744b07b801d5765dcf50de0b16">operationMode</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">defines if sending or receiving data  <a href="#a895b38744b07b801d5765dcf50de0b16"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static volatile uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__hal_8c.html#a1769822e1fa84e6790b15ba3ec99d32e">timer0_skips</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">counter for skipping timer0 interrupts  <a href="#a1769822e1fa84e6790b15ba3ec99d32e"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Freebus Hardware Layer. Implementation of a software- uart + timer handling This file consists of function which are bound to the hardware For further information check the pdf 03_02_02 Communication Medium TP 1 v1.0 AS.PDF. </p>
-<dl class="author"><dt><b>Author:</b></dt><dd>Dirk Opfer, Matthias Fechner, Christian Bode </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>Dirk Opfer, Matthias Fechner, Christian Bode, Dirk Armbrust </dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>Fri Oct 26 17:22:16 2007</dd></dl>
 <p>One bit has the length of 104us (35us date and 69us wait time).<br/>
  One character is then 11*104us=1144us.</p>
@@ -203,6 +208,23 @@ Include dependency graph for fb_hal.c:</div>
 </ul>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000089">Todo:</a></b></dt><dd>Die Timerwerte sollten nochmal nachgerechnet/nachgemessen werden. </dd></dl>
 <hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a7bb97dbc2abccfc6ec4a1da276be1352"></a><!-- doxytag: member="fb_hal.c::EIB_BIT_TIME" ref="a7bb97dbc2abccfc6ec4a1da276be1352" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define EIB_BIT_TIME&nbsp;&nbsp;&nbsp;104U</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>duration of one bit on the EIB </p>
+
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, and <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a56e22527b5751ef05494c349efbf3efc"></a><!-- doxytag: member="fb_hal.c::EIB_CHECK_FOR_COLLISION" ref="a56e22527b5751ef05494c349efbf3efc" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +238,7 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>defined if in transmit mode we have to check if a collision occured </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, and <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00535">checkForCollisions()</a>, and <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 </div>
 </div>
@@ -233,7 +255,7 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>the receive and sending part is in idle mode </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>.</p>
 
 </div>
 </div>
@@ -250,7 +272,7 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>defines that we're in receive mode, if the ISR is triggered the receive functions are called </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00370">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00852">tx_complete()</a>, and <a class="el" href="fb__hal_8c_source.html#l00825">tx_wait_ack()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
 
 </div>
 </div>
@@ -267,7 +289,7 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>defines that we're in send mode, if the ISR is triggered the send functions are called </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>.</p>
 
 </div>
 </div>
@@ -276,15 +298,13 @@ Include dependency graph for fb_hal.c:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EIB_TX_HIGHTIME&nbsp;&nbsp;&nbsp;195U</td>
+          <td class="memname">#define EIB_TX_HIGHTIME&nbsp;&nbsp;&nbsp;EIB_BIT_TIME-EIB_TX_LOWTIME</td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>How long to wait before sending the next bit (69us) EIB_TX_LOWTIME + EIB_TX_HIGHTIME = 104us. </p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>.</p>
+<p>for the rest of the time the bus is high </p>
 
 </div>
 </div>
@@ -293,7 +313,7 @@ Include dependency graph for fb_hal.c:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define EIB_TX_LOWTIME&nbsp;&nbsp;&nbsp;231U</td>
+          <td class="memname">#define EIB_TX_LOWTIME&nbsp;&nbsp;&nbsp;40U</td>
         </tr>
       </table>
 </div>
@@ -301,7 +321,7 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>How long we hold the level on that value (35us). </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>.</p>
 
 </div>
 </div>
@@ -323,12 +343,17 @@ Include dependency graph for fb_hal.c:</div>
 <b>Value:</b><div class="fragment"><pre class="fragment">{ \
           <a class="code" href="freebus-atmega16_8h.html#a86442d04a91688ab51d7f3354e157735" title="disable interrupt INT0">DISABLE_RX_INT</a>();                  <span class="comment">/* disable INT0 interrupt while sending */</span> \
           <a class="code" href="fb__hal_8c.html#a895b38744b07b801d5765dcf50de0b16" title="defines if sending or receiving data">operationMode</a>=<a class="code" href="fb__hal_8c.html#a45a3ce976119aa33a25ed9f6bd62800b" title="defines that we&amp;#39;re in send mode, if the ISR is triggered the send functions are...">EIB_SEND_MODE</a>;       <span class="comment">/* set send mode for operation */</span> \
-          <a class="code" href="freebus-atmega16_8h.html#abcb4a8e27a6fd2eff5dd33d545a54d71" title="Reload Timer0 calculate value with: (F_CPU*TIME_TO_WAIT)/prescaler substract from...">RELOAD_TIMER0</a>(255,(1&lt;&lt;CS00)); \
+<span class="comment">/*          RELOAD_TIMER0(255,(1&lt;&lt;CS00));  */</span> \
+ \
+          TCNT0  = <a class="code" href="fb__hal_8c.html#a7bb97dbc2abccfc6ec4a1da276be1352" title="duration of one bit on the EIB">EIB_BIT_TIME</a>-10;          <span class="comment">/* TX start after 10탎 */</span>\
+          TIFR0  = (1&lt;&lt;OCF0A)|(1&lt;&lt;OCF0B) ;   <span class="comment">/* clear pending interrups */</span> \
+          TIMSK0 |= (( 1&lt;&lt;OCIE0A )|( 1&lt;&lt;OCIE0B )); <span class="comment">/* enable OCRA, OCRB interrupts */</span>  \
+          TCCR0B = (1&lt;&lt;CS01);                <span class="comment">/* start the timer */</span> \
           DEBUG_PIN8_OFF(); }
 </pre></div>
 <p>start timer: Timer0 using only timer0 to have timer1 and timer2 free for the application </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00706">timer_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>.</p>
 
 </div>
 </div>
@@ -345,6 +370,7 @@ Include dependency graph for fb_hal.c:</div>
 <div class="memdoc">
 
 <p>Status for receiving mode, is used in the ISR to decide which function must be called next. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000090">Todo:</a></b></dt><dd>define a macro for following instructions in freebus-atmegaxxx.h </dd></dl>
 <dl><dt><b>Enumerator: </b></dt><dd><table border="0" cellspacing="2" cellpadding="0">
 <tr><td valign="top"><em><a class="anchor" id="af24054d97e225ff81412767e9e92780ba95f116553b8e2d1cd7be8a22840d1cf2"></a><!-- doxytag: member="TS_WAITING_CHARS" ref="af24054d97e225ff81412767e9e92780ba95f116553b8e2d1cd7be8a22840d1cf2" args="" -->TS_WAITING_CHARS</em>&nbsp;</td><td>
 <p>normal operation, waiting for characters </p>
@@ -419,24 +445,13 @@ Include dependency graph for fb_hal.c:</div>
 
 <p>Check if we have a collision on the bus and retrigger the timer0 interrupt. </p>
 <p>The function is called after 35탎.</p>
-<p>implement collition detection </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000095">Todo:</a></b></dt><dd>implement collition detection </dd></dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
 <p><p>Bustiming: Bitzeit fuer High-Pegel (104us - 35us = 69us) </p>
 </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00098">EIB_CHECK_FOR_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00093">EIB_TX_HIGHTIME</a>, <a class="el" href="fb__hal_8h_source.html#l00050">FB_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00133">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00046">TIMSK</a>, <a class="el" href="fb__hal_8c_source.html#l00123">TX_ERROR</a>, and <a class="el" href="fb__hal_8c_source.html#l00131">tx_state</a>.</p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dynsection">
-<div class="center"><img src="fb__hal_8c_a3e63d2a0ec530f41c556c9187fabcf80_icgraph.png" border="0" usemap="#fb__hal_8c_a3e63d2a0ec530f41c556c9187fabcf80_icgraph_map" alt=""></div>
-<map name="fb__hal_8c_a3e63d2a0ec530f41c556c9187fabcf80_icgraph_map" id="fb__hal_8c_a3e63d2a0ec530f41c556c9187fabcf80_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="187,5,229,35"/></map>
-</div>
-</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00100">EIB_CHECK_FOR_COLLISION</a>, <a class="el" href="fb__hal_8h_source.html#l00050">FB_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00140">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00046">TIMSK</a>, <a class="el" href="fb__hal_8c_source.html#l00130">TX_ERROR</a>, and <a class="el" href="fb__hal_8c_source.html#l00138">tx_state</a>.</p>
 
 </div>
 </div>
@@ -498,9 +513,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00085">queuemsg()</a>, and <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00085">queuemsg()</a>, and <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>, and <a class="el" href="fb__hal_8c_source.html#l00219">sendTestTelegram()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00459">ncd_resp()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>, and <a class="el" href="fb__hal_8c_source.html#l00224">sendTestTelegram()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -547,16 +562,16 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00133">fb_frame</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00140">fb_frame</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00706">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00806">tx_send_checksum()</a>, and <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00820">tx_send_checksum()</a>, and <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a5a622f74cb37183309cbf6a3678fb129_icgraph.png" border="0" usemap="#fb__hal_8c_a5a622f74cb37183309cbf6a3678fb129_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a5a622f74cb37183309cbf6a3678fb129_icgraph_map" id="fb__hal_8c_a5a622f74cb37183309cbf6a3678fb129_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="316,7,393,36"/><area shape="rect" id="node7" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="119,59,252,88"/><area shape="rect" id="node10" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="136,137,235,167"/><area shape="rect" id="node5" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="505,84,548,113"/><area shape="rect" id="node13" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="312,215,397,244"/><area shape="rect" id="node52" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="301,161,408,191"/><area shape="rect" id="node15" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="456,215,597,244"/><area shape="rect" id="node17" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="903,5,1004,35"/><area shape="rect" id="node19" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="868,59,1039,88"/><area shape="rect" id="node21" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="892,165,1015,195"/><area shape="rect" id="node23" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="645,215,819,244"/><area shape="rect" id="node25" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="695,111,769,140"/><area shape="rect" id="node32" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="677,268,787,297"/><area shape="rect" id="node36" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="671,321,793,351"/><area shape="rect" id="node38" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="681,375,783,404"/><area shape="rect" id="node48" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="668,453,796,483"/><area shape="rect" id="node30" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="892,112,1015,141"/><area shape="rect" id="node34" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="883,268,1024,297"/><area shape="rect" id="node40" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="889,373,1017,403"/><area shape="rect" id="node42" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1088,373,1237,403"/><area shape="rect" id="node44" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="893,427,1013,456"/><area shape="rect" id="node50" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="928,480,979,509"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="347,7,435,36"/><area shape="rect" id="node7" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="129,59,279,88"/><area shape="rect" id="node10" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="147,137,261,167"/><area shape="rect" id="node5" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="560,84,603,113"/><area shape="rect" id="node13" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="340,215,441,244"/><area shape="rect" id="node52" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="329,161,452,191"/><area shape="rect" id="node15" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="501,215,661,244"/><area shape="rect" id="node17" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="989,5,1099,35"/><area shape="rect" id="node19" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="945,59,1143,88"/><area shape="rect" id="node21" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="977,165,1111,195"/><area shape="rect" id="node23" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="709,215,896,244"/><area shape="rect" id="node25" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="761,111,844,140"/><area shape="rect" id="node32" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="740,268,865,297"/><area shape="rect" id="node36" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="733,321,872,351"/><area shape="rect" id="node38" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="745,375,860,404"/><area shape="rect" id="node48" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="729,453,876,483"/><area shape="rect" id="node30" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="976,112,1112,141"/><area shape="rect" id="node34" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="967,268,1121,297"/><area shape="rect" id="node40" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="975,373,1113,403"/><area shape="rect" id="node42" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1193,373,1369,403"/><area shape="rect" id="node44" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="977,427,1111,456"/><area shape="rect" id="node50" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="1017,480,1071,509"/></map>
 </div>
 </p>
 
@@ -586,16 +601,16 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, and <a class="el" href="fb__hal_8c_source.html#l00139">fb_ackvalue</a>.</p>
+<p>References <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, and <a class="el" href="fb__hal_8c_source.html#l00145">fb_ackvalue</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00655">Ignore()</a>, <a class="el" href="fb__prot_8c_source.html#l00416">T_Connect_Req()</a>, <a class="el" href="fb__prot_8c_source.html#l00439">T_Disconnect_Req()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00655">Ignore()</a>, <a class="el" href="fb__prot_8c_source.html#l00416">T_Connect_Req()</a>, <a class="el" href="fb__prot_8c_source.html#l00439">T_Disconnect_Req()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a296f7c3289677f2b99af85e65dfd04e0_icgraph.png" border="0" usemap="#fb__hal_8c_a296f7c3289677f2b99af85e65dfd04e0_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a296f7c3289677f2b99af85e65dfd04e0_icgraph_map" id="fb__hal_8c_a296f7c3289677f2b99af85e65dfd04e0_icgraph">
-<area shape="rect" id="node3" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="187,5,288,35"/><area shape="rect" id="node5" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="152,59,323,88"/><area shape="rect" id="node7" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="167,112,308,141"/><area shape="rect" id="node9" href="fb__prot_8c.html#abb5d4fc672e3e3e123f5f3e6e9f901e3" title="Is called if a broadcast is received with a matching group address (eg." alt="" coords="165,165,309,195"/><area shape="rect" id="node11" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="176,219,299,248"/><area shape="rect" id="node13" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="176,272,299,301"/><area shape="rect" id="node15" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="151,325,324,355"/><area shape="rect" id="node17" href="fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="151,379,324,408"/><area shape="rect" id="node19" href="fb__prot_8c.html#a5928e9483083ad86d6c82f0b0ca533af" title="Send aknowledge to certain message." alt="" coords="209,432,265,461"/><area shape="rect" id="node21" href="fb__prot_8c.html#a3b317425f1358ea37c8fca124e29c277" title="Called to start a connection to a physical address." alt="" coords="180,485,295,515"/><area shape="rect" id="node23" href="fb__prot_8c.html#a0675ad49aa389619806157f585c466ee" title="Release the transport connection." alt="" coords="172,539,303,568"/><area shape="rect" id="node25" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="187,592,288,621"/><area shape="rect" id="node27" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="373,592,416,621"/></map>
+<area shape="rect" id="node3" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="203,5,312,35"/><area shape="rect" id="node5" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="159,59,356,88"/><area shape="rect" id="node7" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="180,112,335,141"/><area shape="rect" id="node9" href="fb__prot_8c.html#abb5d4fc672e3e3e123f5f3e6e9f901e3" title="Is called if a broadcast is received with a matching group address (eg." alt="" coords="179,165,336,195"/><area shape="rect" id="node11" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="191,219,324,248"/><area shape="rect" id="node13" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="189,272,325,301"/><area shape="rect" id="node15" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="164,325,351,355"/><area shape="rect" id="node17" href="fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="163,379,352,408"/><area shape="rect" id="node19" href="fb__prot_8c.html#a5928e9483083ad86d6c82f0b0ca533af" title="Send aknowledge to certain message." alt="" coords="225,432,289,461"/><area shape="rect" id="node21" href="fb__prot_8c.html#a3b317425f1358ea37c8fca124e29c277" title="Called to start a connection to a physical address." alt="" coords="193,485,321,515"/><area shape="rect" id="node23" href="fb__prot_8c.html#a0675ad49aa389619806157f585c466ee" title="Release the transport connection." alt="" coords="184,539,331,568"/><area shape="rect" id="node25" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="197,592,317,621"/><area shape="rect" id="node27" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="407,592,449,621"/></map>
 </div>
 </p>
 
@@ -621,7 +636,7 @@ Here is the caller graph for this function:</div>
 <p>Programm button is on PB0 and pin 4 on Freebus connector.</p>
 <p>Function detects the state of the prog button (debounced) and sets the programming mode. This is done only every 16th call, because the 킗 needs some time to switch from output to input mode and so we got more negative duty cylce for the prog led.</p>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000002">Bug:</a></b></dt><dd>The macro SET_IO_PROG(IO_OUTPUT) could not be used here, because this sets the DDR and also the PORT = 0. This won't work. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000091">Todo:</a></b></dt><dd>Check if this function is working fine. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000092">Todo:</a></b></dt><dd>Check if this function is working fine. </dd></dl>
 <dl class="author"><dt><b>Author:</b></dt><dd>Matthias Fechner, Tobias Buss </dd></dl>
 
 <p>References <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="delay_8h_source.html#l00048">delay</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00185">PROG_DDR</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00187">PROG_PIN</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00184">PROG_PORT</a>, <a class="el" href="fb_8h_source.html#l00041">SS_PROG</a>, and <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>.</p>
@@ -657,10 +672,11 @@ Here is the caller graph for this function:</div>
 
 <p>Set input/output mode to PORTs, init timers and interrupts. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000101">Todo:</a></b></dt><dd>Timer und Interrupt-Register konfigrieren </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000105">Todo:</a></b></dt><dd>Timer und Interrupt-Register konfigurieren </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000106">Todo:</a></b></dt><dd>define a macro for following instructions in freebus-atmegaxxx.h </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00134">bitcounter</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00052">CONFIGURE_INT0</a>, <a class="el" href="fb__hal_8c_source.html#l00095">EIB_NONE_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00133">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="fb__hal_8h_source.html#l00064">IO_INPUT</a>, <a class="el" href="fb__hal_8h_source.html#l00065">IO_OUTPUT</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, and <a class="el" href="fb__hal_8c_source.html#l00110">TS_WAITING_CHARS</a>.</p>
+<p>References <a class="el" href="freebus-atmega16_8h_source.html#l00052">CONFIGURE_INT0</a>, <a class="el" href="fb__hal_8c_source.html#l00093">EIB_BIT_TIME</a>, <a class="el" href="fb__hal_8c_source.html#l00097">EIB_NONE_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00094">EIB_TX_LOWTIME</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00140">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="fb__hal_8h_source.html#l00064">IO_INPUT</a>, <a class="el" href="fb__hal_8h_source.html#l00065">IO_OUTPUT</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00141">rxframe</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, and <a class="el" href="fb__hal_8c_source.html#l00117">TS_WAITING_CHARS</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__in8__app_8c_source.html#l00870">main()</a>.</p>
 
@@ -700,18 +716,18 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Enter sleep_mode to save power. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000090">Todo:</a></b></dt><dd>write that function. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000091">Todo:</a></b></dt><dd>write that function. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="add2d7cdddfb682dcc0391e60cf42c7d6"></a><!-- doxytag: member="fb_hal.c::ISR" ref="add2d7cdddfb682dcc0391e60cf42c7d6" args="(TIMER0_OVF_vect)" -->
+<a class="anchor" id="aec43762dc86e029b395d4e5819192c2d"></a><!-- doxytag: member="fb_hal.c::ISR" ref="aec43762dc86e029b395d4e5819192c2d" args="(TIMER0_COMPA_vect)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">ISR </td>
           <td>(</td>
-          <td class="paramtype">TIMER0_OVF_vect&nbsp;</td>
+          <td class="paramtype">TIMER0_COMPA_vect&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
@@ -724,18 +740,17 @@ Here is the caller graph for this function:</div>
 <p>States are defined in the state diagramm.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p><p>Bustiming: Bitzeit fuer Low-Pegel</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000092">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000094">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00098">EIB_CHECK_FOR_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00097">EIB_RECEIVE_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00096">EIB_SEND_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00092">EIB_TX_LOWTIME</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="fb__hal_8c_source.html#l00139">fb_ackvalue</a>, <a class="el" href="fb__hal_8c_source.html#l00133">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="fb__hal_8h_source.html#l00062">ON</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="fb__hal_8c_source.html#l00130">rx_state</a>, <a class="el" href="fb__hal_8c_source.html#l00706">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00544">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00773">timer_resp_tout()</a>, <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>, <a class="el" href="fb__hal_8c_source.html#l00112">TS_WAITING_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00113">TS_WAITING_ACK_RESP</a>, <a class="el" href="fb__hal_8c_source.html#l00114">TS_WAITING_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00110">TS_WAITING_CHARS</a>, <a class="el" href="fb__hal_8c_source.html#l00111">TS_WAITING_TIMEOUT</a>, <a class="el" href="fb__hal_8c_source.html#l00882">tx_error()</a>, <a class="el" href="fb__hal_8c_source.html#l00123">TX_ERROR</a>, <a class="el" href="fb__hal_8c_source.html#l00119">TX_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00806">tx_send_checksum()</a>, <a class="el" href="fb__hal_8c_source.html#l00121">TX_SEND_CHECKSUM</a>, <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00120">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00131">tx_state</a>, <a class="el" href="fb__hal_8c_source.html#l00825">tx_wait_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00122">TX_WAITING_ACK</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00100">EIB_CHECK_FOR_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00099">EIB_RECEIVE_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00098">EIB_SEND_MODE</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="fb__hal_8c_source.html#l00145">fb_ackvalue</a>, <a class="el" href="fb__hal_8c_source.html#l00140">fb_frame</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8h_source.html#l00062">ON</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00137">rx_state</a>, <a class="el" href="fb__hal_8c_source.html#l00141">rxframe</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00572">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00787">timer_resp_tout()</a>, <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>, <a class="el" href="fb__hal_8c_source.html#l00119">TS_WAITING_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00120">TS_WAITING_ACK_RESP</a>, <a class="el" href="fb__hal_8c_source.html#l00121">TS_WAITING_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00117">TS_WAITING_CHARS</a>, <a class="el" href="fb__hal_8c_source.html#l00118">TS_WAITING_TIMEOUT</a>, <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>, <a class="el" href="fb__hal_8c_source.html#l00130">TX_ERROR</a>, <a class="el" href="fb__hal_8c_source.html#l00126">TX_NONE</a>, <a class="el" href="fb__hal_8c_source.html#l00820">tx_send_checksum()</a>, <a class="el" href="fb__hal_8c_source.html#l00128">TX_SEND_CHECKSUM</a>, <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00127">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00138">tx_state</a>, <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00129">TX_WAITING_ACK</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dynsection">
-<div class="center"><img src="fb__hal_8c_add2d7cdddfb682dcc0391e60cf42c7d6_cgraph.png" border="0" usemap="#fb__hal_8c_add2d7cdddfb682dcc0391e60cf42c7d6_cgraph_map" alt=""></div>
-<map name="fb__hal_8c_add2d7cdddfb682dcc0391e60cf42c7d6_cgraph_map" id="fb__hal_8c_add2d7cdddfb682dcc0391e60cf42c7d6_cgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#a3e63d2a0ec530f41c556c9187fabcf80" title="Check if we have a collision on the bus and retrigger the timer0 interrupt." alt="" coords="97,20,228,50"/><area shape="rect" id="node5" href="fb__hal_8c.html#abe9ce1ff59cb1eb49f7e651549139764" title="Set the next state while in receiving mode." alt="" coords="461,307,563,336"/><area shape="rect" id="node7" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="307,463,384,492"/><area shape="rect" id="node12" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="109,463,216,492"/><area shape="rect" id="node21" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="296,570,395,599"/><area shape="rect" id="node26" href="fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="105,359,220,388"/><area shape="rect" id="node33" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="107,74,219,103"/><area shape="rect" id="node35" href="fb__hal_8c.html#afcdb445c1b6cc3e39d904592286349ee" title="Negative acknowledge received, check repeat counter and if repeat is not expired..." alt="" coords="312,44,379,74"/><area shape="rect" id="node39" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="112,178,213,207"/><area shape="rect" id="node52" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="279,623,412,652"/><area shape="rect" id="node57" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="300,516,391,546"/><area shape="rect" id="node9" href="fb__hal_8c.html#a5a622f74cb37183309cbf6a3678fb129" title="Generate an EIB frame and calculate the checksum." alt="" coords="480,543,544,572"/><area shape="rect" id="node14" href="fb__hal_8c.html#a02bd6a0eef1e1be4a306236d886f04bb" title="Postive acknowledge received, dequeue message." alt="" coords="299,255,392,284"/><area shape="rect" id="node16" href="msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="464,151,560,180"/><area shape="rect" id="node18" href="msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="612,72,684,102"/><area shape="rect" id="node24" href="fb__hal_8c.html#aa4a5a78d404751d2731d41c606c430fc" title="Set the next state in sending mode." alt="" coords="461,596,563,626"/><area shape="rect" id="node28" href="msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="307,410,384,439"/><area shape="rect" id="node30" href="fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="485,410,539,439"/><area shape="rect" id="node41" href="fb__prot_8h.html#aa73e24db682143ef1340c4e4e46d7feb" title="That function will be called if a telegram was received completely." alt="" coords="295,151,396,180"/><area shape="rect" id="node45" href="fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in..." alt="" coords="299,98,392,127"/><area shape="rect" id="node43" href="fb__prot_8c.html#af4f820be8f1240cee6515133062a2e93" title="Analyse the type of the message (broadcast, direct, group address) and check for..." alt="" coords="468,98,556,127"/></map>
+<div class="center"><img src="fb__hal_8c_aec43762dc86e029b395d4e5819192c2d_cgraph.png" border="0" usemap="#fb__hal_8c_aec43762dc86e029b395d4e5819192c2d_cgraph_map" alt=""></div>
+<map name="fb__hal_8c_aec43762dc86e029b395d4e5819192c2d_cgraph_map" id="fb__hal_8c_aec43762dc86e029b395d4e5819192c2d_cgraph">
+<area shape="rect" id="node3" href="fb__hal_8c.html#abe9ce1ff59cb1eb49f7e651549139764" title="Set the next state while in receiving mode." alt="" coords="483,314,600,343"/><area shape="rect" id="node5" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="312,470,400,499"/><area shape="rect" id="node10" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="104,471,227,501"/><area shape="rect" id="node19" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="299,577,413,606"/><area shape="rect" id="node24" href="fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="100,367,231,397"/><area shape="rect" id="node31" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="100,105,231,134"/><area shape="rect" id="node33" href="fb__hal_8c.html#afcdb445c1b6cc3e39d904592286349ee" title="Negative acknowledge received, check repeat counter and if repeat is not expired..." alt="" coords="319,51,393,81"/><area shape="rect" id="node37" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="105,158,225,187"/><area shape="rect" id="node50" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="281,630,431,659"/><area shape="rect" id="node55" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="305,523,407,553"/><area shape="rect" id="node7" href="fb__hal_8c.html#a5a622f74cb37183309cbf6a3678fb129" title="Generate an EIB frame and calculate the checksum." alt="" coords="505,550,577,579"/><area shape="rect" id="node12" href="fb__hal_8c.html#a02bd6a0eef1e1be4a306236d886f04bb" title="Postive acknowledge received, dequeue message." alt="" coords="301,262,411,291"/><area shape="rect" id="node14" href="msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="487,158,596,187"/><area shape="rect" id="node16" href="msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="651,79,731,109"/><area shape="rect" id="node22" href="fb__hal_8c.html#aa4a5a78d404751d2731d41c606c430fc" title="Set the next state in sending mode." alt="" coords="481,603,601,633"/><area shape="rect" id="node26" href="msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="315,417,397,446"/><area shape="rect" id="node28" href="fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="513,417,569,446"/><area shape="rect" id="node39" href="fb__prot_8h.html#aa73e24db682143ef1340c4e4e46d7feb" title="That function will be called if a telegram was received completely." alt="" coords="299,158,413,187"/><area shape="rect" id="node43" href="fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in..." alt="" coords="304,105,408,134"/><area shape="rect" id="node41" href="fb__prot_8c.html#af4f820be8f1240cee6515133062a2e93" title="Analyse the type of the message (broadcast, direct, group address) and check for..." alt="" coords="492,105,591,134"/></map>
 </div>
 </p>
 
@@ -758,10 +773,13 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 
 <p>A falling edge triggers this interrupt. </p>
-<p>It's the start of an EIB telegram. Configure timer2 to read the bits starting with LSB. build frame: Stop Stop Parity 7 6 5 4 3 2 1 0 Start</p>
+<p>It's the start of an EIB telegram. Configure timer0 to read the bits starting with LSB. build frame: Stop Stop Parity 7 6 5 4 3 2 1 0 Start</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 
-<p>References <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00059">DISABLE_RX_INT</a>, <a class="el" href="fb__hal_8c_source.html#l00097">EIB_RECEIVE_MODE</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, and <a class="el" href="fb__hal_8c_source.html#l00110">TS_WAITING_CHARS</a>.</p>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>define a macro for following instructions in freebus-atmegaxxx.h </dd></dl>
+</p>
+
+<p>References <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="fb__hal_8c_source.html#l00093">EIB_BIT_TIME</a>, <a class="el" href="fb__hal_8c_source.html#l00099">EIB_RECEIVE_MODE</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00141">rxframe</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, and <a class="el" href="fb__hal_8c_source.html#l00117">TS_WAITING_CHARS</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -798,16 +816,16 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00130">rx_state</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00137">rx_state</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00370">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00706">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00544">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>, <a class="el" href="fb__hal_8c_source.html#l00852">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00882">tx_error()</a>, and <a class="el" href="fb__hal_8c_source.html#l00825">tx_wait_ack()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00572">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_abe9ce1ff59cb1eb49f7e651549139764_icgraph.png" border="0" usemap="#fb__hal_8c_abe9ce1ff59cb1eb49f7e651549139764_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_abe9ce1ff59cb1eb49f7e651549139764_icgraph_map" id="fb__hal_8c_abe9ce1ff59cb1eb49f7e651549139764_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#a1d2bce7e6ac0dd55aa811e53722ea4be" title="Set input/output mode to PORTs, init timers and interrupts." alt="" coords="165,5,237,35"/><area shape="rect" id="node7" href="fb__hal_8c.html#afea150fcd685610cb9f7672fce361e53" title="A falling edge triggers this interrupt." alt="" coords="180,59,223,88"/><area shape="rect" id="node9" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="315,160,392,189"/><area shape="rect" id="node13" href="fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="296,213,411,243"/><area shape="rect" id="node16" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="303,320,404,349"/><area shape="rect" id="node19" href="fb__hal_8c.html#a02bd6a0eef1e1be4a306236d886f04bb" title="Postive acknowledge received, dequeue message." alt="" coords="155,267,248,296"/><area shape="rect" id="node25" href="fb__hal_8c.html#afcdb445c1b6cc3e39d904592286349ee" title="Negative acknowledge received, check repeat counter and if repeat is not expired..." alt="" coords="168,372,235,401"/><area shape="rect" id="node32" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="156,112,247,141"/><area shape="rect" id="node5" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="328,5,379,35"/><area shape="rect" id="node11" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="459,267,501,296"/><area shape="rect" id="node21" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="300,267,407,296"/><area shape="rect" id="node28" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="297,424,409,453"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#a1d2bce7e6ac0dd55aa811e53722ea4be" title="Set input/output mode to PORTs, init timers and interrupts." alt="" coords="187,5,269,35"/><area shape="rect" id="node7" href="fb__hal_8c.html#afea150fcd685610cb9f7672fce361e53" title="A falling edge triggers this interrupt." alt="" coords="207,59,249,88"/><area shape="rect" id="node9" href="fb__hal_8c.html#a4738339212f7be2d3090deb995953529" title="Telegram received completly now decided which telegram type was recieved and if it..." alt="" coords="353,160,441,189"/><area shape="rect" id="node13" href="fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="332,213,463,243"/><area shape="rect" id="node16" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="337,320,457,349"/><area shape="rect" id="node19" href="fb__hal_8c.html#a02bd6a0eef1e1be4a306236d886f04bb" title="Postive acknowledge received, dequeue message." alt="" coords="173,267,283,296"/><area shape="rect" id="node25" href="fb__hal_8c.html#afcdb445c1b6cc3e39d904592286349ee" title="Negative acknowledge received, check repeat counter and if repeat is not expired..." alt="" coords="191,372,265,401"/><area shape="rect" id="node32" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="177,112,279,141"/><area shape="rect" id="node5" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="371,5,424,35"/><area shape="rect" id="node11" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="513,267,556,296"/><area shape="rect" id="node21" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="336,267,459,296"/><area shape="rect" id="node28" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="332,424,463,453"/></map>
 </div>
 </p>
 
@@ -837,16 +855,16 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00131">tx_state</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00138">tx_state</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00806">tx_send_checksum()</a>, <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>, and <a class="el" href="fb__hal_8c_source.html#l00825">tx_wait_ack()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00820">tx_send_checksum()</a>, <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_aa4a5a78d404751d2731d41c606c430fc_icgraph.png" border="0" usemap="#fb__hal_8c_aa4a5a78d404751d2731d41c606c430fc_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_aa4a5a78d404751d2731d41c606c430fc_icgraph_map" id="fb__hal_8c_aa4a5a78d404751d2731d41c606c430fc_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="305,57,439,87"/><area shape="rect" id="node7" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="156,137,255,167"/><area shape="rect" id="node52" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="160,5,251,35"/><area shape="rect" id="node5" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="537,84,580,113"/><area shape="rect" id="node10" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="329,215,415,244"/><area shape="rect" id="node49" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="319,111,425,140"/><area shape="rect" id="node12" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="488,215,629,244"/><area shape="rect" id="node14" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="935,5,1036,35"/><area shape="rect" id="node16" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="900,59,1071,88"/><area shape="rect" id="node18" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="924,165,1047,195"/><area shape="rect" id="node20" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="677,215,851,244"/><area shape="rect" id="node22" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="727,111,801,140"/><area shape="rect" id="node29" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="709,268,819,297"/><area shape="rect" id="node33" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="703,321,825,351"/><area shape="rect" id="node35" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="713,375,815,404"/><area shape="rect" id="node45" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="700,453,828,483"/><area shape="rect" id="node27" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="924,112,1047,141"/><area shape="rect" id="node31" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="915,268,1056,297"/><area shape="rect" id="node37" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="921,373,1049,403"/><area shape="rect" id="node39" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1120,373,1269,403"/><area shape="rect" id="node41" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="925,427,1045,456"/><area shape="rect" id="node47" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="960,480,1011,509"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#a1a372817454f06132f80e02fbc7005df" title="Put the checksum in fb_frame and set state machine to wait for ack." alt="" coords="340,57,489,87"/><area shape="rect" id="node7" href="fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="176,137,291,167"/><area shape="rect" id="node52" href="fb__hal_8c.html#a1e9ccf79644054a2acf54780c4ee0fee" title="All data + checksum transmitted, stop IRQ and wait for acknowledge." alt="" coords="183,5,284,35"/><area shape="rect" id="node5" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="597,84,640,113"/><area shape="rect" id="node10" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="364,215,465,244"/><area shape="rect" id="node49" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="353,111,476,140"/><area shape="rect" id="node12" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="539,215,699,244"/><area shape="rect" id="node14" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="1027,5,1136,35"/><area shape="rect" id="node16" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="983,59,1180,88"/><area shape="rect" id="node18" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="1015,165,1148,195"/><area shape="rect" id="node20" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="747,215,933,244"/><area shape="rect" id="node22" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="799,111,881,140"/><area shape="rect" id="node29" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="777,268,903,297"/><area shape="rect" id="node33" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="771,321,909,351"/><area shape="rect" id="node35" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="783,375,897,404"/><area shape="rect" id="node45" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="767,453,913,483"/><area shape="rect" id="node27" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="1013,112,1149,141"/><area shape="rect" id="node31" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="1004,268,1159,297"/><area shape="rect" id="node37" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="1012,373,1151,403"/><area shape="rect" id="node39" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1231,373,1407,403"/><area shape="rect" id="node41" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="1015,427,1148,456"/><area shape="rect" id="node47" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="1055,480,1108,509"/></map>
 </div>
 </p>
 
@@ -869,7 +887,7 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Hold application and set blink code to PORTB pin 0, our prog pin and LED. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000100">Todo:</a></b></dt><dd>Replace that function with a mechanism that not completely kills the controller application </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000104">Todo:</a></b></dt><dd>Replace that function with a mechanism that not completely kills the controller application </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>reason</em>&nbsp;</td><td></td></tr>
@@ -878,17 +896,6 @@ Here is the caller graph for this function:</div>
 </dl>
 
 <p>References <a class="el" href="fb__hal_8h_source.html#l00065">IO_OUTPUT</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, and <a class="el" href="fb__hal_8h_source.html#l00062">ON</a>.</p>
-
-<p>Referenced by <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>.</p>
-
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dynsection">
-<div class="center"><img src="fb__hal_8c_a30c6b413389944e9362e0bb20467962e_icgraph.png" border="0" usemap="#fb__hal_8c_a30c6b413389944e9362e0bb20467962e_icgraph_map" alt=""></div>
-<map name="fb__hal_8c_a30c6b413389944e9362e0bb20467962e_icgraph_map" id="fb__hal_8c_a30c6b413389944e9362e0bb20467962e_icgraph">
-<area shape="rect" id="node3" href="msg__queue_8c.html#ad79d9162c65e803240d20adab3ea60f0" title="Allocate space for a message and return a pointer to it." alt="" coords="108,584,185,613"/><area shape="rect" id="node5" href="msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="261,219,336,248"/><area shape="rect" id="node29" href="fb__prot_8c.html#a1ca66f4c62a2c7c7ff2c8ebef64465da" title="Create a new telegram and and return pointer to it." alt="" coords="252,404,345,433"/><area shape="rect" id="node45" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="244,531,353,560"/><area shape="rect" id="node49" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="237,584,360,613"/><area shape="rect" id="node51" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="248,637,349,667"/><area shape="rect" id="node61" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="235,703,363,732"/><area shape="rect" id="node65" href="fb__hal_8c.html#adbc1536a5853b8f6c824462a53cf4f67" title="A start bit was received in the past now read bit for bit until the end of the octet..." alt="" coords="241,781,356,811"/><area shape="rect" id="node7" href="fb__eeprom_8c.html#a68f918bbf3e9cd0ec46a706bb5c8b9d3" title="Write data to the eeprom cache and trigger background process to write eeprom cache..." alt="" coords="427,219,568,248"/><area shape="rect" id="node21" href="lib_2uart_8c.html#a8eaa1ed3292777a3ed02045bd4b612c3" title="Queue a character and start background sending to rs232." alt="" coords="460,85,535,115"/><area shape="rect" id="node9" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="659,272,781,301"/><area shape="rect" id="node11" href="fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="633,165,807,195"/><area shape="rect" id="node13" href="fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="668,219,772,248"/><area shape="rect" id="node15" href="fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="869,165,992,195"/><area shape="rect" id="node17" href="fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="879,219,983,248"/><area shape="rect" id="node19" href="fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="856,272,1005,301"/><area shape="rect" id="node23" href="lib_2uart_8c.html#a1e9aadc7cf5409fa2408900b44ee1f87" title="Queue a character and write it as a hex value to rs232." alt="" coords="684,112,756,141"/><area shape="rect" id="node25" href="lib_2uart_8c.html#a235e7f4c195d6d877cc0bb2facff043b" title="Queue a newline and write it to the rs232." alt="" coords="673,5,767,35"/><area shape="rect" id="node27" href="lib_2uart_8c.html#ae52facc0a56086a365bb0018160d8d71" title="Display string on rs232." alt="" coords="683,59,757,88"/><area shape="rect" id="node31" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="669,468,771,497"/><area shape="rect" id="node33" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="635,325,805,355"/><area shape="rect" id="node35" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="659,403,781,432"/><area shape="rect" id="node37" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="411,377,584,407"/><area shape="rect" id="node39" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="460,324,535,353"/><area shape="rect" id="node47" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="427,532,568,561"/><area shape="rect" id="node53" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="433,636,561,665"/><area shape="rect" id="node55" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="645,636,795,665"/><area shape="rect" id="node57" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="437,689,557,719"/><area shape="rect" id="node63" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="472,743,523,772"/><area shape="rect" id="node67" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="476,796,519,825"/></map>
-</div>
-</p>
 
 </div>
 </div>
@@ -910,9 +917,9 @@ Here is the caller graph for this function:</div>
 
 <p>Function is called from message queue system to trigger the interrupt for transmitting data. </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00141">checksum</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="fb__hal_8c_source.html#l00102">START_TX</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00120">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00131">tx_state</a>, and <a class="el" href="fb__hal_8c_source.html#l00140">wr_cnt</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00147">checksum</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="fb__hal_8c_source.html#l00104">START_TX</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00127">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00138">tx_state</a>, and <a class="el" href="fb__hal_8c_source.html#l00146">wr_cnt</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00947">fb_hal_txqueue_msg()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00968">fb_hal_txqueue_msg()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -953,7 +960,7 @@ Here is the caller graph for this function:</div>
 <p>That function can be use to send a test telegramm to the bus, e.g. </p>
 <p>to measure signal levels in circuit. </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00947">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__prot_8h_source.html#l00102">fbus_hdr::apci</a>, <a class="el" href="fb__prot_8h_source.html#l00097">fbus_hdr::ctrl</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="fb__prot_8h_source.html#l00099">fbus_hdr::dest</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00968">fb_hal_txqueue_msg()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__prot_8h_source.html#l00100">fbus_hdr::npci</a>, <a class="el" href="fb__prot_8h_source.html#l00082">PA_ADDRESS_HIGH</a>, <a class="el" href="fb__prot_8h_source.html#l00083">PA_ADDRESS_LOW</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="fb__prot_8h_source.html#l00098">fbus_hdr::src</a>, and <a class="el" href="fb__prot_8h_source.html#l00101">fbus_hdr::tpci</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__in8__app_8c_source.html#l00870">main()</a>.</p>
 
@@ -996,12 +1003,12 @@ Here is the caller graph for this function:</div>
 <p>Telegram received completly now decided which telegram type was recieved and if it is necessary to send confirmation back. </p>
 <p>If confirmation is requested return (1 octet) else wait 5.xxms which means end of telegram. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000094">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm on prio 1&amp;2 wait 5,216ms, on prio 3&amp;4 wait 5,216ms+312탎 </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000097">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm on prio 1&amp;2 wait 5,216ms, on prio 3&amp;4 wait 5,216ms+312탎 </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00139">fb_ackvalue</a>, <a class="el" href="fb__hal_8c_source.html#l00350">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="fb__hal_8c_source.html#l00102">START_TX</a>, and <a class="el" href="fb__hal_8c_source.html#l00114">TS_WAITING_BUS_FREE</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00145">fb_ackvalue</a>, <a class="el" href="fb__hal_8c_source.html#l00355">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00104">START_TX</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, and <a class="el" href="fb__hal_8c_source.html#l00121">TS_WAITING_BUS_FREE</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1017,7 +1024,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a4738339212f7be2d3090deb995953529_icgraph.png" border="0" usemap="#fb__hal_8c_a4738339212f7be2d3090deb995953529_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a4738339212f7be2d3090deb995953529_icgraph_map" id="fb__hal_8c_a4738339212f7be2d3090deb995953529_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="133,5,176,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="145,5,188,35"/></map>
 </div>
 </p>
 
@@ -1042,9 +1049,12 @@ Here is the caller graph for this function:</div>
 <p>Telegram received. </p>
 <p>Stop timer </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00141">checksum</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00058">MSG_ALLOC</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="fb__hal_8c_source.html#l00102">START_TX</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00852">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00120">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00131">tx_state</a>, and <a class="el" href="fb__hal_8c_source.html#l00140">wr_cnt</a>.</p>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000098">Todo:</a></b></dt><dd>define a macro for following instructions in freebus-atmegaxxx.h </dd></dl>
+</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00147">checksum</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="fb__hal_8h_source.html#l00053">FB_BUS_FREE</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00058">MSG_ALLOC</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="fb__hal_8c_source.html#l00104">START_TX</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>, <a class="el" href="fb__hal_8c_source.html#l00127">TX_SEND_DATA</a>, <a class="el" href="fb__hal_8c_source.html#l00138">tx_state</a>, and <a class="el" href="fb__hal_8c_source.html#l00146">wr_cnt</a>.</p>
+
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1060,7 +1070,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a4f090f79722be364605b7c776db2a78a_icgraph.png" border="0" usemap="#fb__hal_8c_a4f090f79722be364605b7c776db2a78a_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a4f090f79722be364605b7c776db2a78a_icgraph_map" id="fb__hal_8c_a4f090f79722be364605b7c776db2a78a_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="160,5,203,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="180,5,223,35"/></map>
 </div>
 </p>
 
@@ -1085,9 +1095,9 @@ Here is the caller graph for this function:</div>
 <p>A start bit was received in the past now read bit for bit until the end of the octet is received (10 bit). </p>
 <p>Then save the octet and start the timer for the next octet. </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="fb__hal_8c_source.html#l00134">bitcounter</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="fb__hal_8h_source.html#l00048">FB_FRAME_ERR</a>, <a class="el" href="fb__hal_8h_source.html#l00049">FB_PARITY_ERR</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="fb__hal_8c_source.html#l00135">rxframe</a>, and <a class="el" href="fb__hal_8c_source.html#l00111">TS_WAITING_TIMEOUT</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00061">AllocMsgI()</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00063">DEBUG_PUTHEX</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="fb__hal_8h_source.html#l00048">FB_FRAME_ERR</a>, <a class="el" href="fb__hal_8h_source.html#l00049">FB_PARITY_ERR</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00141">rxframe</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, and <a class="el" href="fb__hal_8c_source.html#l00118">TS_WAITING_TIMEOUT</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1103,7 +1113,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_adbc1536a5853b8f6c824462a53cf4f67_icgraph.png" border="0" usemap="#fb__hal_8c_adbc1536a5853b8f6c824462a53cf4f67_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_adbc1536a5853b8f6c824462a53cf4f67_icgraph_map" id="fb__hal_8c_adbc1536a5853b8f6c824462a53cf4f67_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="168,5,211,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="185,5,228,35"/></map>
 </div>
 </p>
 
@@ -1127,9 +1137,9 @@ Here is the caller graph for this function:</div>
 
 <p>Telegram send completely but ack wasn't received in timerframe, set error flag in control structure. </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00882">tx_error()</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1145,7 +1155,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a3cef2c79df784b2c7e52dde126b0e0d0_icgraph.png" border="0" usemap="#fb__hal_8c_a3cef2c79df784b2c7e52dde126b0e0d0_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a3cef2c79df784b2c7e52dde126b0e0d0_icgraph_map" id="fb__hal_8c_a3cef2c79df784b2c7e52dde126b0e0d0_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="165,5,208,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="188,5,231,35"/></map>
 </div>
 </p>
 
@@ -1170,12 +1180,12 @@ Here is the caller graph for this function:</div>
 <p>That function is called if the timeout of 384탎 tiggered. </p>
 <p>That means the end of the telegram is reached. Now prepare all for the ack which must be sent within 1.352탎-384탎. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>goto sollte man immer vermeiden </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000096">Todo:</a></b></dt><dd>goto sollte man immer vermeiden </dd></dl>
 </p>
 
-<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00059">DISABLE_RX_INT</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00139">fb_ackvalue</a>, <a class="el" href="fb__hal_8h_source.html#l00048">FB_FRAME_ERR</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00056">FB_MESSAGE</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8h_source.html#l00049">FB_PARITY_ERR</a>, <a class="el" href="fb__hal_8c_source.html#l00323">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00099">FreeMsg()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="msg__queue_8h_source.html#l00060">MSG_WAIT_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8h_source.html#l00061">OFF</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00112">TS_WAITING_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00852">tx_complete()</a>, and <a class="el" href="fb__hal_8c_source.html#l00882">tx_error()</a>.</p>
+<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00057">DEBUG_PUTS</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00059">DISABLE_RX_INT</a>, <a class="el" href="fb_8h_source.html#l00031">FB_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00145">fb_ackvalue</a>, <a class="el" href="fb__hal_8h_source.html#l00048">FB_FRAME_ERR</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00056">FB_MESSAGE</a>, <a class="el" href="fb_8h_source.html#l00032">FB_NACK</a>, <a class="el" href="fb__hal_8h_source.html#l00049">FB_PARITY_ERR</a>, <a class="el" href="fb__hal_8c_source.html#l00328">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00099">FreeMsg()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="msg__queue_8h_source.html#l00060">MSG_WAIT_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, <a class="el" href="fb__hal_8c_source.html#l00119">TS_WAITING_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, and <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1191,7 +1201,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_af44a3cacd6e2ffabfab5a4628b796a79_icgraph.png" border="0" usemap="#fb__hal_8c_af44a3cacd6e2ffabfab5a4628b796a79_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_af44a3cacd6e2ffabfab5a4628b796a79_icgraph_map" id="fb__hal_8c_af44a3cacd6e2ffabfab5a4628b796a79_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="155,5,197,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="177,5,220,35"/></map>
 </div>
 </p>
 
@@ -1215,14 +1225,14 @@ Here is the caller graph for this function:</div>
 
 <p>Postive acknowledge received, dequeue message. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000095">Todo:</a></b></dt><dd>: recalculate timer settings for different priorities </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000096">Todo:</a></b></dt><dd>: recalculate timer settings for different priorities </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000097">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000099">Todo:</a></b></dt><dd>: recalculate timer settings for different priorities </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000100">Todo:</a></b></dt><dd>: recalculate timer settings for different priorities </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000101">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
 </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00097">EIB_RECEIVE_MODE</a>, <a class="el" href="msg__queue_8h_source.html#l00067">msg::flags</a>, <a class="el" href="msg__queue_8h_source.html#l00061">MSG_COMPLETE</a>, <a class="el" href="msg__queue_8h_source.html#l00050">MSG_HI_PRIO</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, and <a class="el" href="fb__hal_8c_source.html#l00114">TS_WAITING_BUS_FREE</a>.</p>
+<p>References <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00099">EIB_RECEIVE_MODE</a>, <a class="el" href="msg__queue_8h_source.html#l00067">msg::flags</a>, <a class="el" href="msg__queue_8h_source.html#l00061">MSG_COMPLETE</a>, <a class="el" href="msg__queue_8h_source.html#l00050">MSG_HI_PRIO</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, and <a class="el" href="fb__hal_8c_source.html#l00121">TS_WAITING_BUS_FREE</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1238,7 +1248,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a02bd6a0eef1e1be4a306236d886f04bb_icgraph.png" border="0" usemap="#fb__hal_8c_a02bd6a0eef1e1be4a306236d886f04bb_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a02bd6a0eef1e1be4a306236d886f04bb_icgraph_map" id="fb__hal_8c_a02bd6a0eef1e1be4a306236d886f04bb_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="147,5,253,35"/><area shape="rect" id="node7" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="149,59,251,88"/><area shape="rect" id="node5" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="301,32,344,61"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="164,5,287,35"/><area shape="rect" id="node7" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="165,59,285,88"/><area shape="rect" id="node5" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="337,32,380,61"/></map>
 </div>
 </p>
 
@@ -1251,7 +1261,6 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">static void tx_error </td>
           <td>(</td>
-          <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [static]</code></td>
@@ -1263,13 +1272,13 @@ Here is the caller graph for this function:</div>
 <p>Negative acknowledge received, check repeat counter and if repeat is not expired resend telegram. </p>
 <p>Set the collision flag. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000098">Todo:</a></b></dt><dd>calculate always high prio </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000099">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000102">Todo:</a></b></dt><dd>calculate always high prio </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000103">Todo:</a></b></dt><dd>timeout depends on the message type, repeat, alarm </dd></dl>
 </p>
 
-<p>References <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00050">FB_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00136">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00067">msg::flags</a>, <a class="el" href="msg__queue_8h_source.html#l00061">MSG_COMPLETE</a>, <a class="el" href="msg__queue_8h_source.html#l00050">MSG_HI_PRIO</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, and <a class="el" href="fb__hal_8c_source.html#l00114">TS_WAITING_BUS_FREE</a>.</p>
+<p>References <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00050">FB_COLLISION</a>, <a class="el" href="fb__hal_8c_source.html#l00142">fbstat</a>, <a class="el" href="msg__queue_8h_source.html#l00067">msg::flags</a>, <a class="el" href="msg__queue_8h_source.html#l00058">MSG_ALLOC</a>, <a class="el" href="msg__queue_8h_source.html#l00061">MSG_COMPLETE</a>, <a class="el" href="msg__queue_8h_source.html#l00050">MSG_HI_PRIO</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="msg__queue_8h_source.html#l00071">msg::repeat</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, and <a class="el" href="fb__hal_8c_source.html#l00121">TS_WAITING_BUS_FREE</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00773">timer_resp_tout()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00787">timer_resp_tout()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1285,7 +1294,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_afcdb445c1b6cc3e39d904592286349ee_icgraph.png" border="0" usemap="#fb__hal_8c_afcdb445c1b6cc3e39d904592286349ee_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_afcdb445c1b6cc3e39d904592286349ee_icgraph_map" id="fb__hal_8c_afcdb445c1b6cc3e39d904592286349ee_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="280,24,323,53"/><area shape="rect" id="node5" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="120,24,232,53"/><area shape="rect" id="node8" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="125,77,227,107"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="313,25,356,54"/><area shape="rect" id="node5" href="fb__hal_8c.html#a3cef2c79df784b2c7e52dde126b0e0d0" title="Telegram send completely but ack wasn&#39;t received in timerframe, set error flag..." alt="" coords="132,25,263,54"/><area shape="rect" id="node8" href="fb__hal_8c.html#af44a3cacd6e2ffabfab5a4628b796a79" title="That function is called if the timeout of 384탎 tiggered." alt="" coords="137,78,257,108"/></map>
 </div>
 </p>
 
@@ -1309,9 +1318,9 @@ Here is the caller graph for this function:</div>
 
 <p>Put the checksum in fb_frame and set state machine to wait for ack. </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00141">checksum</a>, <a class="el" href="fb__hal_8c_source.html#l00350">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l00175">next_tx_state()</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, and <a class="el" href="fb__hal_8c_source.html#l00122">TX_WAITING_ACK</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00147">checksum</a>, <a class="el" href="fb__hal_8c_source.html#l00355">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l00180">next_tx_state()</a>, and <a class="el" href="fb__hal_8c_source.html#l00129">TX_WAITING_ACK</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1327,7 +1336,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a1a372817454f06132f80e02fbc7005df_icgraph.png" border="0" usemap="#fb__hal_8c_a1a372817454f06132f80e02fbc7005df_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a1a372817454f06132f80e02fbc7005df_icgraph_map" id="fb__hal_8c_a1a372817454f06132f80e02fbc7005df_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="189,5,232,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="207,5,249,35"/></map>
 </div>
 </p>
 
@@ -1352,9 +1361,9 @@ Here is the caller graph for this function:</div>
 <p>Generate the telegram checksum and copy the next octet to send to fb_frame. </p>
 <p>If the telegramm is finished set state machine to send the checksum. </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00141">checksum</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__hal_8c_source.html#l00096">EIB_SEND_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00350">fb_putc()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__hal_8c_source.html#l00175">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00121">TX_SEND_CHECKSUM</a>, and <a class="el" href="fb__hal_8c_source.html#l00140">wr_cnt</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00147">checksum</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__hal_8c_source.html#l00098">EIB_SEND_MODE</a>, <a class="el" href="fb__hal_8c_source.html#l00355">fb_putc()</a>, <a class="el" href="msg__queue_8h_source.html#l00069">msg::len</a>, <a class="el" href="fb__hal_8c_source.html#l00180">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00128">TX_SEND_CHECKSUM</a>, and <a class="el" href="fb__hal_8c_source.html#l00146">wr_cnt</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, and <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, and <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1370,7 +1379,7 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a8155185b5b41794d6ead2aba9870b9fa_icgraph.png" border="0" usemap="#fb__hal_8c_a8155185b5b41794d6ead2aba9870b9fa_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a8155185b5b41794d6ead2aba9870b9fa_icgraph_map" id="fb__hal_8c_a8155185b5b41794d6ead2aba9870b9fa_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="359,136,401,165"/><area shape="rect" id="node5" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="165,215,251,244"/><area shape="rect" id="node44" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="155,111,261,140"/><area shape="rect" id="node7" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="309,215,451,244"/><area shape="rect" id="node9" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="756,5,857,35"/><area shape="rect" id="node11" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="721,59,892,88"/><area shape="rect" id="node13" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="745,165,868,195"/><area shape="rect" id="node15" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="499,215,672,244"/><area shape="rect" id="node17" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="548,111,623,140"/><area shape="rect" id="node24" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="531,268,640,297"/><area shape="rect" id="node28" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="524,321,647,351"/><area shape="rect" id="node30" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="535,375,636,404"/><area shape="rect" id="node40" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="521,453,649,483"/><area shape="rect" id="node22" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="745,112,868,141"/><area shape="rect" id="node26" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="736,268,877,297"/><area shape="rect" id="node32" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="743,373,871,403"/><area shape="rect" id="node34" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="941,373,1091,403"/><area shape="rect" id="node36" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="747,427,867,456"/><area shape="rect" id="node42" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="781,480,832,509"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="400,136,443,165"/><area shape="rect" id="node5" href="fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="180,215,281,244"/><area shape="rect" id="node44" href="fb__hal_8c.html#a4f090f79722be364605b7c776db2a78a" title="Telegram received." alt="" coords="169,111,292,140"/><area shape="rect" id="node7" href="fb__hal_8c.html#abbf23a2adcf8b8280c8ce17d4a12951b" title="Queue message for sending." alt="" coords="341,215,501,244"/><area shape="rect" id="node9" href="fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="829,5,939,35"/><area shape="rect" id="node11" href="fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="785,59,983,88"/><area shape="rect" id="node13" href="fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="817,165,951,195"/><area shape="rect" id="node15" href="fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="549,215,736,244"/><area shape="rect" id="node17" href="fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="601,111,684,140"/><area shape="rect" id="node24" href="fb__app_8h.html#ace6b0e9279dd6bc5c4238fd4bac237ba" title="Read status from port and return it." alt="" coords="580,268,705,297"/><area shape="rect" id="node28" href="fb__prot_8c.html#ade80ef84f4f14d25a2283b43d9c1a54f" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="573,321,712,351"/><area shape="rect" id="node30" href="fb__prot_8c.html#a990a78673785da5bb024bfaf60e0984a" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="585,375,700,404"/><area shape="rect" id="node40" href="fb__hal_8c.html#ab475358073d6ed6f59de0b9fd41e65ee" title="That function can be use to send a test telegramm to the bus, e.g." alt="" coords="569,453,716,483"/><area shape="rect" id="node22" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="816,112,952,141"/><area shape="rect" id="node26" href="fb__prot_8c.html#ae56aada1e48493023c8f3ecf7a1e71a7" title="A read request to the application." alt="" coords="807,268,961,297"/><area shape="rect" id="node32" href="fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="815,373,953,403"/><area shape="rect" id="node34" href="fb__in8__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="1033,373,1209,403"/><area shape="rect" id="node36" href="fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="817,427,951,456"/><area shape="rect" id="node42" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="857,480,911,509"/></map>
 </div>
 </p>
 
@@ -1394,9 +1403,9 @@ Here is the caller graph for this function:</div>
 
 <p>All data + checksum transmitted, stop IRQ and wait for acknowledge. </p>
 
-<p>References <a class="el" href="fb__hal_8c_source.html#l00097">EIB_RECEIVE_MODE</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="msg__queue_8h_source.html#l00060">MSG_WAIT_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00175">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00142">operationMode</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00075">RELOAD_TIMER0</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00113">TS_WAITING_ACK_RESP</a>, and <a class="el" href="fb__hal_8c_source.html#l00119">TX_NONE</a>.</p>
+<p>References <a class="el" href="fb__hal_8c_source.html#l00099">EIB_RECEIVE_MODE</a>, <a class="el" href="freebus-atmega16_8h_source.html#l00064">ENABLE_RX_INT</a>, <a class="el" href="msg__queue_8h_source.html#l00060">MSG_WAIT_ACK</a>, <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00180">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00148">operationMode</a>, <a class="el" href="fb__hal_8c_source.html#l00141">rxframe</a>, <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>, <a class="el" href="fb__hal_8c_source.html#l00149">timer0_skips</a>, <a class="el" href="fb__hal_8c_source.html#l00120">TS_WAITING_ACK_RESP</a>, and <a class="el" href="fb__hal_8c_source.html#l00126">TX_NONE</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1412,30 +1421,13 @@ Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__hal_8c_a1e9ccf79644054a2acf54780c4ee0fee_icgraph.png" border="0" usemap="#fb__hal_8c_a1e9ccf79644054a2acf54780c4ee0fee_icgraph_map" alt=""></div>
 <map name="fb__hal_8c_a1e9ccf79644054a2acf54780c4ee0fee_icgraph_map" id="fb__hal_8c_a1e9ccf79644054a2acf54780c4ee0fee_icgraph">
-<area shape="rect" id="node3" href="fb__hal_8c.html#add2d7cdddfb682dcc0391e60cf42c7d6" title="The ISR handles which function must be called." alt="" coords="144,5,187,35"/></map>
+<area shape="rect" id="node3" href="fb__hal_8c.html#aec43762dc86e029b395d4e5819192c2d" title="The ISR handles which function must be called." alt="" coords="159,5,201,35"/></map>
 </div>
 </p>
 
 </div>
 </div>
 <hr/><h2>Variable Documentation</h2>
-<a class="anchor" id="a129da25c28f6ba2df75cbc4be23ef2a4"></a><!-- doxytag: member="fb_hal.c::bitcounter" ref="a129da25c28f6ba2df75cbc4be23ef2a4" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">volatile uint8_t <a class="el" href="fb__hal_8c.html#a129da25c28f6ba2df75cbc4be23ef2a4">bitcounter</a><code> [static]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>counter of the received bits </p>
-
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>, and <a class="el" href="fb__hal_8c_source.html#l00544">timer_rec_chars()</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a89896b172be5ecbbe195b793a91fe4f4"></a><!-- doxytag: member="fb_hal.c::checksum" ref="a89896b172be5ecbbe195b793a91fe4f4" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -1449,7 +1441,7 @@ Here is the caller graph for this function:</div>
 
 <p>checksum of the EIB telegram (over all octets) </p>
 
-<p>Referenced by <a class="el" href="message_8c_source.html#l00068">CMessage::CalcChecksum()</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00806">tx_send_checksum()</a>, and <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>.</p>
+<p>Referenced by <a class="el" href="message_8c_source.html#l00068">CMessage::CalcChecksum()</a>, <a class="el" href="fb__prot_8c_source.html#l00797">fb_handlemsg()</a>, <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00820">tx_send_checksum()</a>, and <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1458,7 @@ Here is the caller graph for this function:</div>
 
 <p>if a response byte should be send back set this variable to FB_ACK, FB_NACK, FB_BUSY or FB_NONE </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00323">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00706">timer_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00328">fb_send_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 </div>
 </div>
@@ -1483,7 +1475,7 @@ Here is the caller graph for this function:</div>
 
 <p>the current octet to transmit, including start, parity and stop bit </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00350">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>, and <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00535">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00355">fb_putc()</a>, <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, and <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>.</p>
 
 </div>
 </div>
@@ -1500,7 +1492,7 @@ Here is the caller graph for this function:</div>
 
 <p>the status for transmition (error status, all ok) </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00370">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00219">sendTestTelegram()</a>, <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00544">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>, and <a class="el" href="fb__hal_8c_source.html#l00882">tx_error()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00535">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00224">sendTestTelegram()</a>, <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>, <a class="el" href="fb__hal_8c_source.html#l00572">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>, and <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>.</p>
 
 </div>
 </div>
@@ -1517,7 +1509,7 @@ Here is the caller graph for this function:</div>
 
 <p>defines if sending or receiving data </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00989">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00370">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00852">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>, and <a class="el" href="fb__hal_8c_source.html#l00825">tx_wait_ack()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00535">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
 
 </div>
 </div>
@@ -1549,7 +1541,7 @@ Here is the caller graph for this function:</div>
 
 <p>save the next state while be in receiving mode </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00185">next_rx_state()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, and <a class="el" href="fb__hal_8c_source.html#l00190">next_rx_state()</a>.</p>
 
 </div>
 </div>
@@ -1566,7 +1558,24 @@ Here is the caller graph for this function:</div>
 
 <p>hold data of the octet while receiving data. That variable is filled bit per bit. </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00544">timer_rec_chars()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l01010">fbhal_Init()</a>, <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00572">timer_rec_chars()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1769822e1fa84e6790b15ba3ec99d32e"></a><!-- doxytag: member="fb_hal.c::timer0_skips" ref="a1769822e1fa84e6790b15ba3ec99d32e" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile uint8_t <a class="el" href="fb__hal_8c.html#a1769822e1fa84e6790b15ba3ec99d32e">timer0_skips</a><code> [static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>counter for skipping timer0 interrupts </p>
+
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00375">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00717">timer_ack()</a>, <a class="el" href="fb__hal_8c_source.html#l00572">timer_rec_chars()</a>, <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>, <a class="el" href="fb__hal_8c_source.html#l00863">tx_complete()</a>, <a class="el" href="fb__hal_8c_source.html#l00893">tx_error()</a>, and <a class="el" href="fb__hal_8c_source.html#l00835">tx_wait_ack()</a>.</p>
 
 </div>
 </div>
@@ -1598,7 +1607,7 @@ Here is the caller graph for this function:</div>
 
 <p>save the next state while be in transmitting mode </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00507">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00402">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00175">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, and <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00535">checkForCollisions()</a>, <a class="el" href="fb__hal_8c_source.html#l00422">ISR()</a>, <a class="el" href="fb__hal_8c_source.html#l00180">next_tx_state()</a>, <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, and <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>.</p>
 
 </div>
 </div>
@@ -1615,7 +1624,7 @@ Here is the caller graph for this function:</div>
 
 <p>number of octet in telegram to send </p>
 
-<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00915">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00730">timer_bus_free()</a>, and <a class="el" href="fb__hal_8c_source.html#l00783">tx_send_data()</a>.</p>
+<p>Referenced by <a class="el" href="fb__hal_8c_source.html#l00937">retrigger_tx()</a>, <a class="el" href="fb__hal_8c_source.html#l00740">timer_bus_free()</a>, and <a class="el" href="fb__hal_8c_source.html#l00797">tx_send_data()</a>.</p>
 
 </div>
 </div>

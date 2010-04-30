@@ -13,6 +13,7 @@
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -63,11 +64,11 @@
 <a name="l00047"></a><a class="code" href="lcd-lib_8h.html#a6aa8aa2057294b7d06088e834299b369">00047</a> <span class="preprocessor"></span><span class="preprocessor">#define LCD_CLEAR           0x01          </span>
 <a name="l00048"></a><a class="code" href="lcd-lib_8h.html#ae0e309ccad89222eb3457f2da9f2bb8d">00048</a> <span class="preprocessor">#define LCD_HOME            0x02          </span>
 <a name="l00049"></a>00049 <span class="preprocessor"></span>
-<a name="l00050"></a>00050 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#a3afa3406e59f5137c3ba14e89f493cd0" title="Init the LCD.">lcd_init</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> cmd);
+<a name="l00050"></a>00050 <span class="preprocessor"></span><span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="group__pfleury__lcd.html#ga9af28b2779326b63ff4356e2b1828984" title="Initialize display and select type of cursor.">lcd_init</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> cmd);
 <a name="l00051"></a>00051 <span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#af463c2eb564e9671d5302ca760ada009" title="Init the controller.">lcd_controller_init</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> cmd);
 <a name="l00052"></a>00052 <span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#a95b367477f61929bba10c80e0cc61540" title="Function which is called for all write proceses.">lcd_write_global</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> byte, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>);
-<a name="l00053"></a>00053 <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#a8ffdfcac7638368ff04364c14984266e" title="Write a string to the LCD.">lcd_puts</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s);
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#afa7e36b95c43d603f510273ad077cbbe" title="Display a single character on the LCD.">lcd_putc</a>(<span class="keywordtype">char</span> c);
+<a name="l00053"></a>00053 <span class="keywordtype">void</span> <a class="code" href="group__pfleury__lcd.html#ga8ffdfcac7638368ff04364c14984266e" title="Display string without auto linefeed.">lcd_puts</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s);
+<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe" title="Display character at current cursor position.">lcd_putc</a>(<span class="keywordtype">char</span> c);
 <a name="l00055"></a>00055 <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#a7327a2088a6342e03a124c2335c73520" title="Display a newline on the LCD display.">lcd_newline</a>(<span class="keywordtype">void</span>);
 <a name="l00056"></a>00056 <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#ac86567882f677c3ea60730d172d86072" title="Display a character as digit.">lcd_digit</a>(uint8_t d);
 <a name="l00057"></a>00057 <span class="keywordtype">void</span> <a class="code" href="lcd-lib_8h.html#aebffee1fce6172fdae085e26c81f1299" title="Display a char as hex.">lcd_hex</a>(uint8_t d);

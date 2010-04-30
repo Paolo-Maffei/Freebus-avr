@@ -13,6 +13,7 @@
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -63,33 +64,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">bit for user program enable  <a href="#a2df2eb446757ce39e8215396b2890b77"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb_8h.html#a3c33d96e626bacaf0287c22d2935d80c">SS_DM</a>&nbsp;&nbsp;&nbsp;(1 &lt;&lt; 6)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">bit for download mode  <a href="#a3c33d96e626bacaf0287c22d2935d80c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>&nbsp;&nbsp;&nbsp;(0!=0)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">macro which will always return false  <a href="#aa93f0eb578d23995850d61f7d61c55c1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>&nbsp;&nbsp;&nbsp;(0==0)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">macro which will always return true  <a href="#aa8cecfc5c5c054d2875c03e77b7be15d"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>Define general values used in bus communication. </p>
 <dl class="author"><dt><b>Author:</b></dt><dd>Dirk Opfer </dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>Sat Apr 05 22:52:06 2008 </dd></dl>
 <hr/><h2>Define Documentation</h2>
-<a class="anchor" id="aa93f0eb578d23995850d61f7d61c55c1"></a><!-- doxytag: member="fb.h::FALSE" ref="aa93f0eb578d23995850d61f7d61c55c1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define FALSE&nbsp;&nbsp;&nbsp;(0!=0)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>macro which will always return false </p>
-
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00250">eeprom_busy()</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a1b0499c100f686fe464f9f139e6fa98d"></a><!-- doxytag: member="fb.h::FB_ACK" ref="a1b0499c100f686fe464f9f139e6fa98d" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -103,7 +83,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Value for an ACK. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__hal_8c_source.html#l00323">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00655">Ignore()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00416">T_Connect_Req()</a>, <a class="el" href="fb__prot_8c_source.html#l00439">T_Disconnect_Req()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00486">A_DeviceDescriptor_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, <a class="el" href="fb__hal_8c_source.html#l00328">fb_send_ack()</a>, <a class="el" href="fb__prot_8c_source.html#l00655">Ignore()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00340">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00416">T_Connect_Req()</a>, <a class="el" href="fb__prot_8c_source.html#l00439">T_Disconnect_Req()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 </div>
 </div>
@@ -152,7 +132,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>Value for a NACK. </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00410">runApplication()</a>, and <a class="el" href="fb__hal_8c_source.html#l00627">timer_timeout()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__2-dimmer__app_8c_source.html#l00261">readApplication()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00410">runApplication()</a>, and <a class="el" href="fb__hal_8c_source.html#l00636">timer_timeout()</a>.</p>
 
 </div>
 </div>
@@ -231,7 +211,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>bit for programming mode </p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, and <a class="el" href="fb__hal_8c_source.html#l00261">fbhal_checkProgTaster()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00386">A_PhysicalAddress_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, and <a class="el" href="fb__hal_8c_source.html#l00266">fbhal_checkProgTaster()</a>.</p>
 
 </div>
 </div>
@@ -277,23 +257,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="memdoc">
 
 <p>bit for user program enable </p>
-
-</div>
-</div>
-<a class="anchor" id="aa8cecfc5c5c054d2875c03e77b7be15d"></a><!-- doxytag: member="fb.h::TRUE" ref="aa8cecfc5c5c054d2875c03e77b7be15d" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TRUE&nbsp;&nbsp;&nbsp;(0==0)</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>macro which will always return true </p>
-
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00250">eeprom_busy()</a>.</p>
 
 </div>
 </div>

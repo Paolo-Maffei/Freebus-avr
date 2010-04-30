@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node1" href="$structeeprom__cmds.html" title="Data will be written to the eeprom byte by byte that structure save data and variables..." alt="" coords="5,5,109,35"/>
+<area shape="rect" id="node1" href="$classCTask.html" title="CTask" alt="" coords="5,32,67,61"/>
+<area shape="rect" id="node3" href="$classCApplication.html" title="CApplication" alt="" coords="116,5,220,35"/>
+<area shape="rect" id="node5" href="$classCLed.html" title="CLed" alt="" coords="140,59,196,88"/>
 </map>

@@ -13,6 +13,7 @@
     <ul>
       <li><a href="main.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&nbsp;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -81,10 +82,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Init the controller.  <a href="#af463c2eb564e9671d5302ca760ada009"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcd-lib_8h.html#a95b367477f61929bba10c80e0cc61540">lcd_write_global</a> (unsigned char byte, unsigned int)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Function which is called for all write proceses.  <a href="#a95b367477f61929bba10c80e0cc61540"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcd-lib_8h.html#a8ffdfcac7638368ff04364c14984266e">lcd_puts</a> (const char *s)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write a string to the LCD.  <a href="#a8ffdfcac7638368ff04364c14984266e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcd-lib_8h.html#afa7e36b95c43d603f510273ad077cbbe">lcd_putc</a> (char c)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display a single character on the LCD.  <a href="#afa7e36b95c43d603f510273ad077cbbe"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pfleury__lcd.html#ga8ffdfcac7638368ff04364c14984266e">lcd_puts</a> (const char *s)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display string without auto linefeed.  <a href="group__pfleury__lcd.html#ga8ffdfcac7638368ff04364c14984266e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe">lcd_putc</a> (char c)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display character at current cursor position.  <a href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcd-lib_8h.html#a7327a2088a6342e03a124c2335c73520">lcd_newline</a> (void)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Display a newline on the LCD display.  <a href="#a7327a2088a6342e03a124c2335c73520"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="lcd-lib_8h.html#ac86567882f677c3ea60730d172d86072">lcd_digit</a> (uint8_t d)</td></tr>
@@ -246,8 +247,6 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>on which port the LCD e pin is connected </p>
 
-<p>Referenced by <a class="el" href="lcd-lib_8c_source.html#l00054">lcd_init()</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="ae0e309ccad89222eb3457f2da9f2bb8d"></a><!-- doxytag: member="lcd&#45;lib.h::LCD_HOME" ref="ae0e309ccad89222eb3457f2da9f2bb8d" args="" -->
@@ -263,7 +262,7 @@ This graph shows which files directly or indirectly include this file:</div>
 
 <p>jump to home position on LCD </p>
 
-<p>Referenced by <a class="el" href="lcd-lib_8c_source.html#l00075">lcd_controller_init()</a>.</p>
+<p>Referenced by <a class="el" href="lcd-lib_8c_source.html#l00075">lcd_controller_init()</a>, and <a class="el" href="lcd_8c_source.html#l00426">lcd_home()</a>.</p>
 
 </div>
 </div>
@@ -415,14 +414,14 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="lcd-lib_8c_source.html#l00170">lcd_putc()</a>.</p>
+<p>References <a class="el" href="lcd_8c_source.html#l00437">lcd_putc()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="lcd-lib_8h_ac86567882f677c3ea60730d172d86072_cgraph.png" border="0" usemap="#lcd-lib_8h_ac86567882f677c3ea60730d172d86072_cgraph_map" alt=""></div>
 <map name="lcd-lib_8h_ac86567882f677c3ea60730d172d86072_cgraph_map" id="lcd-lib_8h_ac86567882f677c3ea60730d172d86072_cgraph">
-<area shape="rect" id="node3" href="lcd-lib_8h.html#afa7e36b95c43d603f510273ad077cbbe" title="Display a single character on the LCD." alt="" coords="127,5,196,35"/></map>
+<area shape="rect" id="node3" href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe" title="Display character at current cursor position." alt="" coords="132,5,209,35"/></map>
 </div>
 </p>
 
@@ -453,14 +452,14 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="lcd-lib_8c_source.html#l00170">lcd_putc()</a>.</p>
+<p>References <a class="el" href="lcd_8c_source.html#l00437">lcd_putc()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="lcd-lib_8h_aebffee1fce6172fdae085e26c81f1299_cgraph.png" border="0" usemap="#lcd-lib_8h_aebffee1fce6172fdae085e26c81f1299_cgraph_map" alt=""></div>
 <map name="lcd-lib_8h_aebffee1fce6172fdae085e26c81f1299_cgraph_map" id="lcd-lib_8h_aebffee1fce6172fdae085e26c81f1299_cgraph">
-<area shape="rect" id="node3" href="lcd-lib_8h.html#afa7e36b95c43d603f510273ad077cbbe" title="Display a single character on the LCD." alt="" coords="121,5,191,35"/></map>
+<area shape="rect" id="node3" href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe" title="Display character at current cursor position." alt="" coords="129,5,207,35"/></map>
 </div>
 </p>
 
@@ -490,7 +489,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="lcd-lib_8h_source.html#l00059">DDROFPORT</a>, <a class="el" href="delay_8h_source.html#l00048">delay</a>, <a class="el" href="lcd-lib_8h_source.html#l00033">LCD_CLOCK_PORT</a>, <a class="el" href="lcd-lib_8c_source.html#l00075">lcd_controller_init()</a>, <a class="el" href="lcd-lib_8h_source.html#l00032">LCD_DATA_PORT</a>, <a class="el" href="lcd-lib_8h_source.html#l00034">LCD_E_PORT</a>, <a class="el" href="lcd-lib_8h_source.html#l00037">LCD_PIN_CLOCK</a>, <a class="el" href="lcd-lib_8h_source.html#l00036">LCD_PIN_DATA</a>, and <a class="el" href="lcd-lib_8h_source.html#l00038">LCD_PIN_E</a>.</p>
+<p>References <a class="el" href="lcd-lib_8h_source.html#l00059">DDROFPORT</a>, <a class="el" href="delay_8h_source.html#l00048">delay</a>, <a class="el" href="lcd-lib_8h_source.html#l00033">LCD_CLOCK_PORT</a>, <a class="el" href="lcd-lib_8c_source.html#l00075">lcd_controller_init()</a>, <a class="el" href="lcd-lib_8h_source.html#l00032">LCD_DATA_PORT</a>, <a class="el" href="lcd_8h_source.html#l00100">LCD_E_PORT</a>, <a class="el" href="lcd-lib_8h_source.html#l00037">LCD_PIN_CLOCK</a>, <a class="el" href="lcd-lib_8h_source.html#l00036">LCD_PIN_DATA</a>, and <a class="el" href="lcd-lib_8h_source.html#l00038">LCD_PIN_E</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -520,82 +519,16 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 
 <p>Display a newline on the LCD display. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000110">Todo:</a></b></dt><dd>function should be implemented</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000115">Todo:</a></b></dt><dd>function should be implemented</dd></dl>
 
-</div>
-</div>
-<a class="anchor" id="afa7e36b95c43d603f510273ad077cbbe"></a><!-- doxytag: member="lcd&#45;lib.h::lcd_putc" ref="afa7e36b95c43d603f510273ad077cbbe" args="(char c)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lcd_putc </td>
-          <td>(</td>
-          <td class="paramtype">char&nbsp;</td>
-          <td class="paramname"> <em>c</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Display a single character on the LCD. </p>
-<p>Function needs 71.38us to execute.</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>c</em>&nbsp;</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>References <a class="el" href="delay_8h_source.html#l00048">delay</a>, and <a class="el" href="lcd-lib_8c_source.html#l00044">lcd_write</a>.</p>
-
-<p>Referenced by <a class="el" href="lcd-lib_8c_source.html#l00196">lcd_digit()</a>, <a class="el" href="lcd-lib_8c_source.html#l00221">lcd_hex()</a>, and <a class="el" href="lcd-lib_8c_source.html#l00156">lcd_puts()</a>.</p>
+<p>Referenced by <a class="el" href="lcd_8c_source.html#l00437">lcd_putc()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
-<div class="center"><img src="lcd-lib_8h_afa7e36b95c43d603f510273ad077cbbe_icgraph.png" border="0" usemap="#lcd-lib_8h_afa7e36b95c43d603f510273ad077cbbe_icgraph_map" alt=""></div>
-<map name="lcd-lib_8h_afa7e36b95c43d603f510273ad077cbbe_icgraph_map" id="lcd-lib_8h_afa7e36b95c43d603f510273ad077cbbe_icgraph">
-<area shape="rect" id="node3" href="lcd-lib_8c.html#ac86567882f677c3ea60730d172d86072" title="Display a character as digit." alt="" coords="127,5,196,35"/><area shape="rect" id="node5" href="lcd-lib_8c.html#aebffee1fce6172fdae085e26c81f1299" title="Display a char as hex." alt="" coords="128,59,195,88"/><area shape="rect" id="node7" href="lcd-lib_8c.html#a8ffdfcac7638368ff04364c14984266e" title="Write a string to the LCD." alt="" coords="127,112,196,141"/></map>
-</div>
-</p>
-
-</div>
-</div>
-<a class="anchor" id="a8ffdfcac7638368ff04364c14984266e"></a><!-- doxytag: member="lcd&#45;lib.h::lcd_puts" ref="a8ffdfcac7638368ff04364c14984266e" args="(const char *s)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lcd_puts </td>
-          <td>(</td>
-          <td class="paramtype">const char *&nbsp;</td>
-          <td class="paramname"> <em>s</em></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Write a string to the LCD. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>s</em>&nbsp;</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>References <a class="el" href="lcd-lib_8c_source.html#l00170">lcd_putc()</a>.</p>
-
-<p><div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dynsection">
-<div class="center"><img src="lcd-lib_8h_a8ffdfcac7638368ff04364c14984266e_cgraph.png" border="0" usemap="#lcd-lib_8h_a8ffdfcac7638368ff04364c14984266e_cgraph_map" alt=""></div>
-<map name="lcd-lib_8h_a8ffdfcac7638368ff04364c14984266e_cgraph_map" id="lcd-lib_8h_a8ffdfcac7638368ff04364c14984266e_cgraph">
-<area shape="rect" id="node3" href="lcd-lib_8h.html#afa7e36b95c43d603f510273ad077cbbe" title="Display a single character on the LCD." alt="" coords="127,5,196,35"/></map>
+<div class="center"><img src="lcd-lib_8h_a7327a2088a6342e03a124c2335c73520_icgraph.png" border="0" usemap="#lcd-lib_8h_a7327a2088a6342e03a124c2335c73520_icgraph_map" alt=""></div>
+<map name="lcd-lib_8h_a7327a2088a6342e03a124c2335c73520_icgraph_map" id="lcd-lib_8h_a7327a2088a6342e03a124c2335c73520_icgraph">
+<area shape="rect" id="node3" href="group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe" title="Display character at current cursor position." alt="" coords="153,85,231,115"/><area shape="rect" id="node5" href="lcd-lib_8c.html#ac86567882f677c3ea60730d172d86072" title="Display a character as digit." alt="" coords="288,5,365,35"/><area shape="rect" id="node7" href="lcd-lib_8c.html#aebffee1fce6172fdae085e26c81f1299" title="Display a char as hex." alt="" coords="291,59,363,88"/><area shape="rect" id="node9" href="group__pfleury__lcd.html#ga8ffdfcac7638368ff04364c14984266e" title="Display string without auto linefeed." alt="" coords="288,112,365,141"/><area shape="rect" id="node11" href="group__pfleury__lcd.html#ga9022a24a56a9b15681f62eb6ba77e5de" title="Display string from program memory without auto linefeed." alt="" coords="280,165,373,195"/></map>
 </div>
 </p>
 
