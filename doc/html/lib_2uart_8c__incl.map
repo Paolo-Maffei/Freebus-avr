@@ -1,7 +1,5 @@
 <map id="G" name="G">
 <area shape="rect" id="node3" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like..." alt="" coords="5,83,104,112"/>
-<area shape="rect" id="node5" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...." alt="" coords="16,160,117,189"/>
+<area shape="rect" id="node5" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...." alt="" coords="29,160,131,189"/>
 <area shape="rect" id="node7" href="$freebus-debug_8h.html" title="Header file to map debugging between several output devices. Possible outputs are..." alt="" coords="179,83,293,112"/>
-<area shape="rect" id="node11" href="$lcd-lib_8h.html" title="lcd&#45;lib.h" alt="" coords="303,160,369,189"/>
-<area shape="rect" id="node13" href="$delay_8h.html" title="Functions to delay the execution." alt="" coords="304,237,368,267"/>
 </map>

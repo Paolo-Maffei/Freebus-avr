@@ -1,9 +1,9 @@
 <map id="G" name="G">
 <area shape="rect" id="node3" href="$fb__2-dimmer__app_8c.html" title="Dimmer application based on the Gira 1032 2 channel dimmer." alt="" coords="5,83,219,112"/>
-<area shape="rect" id="node5" href="$fb__in8__app_8c.html" title="The application for 8 binary inputs Manufactorer code is 0x04 = Jung &#160;Device type..." alt="" coords="243,83,387,112"/>
-<area shape="rect" id="node7" href="$fb__relais__app_8c.html" title="The relais application to switch 8 relais Manufactorer code is 0x04 = Jung &#160;Device..." alt="" coords="411,83,576,112"/>
-<area shape="rect" id="node9" href="$fb__eeprom_8c.html" title="The eeprom is divided into two parts. The complete size of the eeprom is 256+18+24..." alt="" coords="600,83,709,112"/>
-<area shape="rect" id="node11" href="$fb__hal_8c.html" title="Freebus Hardware Layer. Implementation of a software&#45; uart + timer handling This..." alt="" coords="733,83,816,112"/>
-<area shape="rect" id="node13" href="$fb__prot_8c.html" title="Handle all requests which are EIB bases like write current address or group address..." alt="" coords="840,83,928,112"/>
-<area shape="rect" id="node15" href="$lib_2uart_8c.html" title="Handles communication via uart (polling mode). Is only included if compiled with..." alt="" coords="952,83,1024,112"/>
+<area shape="rect" id="node6" href="$fb__in8__app_8c.html" title="The application for 8 binary inputs Manufactorer code is 0x04 = Jung &#160;Device type..." alt="" coords="267,83,411,112"/>
+<area shape="rect" id="node9" href="$fb__relais__app_8c.html" title="The relais application to switch 8 relais Manufactorer code is 0x04 = Jung &#160;Device..." alt="" coords="459,83,624,112"/>
+<area shape="rect" id="node13" href="$fb__eeprom_8c.html" title="The eeprom is divided into two parts. The complete size of the eeprom is 256+18+24..." alt="" coords="672,83,781,112"/>
+<area shape="rect" id="node15" href="$fb__hal_8c.html" title="Freebus Hardware Layer. Implementation of a software&#45; uart + timer handling This..." alt="" coords="805,83,888,112"/>
+<area shape="rect" id="node17" href="$fb__prot_8c.html" title="Handle all requests which are EIB bases like write current address or group address..." alt="" coords="912,83,1000,112"/>
+<area shape="rect" id="node19" href="$lib_2uart_8c.html" title="Handles communication via uart (polling mode). Is only included if compiled with..." alt="" coords="1024,83,1096,112"/>
 </map>
