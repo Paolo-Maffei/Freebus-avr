@@ -20,7 +20,8 @@
   </div>
 </div>
 <div class="contents">
-<h1>FreeBusAVR Documentation</h1><p>Beim AVR ATMega168P sind die folgenden Fuses zu setzen:<br/>
+<h1>FreeBusAVR Documentation</h1><p><b>Setting Fuses:</b><br/>
+ Beim AVR ATMega168P sind die folgenden Fuses zu setzen:<br/>
  Boot Flash size=128 words Boot address=$1C00<br/>
  SPIEN=on<br/>
  BODLEVEL=Brown-out detection at VCC=2.7V<br/>
@@ -30,7 +31,17 @@
  HIGH=0xDD<br/>
  LOW=0xCF<br/>
 </p>
-<p>If you develop an application you should not use an ISR in that application it can disturb the extreme critical timing in the EIB bus communication. I you need timers you should check instead registers if a special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible and check every condition you can imagine that it is secured that the bus communication is handled correctly.<br/>
+<p><b>Compile and create HEX files:</b><br/>
+ To compile your self developed app or the existing ones finished build scripts for Windows (AVR Studio) and Linux/Unix/MacOSX (Makefiles) is in place.<br/>
+ You can use AVR Studio to generate the hex files or GNU Make, what you prefer.</p>
+<p>Windows:<br/>
+ Load the existing project file in AVR-Studio, e.g. app-8-out\fb_app_8_out.aps and compile it with AVR Studio, for more details see the start-avr.pdf manual.</p>
+<p>Linux/Unix/MacOSX:<br/>
+ Some default parameters are allready defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes. To create all .hex files you can type in the directory software/avr/ then:<br/>
+ make hex<br/>
+ you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex</p>
+<p><b>General notes if developing your own application:</b><br/>
+ If you develop an application you should not use an ISR in that application it can disturb the extreme critical timing in the EIB bus communication. I you need timers you should check instead registers if a special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible and check every condition you can imagine that it is secured that the bus communication is handled correctly.<br/>
  Transfers which a very error phrone are:<br/>
  * ACKS sent and received (at the end of a telegram)<br/>
  * Long communication like programming of group addresses and parameters<br/>

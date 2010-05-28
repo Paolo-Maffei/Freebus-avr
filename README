@@ -1,4 +1,5 @@
 /** @mainpage
+* <b>Setting Fuses:</b>\n
 * Beim AVR ATMega168P sind die folgenden Fuses zu setzen:\n
 *
 * Boot Flash size=128 words Boot address=$1C00\n
@@ -10,6 +11,20 @@
 * HIGH=0xDD\n
 * LOW=0xCF\n
 *
+* <b>Compile and create HEX files:</b>\n
+* To compile your self developed app or the existing ones finished build scripts for Windows (AVR Studio) and Linux/Unix/MacOSX (Makefiles) is in place.\n
+* You can use AVR Studio to generate the hex files or GNU Make, what you prefer.
+*
+* Windows:\n
+* Load the existing project file in AVR-Studio, e.g. app-8-out\fb_app_8_out.aps and compile it with AVR Studio, for more details see the start-avr.pdf manual.
+*
+* Linux/Unix/MacOSX:\n
+* Some default parameters are allready defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
+* To create all .hex files you can type in the directory software/avr/ then:\n
+* make hex\n
+* you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
+*
+* <b>General notes if developing your own application:</b>\n
 * If you develop an application you should not use an ISR in that application it can disturb the extreme
 * critical timing in the EIB bus communication. I you need timers you should check instead registers if a
 * special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible
