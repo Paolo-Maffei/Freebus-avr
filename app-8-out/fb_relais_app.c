@@ -21,6 +21,8 @@
  * @brief  The relais application to switch 8 relais
  * Manufactorer code is 0x04 = Jung\n
  * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
+ *
+ * To enable IO test compile with -DIO_TEST
  */
 #ifndef _FB_RELAIS_APP_C
 #define _FB_RELAIS_APP_C
@@ -39,6 +41,9 @@
 #include "fb_prot.h"
 #include "fb_app.h"
 #include "fb_relais_app.h"
+#ifdef IO_TEST
+#include <util/delay.h>
+#endif
 
 /**************************************************************************
  * DEFINITIONS
@@ -109,6 +114,9 @@ void switchPorts(uint8_t port);
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
 void hardwaretest(void);
+#endif
+#ifdef IO_TEST
+void io_test(void);
 #endif
 
 /**************************************************************************
@@ -238,6 +246,11 @@ uint8_t restartApplication(void)
 
     /* CTRL-Port */
     SET_IO_CTRL(IO_OUTPUT);
+
+#ifdef IO_TEST
+	/* should we do an IO test? */
+	io_test();
+#endif
 
     /* configure pwm timer, we use timer2 for this */
     /* 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%   */
@@ -572,6 +585,56 @@ void switchPorts(uint8_t port)
 
     return;
 }
+
+#ifdef IO_TEST
+/** 
+ * Set all IO for IO pin for 1 second to high, with a break of 1 second.
+ * Function is called on power on of the controller or after a reset.
+ * Can be used to check if LEDs and relais are working correctly.
+ * 
+ */
+void io_test()
+{
+	SETPIN_IO1(ON);
+	_delay_ms(1000);
+	SETPIN_IO1(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO2(ON);
+	_delay_ms(1000);
+	SETPIN_IO2(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO3(ON);
+	_delay_ms(1000);
+	SETPIN_IO3(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO4(ON);
+	_delay_ms(1000);
+	SETPIN_IO4(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO5(ON);
+	_delay_ms(1000);
+	SETPIN_IO5(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO6(ON);
+	_delay_ms(1000);
+	SETPIN_IO6(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO7(ON);
+	_delay_ms(1000);
+	SETPIN_IO7(OFF);
+
+	_delay_ms(1000);
+	SETPIN_IO8(ON);
+	_delay_ms(1000);
+	SETPIN_IO8(OFF);
+}
+#endif
 
 /**                                                                       
  * The start point of the program, init all libraries, start the bus interface,
