@@ -60,7 +60,6 @@
 
 # Which target should be compiled
 DEFAULT_TARGET=fb_relais_app.c
-#DEFAULT_TARGET=fb_2-dimmer_app.c
 
 #####         Target Specific Details          #####
 #####     Customize these for your project     #####
@@ -93,7 +92,7 @@ PROJECTNAME=freebus-avr-8-out
 #INC=
 
 # libraries to link in (e.g. -lmylib)
-#LIBS=-lavreib -L../
+#LIBS=
 
 # Optimization level, 
 # use s (size opt), 1, 2, 3 or 0 (off)
@@ -116,12 +115,12 @@ PROJECTNAME=freebus-avr-8-out
 # one of the valid "-c PROGRAMMER-ID" values 
 # described in the avrdude info page.
 # 
-AVRDUDE_PROGRAMMERID=avrisp2
+#AVRDUDE_PROGRAMMERID=
 
 # port--serial or parallel port to which your 
 # hardware programmer is attached
 #
-AVRDUDE_PORT=usb
+#AVRDUDE_PORT=
 
 # Include global config file
 -include ../Make.config
@@ -232,7 +231,7 @@ hex: $(HEXTRG)
 
 
 writeflash: hex
-	$(AVRDUDE) -F -c $(AVRDUDE_PROGRAMMERID)   \
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG)
 

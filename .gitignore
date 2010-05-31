@@ -1,0 +1,6 @@
+software/avr/Make.config
+docu/.DS_Store
+software/avr/app-8-in/freebus-avr-8-in.out
+software/avr/app-8-in/freebus-avr-8-in.out.map
+software/avr/app-8-out/freebus-avr-8-out.out
+software/avr/app-8-out/freebus-avr-8-out.out.map

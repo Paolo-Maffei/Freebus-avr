@@ -40,7 +40,6 @@
 ##### See the http://electrons.psychogenic.com/ 
 ##### website for detailed instructions
 
-
 ####################################################
 #####                                          #####
 #####              Configuration               #####
@@ -61,7 +60,6 @@
 
 # Which target should be compiled
 DEFAULT_TARGET=fb_in8_app.c
-#DEFAULT_TARGET=fb_2-dimmer_app.c
 
 #####         Target Specific Details          #####
 #####     Customize these for your project     #####
@@ -170,7 +168,7 @@ LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
 	-lm $(LIBS)
 
 ##### executables ####
-CC=avr-gcc -DF_CPU=8000000UL $(CFLAGS)
+CC=avr-gcc
 OBJCOPY=avr-objcopy
 OBJDUMP=avr-objdump
 SIZE=avr-size

@@ -2,8 +2,10 @@
 DIRECTORIES = app-8-out app-8-in
 
 all:
-	-doxygen
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i; done
+
+doc:
+	-doxygen
 
 hex:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i hex; done
