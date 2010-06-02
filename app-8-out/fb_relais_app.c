@@ -655,9 +655,9 @@ int main(void)
         msg_queue_init();
     
 	DEBUG_INIT();
-    DEBUG_NEWLINE();
-    DEBUG_PUTS("V0.1");
-    DEBUG_NEWLINE();
+    DEBUG_NEWLINE_BLOCKING();
+    DEBUG_PUTS_BLOCKING("V0.1");
+    DEBUG_NEWLINE_BLOCKING();
        
     /* init procerssor register */
     fbhal_Init();
