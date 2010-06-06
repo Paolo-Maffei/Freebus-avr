@@ -88,7 +88,7 @@ HAL_EXT uint8_t systemState;         /**< Holds the system state @todo give more
 HAL_EXT uint8_t fbhal_checkProgTaster(void);
 HAL_EXT void fbhal_Init(void);
 HAL_EXT void fb_send_ack(uint8_t value);
-HAL_EXT inline void fb_hal_restart(void);
+HAL_EXT void fb_hal_restart(void);
 HAL_EXT uint8_t fb_hal_txqueue_msg(struct msg* tx);
 HAL_EXT void sendTestTelegram(void);
 HAL_EXT void panic(uint8_t reason);
