@@ -5,3 +5,4 @@ software/avr/app-8-in/freebus-avr-8-in.out.map
 software/avr/app-8-out/freebus-avr-8-out.out
 software/avr/app-8-out/freebus-avr-8-out.out.map
 /software/avr/app-8-out/default/Makefile
+/software/avr/Make.config~
