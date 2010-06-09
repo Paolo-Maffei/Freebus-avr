@@ -60,8 +60,8 @@ Include dependency graph for fb_eeprom.c:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Start to write the first byte to eeprom.  <a href="#ac92e88b86efd0e0e32beaee667bfc226"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__eeprom_8c.html#a422cd185036099f4434f337562b3cb1b">write_memory_p</a> (uint16_t addr, uint8_t dat)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Write directly to the eeprom, don't use the eeprom cache.  <a href="#a422cd185036099f4434f337562b3cb1b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__eeprom_8c.html#a27dee4c5a0efad576a37c10e5f737334">ISR</a> (EE_RDY_vect)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Interrupt handler to write queued eeprom data byte for byte to eeprom without blocking the controller.  <a href="#a27dee4c5a0efad576a37c10e5f737334"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__eeprom_8c.html#a1830429d15e4ec8062725ab771275327">ISR</a> (EE_READY_vect)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Interrupt handler to write queued eeprom data byte for byte to eeprom without blocking the controller.  <a href="#a1830429d15e4ec8062725ab771275327"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">uint8_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__eeprom_8c.html#a15ff5c1dcbf437fa2fb4f730fcd20c85">eeprom_ParamRead</a> (uint16_t addr)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Read data from the eeprom cache and return it.  <a href="#a15ff5c1dcbf437fa2fb4f730fcd20c85"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="fb__eeprom_8c.html#a68f918bbf3e9cd0ec46a706bb5c8b9d3">eeprom_ParamWrite</a> (uint16_t addr, uint8_t len, uint8_t *dat)</td></tr>
@@ -127,10 +127,7 @@ Include dependency graph for fb_eeprom.c:</div>
 <p>Check if eeprom cache was written completely to eeprom. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>TRUE if eeprom cache is not written completely to eeprom </dd></dl>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000088">Todo:</a></b></dt><dd>???: </dd></dl>
-</p>
-
-<p>References <a class="el" href="msg__queue_8h_source.html#l00057">MSG_FREE</a>, and <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>.</p>
+<p>References <a class="el" href="freebus-debug_8h_source.html#l00067">DEBUG_NEWLINE</a>, <a class="el" href="freebus-debug_8h_source.html#l00053">DEBUG_PUTC</a>, <a class="el" href="msg__queue_8h_source.html#l00057">MSG_FREE</a>, and <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00637">A_Restart()</a>.</p>
 
@@ -179,7 +176,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParam</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00063">eeprom_NodeParamLen</a>.</p>
+<p>References <a class="el" href="freebus-atmega168p_8h_source.html#l00149">CONFIG_EEPROM</a>, <a class="el" href="fb__eeprom_8c_source.html#l00061">eeprom_NodeParam</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParamLen</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__in8__app_8c_source.html#l00870">main()</a>.</p>
 
@@ -219,9 +216,9 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Value in eeprom on addr </dd></dl>
 
-<p>References <a class="el" href="fb__eeprom_8h_source.html#l00048">APPLICATION_MEM_BASE_ADR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00049">APPLICATION_MEM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, <a class="el" href="fb__eeprom_8h_source.html#l00050">SYSTEMSTATE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00051">USERRAM_BASE_ADR</a>, and <a class="el" href="fb__eeprom_8h_source.html#l00052">USERRAM_SIZE</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8h_source.html#l00048">APPLICATION_MEM_BASE_ADR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00049">APPLICATION_MEM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00061">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, <a class="el" href="fb__eeprom_8h_source.html#l00050">SYSTEMSTATE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00051">USERRAM_BASE_ADR</a>, and <a class="el" href="fb__eeprom_8h_source.html#l00052">USERRAM_SIZE</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00669">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00698">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00904">fbprot_Init()</a>, <a class="el" href="fb__prot_8c_source.html#l00247">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00422">getPortFunction()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00645">PortFunc_Jalousie()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00497">PortFunc_Switch()</a>, <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00297">readApplication()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00330">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00369">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>, <a class="el" href="fb__hal_8c_source.html#l00224">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00518">switchObjects()</a>, and <a class="el" href="fb__in8__app_8c_source.html#l00181">timerOverflowFunction()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00594">A_ADC_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00671">A_GroupValue_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00700">A_GroupValue_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00517">A_Memory_Read()</a>, <a class="el" href="fb__prot_8c_source.html#l00908">fbprot_Init()</a>, <a class="el" href="fb__prot_8c_source.html#l00247">findRespondGroupAddressByObjectNumber()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00422">getPortFunction()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00645">PortFunc_Jalousie()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00497">PortFunc_Switch()</a>, <a class="el" href="fb__prot_8c_source.html#l00280">read_grp_addr()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00297">readApplication()</a>, <a class="el" href="fb__in8__app_8c_source.html#l00330">restartApplication()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00369">runApplication()</a>, <a class="el" href="fb__prot_8c_source.html#l00163">sendExtTelegram()</a>, <a class="el" href="fb__prot_8c_source.html#l00208">sendTelegram()</a>, <a class="el" href="fb__hal_8c_source.html#l00224">sendTestTelegram()</a>, <a class="el" href="fb__relais__app_8c_source.html#l00518">switchObjects()</a>, and <a class="el" href="fb__in8__app_8c_source.html#l00181">timerOverflowFunction()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -258,9 +255,9 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8c_source.html#l00063">eeprom_NodeParamLen</a>, <a class="el" href="fb__eeprom_8h_source.html#l00056">MAX_EEPROM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00061">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParamLen</a>, <a class="el" href="fb__eeprom_8h_source.html#l00056">MAX_EEPROM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00904">fbprot_Init()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00908">fbprot_Init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -323,7 +320,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::addr</a>, <a class="el" href="msg__queue_8h_source.html#l00110">AllocMsg()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00048">APPLICATION_MEM_BASE_ADR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00049">APPLICATION_MEM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::count</a>, <a class="el" href="fb__eeprom_8c_source.html#l00054">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::offset</a>, <a class="el" href="msg__queue_8c_source.html#l00085">queuemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, <a class="el" href="fb__eeprom_8h_source.html#l00050">SYSTEMSTATE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00152">trigger_eeprom()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00051">USERRAM_BASE_ADR</a>, and <a class="el" href="fb__eeprom_8h_source.html#l00052">USERRAM_SIZE</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::addr</a>, <a class="el" href="msg__queue_8h_source.html#l00110">AllocMsg()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00048">APPLICATION_MEM_BASE_ADR</a>, <a class="el" href="fb__eeprom_8h_source.html#l00049">APPLICATION_MEM_SIZE</a>, <a class="el" href="fb__eeprom_8h_source.html#l00045">BASE_ADDRESS_OFFSET</a>, <a class="el" href="fb__eeprom_8c_source.html#l00050">eeprom_cmds::count</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="fb__eeprom_8c_source.html#l00061">eeprom_NodeParam</a>, <a class="el" href="fb__eeprom_8h_source.html#l00046">NODEPARAM_SIZE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::offset</a>, <a class="el" href="msg__queue_8c_source.html#l00085">queuemsg()</a>, <a class="el" href="fb__hal_8h_source.html#l00083">systemState</a>, <a class="el" href="fb__eeprom_8h_source.html#l00050">SYSTEMSTATE</a>, <a class="el" href="fb__eeprom_8c_source.html#l00160">trigger_eeprom()</a>, <a class="el" href="fb__eeprom_8h_source.html#l00051">USERRAM_BASE_ADR</a>, and <a class="el" href="fb__eeprom_8h_source.html#l00052">USERRAM_SIZE</a>.</p>
 
 <p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00566">A_Memory_Write()</a>, <a class="el" href="fb__prot_8c_source.html#l00358">A_PhysicalAddress_Write()</a>, and <a class="el" href="fb__relais__app_8c_source.html#l00518">switchObjects()</a>.</p>
 
@@ -365,9 +362,9 @@ Here is the caller graph for this function:</div>
 
 <p>Print the complete eeprom to DEBUG defined. </p>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::addr</a>, <a class="el" href="freebus-debug_8h_source.html#l00069">DEBUG_NEWLINE_BLOCKING</a>, <a class="el" href="freebus-debug_8h_source.html#l00055">DEBUG_PUTC_BLOCKING</a>, <a class="el" href="freebus-debug_8h_source.html#l00065">DEBUG_PUTHEX_BLOCKING</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00062">eeprom_NodeParam</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::addr</a>, <a class="el" href="freebus-debug_8h_source.html#l00069">DEBUG_NEWLINE_BLOCKING</a>, <a class="el" href="freebus-debug_8h_source.html#l00055">DEBUG_PUTC_BLOCKING</a>, <a class="el" href="freebus-debug_8h_source.html#l00065">DEBUG_PUTHEX_BLOCKING</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00061">eeprom_NodeParam</a>.</p>
 
-<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00904">fbprot_Init()</a>.</p>
+<p>Referenced by <a class="el" href="fb__prot_8c_source.html#l00908">fbprot_Init()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -380,14 +377,14 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a class="anchor" id="a27dee4c5a0efad576a37c10e5f737334"></a><!-- doxytag: member="fb_eeprom.c::ISR" ref="a27dee4c5a0efad576a37c10e5f737334" args="(EE_RDY_vect)" -->
+<a class="anchor" id="a1830429d15e4ec8062725ab771275327"></a><!-- doxytag: member="fb_eeprom.c::ISR" ref="a1830429d15e4ec8062725ab771275327" args="(EE_READY_vect)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">ISR </td>
           <td>(</td>
-          <td class="paramtype">EE_RDY_vect&nbsp;</td>
+          <td class="paramtype">EE_READY_vect&nbsp;</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
           <td></td>
@@ -402,14 +399,14 @@ Here is the caller graph for this function:</div>
 <p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000085">Todo:</a></b></dt><dd>ist noch unsauber </dd></dl>
 </p>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::count</a>, <a class="el" href="fb__eeprom_8c_source.html#l00054">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::offset</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>.</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8c_source.html#l00050">eeprom_cmds::count</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="msg__queue_8c_source.html#l00116">dequeuemsg()</a>, <a class="el" href="freebus-atmega168p_8h_source.html#l00160">DISABLE_EEPROM_READY_INT</a>, <a class="el" href="freebus-atmega168p_8h_source.html#l00155">ENABLE_EEPROM_READY_INT</a>, <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::offset</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dynsection">
-<div class="center"><img src="fb__eeprom_8c_a27dee4c5a0efad576a37c10e5f737334_cgraph.png" border="0" usemap="#fb__eeprom_8c_a27dee4c5a0efad576a37c10e5f737334_cgraph_map" alt=""></div>
-<map name="fb__eeprom_8c_a27dee4c5a0efad576a37c10e5f737334_cgraph_map" id="fb__eeprom_8c_a27dee4c5a0efad576a37c10e5f737334_cgraph">
-<area shape="rect" id="node3" href="msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="96,5,192,35"/><area shape="rect" id="node7" href="fb__eeprom_8c.html#a6ab1e3cc3c300d12592e39648da8c022" title="Store on byte on eeprom." alt="" coords="111,59,177,88"/><area shape="rect" id="node5" href="msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="241,5,313,35"/></map>
+<div class="center"><img src="fb__eeprom_8c_a1830429d15e4ec8062725ab771275327_cgraph.png" border="0" usemap="#fb__eeprom_8c_a1830429d15e4ec8062725ab771275327_cgraph_map" alt=""></div>
+<map name="fb__eeprom_8c_a1830429d15e4ec8062725ab771275327_cgraph_map" id="fb__eeprom_8c_a1830429d15e4ec8062725ab771275327_cgraph">
+<area shape="rect" id="node3" href="msg__queue_8h.html#a76c904b1fd4cb70e06c96422f8a58e43" title="Remove a message from the queue." alt="" coords="99,5,208,35"/><area shape="rect" id="node7" href="fb__eeprom_8c.html#a6ab1e3cc3c300d12592e39648da8c022" title="Store on byte on eeprom." alt="" coords="116,59,191,88"/><area shape="rect" id="node5" href="msg__queue_8h.html#afec1149f3bb049af42978cf90c775ca6" title="Free the message and mark it as MSG_FREE." alt="" coords="256,5,336,35"/></map>
 </div>
 </p>
 
@@ -448,15 +445,16 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>function will be removed, stops working on ATMega168p </dd></dl>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00268">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00126">ISR()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00152">trigger_eeprom()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00107">write_memory_p()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00270">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00130">ISR()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00160">trigger_eeprom()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00108">write_memory_p()</a>.</p>
 
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="fb__eeprom_8c_a6ab1e3cc3c300d12592e39648da8c022_icgraph.png" border="0" usemap="#fb__eeprom_8c_a6ab1e3cc3c300d12592e39648da8c022_icgraph_map" alt=""></div>
 <map name="fb__eeprom_8c_a6ab1e3cc3c300d12592e39648da8c022_icgraph_map" id="fb__eeprom_8c_a6ab1e3cc3c300d12592e39648da8c022_icgraph">
-<area shape="rect" id="node3" href="fb__eeprom_8c.html#a96f365c9a61f6dd9b856c7da3d6fefde" title="store the default parameter directly to the eeprom" alt="" coords="123,5,293,35"/><area shape="rect" id="node9" href="fb__eeprom_8c.html#a27dee4c5a0efad576a37c10e5f737334" title="Interrupt handler to write queued eeprom data byte for byte to eeprom without blocking..." alt="" coords="187,59,229,88"/><area shape="rect" id="node11" href="fb__eeprom_8c.html#ac92e88b86efd0e0e32beaee667bfc226" title="Start to write the first byte to eeprom." alt="" coords="155,112,261,141"/><area shape="rect" id="node27" href="fb__eeprom_8c.html#a422cd185036099f4434f337562b3cb1b" title="Write directly to the eeprom, don&#39;t use the eeprom cache." alt="" coords="149,165,267,195"/><area shape="rect" id="node5" href="fb__prot_8c.html#a3e2ec796b82409111b3a88a764b17e4b" title="Read configuration from eeprom is existant or set default values and write them to..." alt="" coords="379,5,456,35"/><area shape="rect" id="node7" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="604,5,655,35"/><area shape="rect" id="node13" href="fb__eeprom_8c.html#a68f918bbf3e9cd0ec46a706bb5c8b9d3" title="Write data to the eeprom cache and trigger background process to write eeprom cache..." alt="" coords="347,112,488,141"/><area shape="rect" id="node15" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="568,59,691,88"/><area shape="rect" id="node17" href="fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="543,112,716,141"/><area shape="rect" id="node19" href="fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="577,165,681,195"/><area shape="rect" id="node21" href="fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="779,112,901,141"/><area shape="rect" id="node23" href="fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="788,165,892,195"/><area shape="rect" id="node25" href="fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="765,219,915,248"/><area shape="rect" id="node29" href="fb__2-dimmer__app_8h.html#aae3384a1209f19fced106416ac96670e" title="Set parameters to defined values if controller got power the first time." alt="" coords="343,165,492,195"/></map>
+<area shape="rect" id="node3" href="fb__eeprom_8c.html#a96f365c9a61f6dd9b856c7da3d6fefde" title="store the default parameter directly to the eeprom" alt="" coords="132,5,329,35"/><area shape="rect" id="node9" href="fb__eeprom_8c.html#a1830429d15e4ec8062725ab771275327" title="Interrupt handler to write queued eeprom data byte for byte to eeprom without blocking..." alt="" coords="209,59,252,88"/><area shape="rect" id="node11" href="fb__eeprom_8c.html#ac92e88b86efd0e0e32beaee667bfc226" title="Start to write the first byte to eeprom." alt="" coords="168,112,293,141"/><area shape="rect" id="node27" href="fb__eeprom_8c.html#a422cd185036099f4434f337562b3cb1b" title="Write directly to the eeprom, don&#39;t use the eeprom cache." alt="" coords="164,165,297,195"/><area shape="rect" id="node5" href="fb__prot_8c.html#a3e2ec796b82409111b3a88a764b17e4b" title="Read configuration from eeprom is existant or set default values and write them to..." alt="" coords="421,5,512,35"/><area shape="rect" id="node7" href="fb__in8__app_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="The start point of the program, init all libraries, start the bus interface, the..." alt="" coords="671,5,724,35"/><area shape="rect" id="node13" href="fb__eeprom_8c.html#a68f918bbf3e9cd0ec46a706bb5c8b9d3" title="Write data to the eeprom cache and trigger background process to write eeprom cache..." alt="" coords="387,112,547,141"/><area shape="rect" id="node15" href="fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="629,59,765,88"/><area shape="rect" id="node17" href="fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="603,112,792,141"/><area shape="rect" id="node19" href="fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="637,165,757,195"/><area shape="rect" id="node21" href="fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="859,112,1000,141"/><area shape="rect" id="node23" href="fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="872,165,987,195"/><area shape="rect" id="node25" href="fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="841,219,1017,248"/><area shape="rect" id="node29" href="fb__2-dimmer__app_8h.html#aae3384a1209f19fced106416ac96670e" title="Set parameters to defined values if controller got power the first time." alt="" coords="379,165,555,195"/></map>
 </div>
 </p>
 
@@ -481,14 +479,9 @@ Here is the caller graph for this function:</div>
 <p>Start to write the first byte to eeprom. </p>
 <p>The rest of the data is written to the eeprom with the ISR EE_RDY_vect. </p>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000086">Todo:</a></b></dt><dd>Aenderung ist binaercompatibel </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000087">Todo:</a></b></dt><dd>compare with revision 1049. if eeprom_msg is NULL that if case will fail </dd></dl>
-<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug:</a></b></dt><dd>if case will fail when eeprom_msg is NULL (the case when no message is queued) compare with revision 1049 </dd></dl>
-</p>
+<p>References <a class="el" href="fb__eeprom_8c_source.html#l00051">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="freebus-atmega168p_8h_source.html#l00155">ENABLE_EEPROM_READY_INT</a>, <a class="el" href="msg__queue_8h_source.html#l00058">MSG_ALLOC</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::offset</a>, <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>, and <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>.</p>
 
-<p>References <a class="el" href="fb__eeprom_8c_source.html#l00052">eeprom_cmds::addr</a>, <a class="el" href="fb__eeprom_8c_source.html#l00054">eeprom_cmds::data</a>, <a class="el" href="msg__queue_8h_source.html#l00070">msg::data</a>, <a class="el" href="msg__queue_8h_source.html#l00058">MSG_ALLOC</a>, <a class="el" href="msg__queue_8h_source.html#l00059">MSG_SENDING</a>, <a class="el" href="fb__eeprom_8c_source.html#l00053">eeprom_cmds::offset</a>, <a class="el" href="fb__eeprom_8c_source.html#l00084">prog_ee()</a>, and <a class="el" href="msg__queue_8h_source.html#l00066">msg::state</a>.</p>
-
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00210">eeprom_ParamWrite()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00216">eeprom_ParamWrite()</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -599,7 +592,7 @@ Here is the caller graph for this function:</div>
 
 <p>parameter structure (pointer) </p>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00302">eeprom_Init()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00178">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00268">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00210">eeprom_ParamWrite()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00323">eeprom_print()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00304">eeprom_Init()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00184">eeprom_ParamRead()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00270">eeprom_ParamSetDefault()</a>, <a class="el" href="fb__eeprom_8c_source.html#l00216">eeprom_ParamWrite()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00324">eeprom_print()</a>.</p>
 
 </div>
 </div>
@@ -616,12 +609,12 @@ Here is the caller graph for this function:</div>
 
 <p>length of the paramater structure </p>
 
-<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00302">eeprom_Init()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00268">eeprom_ParamSetDefault()</a>.</p>
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00304">eeprom_Init()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00270">eeprom_ParamSetDefault()</a>.</p>
 
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 18:52:57 2010 for FreeBusAVR by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 9 17:27:03 2010 for FreeBusAVR by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -82,6 +82,12 @@ Include dependency graph for freebus-atmega168p.h:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Enable internal hardware watchdog.  <a href="#a2b38be97fd3da86e404ddc4fdea79bb7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#a9cca675cddf83d3ad905213ef9393575">DISABLE_WATCHDOG</a>()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Disable internal hardware watchdog.  <a href="#a9cca675cddf83d3ad905213ef9393575"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#ac140abd1f471e713e94eb1959a316694">CONFIG_EEPROM</a>()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Execute some EEPROM specific commmands configure eeprom to only write and not delete before, that operation will take 1.8ms.  <a href="#ac140abd1f471e713e94eb1959a316694"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#ae66cebcc81aa5562902071493085f86b">ENABLE_EEPROM_READY_INT</a>()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Enable the EEPROM ready interrupt.  <a href="#ae66cebcc81aa5562902071493085f86b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#a1c46c52afd69da2112aaab1269282ef1">DISABLE_EEPROM_READY_INT</a>()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Disable the EEPROM ready interrupt.  <a href="#a1c46c52afd69da2112aaab1269282ef1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#aa094da45d0b35ba685c0053c8e7dd215">SIG_UART_TRANS</a>&nbsp;&nbsp;&nbsp;USART_TX_vect</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">map uart interrupt  <a href="#aa094da45d0b35ba685c0053c8e7dd215"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="freebus-atmega168p_8h.html#a76610fb6381b7b7f810a6a541c5503e3">EE_RDY_vect</a>&nbsp;&nbsp;&nbsp;EE_READY_vect</td></tr>
@@ -235,6 +241,32 @@ Include dependency graph for freebus-atmega168p.h:</div>
 
 </div>
 </div>
+<a class="anchor" id="ac140abd1f471e713e94eb1959a316694"></a><!-- doxytag: member="freebus&#45;atmega168p.h::CONFIG_EEPROM" ref="ac140abd1f471e713e94eb1959a316694" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CONFIG_EEPROM</td>
+          <td>(</td>
+&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">{                       \
+        EECR |= (1 &lt;&lt; EEPM1);                   \
+        EECR &amp;= ~(1 &lt;&lt; EEPM0);                  \
+    }
+</pre></div>
+<p>Execute some EEPROM specific commmands configure eeprom to only write and not delete before, that operation will take 1.8ms. </p>
+
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00304">eeprom_Init()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a06a8b1381f40ae82a34572569ab83486"></a><!-- doxytag: member="freebus&#45;atmega168p.h::CONFIGURE_INT0" ref="a06a8b1381f40ae82a34572569ab83486" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -317,6 +349,31 @@ Include dependency graph for freebus-atmega168p.h:</div>
 <div class="memdoc">
 
 <p>output port (byte) of CTRL pin </p>
+
+</div>
+</div>
+<a class="anchor" id="a1c46c52afd69da2112aaab1269282ef1"></a><!-- doxytag: member="freebus&#45;atmega168p.h::DISABLE_EEPROM_READY_INT" ref="a1c46c52afd69da2112aaab1269282ef1" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DISABLE_EEPROM_READY_INT</td>
+          <td>(</td>
+&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">{           \
+        EECR &amp;= ~(1U&lt;&lt;EERIE);                    \
+    }
+</pre></div>
+<p>Disable the EEPROM ready interrupt. </p>
+
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00130">ISR()</a>.</p>
 
 </div>
 </div>
@@ -582,6 +639,31 @@ Include dependency graph for freebus-atmega168p.h:</div>
 
 <p>&lt; is defined if target system is the ATMega168P </p>
 <p>global interrupt enable </p>
+
+</div>
+</div>
+<a class="anchor" id="ae66cebcc81aa5562902071493085f86b"></a><!-- doxytag: member="freebus&#45;atmega168p.h::ENABLE_EEPROM_READY_INT" ref="ae66cebcc81aa5562902071493085f86b" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENABLE_EEPROM_READY_INT</td>
+          <td>(</td>
+&nbsp;</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<b>Value:</b><div class="fragment"><pre class="fragment">{           \
+        EECR |= (1U&lt;&lt;EERIE);                    \
+    }
+</pre></div>
+<p>Enable the EEPROM ready interrupt. </p>
+
+<p>Referenced by <a class="el" href="fb__eeprom_8c_source.html#l00130">ISR()</a>, and <a class="el" href="fb__eeprom_8c_source.html#l00160">trigger_eeprom()</a>.</p>
 
 </div>
 </div>
@@ -1595,7 +1677,7 @@ Include dependency graph for freebus-atmega168p.h:</div>
 </div>
 </div>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 18:52:57 2010 for FreeBusAVR by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 9 17:27:00 2010 for FreeBusAVR by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

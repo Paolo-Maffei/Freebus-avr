@@ -24,7 +24,7 @@
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
-<h1>include/fb_hal.h</h1><a href="fb__hal_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* $Id: fb_hal.h 1739 2010-02-08 15:20:11Z idefix $ */</span>
+<h1>include/fb_hal.h</h1><a href="fb__hal_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* $Id$ */</span>
 <a name="l00002"></a>00002 <span class="comment">/*</span>
 <a name="l00003"></a>00003 <span class="comment">*      __________  ________________  __  _______</span>
 <a name="l00004"></a>00004 <span class="comment">*     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/</span>
@@ -96,7 +96,7 @@
 <a name="l00088"></a>00088 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> uint8_t <a class="code" href="fb__hal_8h.html#afa7a39eafe5190b954bac9e77ea52e2d" title="Check the programm button and set programming mode and switch LED depending on programming...">fbhal_checkProgTaster</a>(<span class="keywordtype">void</span>);
 <a name="l00089"></a>00089 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a89a6ed807cf111efb29a00f42e35cc3a" title="Set input/output mode to PORTs, init timers and interrupts.">fbhal_Init</a>(<span class="keywordtype">void</span>);
 <a name="l00090"></a>00090 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in...">fb_send_ack</a>(uint8_t value);
-<a name="l00091"></a>00091 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a4111a79334fb10bc9c786f510256c20b" title="Restart the application by activating the watchdog and block the program.">fb_hal_restart</a>(<span class="keywordtype">void</span>);
+<a name="l00091"></a>00091 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a4111a79334fb10bc9c786f510256c20b" title="Restart the application by activating the watchdog and block the program.">fb_hal_restart</a>(<span class="keywordtype">void</span>);
 <a name="l00092"></a>00092 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> uint8_t <a class="code" href="fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending.">fb_hal_txqueue_msg</a>(<span class="keyword">struct</span> <a class="code" href="structmsg.html" title="Container that store messages.">msg</a>* tx);
 <a name="l00093"></a>00093 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a4b15ee32b7b560554e0f6d6945dde9d4" title="That function can be use to send a test telegramm to the bus, e.g.">sendTestTelegram</a>(<span class="keywordtype">void</span>);
 <a name="l00094"></a>00094 <a class="code" href="fb__hal_8h.html#aa163a3608cbfcbcd50b1bd619cfd4508" title="Set HAL_EXT to extern to make clear it is include from an external source like a...">HAL_EXT</a> <span class="keywordtype">void</span> <a class="code" href="fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED.">panic</a>(uint8_t reason);
@@ -105,7 +105,7 @@
 <a name="l00097"></a>00097 <span class="preprocessor">#endif </span><span class="comment">/* _FB_HAL_H */</span>
 <a name="l00098"></a>00098 <span class="comment">/*********************************** EOF *********************************/</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Fri May 28 18:52:58 2010 for FreeBusAVR by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Wed Jun 9 17:26:59 2010 for FreeBusAVR by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

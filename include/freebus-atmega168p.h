@@ -143,6 +143,24 @@
           wdt_disable();                        \
      }
 
+/** Execute some EEPROM specific commmands
+ * configure eeprom to only write and not delete before, that operation will take 1.8ms
+ */
+#define CONFIG_EEPROM() {                       \
+        EECR |= (1 << EEPM1);                   \
+        EECR &= ~(1 << EEPM0);                  \
+    }
+
+/** Enable the EEPROM ready interrupt */
+#define ENABLE_EEPROM_READY_INT()   {           \
+        EECR |= (1U<<EERIE);                    \
+    }
+    
+/** Disable the EEPROM ready interrupt */
+#define DISABLE_EEPROM_READY_INT()   {           \
+        EECR &= ~(1U<<EERIE);                    \
+    }
+
 // map interrupts
 /** map uart interrupt*/
 #define SIG_UART_TRANS              USART_TX_vect
