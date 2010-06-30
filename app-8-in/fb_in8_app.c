@@ -410,7 +410,8 @@ uint8_t readApplication(struct msg *rxmsg)
 uint8_t runApplication(struct msg *rxmsg)
 {
 
-    return FB_NACK;
+	// kent 30-05-2010: must not return NACK
+    return FB_ACK;
 }   /* runApplication() */
 
 /**                                                                       
