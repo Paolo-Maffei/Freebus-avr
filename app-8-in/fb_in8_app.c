@@ -77,6 +77,13 @@
 
 #define OBJ_SIZE            8       ///< @todo add documentation
 
+
+/* EIB Device Parameter Values */
+
+#define EIB_PAR_UP          0U     /**< Jalousie Actor value for UP */
+#define EIB_PAR_DOWN        1U     /**< Jalousie Actor value for DOWN */
+
+
 /** @todo add documentation */
 typedef enum
 {
@@ -234,12 +241,12 @@ void timerOverflowFunction(void)
                         if(powerOnFunction == 0x40)
                         {
                             /* send DOWN message */
-                            sendTelegram((i + 8), 0, 0x00);
+                            sendTelegram((i + 8), EIB_PAR_DOWN, 0x00);
                         }
                         else if(powerOnFunction == 0x80)
                         {
                             /* send UP message */
-                            sendTelegram((i + 8), 1, 0x00);
+                            sendTelegram((i + 8), EIB_PAR_UP, 0x00);
                         }
                         break;
                     default:
@@ -410,8 +417,7 @@ uint8_t readApplication(struct msg *rxmsg)
 uint8_t runApplication(struct msg *rxmsg)
 {
 
-	// kent 30-05-2010: must not return NACK
-    return FB_ACK;
+	return FB_ACK; // must not return NACK, causes confusion with other devices responding
 }   /* runApplication() */
 
 /**                                                                       
@@ -668,29 +674,29 @@ uint16_t jalousieTimer;
                     if( (jalousieMode & 0x10) != 0U)
                     {
                         /* send MOVE telegramm with UP command */
-                        intVal[port].Jalousie.MoveVal = 1U;
-                        sendTelegram((port+8), 1, 0x00); 
+                        intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                        sendTelegram((port+8), EIB_PAR_UP, 0x00); 
                     }
                     else if( (jalousieMode & 0x20) != 0U)
                     {
                         /* send MOVE telegramm with DOWN command */
-                        intVal[port].Jalousie.MoveVal = 0U;
-                        sendTelegram((port+8), 0, 0x00); 
+                        intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                        sendTelegram((port+8), EIB_PAR_DOWN, 0x00); 
                     }
-                    else if( (jalousieMode & 0x20) != 0U)
+                    else if( (jalousieMode & 0x40) != 0U)
                     {
                         /* send MOVE telegramm with CHANGE command */
-                        if(intVal[port].Jalousie.MoveVal)
+                        if(intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN)
                         {
-                            /* send MOVE telegramm with DOWN command */
-                            intVal[port].Jalousie.MoveVal = 0U;
-                            sendTelegram((port+8), 0, 0x00); 
+                            /* send MOVE telegramm with UP command */
+                            intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                            sendTelegram((port+8), EIB_PAR_UP, 0x00); 
                         }
                         else
                         {
-                            /* send MOVE telegramm with UP command */
-                            intVal[port].Jalousie.MoveVal = 1U;
-                            sendTelegram((port+8), 1, 0x00); 
+                            /* send MOVE telegramm with DOWN command */
+                            intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                            sendTelegram((port+8), EIB_PAR_DOWN, 0x00); 
                         }
                     }
                 }
@@ -731,29 +737,29 @@ uint16_t jalousieTimer;
                     if( (jalousieMode & 0x10) != 0U)
                     {
                         /* send MOVE telegramm with UP command */
-                        intVal[port].Jalousie.MoveVal = 1U;
-                        sendTelegram((port+8), 1, 0x00); 
+                        intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                        sendTelegram((port+8), EIB_PAR_UP, 0x00); 
                     }
                     else if( (jalousieMode & 0x20) != 0U)
                     {
                         /* send MOVE telegramm with DOWN command */
-                        intVal[port].Jalousie.MoveVal = 0U;
-                        sendTelegram((port+8), 0, 0x00); 
+                        intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                        sendTelegram((port+8), EIB_PAR_DOWN, 0x00); 
                     }
-                    else if( (jalousieMode & 0x20) != 0U)
+                    else if( (jalousieMode & 0x40) != 0U)
                     {
                         /* send MOVE telegramm with CHANGE command */
-                        if(intVal[port].Jalousie.MoveVal)
+                        if(intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN)
                         {
-                            /* send MOVE telegramm with DOWN command */
-                            intVal[port].Jalousie.MoveVal = 0U;
-                            sendTelegram((port+8), 0, 0x00); 
+                            /* send MOVE telegramm with UP command */
+                            intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                            sendTelegram((port+8), EIB_PAR_UP, 0x00); 
                         }
                         else
                         {
-                            /* send MOVE telegramm with UP command */
-                            intVal[port].Jalousie.MoveVal = 1U;
-                            sendTelegram((port+8), 1, 0x00); 
+                            /* send MOVE telegramm with DOWN command */
+                            intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                            sendTelegram((port+8), EIB_PAR_DOWN, 0x00); 
                         }
                     }
 
