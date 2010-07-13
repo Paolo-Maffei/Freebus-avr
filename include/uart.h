@@ -26,7 +26,7 @@
 * Handles communication via uart (polling mode)
 * 
 */
-#ifdef DEBUG_UART
+#if defined(DEBUG_UART) | defined(USE_UART)
 
 #ifndef _UART_H
 #define _UART_H
@@ -40,6 +40,7 @@ extern void uart_putc_blocking(unsigned char c);
 extern void uart_hex_blocking(unsigned char c);
 extern void uart_puts_blocking(const char *s);
 extern void uart_newline_blocking(void);
+extern void uart_put(unsigned char* dat, unsigned char len);
 #endif /* _UART_H */
 
 #endif /* DEBUG_UART */
