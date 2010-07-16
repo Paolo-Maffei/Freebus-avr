@@ -14,7 +14,7 @@
 *  published by the Free Software Foundation.
 */
 /**
-* @file   freebus-atmega168P.h
+* @file   freebus-atmega168p.h
 * @author Matthias Fechner, Christian Bode, Tobias Buss
 * @date   Mon Jul 26 20:45:22 2009
 * 
