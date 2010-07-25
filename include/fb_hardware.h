@@ -32,7 +32,7 @@
 	#include "freebus-atmega8.h"
 #elif defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
 	#include "freebus-atmega168.h"
-#elif defined(__AVR_ATmega168P__) 
+#elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
 	#include "freebus-atmega168p.h"
 #elif defined(__AVR_ATmega16__)
 	#include "freebus-atmega16.h"
