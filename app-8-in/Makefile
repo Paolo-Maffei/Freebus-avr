@@ -124,6 +124,7 @@ PROJECTNAME=freebus-avr-8-in
 
 # Include global config file
 -include ../Make.config
+-include ../Make.config.template
 
 ####################################################
 #####                Config Done               #####
@@ -241,7 +242,7 @@ $(DUMPTRG): $(TRG)
 	$(OBJDUMP) -S  $< > $@
 
 
-$(TRG): $(OBJDEPS) 
+$(TRG): $(OBJDEPS) -l$(AVREIBLIB)
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 

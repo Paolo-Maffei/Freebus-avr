@@ -124,6 +124,7 @@ PROJECTNAME=freebus-avr-8-out
 
 # Include global config file
 -include ../Make.config
+-include ../Make.config.template
 
 ####################################################
 #####                Config Done               #####
@@ -195,7 +196,6 @@ CFILES=$(filter %.c, $(PRJSRC))
 #  Assembly
 ASMFILES=$(filter %.S, $(PRJSRC))
 
-
 # List all object files we need to create
 OBJDEPS=$(CFILES:.c=.o)    \
 	$(CPPFILES:.cpp=.o)\
@@ -241,7 +241,7 @@ $(DUMPTRG): $(TRG)
 	$(OBJDUMP) -S  $< > $@
 
 
-$(TRG): $(OBJDEPS) 
+$(TRG): $(OBJDEPS) -l$(AVREIBLIB)
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 
