@@ -71,11 +71,13 @@ typedef struct
 /*************************************************************************
 * FUNCTION PROTOTYPES
 **************************************************************************/
-EEPROM_EXT uint8_t eeprom_ParamRead(uint16_t wAdr);
-EEPROM_EXT void eeprom_ParamWrite(uint16_t addr, uint8_t len, uint8_t *dat);
+EEPROM_EXT uint8_t mem_ReadByte(uint16_t wAdr);
+EEPROM_EXT void mem_WriteBlock(uint16_t addr, uint8_t len, uint8_t *dat);
 EEPROM_EXT uint8_t eeprom_busy(void);
 EEPROM_EXT void eeprom_ParamSetDefault(const STRUCT_DEFPARAM *pParam );
 EEPROM_EXT void eeprom_Init(uint8_t *pNodeParam, uint16_t wParamlen);
+EEPROM_EXT uint8_t *eeprom_GetBase(void);
+
 #ifdef DEBUG_UART
 // disabled because no memory left in microcontroller
 void eeprom_print(void);

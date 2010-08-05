@@ -134,7 +134,7 @@ void timerOverflowFunction(void)
     uint8_t i;
 
     /* check if programm is running */
-    if(eeprom_ParamRead(APPLICATION_RUN_STATUS) != 0xFF)
+    if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
         return;
      
     if(currentTime == 0xFFFF) {
@@ -256,8 +256,8 @@ uint8_t restartApplication(void)
     ENABLE_PWM(PWM_SETPOINT);
 
     // check if at power loss we have to restore old values (see 0x01F6) and do it here
-    portValue = eeprom_ParamRead(0x0000);
-    initialPortValue = ((uint16_t)eeprom_ParamRead(0x01F7) << 8) | ((uint16_t)eeprom_ParamRead(0x01F6));
+    portValue = mem_ReadByte(0x0000);
+    initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
     for(i=0; i<=7; i++) {
         temp = (initialPortValue>>(i*2)) & 0x03;
         // DEBUG_PUTHEX(temp);
@@ -305,17 +305,17 @@ uint8_t readApplication(struct msg *rxmsg)
     uint8_t numberInGroupAddress;   // reference from association table to group address table
     uint8_t commObjectNumber;       // reference from association table to communication object table
 
-    assocTabPtr = eeprom_ParamRead(ASSOCTABPTR);
-    countAssociations = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr);
+    assocTabPtr = mem_ReadByte(ASSOCTABPTR);
+    countAssociations = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr);
  
     for(i=0; i<countAssociations; i++) {
-        numberInGroupAddress = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2));
+        numberInGroupAddress = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2));
 
         // check if valid group address reference
         if(numberInGroupAddress == 0xFE)
             continue;
 
-        commObjectNumber = eeprom_ParamRead(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2) + 1);
+        commObjectNumber = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2) + 1);
 
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
@@ -336,8 +336,8 @@ uint8_t readApplication(struct msg *rxmsg)
             resp->len    = 9;
 
             hdr->ctrl    = 0xBC;
-            hdr->src[0]  = eeprom_ParamRead(PA_ADDRESS_HIGH);
-            hdr->src[1]  = eeprom_ParamRead(PA_ADDRESS_LOW);
+            hdr->src[0]  = mem_ReadByte(PA_ADDRESS_HIGH);
+            hdr->src[1]  = mem_ReadByte(PA_ADDRESS_LOW);
             hdr->dest[0] = grp_addr.ga[numberInGroupAddress-1]>>8;
             hdr->dest[1] = grp_addr.ga[numberInGroupAddress-1];
             hdr->npci    = 0xE1;
@@ -369,13 +369,13 @@ uint8_t runApplication(struct msg *rxmsg)
     struct fbus_hdr * hdr= (struct fbus_hdr *) rxmsg->data;
     uint8_t i;
     uint16_t destAddr=((hdr->dest[0])<<8 | hdr->dest[1]);
-    uint8_t assocTabPtr = eeprom_ParamRead(ASSOCTABPTR);                             // points to start of association table (0x0100+assocTabPtr)
-    uint8_t countAssociations = eeprom_ParamRead(BASE_ADDRESS_OFFSET+assocTabPtr);   // number of associations saved in associations table
+    uint8_t assocTabPtr = mem_ReadByte(ASSOCTABPTR);                             // points to start of association table (0x0100+assocTabPtr)
+    uint8_t countAssociations = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr);   // number of associations saved in associations table
     uint8_t numberInGroupAddress;                              // reference from association table to group address table
     uint8_t commObjectNumber;                                  // reference from association table to communication object table
-    uint8_t commStabPtr = eeprom_ParamRead(COMMSTAB_ADDRESS);                   // points to communication object table (0x0100+commStabPtr)
-    //uint8_t countCommObjects = eeprom_ParamRead(0x0100+commStabPtr);  // number of communication objects in table
-    //uint8_t userRamPointer = eeprom_ParamRead(0x0100+commStabPtr+1);  // points to user ram
+    uint8_t commStabPtr = mem_ReadByte(COMMSTAB_ADDRESS);                   // points to communication object table (0x0100+commStabPtr)
+    //uint8_t countCommObjects = mem_ReadByte(0x0100+commStabPtr);  // number of communication objects in table
+    //uint8_t userRamPointer = mem_ReadByte(0x0100+commStabPtr+1);  // points to user ram
     uint8_t commValuePointer;                                  // pointer to value
     uint8_t commConfigByte;                                    // configuration byte
     uint8_t commValueType;                                     // defines type of byte
@@ -384,20 +384,20 @@ uint8_t runApplication(struct msg *rxmsg)
     uint8_t delayFactorOff=0;                                     // the factor for the delay timer (off delay)
     uint8_t delayActive;                                       // is timer active 1=yes
     uint8_t delayBase;
-    uint8_t timerActive = eeprom_ParamRead(0x01EA);               // set bit value if delay on a channel is active
+    uint8_t timerActive = mem_ReadByte(0x01EA);               // set bit value if delay on a channel is active
      
     // handle here only data with 6-bit length, maybe we have to add here more code to handle longer data
     /** @todo handle data with more then 6 bit */
     data = (hdr->apci) & 0x3F;
      
     for(i=0; i<countAssociations; i++) {
-        numberInGroupAddress = eeprom_ParamRead(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2));
+        numberInGroupAddress = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2));
 
         // check if valid group address reference
         if(numberInGroupAddress == 0xFE)
             continue;
 
-        commObjectNumber = eeprom_ParamRead(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2)+1);
+        commObjectNumber = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2)+1);
 
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
@@ -406,16 +406,16 @@ uint8_t runApplication(struct msg *rxmsg)
             // found group address
 
             // read communication object (3 Byte)
-            commValuePointer = eeprom_ParamRead(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3));
-            commConfigByte   = eeprom_ParamRead(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+1));
-            commValueType    = eeprom_ParamRead(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+2));
-            delayActive      = eeprom_ParamRead(0x01EA);
+            commValuePointer = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3));
+            commConfigByte   = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+1));
+            commValueType    = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+2));
+            delayActive      = mem_ReadByte(0x01EA);
             // read delay factor for on and off
-            delayFactorOn    = eeprom_ParamRead(0x01DA+commObjectNumber);
-            delayFactorOff   = eeprom_ParamRead(0x01E2+commObjectNumber);
+            delayFactorOn    = mem_ReadByte(0x01DA+commObjectNumber);
+            delayFactorOff   = mem_ReadByte(0x01E2+commObjectNumber);
 
             // read delay base, 0=130ms, 1=260 and so on
-            delayBase        = eeprom_ParamRead(0x01F9+((commObjectNumber+1)>>1));
+            delayBase        = mem_ReadByte(0x01F9+((commObjectNumber+1)>>1));
             if((commObjectNumber & 0x01) == 0x01)
                 delayBase&=0x0F;
             else
@@ -463,7 +463,7 @@ uint8_t runApplication(struct msg *rxmsg)
             if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
                 DEBUG_PUTS("TK");
                 // only switch off if on 0x01EB the value is equal zero
-                if(!(eeprom_ParamRead(0x01EB) & (1<<commObjectNumber))) {
+                if(!(mem_ReadByte(0x01EB) & (1<<commObjectNumber))) {
                     delayValues[commObjectNumber] = 0;
                     timerRunning &= ~(1<<commObjectNumber);
                     portValue    &= ~(1<<commObjectNumber);
@@ -530,13 +530,13 @@ void switchObjects(void)
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
-    savedValue = eeprom_ParamRead(0x0000);
+    savedValue = mem_ReadByte(0x0000);
     if(savedValue != portValue) {
         // now check if last status must be saved, we write to eeprom only if necessary
-        initialPortValue = ((uint16_t)eeprom_ParamRead(0x01F7) << 8) | ((uint16_t)eeprom_ParamRead(0x01F6));
+        initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
         for(i=0; i<=7; i++) {
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
-                eeprom_ParamWrite(0x0000, 1, &portValue);
+                mem_WriteBlock(0x0000, 1, &portValue);
                 DEBUG_PUTS("Sv");
                 break;
             }
@@ -544,7 +544,7 @@ void switchObjects(void)
     }
      
     /* check 0x01F2 for opener or closer and modify data to relect that, then switch the port */
-    portOperationMode = eeprom_ParamRead(0x01F2);
+    portOperationMode = mem_ReadByte(0x01F2);
     switchPorts(portValue^portOperationMode);
 
     return;
