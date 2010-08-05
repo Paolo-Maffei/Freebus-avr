@@ -37,7 +37,7 @@
 * INCLUDES
 *************************************************************************/
 #include "fb_hardware.h"
-
+#include <stdlib.h>
 
 /**************************************************************************
 * DEFINITIONS
@@ -97,7 +97,7 @@ MSG_EXT void queuemsg(struct msg* *ptr, struct msg *pmsg, void (*trigger)(void))
 */
 static inline void FreeMsg(struct msg* pmsg)
 {
-	pmsg->state = MSG_FREE;
+	free(pmsg);
 }
 
 /** 
