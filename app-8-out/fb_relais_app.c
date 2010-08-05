@@ -83,9 +83,6 @@ uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
     {
-        { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
-        { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
-        { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
         { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
         { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
         { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
@@ -97,8 +94,9 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
         { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
         { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
 
-        { PA_ADDRESS_HIGH,         0x11 },    /**< default address is 1.1.51                    */
-        { PA_ADDRESS_LOW,          0x33 },    /**<                                              */   
+        { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
+        { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
+        { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
 
         { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
     };
