@@ -13,6 +13,9 @@ hex:
 clean:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
 
+stats:
+	for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done
+
 avrlib:
 	$(MAKE) -C lib
 	$(MAKE) -C lib install
