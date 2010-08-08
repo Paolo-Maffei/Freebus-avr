@@ -34,7 +34,7 @@
 #include "fb_hal.h"
 #include "fb_prot.h"
 #include "fb_app.h"
-#include "fb_relais_app.h"
+#include "fb_adc.h"
 #include <avr/sleep.h>
 
 /**************************************************************************
@@ -88,9 +88,6 @@ inline void doAdcMeasurement(void);
  */
 uint8_t restartApplication(void)
 {
-    uint8_t i,temp;
-    uint16_t initialPortValue;
-
     return 1;
 } /* restartApplication() */
 
@@ -142,17 +139,6 @@ int main(void)
     DEBUG_PUTS_BLOCKING("V0.1");
     DEBUG_NEWLINE_BLOCKING();
        
-    /* enable interrupts */
-    ENABLE_ALL_INTERRUPTS();
-
-    configureAdc0();
-    doAdcMeasurement();
-
-    while(1) {
-        _delay_ms(500);
-        doAdcMeasurement();
-    }
-
     /* init procerssor register */
     fbhal_Init();
 
@@ -176,10 +162,8 @@ int main(void)
     /* the main loop / polling */
     /***************************/
     while(1) {
-        /* Auswerten des Programmiertasters */
-        if(fbhal_checkProgTaster()) {
-            doAdcMeasurement();
-		}
+        _delay_ms(500);
+        doAdcMeasurement();
 
         // go to sleep mode here
         //sleep_mode();
@@ -198,21 +182,23 @@ int main(void)
 void configureAdc0(void)
 {
     // set as input with no pullup
-    DDRC &= ~(1<<DDB0);
-    PORTC &= ~(1<<PC0);
+    //DDRC &= ~(1<<DDB0);
+    //PORTC &= ~(1<<PC0);
 
     // set reference to Avcc
     ADMUX &= ~(1<<REFS1);
     ADMUX |= (1<<REFS0);
-    // right bound
+    // right adjusted result
     ADMUX &= ~(1<<ADLAR);
     // channel 0
     ADMUX &= ~(1<<MUX3 | 1<<MUX2 | 1<<MUX1 | 1<<MUX0);
 
-
     // set ADC prescaler to 64
-    ADCSRA |= (1<<ADPS2 | 1<<ADPS1);
     ADCSRA &= ~(1<<ADPS0);
+    ADCSRA |= (1<<ADPS2 | 1<<ADPS1);
+
+    // disable DIO of pin
+    DIDR0 |= (1<<ADC0D);
 
     // enable ADC interrupt
     ADCSRA |= (1<<ADIE);
@@ -227,10 +213,11 @@ inline void doAdcMeasurement(void)
 
 ISR(ADC_vect)
 {
-    uint16_t value=ADCW;
+    uint8_t valuel=ADCL;
+    uint8_t valueh=ADCH;
     DEBUG_PUTS("ADC ");
-    DEBUG_PUTHEX(value << 8);
-    DEBUG_PUTHEX(value);
+    DEBUG_PUTHEX(valueh);
+    DEBUG_PUTHEX(valuel);
     DEBUG_NEWLINE();
 
 }

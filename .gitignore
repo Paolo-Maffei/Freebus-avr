@@ -9,3 +9,4 @@ software/avr/app-8-out/freebus-avr-8-out.out.map
 /software/avr/app-8-in/default/.gitignore~
 /software/avr/app-8-in/default/Makefile
 /software/tools/freebus_eib.sh~
+/software/avr/adc/Makefile~
