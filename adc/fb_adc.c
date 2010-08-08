@@ -1,0 +1,238 @@
+/* $Id$ */
+/*
+ *      __________  ________________  __  _______
+ *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
+ *    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
+ *   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
+ *  /_/   /_/ |_/_____/_____/_____/\____//____/  
+ *                                      
+ *  Copyright (c) 2010 Matthias Fechner <matthias@fechner.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.
+ */
+/**
+ * @file   fb_adc.c
+ * @author Matthias Fechner
+ * @date   Sun Aug 08 08:01:58 2010
+ * 
+ * @brief  Test program to use ADC to measure bus voltage
+ */
+#ifndef _FB_ADC_C
+#define _FB_ADC_C
+
+
+/*************************************************************************
+ * INCLUDES
+ *************************************************************************/
+#include "fb.h"
+#include "fb_hardware.h"
+#include "freebus-debug.h"
+#include "fb_eeprom.h"
+#include "msg_queue.h"
+#include "fb_hal.h"
+#include "fb_prot.h"
+#include "fb_app.h"
+#include "fb_relais_app.h"
+#include <avr/sleep.h>
+
+/**************************************************************************
+ * DEFINITIONS
+ **************************************************************************/
+
+/**************************************************************************
+ * DECLARATIONS
+ **************************************************************************/
+extern struct grp_addr_s grp_addr;
+
+uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
+
+/** list of the default parameter for this application */
+const STRUCT_DEFPARAM defaultParam[] PROGMEM =
+    {
+        { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
+        { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
+        { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
+        { APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
+
+        { 0x0000,                  0x00 },    /**< default is off                               */
+        { 0x01EA,                  0x00 },    /**< no timer active                              */
+        { 0x01F6,                  0x55 },    /**< don't save status at power loss (number 1-4) */
+        { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
+        { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
+
+        { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
+        { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
+        { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
+
+        { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
+    };
+
+
+/*************************************************************************
+ * FUNCTION PROTOTYPES
+ **************************************************************************/
+void configureAdc0(void);
+inline void doAdcMeasurement(void);
+
+/**************************************************************************
+ * IMPLEMENTATION
+ **************************************************************************/
+
+/** 
+ * Function is called when microcontroller gets power or if the application must be restarted.
+ * It restores data like in the parameters defined.
+ * 
+ * @return FB_ACK or FB_NACK
+ */
+uint8_t restartApplication(void)
+{
+    uint8_t i,temp;
+    uint16_t initialPortValue;
+
+    return 1;
+} /* restartApplication() */
+
+/** 
+ * Read status from port and return it.
+ * 
+ * @param rxmsg 
+ * 
+ * @return 
+ */
+uint8_t readApplication(struct msg *rxmsg)
+{
+    return FB_ACK;
+}   /* readApplication() */
+
+/** 
+ * Function is called if A_GroupValue_Write is received. The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
+ * Read all parameters in that function and set global variables.
+ *
+ * @param rxmsg 
+ * 
+ * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
+ */
+uint8_t runApplication(struct msg *rxmsg)
+{
+    return FB_ACK;
+}   /* runApplication() */
+
+/**                                                                       
+ * The start point of the program, init all libraries, start the bus interface,
+ * the application and check the status of the program button.
+ *
+ * @return 
+ *   
+ */
+int main(void)
+{
+    /* disable wd after restart_app via watchdog */
+    DISABLE_WATCHDOG();
+
+    /* ROM-Check */
+    /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
+    
+    /* init internal Message System */
+    msg_queue_init();
+    
+	DEBUG_INIT();
+    DEBUG_NEWLINE_BLOCKING();
+    DEBUG_PUTS_BLOCKING("V0.1");
+    DEBUG_NEWLINE_BLOCKING();
+       
+    /* enable interrupts */
+    ENABLE_ALL_INTERRUPTS();
+
+    configureAdc0();
+    doAdcMeasurement();
+
+    while(1) {
+        _delay_ms(500);
+        doAdcMeasurement();
+    }
+
+    /* init procerssor register */
+    fbhal_Init();
+
+    /* enable interrupts */
+    ENABLE_ALL_INTERRUPTS();
+
+    /* init eeprom modul and RAM structure */ 
+    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+
+    /* init protocol layer */
+    /* load default values */
+    fbprot_Init(defaultParam);
+
+    /* config application hardware */
+    (void)restartApplication();
+
+    configureAdc0();
+    doAdcMeasurement();
+
+    /***************************/
+    /* the main loop / polling */
+    /***************************/
+    while(1) {
+        /* Auswerten des Programmiertasters */
+        if(fbhal_checkProgTaster()) {
+            doAdcMeasurement();
+		}
+
+        // go to sleep mode here
+        //sleep_mode();
+        // wakeup via interrupt check then the programming button and application timer for an overrun
+        // for detailed list see datasheet page 40ff
+        // MC need about 6 cyles to wake up at 8 MHZ that are 6*0.125µs
+        //        PRR |= (1<<PRADC)|(1<<PRSPI)|(1<<PRTWI);
+        //        set_sleep_mode(SLEEP_MODE_IDLE);
+        //          sleep_enable();
+        //          sleep_cpu();
+        //          sleep_disable();
+    }   /* while(1) */
+
+}   /* main() */
+
+void configureAdc0(void)
+{
+    // set as input with no pullup
+    DDRC &= ~(1<<DDB0);
+    PORTC &= ~(1<<PC0);
+
+    // set reference to Avcc
+    ADMUX &= ~(1<<REFS1);
+    ADMUX |= (1<<REFS0);
+    // right bound
+    ADMUX &= ~(1<<ADLAR);
+    // channel 0
+    ADMUX &= ~(1<<MUX3 | 1<<MUX2 | 1<<MUX1 | 1<<MUX0);
+
+
+    // set ADC prescaler to 64
+    ADCSRA |= (1<<ADPS2 | 1<<ADPS1);
+    ADCSRA &= ~(1<<ADPS0);
+
+    // enable ADC interrupt
+    ADCSRA |= (1<<ADIE);
+    // enable ADC
+    ADCSRA |= (1<<ADEN);
+}
+
+inline void doAdcMeasurement(void)
+{
+    ADCSRA |= (1<<ADSC);
+}
+
+ISR(ADC_vect)
+{
+    uint16_t value=ADCW;
+    DEBUG_PUTS("ADC ");
+    DEBUG_PUTHEX(value << 8);
+    DEBUG_PUTHEX(value);
+    DEBUG_NEWLINE();
+
+}
+#endif /* _FB_ADC_C */
+/*********************************** EOF *********************************/
