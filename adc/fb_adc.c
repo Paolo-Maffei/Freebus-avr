@@ -18,6 +18,10 @@
  * @date   Sun Aug 08 08:01:58 2010
  * 
  * @brief  Test program to use ADC to measure bus voltage
+ * The ADC return a 10-bit value. Vin=(ADC * Vref) / 1024.
+ * Example: If the ADC is 0x024D the value is 589. Vin=(589 * 5) / 1024=2,876V
+ * We have a voltage seperator in place to measure 50V. It is 1M to 110k.
+ * Vbus = Vadc * ( (R1+R2) / R2). Vbus = (ADC * Vref * (R1 + R2)) / (1024 * R1) = (589 * 5 * (1000k + 110k)) / (1024 * 110k) = 29,02V
  */
 #ifndef _FB_ADC_C
 #define _FB_ADC_C
@@ -157,6 +161,7 @@ int main(void)
 
     configureAdc0();
     doAdcMeasurement();
+    _delay_ms(2000);
 
     /***************************/
     /* the main loop / polling */
@@ -181,29 +186,14 @@ int main(void)
 
 void configureAdc0(void)
 {
-    // set as input with no pullup
-    //DDRC &= ~(1<<DDB0);
-    //PORTC &= ~(1<<PC0);
-
-    // set reference to Avcc
-    ADMUX &= ~(1<<REFS1);
-    ADMUX |= (1<<REFS0);
-    // right adjusted result
-    ADMUX &= ~(1<<ADLAR);
-    // channel 0
-    ADMUX &= ~(1<<MUX3 | 1<<MUX2 | 1<<MUX1 | 1<<MUX0);
-
-    // set ADC prescaler to 64
-    ADCSRA &= ~(1<<ADPS0);
-    ADCSRA |= (1<<ADPS2 | 1<<ADPS1);
+    // set reference to Avcc, right adjusted result, channel 0
+    ADMUX = (1<<REFS0);
 
     // disable DIO of pin
     DIDR0 |= (1<<ADC0D);
 
-    // enable ADC interrupt
-    ADCSRA |= (1<<ADIE);
-    // enable ADC
-    ADCSRA |= (1<<ADEN);
+    // set ADC prescaler to 64, enable ADC interrupt, enable ADC
+    ADCSRA = (1<<ADPS2) | (1<<ADPS1) | (1<<ADIE) | (1<<ADEN);
 }
 
 inline void doAdcMeasurement(void)
@@ -213,13 +203,11 @@ inline void doAdcMeasurement(void)
 
 ISR(ADC_vect)
 {
-    uint8_t valuel=ADCL;
-    uint8_t valueh=ADCH;
+    uint16_t value=ADCW;
     DEBUG_PUTS("ADC ");
-    DEBUG_PUTHEX(valueh);
-    DEBUG_PUTHEX(valuel);
+    DEBUG_PUTHEX(value>>8);
+    DEBUG_PUTHEX(value);
     DEBUG_NEWLINE();
-
 }
 #endif /* _FB_ADC_C */
 /*********************************** EOF *********************************/
