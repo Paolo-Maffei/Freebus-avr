@@ -194,7 +194,7 @@ void timerOverflowFunction(void)
     uint8_t debounceFactor;
     
     /* check if programm is running */
-    if(eeprom_ParamRead(APPLICATION_RUN_STATUS) != 0xFF)
+    if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
     {
         /* Do nothing */
         ;
@@ -211,7 +211,7 @@ void timerOverflowFunction(void)
 
             for(i=0; i<8; i++)
             {
-                powerOnFunction = (eeprom_ParamRead(PORTFUNC_BASEADR + (i * 4)) & 0xC0);
+                powerOnFunction = (mem_ReadByte(PORTFUNC_BASEADR + (i * 4)) & 0xC0);
 
                 switch(getPortFunction(i))
                 {
@@ -276,7 +276,7 @@ void timerOverflowFunction(void)
         if(portChanged != 0)
         {
             /* Debounce */
-            debounceFactor = eeprom_ParamRead(DEBOUNCE_FACTOR);
+            debounceFactor = mem_ReadByte(DEBOUNCE_FACTOR);
 
             for(i=0; i<debounceFactor; i++)
             {
@@ -347,7 +347,7 @@ uint8_t restartApplication(void)
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    powerOnDelay = eeprom_ParamRead(POWERONDELAY_FACTOR)<<(eeprom_ParamRead(POWERONDELAY_BASE)>>4);
+    powerOnDelay = mem_ReadByte(POWERONDELAY_FACTOR)<<(mem_ReadByte(POWERONDELAY_BASE)>>4);
 
     /* reset global timer values */
     currentTime=0;
@@ -433,34 +433,34 @@ EFUNC_PORT getPortFunction(uint8_t port)
     switch(port)
     {
         case 0:
-            portfunction = (eeprom_ParamRead(PORTFUNCTION_12) & 0x0F);
+            portfunction = (mem_ReadByte(PORTFUNCTION_12) & 0x0F);
             break;
 
         case 1:
-            portfunction = ((eeprom_ParamRead(PORTFUNCTION_12)>>4) & 0x0F);
+            portfunction = ((mem_ReadByte(PORTFUNCTION_12)>>4) & 0x0F);
             break;
         case 2:
-            portfunction = (eeprom_ParamRead(PORTFUNCTION_34) & 0x0F);
+            portfunction = (mem_ReadByte(PORTFUNCTION_34) & 0x0F);
             break;
 
         case 3:
-            portfunction = ((eeprom_ParamRead(PORTFUNCTION_34)>>4) & 0x0F);
+            portfunction = ((mem_ReadByte(PORTFUNCTION_34)>>4) & 0x0F);
             break;
 
         case 4:
-            portfunction = (eeprom_ParamRead(PORTFUNCTION_56) & 0x0F);
+            portfunction = (mem_ReadByte(PORTFUNCTION_56) & 0x0F);
             break;
 
         case 5:
-            portfunction = ((eeprom_ParamRead(PORTFUNCTION_56)>>4) & 0x0F);
+            portfunction = ((mem_ReadByte(PORTFUNCTION_56)>>4) & 0x0F);
             break;
 
         case 6:
-            portfunction = (eeprom_ParamRead(PORTFUNCTION_78) & 0x0F);
+            portfunction = (mem_ReadByte(PORTFUNCTION_78) & 0x0F);
             break;
 
         case 7:
-            portfunction = ((eeprom_ParamRead(PORTFUNCTION_78)>>4) & 0x0F);
+            portfunction = ((mem_ReadByte(PORTFUNCTION_78)>>4) & 0x0F);
             break;
 
         default:
@@ -505,7 +505,7 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged)
 {
     uint8_t edgeFunc;
 
-    edgeFunc = eeprom_ParamRead(PORTFUNC_EDGEFUNC + (port * 4));
+    edgeFunc = mem_ReadByte(PORTFUNC_EDGEFUNC + (port * 4));
 
     if((portChanged & (1U<<port)) != 0)
     {
@@ -654,7 +654,7 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged)
 uint8_t jalousieMode;
 uint16_t jalousieTimer;
 
-    jalousieMode = eeprom_ParamRead(PORTFUNC_JALOMODE + (port * 4));
+    jalousieMode = mem_ReadByte(PORTFUNC_JALOMODE + (port * 4));
 
     switch(intVal[port].Jalousie.intState)
     {
@@ -702,14 +702,14 @@ uint16_t jalousieTimer;
                 }
 
                 /* Delaytime T1 */
-                jalousieTimer = eeprom_ParamRead(PORTFUNC_T1_BASIS + ((port+1)>>1));
+                jalousieTimer = mem_ReadByte(PORTFUNC_T1_BASIS + ((port+1)>>1));
                 if( (port & 0x01) != 0)
                 {
                     jalousieTimer =  (jalousieTimer >> 4) + 1;
                 }
 
                 jalousieTimer =  jalousieTimer & 0x0F;
-                jalousieTimer *= eeprom_ParamRead(PORTFUNC_T1_FAKTOR + (port * 4));
+                jalousieTimer *= mem_ReadByte(PORTFUNC_T1_FAKTOR + (port * 4));
 
                 intVal[port].Jalousie.timer =  jalousieTimer - 1U;
                 intVal[port].Jalousie.intState = 1U;
@@ -764,14 +764,14 @@ uint16_t jalousieTimer;
                     }
 
                     /* Delaytime T2 */
-                    jalousieTimer = eeprom_ParamRead(PORTFUNC_T2_BASIS + ((port+1)>>1));
+                    jalousieTimer = mem_ReadByte(PORTFUNC_T2_BASIS + ((port+1)>>1));
                     if( (port & 0x01) != 0)
                     {
                         jalousieTimer =  (jalousieTimer >> 4) + 1;
                     }
 
                     jalousieTimer =  jalousieTimer & 0x0F;
-                    jalousieTimer *= eeprom_ParamRead(PORTFUNC_T2_FAKTOR + (port * 4));
+                    jalousieTimer *= mem_ReadByte(PORTFUNC_T2_FAKTOR + (port * 4));
 
                     intVal[port].Jalousie.timer =  jalousieTimer - 1U;
                     intVal[port].Jalousie.intState = 2U;
