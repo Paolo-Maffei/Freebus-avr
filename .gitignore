@@ -11,3 +11,7 @@ software/avr/app-8-out/freebus-avr-8-out.out.map
 /software/tools/freebus_eib.sh~
 /software/avr/adc/Makefile~
 /software/avr/adc/default/Makefile
+/hardware/misc/AVR-LED-Taster-Board/avr-led-taster.b#1
+/hardware/misc/AVR-LED-Taster-Board/avr-led-taster.b#2
+/hardware/misc/AVR-LED-Taster-Board/avr-led-taster.b#3
+/hardware/misc/AVR-LED-Taster-Board/avr-led-taster.pro
