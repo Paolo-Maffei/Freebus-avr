@@ -66,19 +66,30 @@
           EIMSK |= (1<<INT0);                   \
      }
 
-/** Reload Timer0
-* calculate value with: (F_CPU*TIME_TO_WAIT)/prescaler
-* substract from 0xFF (or decimal 255), that's the value you want, keep in mind it must be a 8-bit value,
-* adapt the prescaler if necessary
-* note substract 8µs from value! (that the microcontroller eats every time)
-*/
-#define RELOAD_TIMER0(value, tccr0) {                                   \
-          TCCR0B &= ~((1<<CS02) | (1<<CS01) | (1<<CS00)); /* stop timer */ \
-          TCCR0A = 0;             /* set timer mode */                  \
-          TCNT0  = value;         /* set start of timer, run to 0xFF */ \
-          TIMSK0 |= (1<<TOIE0);   /* enable overflow interrupt */       \
-          TCCR0B = tccr0;         /* clock select */                    \
-     }
+#define INIT_EIB_TIMER(vala,valb) { \
+          TCCR0A = (1<<WGM01);     /*  CTC mode  */ \
+          OCR0A = vala  ;  /* duration of one bit */ \
+          OCR0B = valb  ;  \
+     } 
+
+#define START_EIB_TIMER(value) { \
+          TCNT0  = value             ;            /* set start value */ \
+          TIFR0  = (1<<OCF0A)|(1<<OCF0B) ;        /* clear pending interrups */ \
+          TIMSK0 = (( 1<<OCIE0A )|( 1<<OCIE0B )); /* enable OCRA, OCRB interrupts */  \
+          TCCR0B = (1<<CS01) ;                    /* start the timer, prescaler :8, increment each 1 µsec */ \
+    }
+
+#define STOP_EIB_TIMER() { \
+          TCCR0B = 0;      \
+          TIMSK0 = 0;      \
+    }
+
+#define SLOW_EIB_TIMER() \
+          TCCR0B |=  (1<<CS00);
+
+#define NORMAL_EIB_TIMER() \
+          TCCR0B &= ~(1<<CS00);
+ 
 
 /** Checkcondition for application timer overrun */
 #define TIMER1_OVERRUN              (TIFR1 & (1U<<OCF1A))
