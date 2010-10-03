@@ -62,7 +62,7 @@
 
 /** clear pending interrupts INT0 and enable interrupt */
 #define ENABLE_RX_INT()             {           \
-          EIFR |= (1<<INTF0);                   \
+          EIFR   = (1<<INTF0);                  \
           EIMSK |= (1<<INT0);                   \
      }
 
@@ -95,7 +95,7 @@
 #define TIMER1_OVERRUN              (TIFR1 & (1U<<OCF1A))
 
 /** Clear overrun bit set for application timer */
-#define CLEAR_TIMER1_OVERRUN        TIFR1 |= (1U<<OCF1A)
+#define CLEAR_TIMER1_OVERRUN        TIFR1  = (1U<<OCF1A)
 
 /** Reload the application timer (Timer1) to start from 0 */
 #define RELOAD_APPLICATION_TIMER()  {                                   \
