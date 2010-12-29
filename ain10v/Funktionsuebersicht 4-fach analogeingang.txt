@@ -1,0 +1,43 @@
+Funktionen 4-fach Tempsensor v1.0
+
+basiert auf Gira 0960 00 Analogeingang
+Messung über 4 DS18B20
+
+Allgemein:
+Auslesen aller Objektzustände				ja
+
+Sendeformat der Messwerte:
+16Bit 					ja
+8Bit  					nein
+
+Verhalten nach Busspannungswiederkehr:
+Messwerte senden
+ - verzögert						ja
+   + Sendeverzögerung einstellbar			ja
+ - sofort						ja
+ - keine Funktion					ja
+Grenzwerte senden
+ - sofort						nein
+ - keine Funktion					nein
+
+Messwerte:
+ - zyklisch senden					ja
+ - senden bei Messwertdifferenz				nein
+   + Sendeverzögerung einstellbar			nein
+   + Messwertdifferenz einstellbar			nein
+
+Grenzwerte:
+Grenzwerte 1 und 2 einstellbar				nein
+Verhalten bei Über/Unterschreiten GW1
+ - Ein							nein
+ - Aus							nein
+ - keine Funktion					nein
+Verhalten bei Über/Unterschreiten GW2
+ - Ein							nein
+ - Aus							nein
+ - keine Funktion					nein
+zyklisch Senden						ja
+
+
+Hinweis:
+zur zeit wird nur 0-10V unterstützt
