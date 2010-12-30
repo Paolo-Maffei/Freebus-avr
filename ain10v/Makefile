@@ -59,7 +59,7 @@
 
 
 # Which target should be compiled
-DEFAULT_TARGET=fb_adc.c
+DEFAULT_TARGET=fb_ain10v.c
 
 #####         Target Specific Details          #####
 #####     Customize these for your project     #####
@@ -75,11 +75,11 @@ DEFAULT_TARGET=fb_adc.c
 # accept the same MCU name as avr-gcc (for example
 # for ATmega8s, avr-gcc expects 'atmega8' and 
 # avrdude requires 'm8')
-#PROGRAMMER_MCU=
+PROGRAMMER_MCU=m168p
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
-PROJECTNAME=freebus-avr-adc
+PROJECTNAME=freebus-avr-ain10v
 
 # Source files
 # List C/C++/Assembly source files:
@@ -99,7 +99,7 @@ PROJECTNAME=freebus-avr-adc
 #OPTLEVEL=
 
 # define additional flags for the compiler
-#CUSTOM_CFLAGS=
+CUSTOM_CFLAGS=-DF_CPU=8000000UL -g -Wall -DDEBUG_UART
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program
@@ -115,12 +115,12 @@ PROJECTNAME=freebus-avr-adc
 # one of the valid "-c PROGRAMMER-ID" values 
 # described in the avrdude info page.
 # 
-#AVRDUDE_PROGRAMMERID=
+AVRDUDE_PROGRAMMERID=avrispmkII
 
 # port--serial or parallel port to which your 
 # hardware programmer is attached
 #
-#AVRDUDE_PORT=
+AVRDUDE_PORT=usb
 
 # Include global config file
 -include ../Make.config

@@ -60,7 +60,8 @@ extern struct grp_addr_s grp_addr;
 static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
 static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
 volatile uint16_t value = 0;    /**< the value from the ADC */
-uint16_t channelValue[4];
+uint16_t channelValue[4],lastValue[4],lastsentValue[4];
+uint8_t limit[4];
 volatile uint8_t newValue = 0;    /**< to tell the programm, that new data is here !! */
 uint8_t zyk_senden_basis;
 uint8_t channelIndex = 0;
@@ -102,10 +103,12 @@ void sendData(uint16_t wGA,uint8_t *data,uint8_t dataLen,uint8_t sendType);
 unsigned int find_ga(unsigned char objno);
 void write_delay_record(unsigned char objno, unsigned char delay_state, long delay_target);
 void clear_delay_record(unsigned char objno);
-void send_value(unsigned char type, unsigned char objno);
+void send_value(unsigned char type, unsigned char objno,int16_t sval);
 unsigned char read_obj_type(unsigned char objno);
 int16_t sendewert(unsigned char objno);
 void bus_return(uint8_t channel);
+void grenzwert (unsigned char eingang);
+void messwert (unsigned char eingang);
 
 /**************************************************************************
  * IMPLEMENTATION
@@ -127,34 +130,8 @@ int16_t sendewert(unsigned char objno)
 
 	int16_t min = (mem_ReadByte(0x017C + 2 + (objno_help*9)) << 8) + mem_ReadByte(0x017C + 3 + (objno_help*9));
 	int16_t max = (mem_ReadByte(0x0180 + 2 + (objno_help*9)) << 8) + mem_ReadByte(0x0180 + 3 + (objno_help*9));
-
-	/*
-	DEBUG_PUTS("objno ");
-	DEBUG_PUTHEX(objno_help);
-	DEBUG_SPACE();
-	DEBUG_PUTS("min ");
-	DEBUG_PUTHEX(min >> 8);
-	DEBUG_SPACE();
-	DEBUG_PUTHEX(min);
-	DEBUG_SPACE();
-	DEBUG_PUTS("max ");
-	DEBUG_PUTHEX(max >> 8);
-	DEBUG_SPACE();
-	DEBUG_PUTHEX(max);
-	DEBUG_SPACE();
-	*/
-
 	value = (((int32_t)max-(int32_t)min)*value) >> 10; // >> ... /1024
 	value += (int32_t)min;
-
-	/*
-	DEBUG_PUTS("value ");
-	DEBUG_PUTHEX(value >> 8);
-	DEBUG_SPACE();
-	DEBUG_PUTHEX(value);
-	DEBUG_SPACE();
-	DEBUG_NEWLINE();	
-	*/
 	// Sendeformat 8Bit
 	if ((mem_ReadByte(0x01A4)>>4)&(1<<objno_help))
 	{
@@ -217,14 +194,14 @@ unsigned char read_obj_type(unsigned char objno)
 *
 * @return void
 */
-void send_value(unsigned char type, unsigned char objno)
+void send_value(unsigned char type, unsigned char objno,int16_t sval)
 {
 	unsigned int ga;
 	unsigned char objtype;
 	uint8_t sendOk = 0;
 	uint8_t len = 0;
 	uint8_t data[4];
-	int16_t sval;
+	//int16_t sval;
 	//check if input configured
 	if (((mem_ReadByte(0x016B+((objno>>2)&0x01)))<<(4*((objno>>1)&0x01))&0xF0)!=0x70) 
 	{ 
@@ -235,7 +212,7 @@ void send_value(unsigned char type, unsigned char objno)
 		ga=find_ga(objno);					// wenn keine Gruppenadresse hintrlegt nix tun
 		if (ga!=0)
 		{
-			sval = sendewert(objno);
+			//sval = sendewert(objno);
 			objtype=read_obj_type(objno);			
 			//DEBUG_PUTS("objtype= ");
 			//DEBUG_PUTHEX(objtype);
@@ -382,7 +359,7 @@ unsigned int find_ga(unsigned char objno)
  */
 void timerOverflowFunction(void)
 {
-	uint8_t objno,zyk_faktor,delay_state,n;
+	uint8_t objno,zyk_faktor,delay_state,objno_help,n;
 	uint32_t delval,zyk_val;
 	/* check if programm is running */
 	if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
@@ -413,19 +390,19 @@ void timerOverflowFunction(void)
 
 						if ((delay_state&0x80) && (sende_sofort_bus_return==0))	// Messwert zyk senden
 						{
-							send_value(1,(objno<<1));
+							send_value(1,(objno<<1),sendewert(objno<<1));
 							if (delay_state&0x01)	// Grenzwert zyk senden
 							{
-								//send_value(1,((objno<<1)+1),read_obj_value((objno<<1)+1));
+								send_value(1,((objno<<1)+1),limit[objno]);
 							}
 						}
 					}
 					else if (objno<=7)	// Sendeverzögerung Eingänge Messwerte
 					{
-						//objno_help=objno-4;
+						objno_help=objno-4;
 
-						//send_value(1,(objno_help<<1),sendewert(objno_help<<1));
-						//lastsendtemp[objno_help]=temp[objno_help];
+						send_value(1,(objno_help<<1),sendewert(objno_help<<1));
+						lastsentValue[objno_help]=channelValue[objno_help];
 
 						clear_delay_record(objno);
 					}
@@ -436,8 +413,7 @@ void timerOverflowFunction(void)
 						{
 							if (delay_state&(0x40>>n))
 							{
-								send_value(1,n);								
-								//send_value(1,n,sendewert(n));
+								send_value(1,n,sendewert(n));								
 							}
 						}
 						delrec[8*4]=0;
@@ -445,21 +421,6 @@ void timerOverflowFunction(void)
 				}
 			}
 		}
-//     if (currentTime >= 10){
-//		uint8_t data[4];
-//		data[0] = channelValue[1] >>8;
-//		data[1] = channelValue[1];
-//		sendData(0x010A,&data[0],3,0);
-//		currentTime = 0;
-//		channel = 0;
-//		ga = find_ga(channel<<1); // the channels are 0,2,4,6
-		/* 	     
-		DEBUG_PUTS("ga= ");
-  	     DEBUG_PUTHEX(ga>>8);
-  	     DEBUG_PUTHEX(ga);
-  	     DEBUG_NEWLINE();
-		*/
-//    }
     return;
 }
 
@@ -479,17 +440,168 @@ void bus_return(uint8_t channel)
 	//send channels
 	if (sende_sofort_bus_return&(0x80>>kanal_help))
 	{
-		send_value(1,(kanal_help));
+		send_value(1,kanal_help,sendewert(kanal_help));
 		sende_sofort_bus_return&=0xFF-(0x80>>kanal_help);
 	}
 	//send limits
 	if (sende_sofort_bus_return&(0x40>>kanal_help))
 	{
-		//send_value(1,(kanal_help+1));
+		DEBUG_PUTS("sg");
+		DEBUG_PUTHEX(channel);
+		DEBUG_NEWLINE();		
+		send_value(1,((channel<<1)+1),limit[channel]);
 		sende_sofort_bus_return&=0xFF-(0x40>>kanal_help);
 	}
 
 
+}
+
+/**
+* Senden bei Grenzwertüber- bzw. unterschreitung
+*	überprüft die Grenzwerte
+*	schreibt die Objektwerte und sendet Telegramm
+*
+* \param  eingang
+*
+* @return void
+*/
+void grenzwert (unsigned char eingang)
+{
+	uint16_t schwelle1, schwelle2;
+	unsigned char reaktion, wert, objno;
+
+	objno=(eingang<<1)+1;
+
+	reaktion=mem_ReadByte(0x16D+eingang);
+
+	schwelle1=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x171+eingang)&0x7F)/100);
+	schwelle2=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x175+eingang)&0x7F)/100);
+
+	//steigend
+	if ((lastValue[eingang]<schwelle2 || sende_sofort_bus_return) && channelValue[eingang]>schwelle2)	// GW 2 überschritten
+	{
+		if (reaktion&0x0C)
+		{
+			wert=(reaktion>>2)&0x01;
+			limit[eingang]=wert;
+			//write_obj_value(objno,wert);
+			if(!sende_sofort_bus_return)
+			{
+				send_value(1,objno,wert);
+			}
+		}
+	}
+
+	if ((lastValue[eingang]<schwelle1 || sende_sofort_bus_return) && channelValue[eingang]>schwelle1)	// GW 1 überschritten
+	{
+		if (reaktion&0xC0)
+		{
+			wert=(reaktion>>6)&0x01;
+			limit[eingang]=wert;
+			//write_obj_value(objno,wert);
+			if(!sende_sofort_bus_return)
+			{
+				send_value(1,objno,wert);
+			}
+		}
+	}
+
+
+	//fallend
+	if ((lastValue[eingang]>schwelle1 || sende_sofort_bus_return) && channelValue[eingang]<schwelle1)	// GW 1 unterschritten
+	{
+		if (reaktion&0x30)
+		{
+			wert=(reaktion>>4)&0x01;
+			limit[eingang]=wert;
+			//write_obj_value(objno,wert);
+			if(!sende_sofort_bus_return)
+			{
+				send_value(1,objno,wert);
+			}
+		}
+	}
+
+	if ((lastValue[eingang]>schwelle2 || sende_sofort_bus_return) && channelValue[eingang]<schwelle2)	// GW 2 unterschritten
+	{
+		if (reaktion&0x03)
+		{
+			wert=reaktion&0x01;
+			limit[eingang]=wert;
+			//write_obj_value(objno,wert);
+			if(!sende_sofort_bus_return)
+			{
+				send_value(1,objno,wert);
+			}
+		}
+	}
+
+
+	lastValue[eingang]=channelValue[eingang];
+}
+
+/**
+* Senden bei Messwertdifferenz
+*	überprüft die Messwertdifferenz
+*	schreibt die Verzögerungszeit ins delrec
+*
+* \param  eingang
+*
+* @return void
+*/
+void messwert (unsigned char eingang)
+{
+	unsigned int mess_diff;
+	int mess_change;
+	unsigned long zyk_val;
+
+	unsigned char zykval_help;
+
+	if (mem_ReadByte(0x165+eingang)&0x80)
+	{
+		mess_diff=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x165+eingang)&0x7F)/100);		
+		//mess_diff=180*(mem_ReadByte(0x165+eingang)&0x7F);
+
+		if (channelValue[eingang]<=lastsentValue[eingang])
+		{
+			mess_change=lastsentValue[eingang]-channelValue[eingang];
+		}
+		else
+		{
+			mess_change=channelValue[eingang]-lastsentValue[eingang];
+		}
+
+//		if (mess_change<0) mess_change=0-mess_change;
+
+		if(mess_change>mess_diff)
+		{
+			if (delrec[(eingang+4)*4]==0)
+			{
+				zykval_help=(mem_ReadByte(0x169+(eingang>>1)))>>(4*(!(eingang&0x01)))&0x0F;
+
+				if (zykval_help<=5)
+				{
+					zyk_val=zykval_help*8;
+				}
+				else if (zykval_help<=10)
+				{
+					zyk_val=(zykval_help-5)*77;
+				}
+				else
+				{
+					zyk_val=(zykval_help-10)*462;
+				}
+
+				zyk_val=zyk_val+currentTime+1;
+
+				write_delay_record((eingang+4),1,zyk_val);
+			}
+		}
+		else
+		{
+			clear_delay_record(eingang+4);
+		}
+	}
 }
 
 
@@ -541,8 +653,10 @@ uint8_t restartApplication(void)
 
 		// Werte zurücksetzen
 		channelValue[n]=0;
+	     lastValue[n] = 0;
+		limit[n] = 0;
+		lastsentValue[n] = 0;
 	}
-	//sende_sofort_bus_return = 0; //@todo 
     configureAdc();
     channelIndex = 0;
     newValue = 0;
@@ -623,10 +737,34 @@ uint8_t readApplication(struct msg *rxmsg)
 			}
 
 		}
-		/** @todo check limits */
 		// Grenzwerte Objekte 1,3,5,7
 		else
 		{
+			sval = limit[commObjectNumber>>1];
+			objtype=read_obj_type(commObjectNumber);	
+			sendOk = 0;		
+			if(objtype<=5)			// Objekttyp, 1-6 Bit
+			{
+				len = 1;				
+				data[0]=sval;
+				sendOk = 1;
+			}
+			else if(objtype<=7)		// Objekttyp, 7-8 Bit
+			{
+				len = 2;				
+				data[0]=sval;
+				sendOk = 1;
+			}
+			else if(objtype<=8)		// Objekttyp, 16 Bit
+			{
+				len = 3;				
+				data[0]=sval>>8;
+				data[1]=sval;
+				sendOk = 1;
+			}
+			if (sendOk){
+				sendData(destAddr,&data[0],len,1); //response			
+			}
 			
 		}
 		break;
@@ -703,6 +841,12 @@ int main(void)
 			//we convert only all 130ms 1 time --> 520ms for one cycle !! should be enough !!			
 			if (newValue){
 			   channelValue[channelIndex] = value;
+			   // Grenzwerte
+			   grenzwert(channelIndex);
+
+			   // Messwertdifferenz
+			   messwert(channelIndex);
+
 			   // Buswiederkehr bearbeiten
 			   if (sende_sofort_bus_return){
    				bus_return(channelIndex);
