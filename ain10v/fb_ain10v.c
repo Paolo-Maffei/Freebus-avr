@@ -46,7 +46,6 @@
  * @todo check if move of currentTime to this function really does not introduce a bug
  */
 #define RESET_RELOAD_APPLICATION_TIMER() {      \
-        currentTimeOverflow=0;                  \
         currentTimeOverflowBuffer=0;            \
         currentTime=0;                          \
         RELOAD_APPLICATION_TIMER();             \
@@ -58,7 +57,6 @@
 extern struct grp_addr_s grp_addr;
 
 static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
-static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
 volatile uint16_t value = 0;    /**< the value from the ADC */
 uint16_t channelValue[4],lastValue[4],lastsentValue[4];
 uint8_t limit[4];
@@ -364,12 +362,8 @@ void timerOverflowFunction(void)
 	/* check if programm is running */
 	if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
 		return;
-	if(currentTime == 0xFFFF) {
-		currentTime = 0;
-          currentTimeOverflow++;
-     } else {
-          currentTime++;
-     }
+	currentTime++;
+	currentTime&=0x00FFFFFF;
 		for(objno=0;objno<=8;objno++) {
 			delay_state=delrec[objno*4];
 			if(delay_state!=0x00) {			// 0x00 = delay Eintrag ist leer
@@ -617,7 +611,7 @@ uint8_t restartApplication(void)
 	unsigned char zyk_funk, n;
 	unsigned int sendeverzoegerung;
     currentTime=0;
-    currentTimeOverflow=0;
+    //currentTimeOverflow=0;
 
 	// Zeit für Sendeverzögerung bei Busspannungswiederkehr ins delrec schreiben
 	sendeverzoegerung=mem_ReadByte(0x01A0)<<3;

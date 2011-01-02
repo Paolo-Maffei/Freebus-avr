@@ -99,7 +99,8 @@ PROJECTNAME=freebus-avr-ain10v
 #OPTLEVEL=
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS=-DF_CPU=8000000UL -g -Wall -DDEBUG_UART
+#CUSTOM_CFLAGS=-DF_CPU=8000000UL -g -Wall -DDEBUG_UART
+CUSTOM_CFLAGS=-DF_CPU=8000000UL -g -Wall
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program
