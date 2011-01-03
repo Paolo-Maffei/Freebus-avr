@@ -56,7 +56,7 @@
  **************************************************************************/
 extern struct grp_addr_s grp_addr;
 
-static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
+static uint32_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
 volatile uint16_t value = 0;    /**< the value from the ADC */
 uint16_t channelValue[4],lastValue[4],lastsentValue[4];
 uint8_t limit[4];
@@ -65,6 +65,7 @@ uint8_t zyk_senden_basis;
 uint8_t channelIndex = 0;
 unsigned char sende_sofort_bus_return;
 unsigned char delrec[36];
+uint8_t cycle = 0;
 
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
@@ -382,6 +383,17 @@ void timerOverflowFunction(void)
 
 						write_delay_record(objno,delay_state,zyk_val);
 
+						/*
+						DEBUG_PUTS_BLOCKING("T ");
+						DEBUG_PUTHEX_BLOCKING(currentTime >> 16);		
+						DEBUG_PUTHEX_BLOCKING(currentTime >> 8);		
+						DEBUG_PUTHEX_BLOCKING(currentTime);		
+						DEBUG_PUTS_BLOCKING(" D ");
+						DEBUG_PUTHEX_BLOCKING(delrec[objno*4+1]);		
+						DEBUG_PUTHEX_BLOCKING(delrec[objno*4+2]);		
+						DEBUG_PUTHEX_BLOCKING(delrec[objno*4+3]);		
+						DEBUG_NEWLINE_BLOCKING();
+						*/
 						if ((delay_state&0x80) && (sende_sofort_bus_return==0))	// Messwert zyk senden
 						{
 							send_value(1,(objno<<1),sendewert(objno<<1));
@@ -415,6 +427,17 @@ void timerOverflowFunction(void)
 				}
 			}
 		}
+	/*
+	cycle++;
+	if (cycle == 10){
+		DEBUG_PUTS_BLOCKING("Z ");
+		DEBUG_PUTHEX_BLOCKING(currentTime >> 16);		
+		DEBUG_PUTHEX_BLOCKING(currentTime >> 8);		
+		DEBUG_PUTHEX_BLOCKING(currentTime);		
+		DEBUG_NEWLINE_BLOCKING();
+		cycle = 0;
+	}
+	*/
     return;
 }
 
