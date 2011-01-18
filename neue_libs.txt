@@ -1,0 +1,71 @@
+17. Januar 2011, Dirk Armbrust (tuxbow)
+
+doxygen doku ist noch nicht fertig, erstmal Folgendes in textform.
+
+Im Zusammenhang der Implementierung von freebus-rf, dem KNX-RF kompatiblen Funksystem,
+wurde eine neue libavreib bereitgestellt.
+Genaugenommen sind es 4 libraries:
+
+libfbrf.a    nur RF
+libfbrftp.a  RF und TP (gateway)
+libfbtp.a    nur TP
+libavreib.a  für das "alte" AVR Controllerboard Rev. 3.01.
+
+Für die Entwicklung von RF Applikationen bitte doc/readme.txt lesen!
+
+Für die Entwicklung von Applikationen, die das AVR Controllerboard Rev. 3.01 verwenden,
+muss die libavreib eingebunden werden. Für die neue Version dieser lib sind an der
+App folgende Anpassungen vorzunehmen:
+
+1. In die Hauptschleife des Applikationsprogramms ist der Funktionsaufruf
+   --------------------
+
+        fbprot_msg_handler();
+
+  einzufügen.
+
+  Eine typische Hauptschleife sieht dann so aus:
+
+    /***************************/
+    /* the main loop / polling */
+    /***************************/
+    while(1)
+    {
+        /* Auswerten des Programmiertasters */
+        fbhal_checkProgTaster();
+
+        fbprot_msg_handler();  // <------- das hier einfügen !!
+
+        /* check if 130ms timer is ready */
+        if(TIMER1_OVERRUN)
+        {
+            CLEAR_TIMER1_OVERRUN;
+            timerOverflowFunction();
+        }
+    }   /* while(1) */
+
+
+2. Defines für den Compiler
+   ------------------------
+   avr-gcc muss mit den defines -DFB_TP  -DBOARD301  -DF_CPU=8000000UL aufgerufen werden.
+
+   Wenn GNU make verwendet wird, reicht folgendes:
+
+# Name of target controller, if other than defined in Make.config
+  MCU=atmega168p
+  ....
+  # define additional flags for the compiler
+  CUSTOM_CFLAGS=-DFB_TP -DBOARD301
+  ....
+  -include ../Make.config
+
+
+  Make.config ist eine auf eigene Belange angepasste Kopie von Make.config.template .
+  Make.config erledigt dann das setzen von -DF_CPU  und der libavreib automatisch.
+
+  Benutzer von AVR Studio müssen die defines wahrscheinlich über das GUI eingeben,
+  ebenso die libavreib.a .
+
+
+
+

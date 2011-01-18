@@ -1,5 +1,5 @@
 #DIRECTORIES = app-8-out app-8-in app-2-dimmer
-DIRECTORIES = app-8-out
+DIRECTORIES = app-8-out rf-app-pir
 
 all:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i; done
@@ -22,5 +22,12 @@ avrlib:
 
 avrlib-clean:
 	$(MAKE) -C lib clean
+
+avrlib-distclean:
+	$(MAKE) -C lib clean
+	$(RM) *.a
+
+avrlib-install:
+	$(MAKE) -C lib install
 
 # DO NOT DELETE

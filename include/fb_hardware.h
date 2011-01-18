@@ -8,6 +8,7 @@
 *                                      
 *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
+*  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
 *
 *  This program is free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License version 2 as
@@ -15,7 +16,7 @@
 */
 /**
 * @file   fb_hardware.h
-* @author Matthias Fechner, Christian Bode
+* @author Matthias Fechner, Christian Bode, Dirk Armbrust
 * @date   Mon Jun  2 09:19:42 2008
 * 
 * @brief  Hardware specific options which includes the platforms (like ATmega8, ATmega168...)
@@ -28,19 +29,27 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-#if defined(__AVR_ATmega8__)
-	#include "freebus-atmega8.h"
-#elif defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
-	#include "freebus-atmega168.h"
+#ifdef BOARD301  /* first freebus AVR board rev. 3.01 */
+
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
+    #include "freebus-atmega168.h"
 #elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
-	#include "freebus-atmega168p.h"
-#elif defined(__AVR_ATmega16__)
-	#include "freebus-atmega16.h"
+    #include "freebus-atmega168p.h"
 #else
-	#error CPU not supported
+    #error CPU not supported
 #endif
 
+#else  /* board with RFM22 */
 
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
+    #include "fbrf-atmega168.h"
+#elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
+    #include "fbrf-atmega168p.h"
+#else
+    #error CPU not supported
+#endif
+
+#endif  /* board selection*/
 
 #define SETPIN_IO1(val)         if(val)                                 \
                                 {                                       \
@@ -164,6 +173,7 @@
 #define SET_IO_EIBOUT(type)     EIBOUT_DDR = (EIBOUT_DDR & ~(1U<<EIBOUT_PIN)) | (type<<EIBOUT_PIN)   
 
 #define GETPIN_EIBIN()          ((EIBIN_IN>>EIBIN_PIN) & 0x01)
+#define GETPIN_EIBOUT()         ((EIBOUT_IN>>EIBOUT_PIN) & 0x01)
 #define SET_IO_EIBIN(type)      EIBIN_DDR = (EIBIN_DDR & ~(1U<<EIBIN_PIN)) | (type<<EIBIN_PIN);\
                                 EIBIN_PORT = (EIBIN_PORT & ~(1U<<EIBIN_PIN)) | ((~type & 0x01)<<EIBIN_PIN)
 

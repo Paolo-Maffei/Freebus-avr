@@ -43,8 +43,14 @@
 **************************************************************************/
 /** Speichergroesse des EEPROMs */
 #define BASE_ADDRESS_OFFSET           0x0100    /**< Offset in BCU1 EEPROM           */
+#ifdef  FB_RF
+#define TP_NODEPARAM_SIZE             0x00FF    /**< Size of parameter structur      */
+#define NODEPARAM_SIZE  TP_NODEPARAM_SIZE+0x0010  /**< Size of parameter structur + TP parameters  */
+#define RF_NODEPARAMS   BASE_ADDRESS_OFFSET+TP_NODEPARAM_SIZE+1 /**< Start of RF parameters */
+#define RF_SETXTAL      RF_NODEPARAMS+0x10
+#else
 #define NODEPARAM_SIZE                0x00FF    /**< Size of parameter structur      */
-
+#endif
 #define APPLICATION_MEM_BASE_ADR      0x0000    /**< application memory startaddress */
 #define APPLICATION_MEM_SIZE          0x0017    /**< Size of application memory      */
 #define SYSTEMSTATE                   0x0060    /**< System Status                   */

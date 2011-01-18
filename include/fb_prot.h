@@ -9,6 +9,7 @@
 *  Copyright (c) 2007 Dirk Opfer <dirk@do13.de>
 *  Copyright (c) 2007 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
+*  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
 *
 *  This program is free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License version 2 as
@@ -17,7 +18,7 @@
 */
 /**
 * @file   fb_prot.h
-* @author Dirk Opfer, Matthias Fechner, Christian Bode
+* @author Dirk Opfer, Matthias Fechner, Christian Bode, Dirk Armbrust
 * @date   Fri Dec 21 18:28:22 2007
 * 
 * @brief  Define the protocol specific definitions
@@ -84,6 +85,11 @@
 #define START_ADDRESS_GROUP_ADR       0x0119  /**< address in eeprom where group addresses are stored  */
 /** @todo delete define */
 #define START_ADDRESS_GROUP_ADDRESSES 0x0119  ///< address in eeprom where group addresses are stored  */
+#ifdef  FB_RF
+#define RF_RSSI                       RF_NODEPARAMS
+#define RF_DOMAINADDRESS              RF_NODEPARAMS+10
+#define RF_PHYSICALADRESS_MASK        RF_NODEPARAMS+8
+#endif
 
 
 /** Structure for the group addresses */
@@ -115,6 +121,8 @@ PROT_EXT void sendExtTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t o
 PROT_EXT void sendTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t offset);
 PROT_EXT uint8_t findRespondGroupAddressByObjectNumber(uint8_t commObjectNumber, uint8_t offset);
 PROT_EXT uint8_t fb_handlemsg(struct msg *rxmsg);
+PROT_EXT void fbprot_msg_handler ( void );
+PROT_EXT void fbprot_forward_msg ( struct msg *rxmsg );
 PROT_EXT void fbprot_Init(const STRUCT_DEFPARAM *pParam);
 
 #endif /* _FB_PROT_H */

@@ -1,0 +1,6 @@
+/*.a
+/doc/html/*
+*.o
+*.lst
+*.hex
+*.out*

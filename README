@@ -1,15 +1,27 @@
 /** @mainpage
-* <b>Setting Fuses:</b>\n
-* Beim AVR ATMega168P sind die folgenden Fuses zu setzen:\n
+* <b>Setting Fuses for ATMega168(P):</b>\n
 *
-* Boot Flash size=128 words Boot address=$1C00\n
+* Boot Rom not used\n
 * SPIEN=on\n
 * BODLEVEL=Brown-out detection at VCC=2.7V\n
 * SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14\n
 *
-* EXTENDED=0xF9\n
-* HIGH=0xDD\n
-* LOW=0xCF\n
+* EXTENDED=0x01\n
+* HIGH=0xDD (eeprom not preseved through chip erase), or 0xD5 (eeprom preserved)\n
+* HIGH=0xCD or 0xC5 (as above, but watchdog enabled)
+* LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)\n
+*
+* <b>Setting Fuses for ATMega328P:</b>\n
+*
+* Boot Rom not used\n
+* SPIEN=on\n
+* BODLEVEL=Brown-out detection at VCC=2.7V\n
+* SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14\n
+*
+* EXTENDED=0x05\n
+* HIGH=0xD9 (eeprom not preseved through chip erase), or 0xD1 (eeprom preserved)\n
+* HIGH=0xC9 or 0xC1 (as above, but watchdog enabled)
+* LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)\n
 *
 * <b>Compile and create HEX files:</b>\n
 * To compile your self developed app or the existing ones finished build scripts for Windows (AVR Studio) and Linux/Unix/MacOSX (Makefiles) is in place.\n
@@ -23,6 +35,14 @@
 * To create all .hex files you can type in the directory software/avr/ then:\n
 * make hex\n
 * you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
+*
+* <b>Compiler defines in your own application</b>\n
+* In order to select the right library and CPU frequency, you should define\n
+* <b>-DFB_TP</b> freebus (twisted pair) device\n
+* <b>-DFB_RF</b> freebus-rf device\n
+* <b>-DFB_TP -DFB_RF</b> device with both, twisted pair and rf, this applies for a gateway\n
+* <b>-DFB_TP -DBOARD301</b> for the old Rev 3.01 board (twisted pair, of course)\n
+* if you use GNU make you can set the variable CUSTOM_CFLAGS in your application's Makefile.\n
 *
 * <b>General notes if developing your own application:</b>\n
 * If you develop an application you should not use an ISR in that application it can disturb the extreme
