@@ -8,6 +8,7 @@
  *                                      
  *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
  *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
+ *  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -15,7 +16,7 @@
  */
 /**
  * @file   fb_relais_app.c
- * @author Matthias Fechner, Christian Bode
+ * @author Matthias Fechner, Christian Bode, Dirk Armbrust
  * @date   Sat Jan 05 17:44:47 2008
  * 
  * @brief  The relais application to switch 8 relais
@@ -31,6 +32,7 @@
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
+#include <avr/wdt.h>
 #include "fb.h"
 #include "fb_hardware.h"
 #include "freebus-debug.h"
@@ -38,7 +40,9 @@
 #include "msg_queue.h"
 //#include "1wire.h"
 #include "fb_hal.h"
+#include "rf22.h"
 #include "fb_prot.h"
+#include "fbrf_hal.h"
 #include "fb_app.h"
 #include "fb_relais_app.h"
 #ifdef IO_TEST
@@ -48,22 +52,16 @@
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
-/** Reset the internal variables used for the application timer and reload the timer itself
- * @todo check if move of currentTime to this function really does not introduce a bug
- */
-#define RESET_RELOAD_APPLICATION_TIMER() {      \
-        currentTimeOverflow=0;                  \
-        currentTimeOverflowBuffer=0;            \
-        currentTime=0;                          \
-        RELOAD_APPLICATION_TIMER();             \
-    }
-/** configure pwm timer, we use timer2 for this
- * 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%
- * The 74HCT573 is active low, changed to 0x33=51 -> This is about 20% negative duty cycle */
+
+#ifdef BOARD301
 #define PWM_SETPOINT    0x64 //0x64=100 //0x4B=75 besser aber bei erschütterung nicht okay //=51=20% neg 
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME  10
-
+#else
+#define PWM_SETPOINT    0x0154  /* PWM duty cycle 33%, use timer 1 */
+/** How long we hold the relais at 100% before we enable PWM again */
+#define PWM_DELAY_TIME  3 /* 3 * 130ms */
+#endif
 
 /**************************************************************************
  * DECLARATIONS
@@ -71,14 +69,12 @@
 extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
-static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
-static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
-static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
 static uint16_t delayValues[8];           /**< save value for delays */
-static uint8_t timerRunning;              /**< bit is set if timer is running */
 static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
+static uint16_t objectStates;
+static uint8_t blockedStates;
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
@@ -108,6 +104,7 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
 void timerOverflowFunction(void);
 void switchObjects(void);
 void switchPorts(uint8_t port);
+void processOutputs ( uint8_t commObjectNumber, uint8_t data );
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -130,20 +127,12 @@ void io_test(void);
  */
 void timerOverflowFunction(void)
 {
-    uint8_t needToSwitch = 0; 
     uint8_t i;
 
     /* check if programm is running */
     if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
         return;
-     
-    if(currentTime == 0xFFFF) {
-        currentTime = 0;
-        currentTimeOverflow++;
-    } else {
-        currentTime++;
-    }
-     
+ 
     /* check if we can enable PWM */
     /* if waitToPWM==1 enable PWM, 0==no change */
     if(waitToPWM == 1) {
@@ -157,42 +146,26 @@ void timerOverflowFunction(void)
         waitToPWM--;
      
     /* now check if we have to switch a port */
-    for(i=0; i<=7; i++) {
-        if(timerRunning & (1<<i)) {
-            // DEBUG_PUTHEX(timerRunning);
-            // we need to check timer for port i
-            /** @todo Problem bei einem Timerueberlauf !!! */
-            if((delayValues[i] != 0) && (currentTime >= delayValues[i])) {
-                // we need to switch the port delete delay pin
-                // DEBUG_PUTS("SDP");
-                DEBUG_PUTHEX(i);
+    for(i=0; i<8; i++) {
+        uint8_t j = 1<<i;
+        // DEBUG_PUTHEX(timerRunning);
+        /* check if we have to switch a port */
+        // we need to check timer for port i
+        if ( delayValues[i] ) {
+            if (--delayValues[i]) continue;
+            // delayValue changed from 1 to 0
+            // DEBUG_PUTS("SDP");
+            
+            DEBUG_PUTHEX(i);
+            portValue ^= j;
+            // DEBUG_PUTHEX(portValue);
 
-                DISABLE_IRQS;  //disable IRQ here to make sure values are not overwritten, if that delays receiption of telegram the checksum should be wrong a NACK will be send and the sender must resend the telegram
+            /* send response telegram to inform other devices that port was switched */
+            sendTelegram(i,(portValue & j)?1:0, 0x0C);
 
-                timerRunning  &= ~((uint8_t)(1U<<i));    // clear timer is running bit
-                delayValues[i] = 0;                     // clear delay value for this port
-                needToSwitch   = 1;                     // force switch of IOs
-
-                if(portValue & (1<<i))                  // set IO to the new value
-                    portValue &= ~((uint8_t)(1U<<i));
-                else
-                    portValue |= (1<<i);
-
-                ENABLE_IRQS;
-                // DEBUG_PUTHEX(portValue);
-
-                /* send response telegram to inform other devices that port was switched */
-                sendTelegram(i,(portValue & (1<<i))?1:0, 0x0C);
-            }
+            switchObjects();
         }
     }
-
-    if(needToSwitch) {
-        // DEBUG_PUTS("IRQ");
-        switchObjects();
-    }
-     
-    return;
 }
 
 /** 
@@ -216,9 +189,6 @@ uint8_t restartApplication(void)
     uint16_t initialPortValue;
 
     /* reset global timer values */
-    currentTime=0;
-    currentTimeOverflow=0;
-    timerRunning=0;
 
     /* IO configuration */
     SET_IO_IO1(IO_OUTPUT);
@@ -229,6 +199,7 @@ uint8_t restartApplication(void)
     SET_IO_IO6(IO_OUTPUT);
     SET_IO_IO7(IO_OUTPUT);
     SET_IO_IO8(IO_OUTPUT);
+#ifdef BOARD301
 #if (HARDWARETEST != 1)
     SET_IO_RES1(IO_OUTPUT);
     SET_IO_RES2(IO_OUTPUT);
@@ -241,6 +212,7 @@ uint8_t restartApplication(void)
     SET_IO_RES3(IO_OUTPUT);
     SET_IO_RES4(IO_OUTPUT);
 #endif
+#endif
 
     /* CTRL-Port */
     SET_IO_CTRL(IO_OUTPUT);
@@ -250,13 +222,8 @@ uint8_t restartApplication(void)
 	io_test();
 #endif
 
-    /* configure pwm timer, we use timer2 for this */
-    /* 0xF2=4,8% duty cycle, 0xE6=10%, 0x01=100%   */
-    waitToPWM = 0;
-    ENABLE_PWM(PWM_SETPOINT);
-
     // check if at power loss we have to restore old values (see 0x01F6) and do it here
-    portValue = mem_ReadByte(0x0000);
+    portValue = mem_ReadByte(0x0100);
     initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
     for(i=0; i<=7; i++) {
         temp = (initialPortValue>>(i*2)) & 0x03;
@@ -281,6 +248,10 @@ uint8_t restartApplication(void)
 
     /* enable timer to increase user timer used for timer functions etc. */
     RELOAD_APPLICATION_TIMER();
+    /* configure pwm timer */
+    waitToPWM = 0;
+    ENABLE_PWM(PWM_SETPOINT);
+
 
     return 1;
 } /* restartApplication() */
@@ -373,22 +344,12 @@ uint8_t runApplication(struct msg *rxmsg)
     uint8_t countAssociations = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr);   // number of associations saved in associations table
     uint8_t numberInGroupAddress;                              // reference from association table to group address table
     uint8_t commObjectNumber;                                  // reference from association table to communication object table
-    uint8_t commStabPtr = mem_ReadByte(COMMSTAB_ADDRESS);                   // points to communication object table (0x0100+commStabPtr)
     //uint8_t countCommObjects = mem_ReadByte(0x0100+commStabPtr);  // number of communication objects in table
     //uint8_t userRamPointer = mem_ReadByte(0x0100+commStabPtr+1);  // points to user ram
-    uint8_t commValuePointer;                                  // pointer to value
-    uint8_t commConfigByte;                                    // configuration byte
-    uint8_t commValueType;                                     // defines type of byte
-    uint8_t data;
-    uint8_t delayFactorOn=0;                                     // the factor for the delay timer (on delay)
-    uint8_t delayFactorOff=0;                                     // the factor for the delay timer (off delay)
-    uint8_t delayActive;                                       // is timer active 1=yes
-    uint8_t delayBase;
-    uint8_t timerActive = mem_ReadByte(0x01EA);               // set bit value if delay on a channel is active
-     
-    // handle here only data with 6-bit length, maybe we have to add here more code to handle longer data
-    /** @todo handle data with more then 6 bit */
-    data = (hdr->apci) & 0x3F;
+
+    // handle here only data with 1-bit length, maybe we have to add here more code to handle longer data
+    /** @todo handle data with more then 1 bit */
+    uint8_t data = (hdr->apci) & 1;
      
     for(i=0; i<countAssociations; i++) {
         numberInGroupAddress = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2));
@@ -402,112 +363,182 @@ uint8_t runApplication(struct msg *rxmsg)
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
         // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
+        if(destAddr == grp_addr.ga[numberInGroupAddress-1]){
             // found group address
-
-            // read communication object (3 Byte)
-            commValuePointer = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3));
-            commConfigByte   = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+1));
-            commValueType    = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+2));
-            delayActive      = mem_ReadByte(0x01EA);
-            // read delay factor for on and off
-            delayFactorOn    = mem_ReadByte(0x01DA+commObjectNumber);
-            delayFactorOff   = mem_ReadByte(0x01E2+commObjectNumber);
-
-            // read delay base, 0=130ms, 1=260 and so on
-            delayBase        = mem_ReadByte(0x01F9+((commObjectNumber+1)>>1));
-            if((commObjectNumber & 0x01) == 0x01)
-                delayBase&=0x0F;
-            else
-                delayBase = (delayBase & 0xF0)>>4;
-
-            /** @todo check if object is blocked and/or write is enabled */
-
-            // reset saved timer settings
-            // delayValues[commObjectNumber]=0;
-
-            // we received a new state for object commObjectNumber
-            // check if we have a delay on that port
-
-            // check if we must switch off a port where timers are running
-            if((!delayFactorOff) && (data == 0))
-                {
-                    DEBUG_PUTC('K');
-                    delayValues[commObjectNumber] = 0;
-                    timerRunning &= ~(1<<commObjectNumber);
-                }
-               
-            // check for delayed switch off
-            if(portValue & (1<<commObjectNumber) && delayFactorOff && !(timerActive & (1<<commObjectNumber)) && (data==0)) {
-                // switch of but delayed
-                delayValues[commObjectNumber] = (uint16_t)(1<<delayBase)*(uint16_t)delayFactorOff;
-            }
-
-            // check if we have a delayed switch on
-            if(((portValue & (1<<commObjectNumber)) == 0x00) && delayFactorOn && (data == 1)) {
-                // switch on but delayed
-                delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOn;
-            }
-               
-            // check if we have a timer function
-            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1)) {
-                // special case (switch on immediatly and off after a defined time
-                DEBUG_PUTS("Fl");
-                portValue |= (1<<commObjectNumber);
-                switchObjects();
-                delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOff;
-            }
-
-            /** @todo check how to handle switch off if timer is currently active (0x01EB) */
-            // check who to handle off telegramm while in timer modus
-            if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
-                DEBUG_PUTS("TK");
-                // only switch off if on 0x01EB the value is equal zero
-                if(!(mem_ReadByte(0x01EB) & (1<<commObjectNumber))) {
-                    delayValues[commObjectNumber] = 0;
-                    timerRunning &= ~(1<<commObjectNumber);
-                    portValue    &= ~(1<<commObjectNumber);
-                }
-            }
-            DEBUG_PUTHEX(commObjectNumber);
-               
-            /** check for delays */
-            if(delayValues[commObjectNumber]) {
-                // DEBUG_PUTC('T');
-                // check if queue is empty and reset timer if it's the first timer which is running
-                if(timerRunning == 0) {
-                    // DEBUG_PUTC('R');
-                    RESET_RELOAD_APPLICATION_TIMER();
-                } else {
-                    // another timer is running add current time to timer value
-                    delayValues[commObjectNumber]+=currentTime;
-                }
-                timerRunning |= (1<<commObjectNumber);
-            } else {
-                // no delay is defined so we switch immediatly
-                if(data == 0) {
-                    // switch port off
-                    portValue &= ~(1<<commObjectNumber);
-                } else if(data == 1) {
-                    portValue |= (1<<commObjectNumber);
-                }
-    
-                //** @todo need to check here for respond
-                // send response telegram to inform other devices that port was switched
-                //sendRespondTelegram(i,(portValue & (1<<i))?1:0, 0x0C);
-            }
-        } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
-            // additinal function
-            /** @todo write part additional functions */
-            //               DEBUG_PUTS("ZF");
-            //               DEBUG_NEWLINE();
+            processOutputs ( commObjectNumber, data );
         }
     }
-
-    switchObjects();
+                 // SETPIN_IO3(1)
 
     return FB_ACK;
 }   /* runApplication() */
+
+void processOutputs ( uint8_t commObjectNumber, uint8_t data )
+{
+    uint8_t delayFactorOn=0;            // the factor for the delay timer (on delay)
+    uint8_t delayFactorOff=0;           // the factor for the delay timer (off delay)
+    uint8_t delayActive;                // is timer active 1=yes
+    uint8_t delayBase;
+    uint8_t timerActive = mem_ReadByte(0x01EA);      // set bit value if delay on a channel is active
+    uint8_t commStabPtr = mem_ReadByte(COMMSTAB_ADDRESS);     // points to communication object table (0x0100+commStabPtr)
+    uint8_t specialFunc ;                               // special function number (0: no sf)
+    uint8_t specialFuncTyp ;                            // special function type
+    uint8_t logicFuncTyp ;                              // type of logic function ( 1: or, 2: and)
+    uint8_t logicState   ;                              // state of logic function
+    uint8_t sfOut;                                      // output belonging to sf
+    uint8_t sfMask;                                     // special function bitmask (1 of 4)
+
+    if(commObjectNumber >= 12) return;
+    if (data) objectStates |=  (1<<commObjectNumber);
+        else  objectStates &= ~(1<<commObjectNumber);
+    if (commObjectNumber >= 8){
+        /* get associated output */
+        sfOut = mem_ReadByte(0x01D8+((commObjectNumber-8)>>1))>>
+                    (((commObjectNumber-8)&1)*4) & 0x0F;
+        /* evaluate the output belonging to this special func */
+        if (sfOut){
+             if (sfOut > 8) return;
+             commObjectNumber =  sfOut-1;
+             data = (objectStates>>(sfOut-1))&1;
+        }
+        else return;
+
+    }
+    
+    // read communication object (3 Byte)
+    uint8_t commValuePointer = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3));
+    uint8_t commConfigByte   = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+1));
+    uint8_t commValueType    = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+2));
+    
+    delayActive      = mem_ReadByte(0x01EA);
+    // read delay factor for on and off
+    delayFactorOn    = mem_ReadByte(0x01DA+commObjectNumber);
+    delayFactorOff   = mem_ReadByte(0x01E2+commObjectNumber);
+
+    // read delay base, 0=130ms, 1=260 and so on
+    delayBase        = mem_ReadByte(0x01F9+((commObjectNumber+1)>>1));
+    if((commObjectNumber & 0x01) == 0x01)
+        delayBase&=0x0F;
+    else
+        delayBase = (delayBase & 0xF0)>>4;
+
+    /** logic function */
+    /* check if we have a special function for this object */
+    specialFunc  = 0;
+    logicFuncTyp = 0;
+    for ( specialFunc=0; specialFunc < 4; specialFunc++ ){
+        sfMask = 1<<specialFunc;
+        sfOut = mem_ReadByte(0x01D8 + (specialFunc>>1))>> ((specialFunc&1)*4) & 0x0F;
+        if (sfOut == (commObjectNumber+1)){
+            /* we have a special function, see which type it is */
+            specialFuncTyp = (mem_ReadByte(0x01ED))>>(specialFunc*2)&0x03;
+            /* get the logic state from the special function object */
+            logicState = ((objectStates>>specialFunc)>>8)&0x01;
+            if ( specialFuncTyp == 0 ){
+                /* logic function */
+                logicFuncTyp = (mem_ReadByte(0x01EE))>>(specialFunc*2)&0x03;
+                if ( logicFuncTyp == 1 ){  // or
+                data |= logicState;
+                }
+                if ( logicFuncTyp == 2 ){  // and
+                    data &= logicState;
+                }
+            }
+
+            if ( specialFuncTyp == 1 ){
+                /* blocking function */
+                if ( ((objectStates>>8) ^ mem_ReadByte(0x01F1)) & sfMask ){
+                    /* start blocking */
+                    if ( blockedStates & sfMask ) return; // we are blocked, do nothing
+                    blockedStates |= sfMask;
+                    data = (mem_ReadByte(0x01EF + (specialFunc>>1)))>>((specialFunc&1)*4)&0x03;
+                    if (data == 0) return;
+                    if (data == 1)
+                        portValue &= ~(1<<commObjectNumber);
+                    if (data == 2)
+                        portValue |= (1<<commObjectNumber);
+                    switchObjects();
+                    return;
+
+                }
+                else {
+                    /* end blocking */
+                    if ( blockedStates & sfMask ){  // we have to unblock
+                        blockedStates &= ~sfMask;
+                        /* action at end of blocking, 0: nothing, 1: off, 2: on */
+                        data = (mem_ReadByte(0x01EF + (specialFunc>>1)))
+                            >>((specialFunc&1)*4+2)&0x03;
+                        if (data == 0) return;
+                        data--;
+                    /* we are unblocked, continue as normal */
+                    }
+                }
+            }
+
+        }
+    }
+    /** @todo check if object is blocked and/or write is enabled */
+
+    // reset saved timer settings
+    // delayValues[commObjectNumber]=0;
+
+    // we received a new state for object commObjectNumber
+    // check if we have a delay on that port
+
+    // check if we must switch off a port where timers are running
+    if((!delayFactorOff) && (data == 0))
+    {
+        DEBUG_PUTC('K');
+        delayValues[commObjectNumber] = 0;
+    }
+
+    // check for delayed switch off
+    if(portValue & (1<<commObjectNumber) && delayFactorOff && !(timerActive & (1<<commObjectNumber)) && (data==0)) {
+        // switch of but delayed
+        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase)*(uint16_t)delayFactorOff;
+    }
+
+    // check if we have a delayed switch on
+    if(((portValue & (1<<commObjectNumber)) == 0x00) && delayFactorOn && (data == 1)) {
+        // switch on but delayed
+        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOn;
+    }
+        
+    // check if we have a timer function
+    if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1)) {
+        // special case (switch on immediatly and off after a defined time
+        DEBUG_PUTS("Fl");
+        portValue |= (1<<commObjectNumber);
+        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOff;
+    }
+
+    // check who to handle off telegramm while in timer modus
+    if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
+        DEBUG_PUTS("TK");
+        // only switch off if on 0x01EB the value is equal zero
+        if(!(mem_ReadByte(0x01EB) & (1<<commObjectNumber))) {
+            delayValues[commObjectNumber] = 0;
+            portValue    &= ~(1<<commObjectNumber);
+        }
+    }
+    DEBUG_PUTHEX(commObjectNumber);
+        
+    /** check for delays */
+    if( !delayValues[commObjectNumber]) {
+        // no delay is defined so we switch immediatly
+        if(data == 0) {
+            // switch port off
+            portValue &= ~(1<<commObjectNumber);
+        } else if(data == 1) {
+            portValue |= (1<<commObjectNumber);
+        }
+
+        //** @todo need to check here for respond
+        // send response telegram to inform other devices that port was switched
+        sendTelegram(commObjectNumber, data, 0x0C);
+    }
+    switchObjects();
+}
 
 /** 
  * Switch the objects to state in portValue and save value to eeprom if necessary.
@@ -525,18 +556,17 @@ void switchObjects(void)
 
     /* change PWM to supply relais with full power */
     waitToPWM = PWM_DELAY_TIME;
-    ENABLE_PWM(0xFF); //0xFF = 255 --> This is 100% negative duty cycle (active low)
-	
+    ENABLE_PWM(0x0000); // --> This is 100% negative duty cycle (active low)
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
-    savedValue = mem_ReadByte(0x0000);
+    savedValue = mem_ReadByte(0x0100);
     if(savedValue != portValue) {
         // now check if last status must be saved, we write to eeprom only if necessary
         initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
         for(i=0; i<=7; i++) {
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
-                mem_WriteBlock(0x0000, 1, &portValue);
+                mem_WriteBlock(0x0100, 1, &portValue);
                 DEBUG_PUTS("Sv");
                 break;
             }
@@ -643,6 +673,10 @@ void io_test()
  */
 int main(void)
 {
+    uint16_t t1cnt;
+#ifdef FB_RF
+    uint8_t pollcnt;
+#endif
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
@@ -659,7 +693,13 @@ int main(void)
        
     /* init procerssor register */
     fbhal_Init();
-
+#ifdef FB_RF
+    fbrfhal_init();
+#else
+    /* we use RFM22 clock output, so we have to set the frequency */
+    // SpiInit();
+    // rf22_init();
+#endif
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
@@ -676,27 +716,44 @@ int main(void)
 #ifdef HARDWARETEST
     sendTestTelegram();
 #endif
+    /* activate watchdog */
+    ENABLE_WATCHDOG ( WDTO_250MS );
 
     /***************************/
     /* the main loop / polling */
     /***************************/
     while(1) {
+        /* calm the watchdog */
+        wdt_reset();
         /* Auswerten des Programmiertasters */
         if(fbhal_checkProgTaster()) {
 #ifdef SENDTESTTEL
 			sendTestTelegram();
 #endif
 		}
-
-        /* check if 130ms timer is ready */
+        fbprot_msg_handler();
+        /* check if 130ms timer is ready
+           we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
+ //               fbrfhal_polling();
         if(TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
+#ifdef FB_RF
+            if ( (pollcnt--) == 0){
+                fbrfhal_polling();
+                pollcnt = 100;          // 10msec pollrate
+            }
+#endif
+#ifndef BOARD301
+            if ( t1cnt-- ) continue;
+            t1cnt = F_CPU/7692;  //10MHz : 1300 * 100µsec = 130msec
+#endif
 #ifndef HARDWARETEST
             timerOverflowFunction();
 #else
-    		//sendTestTelegram();
+    	    //sendTestTelegram();
             hardwaretest();
 #endif
+
         }
 
         // go to sleep mode here
