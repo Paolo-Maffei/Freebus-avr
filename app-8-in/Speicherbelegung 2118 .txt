@@ -12,6 +12,10 @@ EEPROM
 01 16:  xx      Länge der Adresstabelle in Anz. Einträgen incl. phys. Addr. (2 Byte pro Eintrag) 
 01 17:  xx xx       physikalische Adresse MSB LSB
 01 19:          Gruppenadressen, unbenutzte mit FF gefüllt (je 2 Byte MSB LSB)
+                ACHTUNG für Gateway Funktion:
+                Es werden nur Telegramme mit Gruppen-Zieladresse, die in dieser Tabelle
+                enthalten sind, weitergeleitet. Für GAs die nur weitergeleitet werden sollen,
+                braucht es keinen Eintrag in der Assoziationstabelle, und auch kein Objekt.
 
 danach:         Assoziationstabelle:
             1. Byte:    Anzahl Assoziationen
@@ -70,3 +74,19 @@ danach:         Assoziationstabelle:
 01 FC:  xx      bit 0-3 Basis Verzögerung Ausgang 6
                 bit 4-7 Basis Verzögerung Ausgang 7
 01 FD:  xx      bit 0-3 Basis Verzögerung Ausgang 8
+
+Der "NodeParam" Bereich wurde für RF um 16 + 2 byte aufgebohrt.
+(Folgende Adressen sind mit dem BASE_ADDRESS_OFFSET von 0x100 beaufschlagt,
+damit man sie direkt mit mread/mwrite verwenden kann)
+0x0100-0x01ff  : alter NodeParam Bereich
+
+0x0200       :  RSSI (Received Signal Strength Indication)
+
+0x0208       :  forward PA. Messages with physical dest address are forwarded if upper byte of
+                dest address matches. Only the bits that are 1 in the MASK must match (see below).
+0x0209       :  MASK for the forward PA.
+
+0x020a-0x0120f   serial number / domain address (6 byte)
+
+0x0210-0x0211 :  Abgleichwert für den Oszillator des RFM22.
+

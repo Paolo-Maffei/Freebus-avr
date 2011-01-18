@@ -8,6 +8,7 @@
 *                                      
 *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
+*  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
 *
 *  This program is free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License version 2 as
@@ -15,7 +16,7 @@
 */
 /**
 * @file   fb_in8_app.c
-* @author Matthias Fechner, Christian Bode
+* @author Matthias Fechner, Christian Bode, Dirk Armbrust
 * @date   Sat Jan 05 17:44:47 2008
 * 
 * @brief  The application for 8 binary inputs
@@ -33,13 +34,16 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
+#include <avr/wdt.h>
 #include "fb.h"
 #include "fb_hardware.h"
 #include "freebus-debug.h"
 #include "fb_eeprom.h"
 #include "msg_queue.h"
 #include "fb_hal.h"
+#include "rf22.h"
 #include "fb_prot.h"
+#include "fbrf_hal.h"
 #include "fb_app.h"
 #include "fb_in8_app.h"
 
@@ -134,7 +138,7 @@ INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
 
 static uint16_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
 static uint8_t currentTimeOverflow;       /**< the amount of overflows from currentTime */
-static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
+//static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
 
 static uint8_t powerOnDelay;              ///< @todo add documentation
 
@@ -165,7 +169,7 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
 **************************************************************************/
 void timerOverflowFunction(void);
 EFUNC_PORT getPortFunction(uint8_t port);
-uint8_t ReadPorts();
+uint8_t ReadPorts(void);
 void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged);
 void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged);
 
@@ -363,11 +367,12 @@ uint8_t restartApplication(void)
     SET_IO_IO6(IO_INPUT);
     SET_IO_IO7(IO_INPUT);
     SET_IO_IO8(IO_INPUT);
-
+#ifdef BOARD301
     SET_IO_RES1(IO_INPUT);
     SET_IO_RES2(IO_INPUT);
     SET_IO_RES3(IO_INPUT);
     SET_IO_RES4(IO_INPUT);
+#endif
 #else
     /* Port configuration for hardwaretest */
     SET_IO_IO1(IO_OUTPUT);
@@ -378,11 +383,12 @@ uint8_t restartApplication(void)
     SET_IO_IO6(IO_OUTPUT);
     SET_IO_IO7(IO_OUTPUT);
     SET_IO_IO8(IO_OUTPUT);
-
+#ifdef BOARD301
     SET_IO_RES1(IO_OUTPUT);
     SET_IO_RES2(IO_OUTPUT);
     SET_IO_RES3(IO_OUTPUT);
     SET_IO_RES4(IO_OUTPUT);
+#endif
 #endif
 
     /* CTRL-Port */
@@ -478,7 +484,7 @@ EFUNC_PORT getPortFunction(uint8_t port)
 * @return port
 *   
 */
-uint8_t ReadPorts()
+uint8_t ReadPorts(void)
 {
     uint8_t port = 0;
 
@@ -876,6 +882,10 @@ void switchPorts(uint8_t port)
 */
 int main(void)
 {
+    uint16_t t1cnt;
+#ifdef FB_RF
+    uint8_t pollcnt;
+#endif
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
@@ -887,6 +897,14 @@ int main(void)
        
     /* init procerssor register */
     fbhal_Init();
+
+#ifdef FB_RF
+    fbrfhal_init();
+#else
+    /* we use RFM22 clock output, so we have to set the frequency */
+    // SpiInit();
+    // rf22_init();
+#endif
 
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
@@ -905,19 +923,35 @@ int main(void)
 #ifdef HARDWARETEST
     sendTestTelegram();
 #endif
+    /* activate watchdog */
+    ENABLE_WATCHDOG ( WDTO_250MS );
 
     /***************************/
     /* the main loop / polling */
     /***************************/
     while(1)
     {
+        /* calm the watchdog */
+        wdt_reset();
         /* Auswerten des Programmiertasters */
         fbhal_checkProgTaster();
+
+        fbprot_msg_handler();
 
         /* check if 130ms timer is ready */
         if(TIMER1_OVERRUN)
         {
             CLEAR_TIMER1_OVERRUN;
+#ifdef FB_RF
+            if ( (pollcnt--) == 0){
+                fbrfhal_polling();
+                pollcnt = 100;          // 10msec pollrate
+            }
+#endif
+#ifndef BOARD301
+            if ( t1cnt-- ) continue;
+            t1cnt = F_CPU/7692;  //10MHz : 1300 * 100µsec = 130msec
+#endif
 #ifndef HARDWARETEST
             timerOverflowFunction();
 #else

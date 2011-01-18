@@ -99,7 +99,7 @@ PROJECTNAME=freebus-avr-8-in
 #OPTLEVEL=
 
 # define additional flags for the compiler
-#CUSTOM_CFLAGS=
+CUSTOM_CFLAGS=-DFB_TP -DFB_RF
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program
@@ -124,7 +124,6 @@ PROJECTNAME=freebus-avr-8-in
 
 # Include global config file
 -include ../Make.config
--include ../Make.config.template
 
 ####################################################
 #####                Config Done               #####
@@ -242,7 +241,7 @@ $(DUMPTRG): $(TRG)
 	$(OBJDUMP) -S  $< > $@
 
 
-$(TRG): $(OBJDEPS) -l$(AVREIBLIB)
+$(TRG): $(OBJDEPS)
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 
