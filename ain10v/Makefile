@@ -67,7 +67,7 @@ DEFAULT_TARGET=fb_ain10v.c
 # Name of target controller 
 # (e.g. 'at90s8515', see the available avr-gcc mmcu 
 # options for possible values)
-#MCU=
+MCU=atmega168p
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
