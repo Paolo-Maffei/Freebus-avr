@@ -1,0 +1,160 @@
+#,Zeit,Dienst,Flags ,Prio,Quelladresse,Quelle,Zieladresse,Ziel,Rout,Typ,DPT,Info
+1,2010-11-04 22:16:36.863,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Connect,,
+2,2010-11-04 22:16:36.883,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,DeviceDescriptorRead (S=0),,DescriptorType=0
+3,2010-11-04 22:16:36.899,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+4,2010-11-04 22:16:36.937,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,DeviceDescriptorResponse (S=0),,"DescriptorType=0, DescriptorData=00 12"
+5,2010-11-04 22:16:36.953,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=0),,
+6,2010-11-04 22:16:37.326,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=1),,"Count=1, Address=0104"
+7,2010-11-04 22:16:37.342,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=1),,
+8,2010-11-04 22:16:37.367,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=1),,"Count=1, Address=0104, Data=$04"
+9,2010-11-04 22:16:37.389,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=1),,
+10,2010-11-04 22:16:37.575,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=2),,"Count=1, Address=010C"
+11,2010-11-04 22:16:37.591,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=2),,
+12,2010-11-04 22:16:37.615,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=2),,"Count=1, Address=010C, Data=$00"
+13,2010-11-04 22:16:37.637,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=2),,
+14,2010-11-04 22:16:37.665,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Disconnect,,
+15,2010-11-04 22:16:38.121,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Connect,,
+16,2010-11-04 22:16:38.142,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,DeviceDescriptorRead (S=0),,DescriptorType=0
+17,2010-11-04 22:16:38.158,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+18,2010-11-04 22:16:38.186,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,DeviceDescriptorResponse (S=0),,"DescriptorType=0, DescriptorData=00 12"
+19,2010-11-04 22:16:38.225,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=0),,
+20,2010-11-04 22:16:38.539,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=1),,"Count=1, Address=010D, Data=$00"
+21,2010-11-04 22:16:38.557,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=1),,
+22,2010-11-04 22:16:38.581,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=2),,"Count=1, Address=010D"
+23,2010-11-04 22:16:38.597,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=2),,
+24,2010-11-04 22:16:38.622,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=1),,"Count=1, Address=010D, Data=$00"
+25,2010-11-04 22:16:38.644,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=1),,
+26,2010-11-04 22:16:38.681,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=3),,"Count=1, Address=0116, Data=$01"
+27,2010-11-04 22:16:38.696,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=3),,
+28,2010-11-04 22:16:38.722,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=4),,"Count=1, Address=0116"
+29,2010-11-04 22:16:38.738,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=4),,
+30,2010-11-04 22:16:38.764,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=2),,"Count=1, Address=0116, Data=$01"
+31,2010-11-04 22:16:38.784,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=2),,
+32,2010-11-04 22:16:38.811,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=5),,"Count=1, Address=0100"
+33,2010-11-04 22:16:38.827,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=5),,
+34,2010-11-04 22:16:38.855,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=3),,"Count=1, Address=0100, Data=$FF"
+35,2010-11-04 22:16:38.872,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=3),,
+36,2010-11-04 22:16:38.906,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=6),,"Count=9, Address=0104"
+37,2010-11-04 22:16:38.924,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=6),,
+38,2010-11-04 22:16:38.957,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=4),,"Count=9, Address=0104, Data=04 20 60 01 FF FF FF FF 00"
+39,2010-11-04 22:16:38.979,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=4),,
+40,2010-11-04 22:16:39.012,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=7),,"Count=4, Address=0108, Data=FE 11 40 00"
+41,2010-11-04 22:16:39.026,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=7),,
+42,2010-11-04 22:16:39.057,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=8),,"Count=4, Address=0108"
+43,2010-11-04 22:16:39.073,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=8),,
+44,2010-11-04 22:16:39.099,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=5),,"Count=4, Address=0108, Data=FE 11 40 00"
+45,2010-11-04 22:16:39.123,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=5),,
+46,2010-11-04 22:16:39.152,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=9),,"Count=8, Address=010E"
+47,2010-11-04 22:16:39.168,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=9),,
+48,2010-11-04 22:16:39.202,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=6),,"Count=8, Address=010E, Data=FF FF FF 29 9A FF FF FF"
+49,2010-11-04 22:16:39.223,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=6),,
+50,2010-11-04 22:16:39.250,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=10),,"Count=3, Address=010E, Data=E0 63 A7"
+51,2010-11-04 22:16:39.269,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=10),,
+52,2010-11-04 22:16:39.292,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=11),,"Count=3, Address=010E"
+53,2010-11-04 22:16:39.308,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=11),,
+54,2010-11-04 22:16:39.337,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=7),,"Count=3, Address=010E, Data=E0 63 A7"
+55,2010-11-04 22:16:39.357,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=7),,
+56,2010-11-04 22:16:39.383,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=12),,"Count=3, Address=0113, Data=00 00 00"
+57,2010-11-04 22:16:39.400,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=12),,
+58,2010-11-04 22:16:39.432,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=13),,"Count=3, Address=0113"
+59,2010-11-04 22:16:39.441,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=13),,
+60,2010-11-04 22:16:39.468,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=8),,"Count=3, Address=0113, Data=00 00 00"
+61,2010-11-04 22:16:39.493,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=8),,
+62,2010-11-04 22:16:39.520,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=14),,"Count=12, Address=0119"
+63,2010-11-04 22:16:39.536,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=14),,
+64,2010-11-04 22:16:39.576,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=9),,"Count=12, Address=0119, Data=00 01 00 02 00 03 00 04 00 05 00 06"
+65,2010-11-04 22:16:39.601,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=9),,
+66,2010-11-04 22:16:39.621,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=15),,"Count=12, Address=0125"
+67,2010-11-04 22:16:39.637,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=15),,
+68,2010-11-04 22:16:39.682,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=10),,"Count=12, Address=0125, Data=00 07 00 08 14 01 00 02 01 03 02 04"
+69,2010-11-04 22:16:39.698,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=10),,
+70,2010-11-04 22:16:39.721,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=0),,"Count=12, Address=0131"
+71,2010-11-04 22:16:39.742,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+72,2010-11-04 22:16:39.777,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=11),,"Count=12, Address=0131, Data=03 05 04 06 05 07 06 08 07 FE 08 FE"
+73,2010-11-04 22:16:39.798,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=11),,
+74,2010-11-04 22:16:39.821,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=1),,"Count=12, Address=013D"
+75,2010-11-04 22:16:39.837,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=1),,
+76,2010-11-04 22:16:39.877,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=12),,"Count=12, Address=013D, Data=09 FE 0A FE 0B FE 0C FE 0D FE 0E FE"
+77,2010-11-04 22:16:39.898,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=12),,
+78,2010-11-04 22:16:39.921,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=2),,"Count=9, Address=0149"
+79,2010-11-04 22:16:39.937,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=2),,
+80,2010-11-04 22:16:39.980,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=13),,"Count=9, Address=0149, Data=0F FE 10 FE 11 FE 12 FE 13"
+81,2010-11-04 22:16:39.998,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=13),,
+82,2010-11-04 22:16:40.021,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=3),,"Count=12, Address=019A"
+83,2010-11-04 22:16:40.037,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=3),,
+84,2010-11-04 22:16:40.076,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=14),,"Count=12, Address=019A, Data=14 D6 54 97 00 55 97 00 56 97 00 57"
+85,2010-11-04 22:16:40.097,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=14),,
+86,2010-11-04 22:16:40.124,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=4),,"Count=12, Address=01A6"
+87,2010-11-04 22:16:40.141,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=4),,
+88,2010-11-04 22:16:40.181,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=15),,"Count=12, Address=01A6, Data=97 00 58 97 00 59 97 00 5A 97 00 5B"
+89,2010-11-04 22:16:40.201,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=15),,
+90,2010-11-04 22:16:40.224,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=5),,"Count=12, Address=01B2"
+91,2010-11-04 22:16:40.241,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=5),,
+92,2010-11-04 22:16:40.280,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=0),,"Count=12, Address=01B2, Data=97 00 5C 93 01 5D 93 01 5E 93 01 5F"
+93,2010-11-04 22:16:40.304,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=0),,
+94,2010-11-04 22:16:40.325,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=6),,"Count=12, Address=01BE"
+95,2010-11-04 22:16:40.341,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=6),,
+96,2010-11-04 22:16:40.380,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=1),,"Count=12, Address=01BE, Data=93 01 60 C3 00 61 C3 00 62 C3 00 63"
+97,2010-11-04 22:16:40.402,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=1),,
+98,2010-11-04 22:16:40.424,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=7),,"Count=12, Address=01CA"
+99,2010-11-04 22:16:40.440,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=7),,
+100,2010-11-04 22:16:40.480,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=2),,"Count=12, Address=01CA, Data=C3 00 64 C3 00 65 C3 00 66 C3 00 67"
+101,2010-11-04 22:16:40.501,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=2),,
+102,2010-11-04 22:16:40.524,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=8),,"Count=12, Address=01D6"
+103,2010-11-04 22:16:40.540,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=8),,
+104,2010-11-04 22:16:40.580,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=3),,"Count=12, Address=01D6, Data=C3 00 00 00 00 00 00 00 00 00 00 00"
+105,2010-11-04 22:16:40.601,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=3),,
+106,2010-11-04 22:16:40.624,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=9),,"Count=12, Address=01E2"
+107,2010-11-04 22:16:40.640,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=9),,
+108,2010-11-04 22:16:40.680,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=4),,"Count=12, Address=01E2, Data=00 00 00 00 00 00 00 00 00 00 03 00"
+109,2010-11-04 22:16:40.702,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=4),,
+110,2010-11-04 22:16:40.725,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=10),,"Count=12, Address=01EE"
+111,2010-11-04 22:16:40.742,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=10),,
+112,2010-11-04 22:16:40.780,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=5),,"Count=12, Address=01EE, Data=00 00 00 00 00 00 00 00 55 55 FF 00"
+113,2010-11-04 22:16:40.805,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=5),,
+114,2010-11-04 22:16:40.828,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=11),,"Count=1, Address=01F8, Data=$CD"
+115,2010-11-04 22:16:40.844,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=11),,
+116,2010-11-04 22:16:40.869,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=12),,"Count=1, Address=01F8"
+117,2010-11-04 22:16:40.886,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=12),,
+118,2010-11-04 22:16:40.910,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=6),,"Count=1, Address=01F8, Data=$CD"
+119,2010-11-04 22:16:40.931,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=6),,
+120,2010-11-04 22:16:40.956,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=13),,"Count=5, Address=01FA"
+121,2010-11-04 22:16:40.970,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=13),,
+122,2010-11-04 22:16:41.000,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=7),,"Count=5, Address=01FA, Data=00 00 00 00 FF"
+123,2010-11-04 22:16:41.023,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=7),,
+124,2010-11-04 22:16:41.046,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=14),,"Count=1, Address=01FE, Data=$00"
+125,2010-11-04 22:16:41.062,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=14),,
+126,2010-11-04 22:16:41.087,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=15),,"Count=1, Address=01FE"
+127,2010-11-04 22:16:41.103,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=15),,
+128,2010-11-04 22:16:41.128,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=8),,"Count=1, Address=01FE, Data=$00"
+129,2010-11-04 22:16:41.151,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=8),,
+130,2010-11-04 22:16:41.192,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=0),,"Count=9, Address=00CE, Data=00 00 00 00 00 00 00 00 00"
+131,2010-11-04 22:16:41.209,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+132,2010-11-04 22:16:41.233,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=1),,"Count=9, Address=00CE"
+133,2010-11-04 22:16:41.249,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=1),,
+134,2010-11-04 22:16:41.285,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=9),,"Count=9, Address=00CE, Data=00 00 00 00 00 00 00 00 00"
+135,2010-11-04 22:16:41.306,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=9),,
+136,2010-11-04 22:16:41.351,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=2),,"Count=9, Address=00D7, Data=00 00 00 00 00 00 00 00 00"
+137,2010-11-04 22:16:41.367,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=2),,
+138,2010-11-04 22:16:41.393,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=3),,"Count=9, Address=00D7"
+139,2010-11-04 22:16:41.409,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=3),,
+140,2010-11-04 22:16:41.444,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=10),,"Count=9, Address=00D7, Data=00 00 00 00 00 00 00 00 00"
+141,2010-11-04 22:16:41.466,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=10),,
+142,2010-11-04 22:16:41.493,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=4),,"Count=1, Address=0116"
+143,2010-11-04 22:16:41.509,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=4),,
+144,2010-11-04 22:16:41.535,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=11),,"Count=1, Address=0116, Data=$01"
+145,2010-11-04 22:16:41.555,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=11),,
+146,2010-11-04 22:16:41.579,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=5),,"Count=1, Address=0116, Data=$09"
+147,2010-11-04 22:16:41.595,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=5),,
+148,2010-11-04 22:16:41.621,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=6),,"Count=1, Address=0116"
+149,2010-11-04 22:16:41.637,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=6),,
+150,2010-11-04 22:16:41.662,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=12),,"Count=1, Address=0116, Data=$09"
+151,2010-11-04 22:16:41.684,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=12),,
+152,2010-11-04 22:16:41.712,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryWrite (S=7),,"Count=1, Address=010D, Data=$FF"
+153,2010-11-04 22:16:41.728,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=7),,
+154,2010-11-04 22:16:41.753,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,MemoryRead (S=8),,"Count=1, Address=010D"
+155,2010-11-04 22:16:41.770,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=8),,
+156,2010-11-04 22:16:41.794,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,MemoryResponse (S=13),,"Count=1, Address=010D, Data=$FF"
+157,2010-11-04 22:16:41.816,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=13),,
+158,2010-11-04 22:16:41.888,zum Bus,C,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,Restart (S=9),,
+159,2010-11-04 22:16:41.936,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Disconnect,,

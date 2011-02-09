@@ -1,0 +1,19 @@
+#,Zeit,Dienst,Flags ,Prio,Quelladresse,Quelle,Zieladresse,Ziel,Rout,Typ,DPT,Info
+1,2010-11-04 22:10:03.171,Start,,,,,,,,,,"Aufzeichnung wurde gestartet, Host=idefix-PC, Verbindung=Siemens IP Interface, Modus=LinkLayer"
+2,2010-11-04 22:11:49.394,zum Bus,,System,15.15.255,-,0/0/0,-,6,IndividualAddressRead,,
+3,2010-11-04 22:11:49.576,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Connect,,
+4,2010-11-04 22:11:49.605,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,DeviceDescriptorRead (S=0),,DescriptorType=0
+5,2010-11-04 22:11:49.613,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+6,2010-11-04 22:11:49.636,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,DeviceDescriptorResponse (S=0),,"DescriptorType=0, DescriptorData=00 12"
+7,2010-11-04 22:11:49.659,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Disconnect,,
+8,2010-11-04 22:11:52.412,zum Bus,,System,15.15.255,-,0/0/0,-,6,IndividualAddressRead,,
+9,2010-11-04 22:11:55.430,zum Bus,,System,15.15.255,-,0/0/0,-,6,IndividualAddressRead,,
+10,2010-11-04 22:11:55.447,vom Bus,,Low,1.1.31,Schaltaktor 8fach REG,0/0/0,-,7,IndividualAddressResponse,,
+11,2010-11-04 22:11:58.473,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Connect,,
+12,2010-11-04 22:11:58.493,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,DeviceDescriptorRead (S=0),,DescriptorType=0
+13,2010-11-04 22:11:58.510,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,T_ACK (S=0),,
+14,2010-11-04 22:11:58.537,vom Bus,,System,1.1.31,Schaltaktor 8fach REG,15.15.255,-,6,DeviceDescriptorResponse (S=0),,"DescriptorType=0, DescriptorData=00 12"
+15,2010-11-04 22:11:58.569,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_ACK (S=0),,
+16,2010-11-04 22:12:00.002,zum Bus,C,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,Restart (S=1),,
+17,2010-11-04 22:12:00.049,zum Bus,,System,15.15.255,-,1.1.31,Schaltaktor 8fach REG,6,T_Disconnect,,
+18,2010-11-04 22:12:00.309,zum Bus,,System,15.15.255,-,0/0/0,-,6,IndividualAddressRead,,

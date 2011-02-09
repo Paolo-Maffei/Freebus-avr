@@ -1,0 +1,19 @@
+#	Zeit	Service	Flags	Prio	Quelladr	Quelle	Zieladr	Ziel	Rout	DPT	Typ	Daten	
+1	21:00:51.232	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrRead		
+2	21:00:51.420	zum Bus	C R	S	15.15.255	Nicht gefunden	1.1.31		6	-	T_Connect		
+3	21:00:51.438	zum Bus	C R	S	15.15.255	Nicht gefunden	1.1.31		6	-	MaskVersionRead (S=0)		
+4	21:00:54.260	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrRead		
+5	21:00:54.562	zum Bus	C R	S	15.15.255	Nicht gefunden	1.1.31		6	-	T_Disconnect		
+6	21:00:57.293	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrRead		
+7	21:00:57.309	vom Bus	 	L	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	7	-	PhysAddrResponse		
+8	21:01:00.359	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrWrite	1.1.31	
+9	21:01:00.976	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrRead		
+10	21:01:00.993	vom Bus	 	L	1.1.31		0/0/0	Nicht gefunden	7	-	PhysAddrResponse		
+11	21:01:01.077	zum Bus	 R	S	15.15.255	Nicht gefunden	1.1.31		6	-	T_Connect		
+12	21:01:01.098	zum Bus	 R	S	15.15.255	Nicht gefunden	1.1.31		6	-	MaskVersionRead (S=0)		
+13	21:01:01.114	vom Bus	 	S	1.1.31		15.15.255	Nicht gefunden	6	-	ACK (S=0)		
+14	21:01:01.137	vom Bus	 	S	1.1.31		15.15.255	Nicht gefunden	6	-	MaskVersionResponse (S=0)	Maskenversion: 0012	
+15	21:01:01.158	zum Bus	 R	S	15.15.255	Nicht gefunden	1.1.31		6	-	ACK (S=0)		
+16	21:01:01.203	zum Bus	C R	S	15.15.255	Nicht gefunden	1.1.31		6	-	Restart (S=1)		
+17	21:01:01.219	zum Bus	C R	S	15.15.255	Nicht gefunden	1.1.31		6	-	T_Disconnect		
+18	21:01:01.473	zum Bus	 R	S	15.15.255	Nicht gefunden	0/0/0	Nicht gefunden	6	-	PhysAddrRead		
