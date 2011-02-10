@@ -556,7 +556,11 @@ void switchObjects(void)
 
     /* change PWM to supply relais with full power */
     waitToPWM = PWM_DELAY_TIME;
-    ENABLE_PWM(0x0000); // --> This is 100% negative duty cycle (active low)
+    #ifdef BOARD301
+      ENABLE_PWM(0xFFFF); // --> This is 100% negative duty cycle (active low)
+    #else
+      ENABLE_PWM(0x0000); // --> This is 100% negative duty cycle (active low)
+    #endif
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
