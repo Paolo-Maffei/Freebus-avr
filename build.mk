@@ -97,12 +97,12 @@ AVRDUDE=avrdude
 REMOVE=rm -f
 
 ##### automatic target names ####
-TRG=$(PROJECTNAME).out
-DUMPTRG=$(PROJECTNAME).s
+TRG=$(PROJECTNAME)$(DEBUG).out
+DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
-HEXROMTRG=$(PROJECTNAME).hex 
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
-GDBINITFILE=gdbinit-$(PROJECTNAME)
+HEXROMTRG=$(PROJECTNAME)$(DEBUG).hex 
+HEXTRG=$(HEXROMTRG) $(PROJECTNAME)$(DEBUG).ee.hex
+GDBINITFILE=gdbinit-$(PROJECTNAME)$(DEBUG)
 
 # Define all object files.
 
@@ -142,6 +142,10 @@ GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s))
 # all, disasm, stats, hex, writeflash/install, clean
 all: $(TRG)
 
+debug: CUSTOM_CFLAGS+=-DDEBUG_UART -g
+debug: DEBUG=debug
+debug: $(TRG)
+
 disasm: $(DUMPTRG) stats
 
 stats: $(TRG)
@@ -150,6 +154,8 @@ stats: $(TRG)
 
 hex: $(HEXTRG)
 
+debug-hex: DEBUG=debug
+debug-hex: $(HEXTRG)
 
 writeflash: hex
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
@@ -163,6 +169,7 @@ $(DUMPTRG): $(TRG)
 
 
 $(TRG): $(OBJDEPS) 
+	@echo Link target $(PROJECTNAME)...
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 
@@ -201,14 +208,16 @@ $(TRG): $(OBJDEPS)
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
 .out.hex:
+	@echo Build .hex for $(PROJECTNAME)...
 	$(OBJCOPY) -j .text                    \
 		-j .data                       \
-		-O $(HEXFORMAT) $< $@
+		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.hex=$(DEBUG).hex)
 
 .out.ee.hex:
+	@echo Build ee.hex for $(PROJECTNAME)...
 	$(OBJCOPY) -j .eeprom                  \
 		--change-section-lma .eeprom=0 \
-		-O $(HEXFORMAT) $< $@
+		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.ee.hex=$(DEBUG).ee.hex)
 
 
 #####  Generating a gdb initialisation file    #####
@@ -229,12 +238,16 @@ $(GDBINITFILE): $(TRG)
 
 #### Cleanup ####
 clean:
+	@echo Clean target $(PROJECTNAME)...
 	$(REMOVE) $(TRG) $(TRG).map $(DUMPTRG)
 	$(REMOVE) $(OBJDEPS)
 	$(REMOVE) $(LST) $(GDBINITFILE)
 	$(REMOVE) $(GENASMFILES)
 	$(REMOVE) $(HEXTRG)
+	$(REMOVE) *.d
 
+debug-clean: DEBUG=debug
+debug-clean: clean
 
 #####                    EOF                   #####
 

@@ -19,7 +19,7 @@ DEFAULT_TARGET=fb_in8_app.c
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
-PROJECTNAME=freebus-avr-8-in
+PROJECTNAME=app-8-in
 
 # Source files
 # List C/C++/Assembly source files:
