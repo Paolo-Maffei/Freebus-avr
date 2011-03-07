@@ -124,6 +124,7 @@ CUSTOM_CFLAGS=-DFB_TP -DFB_RF
 
 # Include global config file
 -include ../Make.config
+-include ../general.mk
 
 ####################################################
 #####                Config Done               #####
