@@ -124,6 +124,9 @@ OBJDEPS=$(CFILES:.c=.o)    \
 	$(CCFILES:.cc=.o)  \
 	$(ASMFILES:.S=.o)
 
+# Use depedencies
+-include $(OBJDEPS:.o=.d)
+
 # Define all lst files.
 LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
 
@@ -191,13 +194,15 @@ $(TRG): $(OBJDEPS)
 
 #### Generating object files ####
 # object from C
-.c.o: 
+.c.o:
+	@echo Compile target $(PROJECTNAME)...
 	$(CC) $(CFLAGS) -c $< -o $@
-
+	$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
 .cc.o .cpp.o .C.o :
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
 
 # object from asm
 .S.o :
