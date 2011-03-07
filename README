@@ -31,7 +31,7 @@
 * Load the existing project file in AVR-Studio, e.g. app-8-out\fb_app_8_out.aps and compile it with AVR Studio, for more details see the start-avr.pdf manual.
 *
 * Linux/Unix/MacOSX:\n
-* Some default parameters are allready defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
+* Some default parameters are already defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
 * To create all .hex files you can type in the directory software/avr/ then:\n
 * make hex\n
 * you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
