@@ -1,8 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="153,5,228,35"/>
-<area shape="rect" id="node9" href="$lib_2uart_8c.html#aa25838635597c384a49871ab20827191" title="Take the given char and append it to a debug message queue or allocate a new message..." alt="" coords="132,59,249,88"/>
-<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="149,112,232,141"/>
-<area shape="rect" id="node13" href="$lib_2uart_8c.html#ae932bf3c92fedb84aafd92ee88d6b6c1" title="Start the send progress and write all queued data to rs232 interface." alt="" coords="148,165,233,195"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="300,5,377,35"/>
-<area shape="rect" id="node7" href="$fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="427,5,480,35"/>
+<area shape="rect" id="node3" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="161,5,239,35"/>
+<area shape="rect" id="node7" href="$lib_2uart_8c.html#a58126d0fedcb396337923dfa97a6a0c0" title="Take the given char and append it to a debug message queue (return 1)." alt="" coords="137,59,263,88"/>
+<area shape="rect" id="node9" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="155,112,245,141"/>
+<area shape="rect" id="node11" href="$lib_2uart_8c.html#ae932bf3c92fedb84aafd92ee88d6b6c1" title="Start the send progress and write all queued data to rs232 interface." alt="" coords="152,165,248,195"/>
+<area shape="rect" id="node5" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="313,5,393,35"/>
 </map>

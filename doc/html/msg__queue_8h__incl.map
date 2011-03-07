@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...." alt="" coords="27,83,128,112"/>
+<area shape="rect" id="node3" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...)" alt="" coords="5,83,117,112"/>
+<area shape="rect" id="node9" href="$fb_8h.html" title="Define general values used in bus communication." alt="" coords="336,83,381,112"/>
 </map>

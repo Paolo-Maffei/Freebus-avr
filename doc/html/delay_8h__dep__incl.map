@@ -1,4 +1,19 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$lcd-lib_8h.html" title="include/lcd&#45;lib.h" alt="" coords="5,83,117,112"/>
-<area shape="rect" id="node5" href="$lcd-lib_8c.html" title="Lib to control a 4x20 character display with 3 wires the current file works only..." alt="" coords="20,160,103,189"/>
+<area shape="rect" id="node3" href="$lcd-lib_8h.html" title="include/lcd&#45;lib.h" alt="" coords="1212,83,1332,112"/>
+<area shape="rect" id="node5" href="$freebus-debug_8h.html" title="Header file to map debugging between several output devices. Possible outputs are lcd..." alt="" coords="1107,160,1283,189"/>
+<area shape="rect" id="node35" href="$lcd-lib_8c.html" title="Lib to control a 4x20 character display with 3 wires the current file works only with 8Bit mode with ..." alt="" coords="1307,160,1395,189"/>
+<area shape="rect" id="node7" href="$fb__adc_8c.html" title="Test program to use ADC to measure bus voltage The ADC return a 10&#45;bit value. Vin=(ADC * Vref) / 1024..." alt="" coords="5,237,107,267"/>
+<area shape="rect" id="node9" href="$fb__ain10v_8c.html" title="to use the 09609110.vd1 Analog&#45;Sensorschnittstelle 4&#45;fach at the moment only for 0&#45;10V !!..." alt="" coords="131,237,269,267"/>
+<area shape="rect" id="node11" href="$fb__2-dimmer__app_8c.html" title="Dimmer application based on the Gira 1032 2 channel dimmer." alt="" coords="293,237,536,267"/>
+<area shape="rect" id="node13" href="$fb__in8__app_8c.html" title="The application for 8 binary inputs Manufactorer code is 0x04 = Jung &#160;Device type (2118) 0x..." alt="" coords="560,237,717,267"/>
+<area shape="rect" id="node15" href="$fb__relais__app_8c.html" title="The relais application to switch 8 relais Manufactorer code is 0x04 = Jung &#160;Device type (2038..." alt="" coords="741,237,925,267"/>
+<area shape="rect" id="node17" href="$fb__eeprom_8c.html" title="The memory is divided into two parts. The complete size of the memory is tbd. &#160;0x00CE&#45;0x00DF: User me..." alt="" coords="949,237,1069,267"/>
+<area shape="rect" id="node19" href="$fb__hal_8c.html" title="Freebus Hardware Layer. Implementation of a software&#45; uart + timer handling This file consists of fun..." alt="" coords="1093,237,1181,267"/>
+<area shape="rect" id="node21" href="$fb__prot_8c.html" title="Handle all requests which are EIB bases like write current address or group address." alt="" coords="1205,237,1301,267"/>
+<area shape="rect" id="node23" href="$lib_2uart_8c.html" title="Handles communication via uart (polling mode). Is only included if compiled with &#45;DDEBUG_UART." alt="" coords="1325,237,1403,267"/>
+<area shape="rect" id="node25" href="$fb__adc__lib_8c.html" title="library functions for ADC usage" alt="" coords="1427,237,1600,267"/>
+<area shape="rect" id="node27" href="$fb__i2c__lib_8c.html" title="library functions for I2C usage" alt="" coords="1624,237,1795,267"/>
+<area shape="rect" id="node29" href="$fb__ow__lib_8c.html" title="library functions for one&#45;wire usage via DS2482" alt="" coords="1819,237,1987,267"/>
+<area shape="rect" id="node31" href="$fb__ow__temp__lib_8c.html" title="library functions for DS18B20 usage" alt="" coords="2011,237,2221,267"/>
+<area shape="rect" id="node33" href="$fb__rtc__lib_8c.html" title="library functions for RTC DS1307 usage" alt="" coords="2245,237,2413,267"/>
 </map>

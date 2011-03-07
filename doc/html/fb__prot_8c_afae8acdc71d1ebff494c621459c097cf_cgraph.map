@@ -1,17 +1,11 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__eeprom_8h.html#af44d586826b8dd9074953e51cbe2a515" title="Write data to the eeprom cache and trigger background process to write eeprom cache..." alt="" coords="176,84,317,113"/>
-<area shape="rect" id="node17" href="$fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in..." alt="" coords="200,216,293,245"/>
-<area shape="rect" id="node19" href="$fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="209,163,284,192"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="399,59,473,88"/>
-<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="557,151,640,180"/>
-<area shape="rect" id="node13" href="$fb__eeprom_8c.html#ac92e88b86efd0e0e32beaee667bfc226" title="Start to write the first byte to eeprom." alt="" coords="383,5,489,35"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="560,72,637,101"/>
-<area shape="rect" id="node9" href="$fb__hal_8h.html#a29aed42c30189a510295e50c98f34afc" title="Hold application and set blink code to PORTB pin 0, our prog pin and LED." alt="" coords="715,72,768,101"/>
-<area shape="rect" id="node15" href="$fb__eeprom_8c.html#a6ab1e3cc3c300d12592e39648da8c022" title="Store on byte on eeprom." alt="" coords="565,5,632,35"/>
-<area shape="rect" id="node21" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="365,216,507,245"/>
-<area shape="rect" id="node32" href="$fb__prot_8c.html#a1ca66f4c62a2c7c7ff2c8ebef64465da" title="Create a new telegram and and return pointer to it." alt="" coords="389,163,483,192"/>
-<area shape="rect" id="node24" href="$fb__hal_8c.html#abc433410f75bf996dab8e7fa672205c0" title="Function is called from message queue system to trigger the interrupt for transmitting..." alt="" coords="556,216,641,245"/>
-<area shape="rect" id="node26" href="$fb__hal_8c.html#a8155185b5b41794d6ead2aba9870b9fa" title="Generate the telegram checksum and copy the next octet to send to fb_frame." alt="" coords="692,216,791,245"/>
-<area shape="rect" id="node28" href="$fb__hal_8c.html#a5a622f74cb37183309cbf6a3678fb129" title="Generate an EIB frame and calculate the checksum." alt="" coords="859,189,923,219"/>
-<area shape="rect" id="node30" href="$fb__hal_8c.html#aa4a5a78d404751d2731d41c606c430fc" title="Set the next state in sending mode." alt="" coords="840,243,941,272"/>
+<area shape="rect" id="node3" href="$fb__hal_8h.html#a3e4f31f4b97d833e7ef5fb9615def386" title="Function to set the ack value for the response to a telegram which must be send in a absolutly excat ..." alt="" coords="199,31,300,60"/>
+<area shape="rect" id="node5" href="$fb__eeprom_8h.html#a734ed3d1f9147def7f23ae10c7156e92" title="Write data to the eeprom cache and trigger background process to write eeprom cache to real eeprom..." alt="" coords="185,84,313,113"/>
+<area shape="rect" id="node15" href="$fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="209,163,289,192"/>
+<area shape="rect" id="node7" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="401,59,479,88"/>
+<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="565,164,656,193"/>
+<area shape="rect" id="node13" href="$fb__eeprom_8c.html#ac92e88b86efd0e0e32beaee667bfc226" title="Start to write the first byte to eeprom." alt="" coords="380,5,500,35"/>
+<area shape="rect" id="node9" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="571,111,651,140"/>
+<area shape="rect" id="node17" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="363,216,517,245"/>
+<area shape="rect" id="node20" href="$fb__prot_8c.html#a1ca66f4c62a2c7c7ff2c8ebef64465da" title="Create a new telegram and and return pointer to it." alt="" coords="389,163,491,192"/>
 </map>

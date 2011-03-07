@@ -1,5 +1,8 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like..." alt="" coords="5,83,104,112"/>
-<area shape="rect" id="node5" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...." alt="" coords="29,160,131,189"/>
-<area shape="rect" id="node7" href="$freebus-debug_8h.html" title="Header file to map debugging between several output devices. Possible outputs are..." alt="" coords="179,83,293,112"/>
+<area shape="rect" id="node3" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like debugging (also rs..." alt="" coords="217,83,327,112"/>
+<area shape="rect" id="node5" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...)" alt="" coords="5,160,117,189"/>
+<area shape="rect" id="node13" href="$freebus-debug_8h.html" title="Header file to map debugging between several output devices. Possible outputs are lcd..." alt="" coords="377,83,503,112"/>
+<area shape="rect" id="node11" href="$fb_8h.html" title="Define general values used in bus communication." alt="" coords="336,160,381,189"/>
+<area shape="rect" id="node17" href="$lcd-lib_8h.html" title="lcd&#45;lib.h" alt="" coords="555,160,624,189"/>
+<area shape="rect" id="node19" href="$delay_8h.html" title="Functions to delay the execution." alt="" coords="556,237,623,267"/>
 </map>

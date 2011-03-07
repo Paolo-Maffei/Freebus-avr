@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="144,59,248,88"/>
-<area shape="rect" id="node5" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be..." alt="" coords="309,5,432,35"/>
-<area shape="rect" id="node7" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="319,59,423,88"/>
-<area shape="rect" id="node9" href="$fb__relais__app_8c.html#a3cabe34d9b90083ff13af0188e622539" title="Timer1 is used as application timer." alt="" coords="296,112,445,141"/>
+<area shape="rect" id="node3" href="$fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="149,32,259,61"/>
+<area shape="rect" id="node5" href="$fb__relais__app_8c.html#a1f6d9eb16dbc08dfcfac5f8ceb8d7f40" title="processOutputs" alt="" coords="313,5,436,35"/>
+<area shape="rect" id="node9" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be restarted." alt="" coords="308,59,441,88"/>
+<area shape="rect" id="node7" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="492,5,604,35"/>
 </map>
