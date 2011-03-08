@@ -4,3 +4,4 @@
 *.lst
 *.hex
 *.out*
+*.d
