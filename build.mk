@@ -124,20 +124,12 @@ OBJDEPS=$(CFILES:.c=.o)    \
 	$(CCFILES:.cc=.o)  \
 	$(ASMFILES:.S=.o)
 
-# Use depedencies
--include $(OBJDEPS:.o=.d)
-
 # Define all lst files.
 LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
 
 # All the possible generated assembly 
 # files (.s files)
 GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s)) 
-
-
-.SUFFIXES : .c .cc .cpp .C .o .out .s .S \
-	.hex .ee.hex .h .hh .hpp
-
 
 .PHONY: writeflash clean stats gdbinit stats
 
@@ -175,6 +167,8 @@ $(TRG): $(OBJDEPS)
 	@echo Link target $(PROJECTNAME)...
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
+# Use depedencies (we include it after the rules to not override the default target all)
+-include $(OBJDEPS:.o=.d)
 
 #### Generating assembly ####
 # asm from C
