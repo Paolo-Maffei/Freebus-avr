@@ -19,8 +19,14 @@ debug-hex:
 clean:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
 
+distclean:
+	for i in $(DIRECTORIES); do $(MAKE) -C $$i distclean; done
+
 debug-clean:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-clean; done
+
+debug-distclean:
+	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-distclean; done
 
 stats:
 	for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done

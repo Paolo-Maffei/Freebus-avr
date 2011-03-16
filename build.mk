@@ -58,6 +58,7 @@
 ####################################################
 
 ##### Flags ####
+DEBUG=
 
 # HEXFORMAT -- format for .hex file output
 HEXFORMAT=ihex
@@ -100,8 +101,8 @@ REMOVE=rm -f
 TRG=$(PROJECTNAME)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
-HEXROMTRG=$(PROJECTNAME)$(DEBUG).hex 
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME)$(DEBUG).ee.hex
+HEXROMTRG=$(TRG).hex 
+HEXTRG=$(HEXROMTRG) $(TRG).ee.hex
 GDBINITFILE=gdbinit-$(PROJECTNAME)$(DEBUG)
 
 # Define all object files.
@@ -131,7 +132,8 @@ LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
 # files (.s files)
 GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s)) 
 
-.PHONY: writeflash clean stats gdbinit stats
+.PHONY: writeflash clean distclean stats gdbinit stats all
+.SUFFIXES : .o .c .h .out .hex
 
 # Make targets:
 # all, disasm, stats, hex, writeflash/install, clean
@@ -148,7 +150,10 @@ stats: $(TRG)
 	$(SIZE) $(TRG) 
 
 hex: $(HEXTRG)
+	@echo $(TRG)
+	@echo $(HEXTRG)
 
+debug-hex: CUSTOM_CFLAGS+=-DDEBUG_UART -g
 debug-hex: DEBUG=debug
 debug-hex: $(HEXTRG)
 
@@ -163,7 +168,7 @@ $(DUMPTRG): $(TRG)
 	$(OBJDUMP) -S  $< > $@
 
 
-$(TRG): $(OBJDEPS) 
+$(TRG): $(OBJDEPS)
 	@echo Link target $(PROJECTNAME)...
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
@@ -181,38 +186,38 @@ $(TRG): $(OBJDEPS)
 
 
 # asm from C++
-.cpp.s .cc.s .C.s :
+%.s : %.cpp %.cc %.C
 	$(CC) -S $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 
 
 #### Generating object files ####
 # object from C
-.c.o:
+%.o: %.c
 	@echo Compile target $(PROJECTNAME)...
 	$(CC) $(CFLAGS) -c $< -o $@
 	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
-.cc.o .cpp.o .C.o :
+%.o: %.cc %.cpp %.C
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
 
 # object from asm
-.S.o :
+%.o: %.S
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 
 #### Generating hex files ####
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
-.out.hex:
+%.out.hex: %.out
 	@echo Build .hex for $(PROJECTNAME)...
 	$(OBJCOPY) -j .text                    \
 		-j .data                       \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.hex=$(DEBUG).hex)
 
-.out.ee.hex:
+%.out.ee.hex: %.out
 	@echo Build ee.hex for $(PROJECTNAME)...
 	$(OBJCOPY) -j .eeprom                  \
 		--change-section-lma .eeprom=0 \
@@ -225,6 +230,7 @@ $(TRG): $(OBJDEPS)
 gdbinit: $(GDBINITFILE)
 
 $(GDBINITFILE): $(TRG)
+	@echo Build GDB init file
 	@echo "file $(TRG)" > $(GDBINITFILE)
 	@echo "target remote localhost:1212" \
 		                >> $(GDBINITFILE)
@@ -242,8 +248,13 @@ clean:
 	$(REMOVE) $(OBJDEPS)
 	$(REMOVE) $(LST) $(GDBINITFILE)
 	$(REMOVE) $(GENASMFILES)
-	$(REMOVE) $(HEXTRG)
 	$(REMOVE) *.d
+
+distclean: clean
+	$(REMOVE) $(HEXTRG)
+
+debug-distclean: DEBUG=debug
+debug-distclean: clean distclean
 
 debug-clean: DEBUG=debug
 debug-clean: clean
