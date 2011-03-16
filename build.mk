@@ -191,7 +191,7 @@ $(TRG): $(OBJDEPS)
 .c.o:
 	@echo Compile target $(PROJECTNAME)...
 	$(CC) $(CFLAGS) -c $< -o $@
-	$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
+	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
 .cc.o .cpp.o .C.o :
