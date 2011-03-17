@@ -1,26 +1,3 @@
-#########  AVR Project Makefile Template   #########
-######                                        ######
-######    Copyright (C) 2003-2005,Pat Deegan, ######
-######            Psychogenic Inc             ######
-######          All Rights Reserved           ######
-######                                        ######
-###### You are free to use this code as part  ######
-###### of your own applications provided      ######
-###### you keep this copyright notice intact  ######
-###### and acknowledge its authorship with    ######
-###### the words:                             ######
-######                                        ######
-###### "Contains software by Pat Deegan of    ######
-###### Psychogenic Inc (www.psychogenic.com)" ######
-######                                        ######
-###### If you use it as part of a web site    ######
-###### please include a link to our site,     ######
-###### http://electrons.psychogenic.com  or   ######
-###### http://www.psychogenic.com             ######
-######                                        ######
-####################################################
-
-
 ##### This Makefile will make compiling Atmel AVR 
 ##### micro controller projects simple with Linux 
 ##### or other Unix workstations and the AVR-GCC 
@@ -40,28 +17,14 @@
 ##### See the http://electrons.psychogenic.com/ 
 ##### website for detailed instructions
 
-####################################################
-#####                                          #####
-#####              Configuration               #####
-#####                                          #####
-##### Customize the values in this section for #####
-##### your project. MCU, PROJECTNAME and       #####
-##### PRJSRC must be setup for all projects,   #####
-##### the remaining variables are only         #####
-##### relevant to those needing additional     #####
-##### include dirs or libraries and those      #####
-##### who wish to use the avrdude programmer   #####
-#####                                          #####
-##### See http://electrons.psychogenic.com/    #####
-##### for further details.                     #####
-#####                                          #####
-####################################################
-
 ##### Flags ####
-DEBUG=
 
 # HEXFORMAT -- format for .hex file output
 HEXFORMAT=ihex
+
+ifeq ($(.DEFAULT_GOAL),)
+	.DEFAULT_GOAL:=all
+endif
 
 # compiler
 CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
@@ -90,13 +53,13 @@ LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
 	-lm $(LIBS)
 
 ##### executables ####
-CC=avr-gcc
-OBJCOPY=avr-objcopy
-OBJDUMP=avr-objdump
-SIZE=avr-size
-AVRDUDE=avrdude
-REMOVE=rm -f
-
+CC:=avr-gcc
+OBJCOPY:=avr-objcopy
+OBJDUMP:=avr-objdump
+SIZE:=avr-size
+AVRDUDE:=avrdude
+REMOVE:=rm -f
+CMP:=cmp
 ##### automatic target names ####
 TRG=$(PROJECTNAME)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
@@ -117,12 +80,11 @@ CFILES=$(filter %.c, $(PRJSRC))
 #  Assembly
 ASMFILES=$(filter %.S, $(PRJSRC))
 
-
 # List all object files we need to create
-OBJDEPS=$(CFILES:.c=.o)    \
-	$(CPPFILES:.cpp=.o)\
+OBJDEPS=$(CFILES:.c=.o) \
+	$(CPPFILES:.cpp=.o) \
 	$(BIGCFILES:.C=.o) \
-	$(CCFILES:.cc=.o)  \
+	$(CCFILES:.cc=.o) \
 	$(ASMFILES:.S=.o)
 
 # Define all lst files.
@@ -132,8 +94,18 @@ LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
 # files (.s files)
 GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s)) 
 
+# Use depedencies
+-include $(OBJDEPS:.o=.d)
+
 .PHONY: writeflash clean distclean stats gdbinit stats all
 .SUFFIXES : .o .c .h .out .hex
+
+# check if cflags/ldflags are different to the build before
+.PHONY: FORCE
+compiler_flags: FORCE
+	@echo '$(CFLAGS)' | $(CMP) -s - $@ || echo '$(CFLAGS)' > $@
+linker_flags: FORCE
+	@echo '$(LDFLAGS)' | $(CMP) -s - $@ || echo '$(LDFLAGS)' > $@
 
 # Make targets:
 # all, disasm, stats, hex, writeflash/install, clean
@@ -150,8 +122,6 @@ stats: $(TRG)
 	$(SIZE) $(TRG) 
 
 hex: $(HEXTRG)
-	@echo $(TRG)
-	@echo $(HEXTRG)
 
 debug-hex: CUSTOM_CFLAGS+=-DDEBUG_UART -g
 debug-hex: DEBUG=debug
@@ -167,13 +137,9 @@ install: writeflash
 $(DUMPTRG): $(TRG) 
 	$(OBJDUMP) -S  $< > $@
 
-
-$(TRG): $(OBJDEPS)
+$(TRG): $(OBJDEPS) linker_flags
 	@echo Link target $(PROJECTNAME)...
 	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
-
-# Use depedencies (we include it after the rules to not override the default target all)
--include $(OBJDEPS:.o=.d)
 
 #### Generating assembly ####
 # asm from C
@@ -193,7 +159,7 @@ $(TRG): $(OBJDEPS)
 
 #### Generating object files ####
 # object from C
-%.o: %.c
+%.o: %.c compiler_flags
 	@echo Compile target $(PROJECTNAME)...
 	$(CC) $(CFLAGS) -c $< -o $@
 	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
@@ -248,7 +214,9 @@ clean:
 	$(REMOVE) $(OBJDEPS)
 	$(REMOVE) $(LST) $(GDBINITFILE)
 	$(REMOVE) $(GENASMFILES)
-	$(REMOVE) *.d
+	$(REMOVE) $(OBJDEPS:.o=.d)
+	$(REMOVE) compiler_flags
+	$(REMOVE) linker_flags
 
 distclean: clean
 	$(REMOVE) $(HEXTRG)
