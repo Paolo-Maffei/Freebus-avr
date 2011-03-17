@@ -2,34 +2,34 @@
 DIRECTORIES = app-8-out app-8-in
 
 all:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i; done
 
 debug:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug; done
 
 doc:
 	-doxygen
 
 hex:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i hex; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i hex; done
 
 debug-hex:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-hex; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-hex; done
 
 clean:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
 
 distclean:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i distclean; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i distclean; done
 
 debug-clean:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-clean; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-clean; done
 
 debug-distclean:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-distclean; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-distclean; done
 
 stats:
-	for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done
 
 avrlib:
 	$(MAKE) -C lib
