@@ -20,6 +20,7 @@ DEFAULT_TARGET=fb_relais_app.c
 # Name of our project
 # (use a single word, e.g. 'myproject')
 PROJECTNAME=app-8-out
+PROJECT_DESCRIPTION=8-out Application
 
 # Source files
 # List C/C++/Assembly source files:

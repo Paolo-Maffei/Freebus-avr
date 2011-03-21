@@ -1,29 +1,26 @@
-##### This Makefile will make compiling Atmel AVR 
-##### micro controller projects simple with Linux 
-##### or other Unix workstations and the AVR-GCC 
-##### tools.
-#####
-##### It supports C, C++ and Assembly source files.
-#####
-##### Customize the values as indicated below and :
-##### make
-##### make disasm 
-##### make stats 
-##### make hex
-##### make writeflash
-##### make gdbinit
-##### or make clean
-#####
-##### See the http://electrons.psychogenic.com/ 
-##### website for detailed instructions
-
-##### Flags ####
-
 # HEXFORMAT -- format for .hex file output
 HEXFORMAT=ihex
 
 ifeq ($(.DEFAULT_GOAL),)
 	.DEFAULT_GOAL:=all
+endif
+
+# To put more focus on warnings, be less verbose as default
+# Use 'make V=1' to see the full commands
+
+ifeq ("$(origin V)", "command line")
+  VERBOSE = $(V)
+endif
+ifndef VERBOSE
+  VERBOSE = 0
+endif
+
+ifeq ($(VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet=quiet_
+  Q = @
 endif
 
 # compiler
@@ -52,6 +49,11 @@ ASMFLAGS =-I. $(INC) -mmcu=$(MCU)        \
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
 	-lm $(LIBS)
 
+ifndef PROJECT_DESCRIPTION
+$(info Work on $(PROJECTNAME)...)
+else
+$(info Work on $(PROJECT_DESCRIPTION) (project: $(PROJECTNAME))...)
+endif
 ##### executables ####
 CC:=avr-gcc
 OBJCOPY:=avr-objcopy
@@ -139,7 +141,7 @@ $(DUMPTRG): $(TRG)
 
 $(TRG): $(OBJDEPS) linker_flags
 	@echo Link target $(PROJECTNAME)...
-	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
+	$(Q)$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 #### Generating assembly ####
 # asm from C
@@ -150,24 +152,20 @@ $(TRG): $(OBJDEPS) linker_flags
 %.s: %.S
 	$(CC) -S $(ASMFLAGS) $< > $@
 
-
 # asm from C++
 %.s : %.cpp %.cc %.C
 	$(CC) -S $(CFLAGS) $(CPPFLAGS) $< -o $@
 
-
-
 #### Generating object files ####
 # object from C
 %.o: %.c compiler_flags
-	@echo Compile target $(PROJECTNAME)...
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(Q)$(CC) $(CFLAGS) -c $< -o $@
 	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
 %.o: %.cc %.cpp %.C
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
 
 # object from asm
 %.o: %.S
@@ -179,13 +177,13 @@ $(TRG): $(OBJDEPS) linker_flags
 #####  Generating a gdb initialisation file    #####
 %.out.hex: %.out
 	@echo Build .hex for $(PROJECTNAME)...
-	$(OBJCOPY) -j .text                    \
+	$(Q)$(OBJCOPY) -j .text                    \
 		-j .data                       \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.hex=$(DEBUG).hex)
 
 %.out.ee.hex: %.out
 	@echo Build ee.hex for $(PROJECTNAME)...
-	$(OBJCOPY) -j .eeprom                  \
+	$(Q)$(OBJCOPY) -j .eeprom                  \
 		--change-section-lma .eeprom=0 \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.ee.hex=$(DEBUG).ee.hex)
 
@@ -208,18 +206,19 @@ $(GDBINITFILE): $(TRG)
 
 
 #### Cleanup ####
+.PHONY: clean distclean debug-clean
 clean:
 	@echo Clean target $(PROJECTNAME)...
-	$(REMOVE) $(TRG) $(TRG).map $(DUMPTRG)
-	$(REMOVE) $(OBJDEPS)
-	$(REMOVE) $(LST) $(GDBINITFILE)
-	$(REMOVE) $(GENASMFILES)
-	$(REMOVE) $(OBJDEPS:.o=.d)
-	$(REMOVE) compiler_flags
-	$(REMOVE) linker_flags
+	$(Q)$(REMOVE) $(TRG) $(TRG).map $(DUMPTRG)
+	$(Q)$(REMOVE) $(OBJDEPS)
+	$(Q)$(REMOVE) $(LST) $(GDBINITFILE)
+	$(Q)$(REMOVE) $(GENASMFILES)
+	$(Q)$(REMOVE) $(OBJDEPS:.o=.d)
+	$(Q)$(REMOVE) compiler_flags
+	$(Q)$(REMOVE) linker_flags
 
 distclean: clean
-	$(REMOVE) $(HEXTRG)
+	$(Q)$(REMOVE) $(HEXTRG)
 
 debug-distclean: DEBUG=debug
 debug-distclean: clean distclean
