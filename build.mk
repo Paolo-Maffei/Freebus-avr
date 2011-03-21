@@ -44,6 +44,8 @@ ASMFLAGS =-I. $(INC) -mmcu=$(MCU)        \
 	-Wa,-gstabs,-ahlms=$(firstword   \
 		$(<:.S=.lst) $(<.s=.lst))
 
+# archiver
+ARFLAGS=-rcs
 
 # linker
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
@@ -61,9 +63,12 @@ OBJDUMP:=avr-objdump
 SIZE:=avr-size
 AVRDUDE:=avrdude
 REMOVE:=rm -f
+AR:=avr-ar
+INSTALL:=install
 CMP:=cmp
+
 ##### automatic target names ####
-TRG=$(PROJECTNAME)$(DEBUG).out
+TRG?=$(PROJECTNAME)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
 HEXROMTRG=$(TRG).hex 
@@ -99,8 +104,8 @@ GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s))
 # Use depedencies
 -include $(OBJDEPS:.o=.d)
 
-.PHONY: writeflash clean distclean stats gdbinit stats all
-.SUFFIXES : .o .c .h .out .hex
+.PHONY: writeflash stats gdbinit stats all debug
+.SUFFIXES : .a .o .c .h .out .hex
 
 # check if cflags/ldflags are different to the build before
 .PHONY: FORCE
@@ -134,12 +139,10 @@ writeflash: hex
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG)
 
-install: writeflash
-
 $(DUMPTRG): $(TRG) 
 	$(OBJDUMP) -S  $< > $@
 
-$(TRG): $(OBJDEPS) linker_flags
+$(subst .out,,$(TRG)).out: $(OBJDEPS) linker_flags
 	@echo Link target $(PROJECTNAME)...
 	$(Q)$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
