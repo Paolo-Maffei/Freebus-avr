@@ -102,7 +102,9 @@ LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
 GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s)) 
 
 # Use depedencies
--include $(OBJDEPS:.o=.d)
+ifneq ($(MAKECMDGOALS),clean)
+	-include $(OBJDEPS:.o=.d)
+endif
 
 .PHONY: writeflash stats gdbinit stats all debug
 .SUFFIXES : .a .o .c .h .out .hex
