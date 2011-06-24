@@ -125,8 +125,11 @@
           TCCR0B &= ~(1<<FOC0B);        \
     }
 
-/* #ifdef FB_RF */
-/**   with RF, we do't have timer2 for PWM, instead we use timer1 */
+/**	with RF, we do't have timer2 for PWM, instead we use timer1.
+*	This also applies for new AVR board in TP only mode !!
+*	timer1 overflows every 102.4 탎ec (10MHz), 128탎ec (8MHz).
+*	The application may poll APP_TIMER_OVERRUN() for 130ms time frame.
+*	Only on old board (rev. 3.01) timer2 is used as app timer */
 /** Checkcondition for application timer overrun */
 #define TIMER1_OVERRUN              (TIFR1 & (1U<<TOV1))
 
@@ -138,6 +141,17 @@
         TCCR1A = (1<<WGM11);                         /* phase correct PWM, MAX=0x1FF */ \
         TCCR1B =  (1U<<CS10);                        /* no prescale , 100탎ec per cycle */ \
      }
+
+static uint8_t inline appTimerOverrun (void)
+{
+    static uint16_t t1cnt;
+    if ( t1cnt-- ) return 0 ;
+    t1cnt = F_CPU/7692;  //10MHz : 1300 * 100탎ec = 130msec
+	return 1;
+}
+
+#define APP_TIMER_OVERRUN()	\
+		appTimerOverrun()
 
 /** 
 * Enable PWM, PWM pin (OC1A / PB1) is set by hardware.

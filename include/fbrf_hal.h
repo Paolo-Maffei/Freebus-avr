@@ -47,24 +47,9 @@
 
 #define RF_TX         /* tx and rx enabled. todo: support for rx only and tx only */
 #define RF_RX
-/* define different panic calls here */
-#if 0
-#define PANIC_MEMORY    0x01    /**< Memory error, is set when no memory is left and it is tried to allocate memory */
-#define PANIC_RESOURCE    0x02    /**< No more resources are available */
-#define PANIC_EEPROM    0x03    /**< Error in eeprom */
-#define PANIC_NO_MSG    0x04    /**< No more space for messages is left in allocated message queue */
-#endif
 
 #define RFM22_INT_vect    INT1_vect
 #define FBRF_TIMER_vect  TIMER2_OVF_vect
-/*
-#define  RX_ANT_PORT   PORTC
-#define  TX_ANT_DDR    DDRC
-#define  RX_ANT_PIN    PORTC2
-#define  TX_ANT_PORT   PORTC
-#define  RX_ANT_DDR    DDRC
-#define  TX_ANT_PIN    PORTC3
-*/
 
 /* Antenna switch is controlled by GPIO0 / GPIO1 of RFM22,
    so corresponding macros are empty */
@@ -82,6 +67,21 @@
 #define  TX_LED_PORT   rfleds
 /* #define  TX_LED_DDR    DDRD */
 #define  TX_LED_PIN    1
+
+#ifdef FB_RF
+#define  FBRFHAL_POLLING() {	\
+	static uint8_t pollcnt;			\
+	if ( (pollcnt--) == 0){		\
+	fbrfhal_polling();			\
+	pollcnt = 100;          /* 10msec pollrate */ \
+	}\
+ }
+#define FBRFHAL_INIT()  fbrfhal_init();
+#else
+#define  FBRFHAL_POLLING()
+#define FBRFHAL_INIT()
+#endif
+
 
 /**************************************************************************
 * DECLARATIONS

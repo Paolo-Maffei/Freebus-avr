@@ -124,8 +124,11 @@
           TCCR0B &= ~(1<<FOC0B);        \
     }
 
-/* #ifdef FB_RF */
-/**   with RF, we do't have timer2 for PWM, instead we use timer1 */
+/**	with RF, we do't have timer2 for PWM, instead we use timer1.
+*	This also applies for new AVR board in TP only mode !!
+*	timer1 overflows every 102.4 탎ec (10MHz), 128탎ec (8MHz).
+*	The application may poll APP_TIMER_OVERRUN() for 130ms time frame.
+*	Only on old board (rev. 3.01) timer2 is used as app timer */
 /** Checkcondition for application timer overrun */
 #define TIMER1_OVERRUN              (TIFR1 & (1U<<TOV1))
 
@@ -138,57 +141,33 @@
         TCCR1B =  (1U<<CS10);                        /* no prescale , 100탎ec per cycle */ \
      }
 
+static uint8_t inline appTimerOverrun (void)
+{
+    static uint16_t t1cnt;
+    if ( t1cnt-- ) return 0 ;
+    t1cnt = F_CPU/7692;  //10MHz : 1300 * 100탎ec = 130msec
+	return 1;
+}
+
+#define APP_TIMER_OVERRUN()	\
+		appTimerOverrun()
+
 /** 
 * Enable PWM, PWM pin (OC1A / PB1) is set by hardware.
 * 
-* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
+* @param x Duty-cycle = x/511 (active low)
 * 
 */
 #define ENABLE_PWM(x)               {                                   \
-        TCCR1A |= (1<<COM1A1);                     /* switch PWM pin when TCNT1 matches OCR1A  */ \
-        OCR1A = (x);                               /* duty cycle 33%, active low */ \
+        TCCR1A |= ((1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
+        OCR1A = (2*x);                              /* set duty cycle, active low */ \
      }
 
 /** Disable PWM and set PWM pin to high */
 #define DISABLE_PWM()               {                                   \
           TCCR1A &= ~((1<<COM1A1)|(1<<COM1A0)); /* disable PWM pin  */  \
-          SETPIN_CTRL(ON);                      /* set port to low */   \
+          SETPIN_CTRL(ON);                      /* set port to high */   \
      }
-#if 0
-/** without RF, use timer2 for PWM, instead we use timer1 */
-/** Checkcondition for application timer overrun */
-#define TIMER1_OVERRUN              (TIFR1 & (1U<<OCF1A))
-
-/** Clear overrun bit set for application timer */
-#define CLEAR_TIMER1_OVERRUN        TIFR1 = (1U<<OCF1A)
-
-/** Reload the application timer (Timer1) to start from 0 */
-#define RELOAD_APPLICATION_TIMER()  {                                   \
-          TCCR1A = 0;             /* CTC (Clear Timer on Compate match) */ \
-          TCCR1B = (1U<<WGM12)|(1U<<CS11)|(1U<<CS10); /* CTC-mode, prescale to 64 */ \
-          OCR1A  = 16249;         /* every 130 ms OCR1A=(delay*F_CPU)/(prescaler)-1 */ \
-          TCNT1  = 0;             /* reset timer */                     \
-     }
-
-/** 
-* Enable PWM, PWM pin (PB3) is set by hardware.
-* 
-* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
-* 
-*/
-#define ENABLE_PWM(x)               {                                   \
-          TCCR2A = (1<<WGM20)|(1<<COM2A1)|(1<<COM2A0);/* Phase correct PWM and enable OC2a pin */ \
-          TCCR2B = (1<<CS21);     /* prescaler 8 */                     \
-          TCNT2  = 0;             /* reset timer2 */                    \
-          OCR2A  = (x);           /* defines the duty cycle */          \
-     }
-
-/** Disable PWM and set PWM pin to high */
-#define DISABLE_PWM()               {                                   \
-          TCCR2A &= ~((1<<COM2A1)|(1<<COM2A0)); /* disable PWM pin  */  \
-          SETPIN_CTRL(ON);                     /* set port to high */   \
-     }
-#endif
 
 /** Enable interrupt for UART0 */
 #define ENABLE_UART_TX_IRQ()        {                            \

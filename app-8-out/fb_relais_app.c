@@ -54,6 +54,7 @@
  * DEFINITIONS
  **************************************************************************/
 
+/** PWM duty cycle. 0 = 0%, 255 = 100% */
 #define PWM_SETPOINT    0x55   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME  3      /* 3 * 130ms */
@@ -68,8 +69,8 @@ static uint16_t delayValues[8];           /**< save value for delays */
 static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
-static uint16_t objectStates;
-static uint8_t blockedStates;
+static uint16_t objectStates;             /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
+static uint8_t blockedStates;             /**< 1 bit per object to mark it "blocked" */
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
@@ -114,9 +115,9 @@ void io_test(void);
  **************************************************************************/
 
 /** 
- * Timer1 is used as application timer.
- * It increase the variable currentTime every 130ms and currentTimeOverflow if
- * currentTime runs over 16-bit.
+ * called at overflow of application timer, should occur every 130ms.
+ * handle finishing of 100% PWM after switchObjects().
+ * handle delayed switching.
  * 
  * @return 
  * @todo test interrupt lock in this function that it is not disturbing TX and RX of telegrams
@@ -250,11 +251,13 @@ uint8_t restartApplication(void)
 } /* restartApplication() */
 
 /** 
- * Read status from port and return it.
+ * Function is called if A_GroupValue_Read is received.
+ * Check if group adress is in address table. If yes,
+ * read status from port and put a A_GroupValue_Response into the tx queue.
  * 
- * @param rxmsg 
+ * @param rxmsg pointer to received telegram.
  * 
- * @return 
+ * @return  The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
  */
 uint8_t readApplication(struct msg *rxmsg)
 {
@@ -292,8 +295,6 @@ uint8_t readApplication(struct msg *rxmsg)
             if(!resp)
                 return FB_NACK;
 
-            /** @todo declaration hides hdr line 268 */
-            // struct fbus_hdr * hdr = (struct fbus_hdr *) resp->data;
             hdr = (struct fbus_hdr *) resp->data;
 
             resp->repeat = 3;
@@ -321,10 +322,11 @@ uint8_t readApplication(struct msg *rxmsg)
 }   /* readApplication() */
 
 /** 
- * Function is called if A_GroupValue_Write is received. The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
- * Read all parameters in that function and set global variables.
+ * Function is called if A_GroupValue_Write is received.
+ * The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
+ * Determine the addressed object and call processOutputs()
  *
- * @param rxmsg 
+ * @param rxmsg pointer to received telegram.
  * 
  * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
  */
@@ -366,6 +368,20 @@ uint8_t runApplication(struct msg *rxmsg)
     return FB_ACK;
 }   /* runApplication() */
 
+/** 
+ *
+ * @param commObjectNumber the adressed object
+ * @param data data to be assigned to that object
+ *
+ * store data (1 bit) in objectStates.
+ * If a special function is addressed, then determine the "real" object belongin to it,
+ * and continue as follows.
+ * If a "real" object is addressed, evaluate the logic and blocking (if avail. for the object).
+ * if no delay is programmed for the object, switch the associated output.
+ * If a delay is programmed, then set the corresponding delayValue.
+ * 
+ * @return
+ */
 void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 {
     uint8_t delayFactorOn=0;            // the factor for the delay timer (on delay)
@@ -385,17 +401,20 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     if (data) objectStates |=  (1<<commObjectNumber);
         else  objectStates &= ~(1<<commObjectNumber);
     if (commObjectNumber >= 8){
-        /* get associated output */
+		/** if a special function is adressed (and changed in most cases),
+		* then the "real" object belonging to that sf. has to be evaluated again
+		* taking into account the changed logic and blocking states. */
+        /* detemine the output belonging to that sf */
         sfOut = mem_ReadByte(0x01D8+((commObjectNumber-8)>>1))>>
                     (((commObjectNumber-8)&1)*4) & 0x0F;
-        /* evaluate the output belonging to this special func */
+        /* get associated object no. and state of that object*/
         if (sfOut){
              if (sfOut > 8) return;
              commObjectNumber =  sfOut-1;
              data = (objectStates>>(sfOut-1))&1;
         }
         else return;
-
+		/* do new evaluation of that object */
     }
     
     // read communication object (3 Byte)
@@ -470,7 +489,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 
         }
     }
-    /** @todo check if object is blocked and/or write is enabled */
+    /** @todo check if write is enabled */
 
     // reset saved timer settings
     // delayValues[commObjectNumber]=0;
@@ -576,7 +595,7 @@ void switchObjects(void)
 /**                                                                       
  * switch all of the output pins
  *
- * @param port
+ * @param port contains values for 8 output pins. They may be on different ports of the avr.
  *   
  */
 void switchPorts(uint8_t port)
@@ -666,10 +685,7 @@ void io_test()
  */
 int main(void)
 {
-    uint16_t t1cnt;
-#ifdef FB_RF
-    uint8_t pollcnt;
-#endif
+//    uint16_t t1cnt;
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
@@ -690,16 +706,11 @@ int main(void)
 
     /* init procerssor register */
     fbhal_Init();
-#ifdef FB_RF
-    fbrfhal_init();
-#else
-#ifdef EXT_CPU_CLOCK
-    /* we use RFM22 clock output, so we have to set the frequency */
-    SpiInit();
-    rf22_init();
-#endif
-#endif
-    /* enable interrupts */
+	/** FBRFHAL_INIT() is defined in fbrf_hal.h .
+	   you may leave it out if you don't use rf */
+    FBRFHAL_INIT();
+
+	/* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
     /* init protocol layer */
@@ -732,15 +743,12 @@ int main(void)
            we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
         if(TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
-#ifdef FB_RF
-            if ( (pollcnt--) == 0){
-                fbrfhal_polling();
-                pollcnt = 100;          // 10msec pollrate
-            }
-#endif
+			/** FBRFHAL_POLLING() is defined in fbrf_hal.h .
+			   you may leave it out if you don't use rf */
+			FBRFHAL_POLLING();
+			/** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. */
 #ifndef BOARD301
-            if ( t1cnt-- ) continue;
-            t1cnt = F_CPU/7692;  //10MHz : 1300 * 100µsec = 130msec
+			if ( ! APP_TIMER_OVERRUN() ) continue;
 #endif
 #ifndef HARDWARETEST
             timerOverflowFunction();

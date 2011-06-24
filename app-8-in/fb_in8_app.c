@@ -901,17 +901,9 @@ int main(void)
 
     /* init procerssor register */
     fbhal_Init();
-
-#ifdef FB_RF
-    fbrfhal_init();
-#else
-#ifdef EXT_CPU_CLOCK
-    /* we use RFM22 clock output, so we have to set the frequency */
-    SpiInit();
-    rf22_init();
-#endif
-#endif
-
+	/** FBRFHAL_INIT() is defined in fbrf_hal.h .
+	   you may leave it out if you don't use rf */
+    FBRFHAL_INIT();
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
@@ -945,15 +937,12 @@ int main(void)
         if(TIMER1_OVERRUN)
         {
             CLEAR_TIMER1_OVERRUN;
-#ifdef FB_RF
-            if ( (pollcnt--) == 0){
-                fbrfhal_polling();
-                pollcnt = 100;          // 10msec pollrate
-            }
-#endif
+			/** FBRFHAL_POLLING() is defined in fbrf_hal.h .
+			   you may leave it out if you don't use rf */
+			FBRFHAL_POLLING();
+			/** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. */
 #ifndef BOARD301
-            if ( t1cnt-- ) continue;
-            t1cnt = F_CPU/7692;  //10MHz : 1300 * 100µsec = 130msec
+			if ( ! APP_TIMER_OVERRUN() ) continue;
 #endif
 #ifndef HARDWARETEST
             timerOverflowFunction();
