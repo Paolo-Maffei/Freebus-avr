@@ -22,6 +22,7 @@ else
   quiet=quiet_
   Q = @
 endif
+
 BINFORMAT=binary
 
 # compiler
@@ -73,9 +74,9 @@ CMP:=cmp
 TRG?=$(PROJECTNAME)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
-HEXROMTRG=$(PROJECTNAME)$(DEBUG).hex 
+HEXROMTRG=$(TRG).hex
 BINROMTRG=$(PROJECTNAME).bin
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME)$(DEBUG).ee.hex
+HEXTRG=$(HEXROMTRG) $(TRG).ee.hex
 BINTRG=$(BINROMTRG)
 GDBINITFILE=gdbinit-$(PROJECTNAME)$(DEBUG)
 
@@ -92,16 +93,11 @@ CFILES=$(filter %.c, $(PRJSRC))
 ASMFILES=$(filter %.S, $(PRJSRC))
 
 # List all object files we need to create
-OBJDEPS=$(CFILES:.c=.o)    \
-	$(CPPFILES:.cpp=.o)\
+OBJDEPS=$(CFILES:.c=.o) \
+	$(CPPFILES:.cpp=.o) \
 	$(BIGCFILES:.C=.o) \
 	$(CCFILES:.cc=.o)  \
 	$(ASMFILES:.S=.o)
-
-# Use depedencies
-ifneq ($(MAKECMDGOALS),clean)
--include $(OBJDEPS:.o=.d)
-endif
 
 # Define all lst files.
 LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
@@ -115,8 +111,8 @@ ifneq ($(MAKECMDGOALS),clean)
 	-include $(OBJDEPS:.o=.d)
 endif
 
-.SUFFIXES : .c .cc .cpp .C .o .out .s .S \
-	.hex .bin .ee.hex .h .hh .hpp
+.PHONY: writeflash stats gdbinit all debug
+.SUFFIXES : .a .o .c .h .out .hex
 
 # check if cflags/ldflags are different to the build before
 .PHONY: FORCE
@@ -124,7 +120,6 @@ compiler_flags: FORCE
 	@echo '$(CFLAGS)' | $(CMP) -s - $@ || echo '$(CFLAGS)' > $@
 linker_flags: FORCE
 	@echo '$(LDFLAGS)' | $(CMP) -s - $@ || echo '$(LDFLAGS)' > $@
-.PHONY: writeflash clean stats gdbinit stats
 
 # Make targets:
 # all, disasm, stats, hex, writeflash/install, clean
@@ -144,6 +139,7 @@ hex: $(HEXTRG)
 
 bin: $(BINTRG)
 
+debug-hex: CUSTOM_CFLAGS+=-DDEBUG_UART -g
 debug-hex: DEBUG=debug
 debug-hex: $(HEXTRG)
 
@@ -155,16 +151,12 @@ writeflash: hex
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG)
 
-install: writeflash
-
 $(DUMPTRG): $(TRG) 
 	$(OBJDUMP) -S  $< > $@
 
-
-$(TRG): $(OBJDEPS) 
+$(subst .out,,$(TRG)).out: $(OBJDEPS) linker_flags
 	@echo Link target $(PROJECTNAME)...
-	$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
-
+	$(Q)$(CC) $(OBJDEPS) $(LDFLAGS) -o $(TRG)
 
 #### Generating assembly ####
 # asm from C
@@ -176,46 +168,43 @@ $(TRG): $(OBJDEPS)
 	$(CC) -S $(ASMFLAGS) $< > $@
 
 # asm from C++
-.cpp.s .cc.s .C.s :
+%.s : %.cpp %.cc %.C
 	$(CC) -S $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 #### Generating object files ####
 # object from C
-.c.o:
-	@echo Compile target $(PROJECTNAME)...
-	$(CC) $(CFLAGS) -c $< -o $@
-	$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
+%.o: %.c compiler_flags
+	$(Q)$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
-.cc.o .cpp.o .C.o :
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
+%.o: %.cc %.cpp %.C
+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) -MM $(CFLAGS) $(CPPFLAGS)-c $< -o $(@:.o=.d)
 
 # object from asm
-.S.o :
+%.o: %.S
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
 
 #### Generating hex files ####
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
-.out.hex:
+%.out.hex: %.out
 	@echo Build .hex for $(PROJECTNAME)...
-	$(OBJCOPY) -j .text  -j .xbootloader    \
+	$(Q)$(OBJCOPY) -j .text  -j .xbootloader    \
 		-j .data                       \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.hex=$(DEBUG).hex)
 
-#### Generating bin files ####
-# bin files from elf
-#####  Generating a gdb initialisation file    #####
-.out.bin:
-	$(OBJCOPY) -j .text                    \
+%.out.bin: %.out
+	@echo Build bin files
+	$(Q)$(OBJCOPY) -j .text                    \
 		-j .data                       \
 		-O $(BINFORMAT) $< $@
 
-.out.ee.hex:
+%.out.ee.hex: %.out
 	@echo Build ee.hex for $(PROJECTNAME)...
-	$(OBJCOPY) -j .eeprom                  \
+	$(Q)$(OBJCOPY) -j .eeprom                  \
 		--change-section-lma .eeprom=0 \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.ee.hex=$(DEBUG).ee.hex)
 
