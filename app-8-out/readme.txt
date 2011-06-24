@@ -31,9 +31,6 @@ https://www.auto.tuwien.ac.at/LVA/HGA/stp/abinger.pdf
 
 https://www.auto.tuwien.ac.at/downloads/knxsci06/reinisch-wireless-knxsci06-website.pdf
 
-Joost Demarest , Wireless congress Nov2005
-http://www.carontenet.it/approfondimenti/matdomotica/orgknx/knx_rf_joost_demarest.pdf
-
 -----------------------------------------------------------------------------------------
 
 Hardware
