@@ -148,6 +148,20 @@
 #define UART_SPACE() uart_putc(' ')
 /** Display a space on the device without using the queueing system */
 #define UART_SPACE_BLOCKING() uart_putc_blocking(' ')
+#else
+/** No uart, map to nothing */
+#define UART_INIT(x)
+#define UART_PUTC(x)
+#define UART_PUTC_BLOCKING(x)
+#define UART_PUTS(x)
+#define UART_PUTS_BLOCKING(x)
+#define UART_PUTHEX(x)
+#define UART_PUTHEX_BLOCKING(x)
+#define UART_NEWLINE()
+#define UART_NEWLINE_BLOCKING()
+#define UART_SPACE()
+#define UART_SPACE_BLOCKING()
+
 #endif
 
 #ifdef DEBUG_TIMING

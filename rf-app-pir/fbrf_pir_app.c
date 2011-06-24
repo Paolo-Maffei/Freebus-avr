@@ -143,6 +143,15 @@ void io_test(void);
 /**************************************************************************
  * IMPLEMENTATION
  **************************************************************************/
+static uint8_t inline getDelayBase (uint8_t i){			
+	uint8_t db;
+	db = mem_ReadByte(0x01F9+((i+1)>>1));
+	if (i & 0x01)
+		db &= 0x0F;
+	else
+		db = (db & 0xF0)>>4;
+	return db;
+}
 
 /** 
  * Timer1 is used as application timer. It increase the variable currentTime every 130ms and currentTimeOverflow if
@@ -183,7 +192,13 @@ void timerOverflowFunction(void)
         /* check if we have to switch a port */
         // we need to check timer for port i
         if ( delayValues[i] ) {
-            if (--delayValues[i]) continue;
+			--delayValues[i];
+			if ( j & INPUT_MASK ){
+				pinNewValue ^= ( j & pinChanged ); 
+				pinChanged &= ~j;     // fake "pin didn't change" for delayed input
+				continue;
+			}
+            if (delayValues[i]) continue;
             // delayValue changed from 1 to 0
             // DEBUG_PUTS("SDP");
             
@@ -198,6 +213,7 @@ void timerOverflowFunction(void)
         }
         /* check inputs for changes */
         if (j & pinChanged & INPUT_MASK) {
+			delayValues[i]    = 1 << getDelayBase(i);
             switch(getPortFunction(i))
             {
                 case eFunc_schalten:
@@ -613,12 +629,14 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     delayFactorOff   = mem_ReadByte(0x01E2+commObjectNumber);
 
     // read delay base, 0=130ms, 1=260 and so on
+	/*
     delayBase        = mem_ReadByte(0x01F9+((commObjectNumber+1)>>1));
     if((commObjectNumber & 0x01) == 0x01)
         delayBase&=0x0F;
     else
         delayBase = (delayBase & 0xF0)>>4;
-
+	*/
+	delayBase = getDelayBase ( commObjectNumber );
     /** logic function */
     /* check if we have a special function for this object */
     specialFunc  = 0;
@@ -857,6 +875,7 @@ void io_test()
 int main(void)
 {
     uint8_t myrfleds;
+	uint8_t use_uart, old_rssi=0;
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
@@ -865,20 +884,32 @@ int main(void)
 
         /* init internal Message System */
         msg_queue_init();
-    
-    UART_INIT();
-    DEBUG_INIT();
-    DEBUG_NEWLINE_BLOCKING();
-    DEBUG_PUTS_BLOCKING("V0.1");
-    DEBUG_NEWLINE_BLOCKING();
-       
+	/* check if TXD (PD1) is connected with RXD (PD0).
+	   if yes, use uart to output RSSI. else control TX/RX LEDs. */
+	use_uart = 0;
+	DDRD |= (1<<PD1);           //TXD is output
+	PORTD &= ~(1<<PD1);         //TXD low
+    _delay_us(10);
+	if ((PIND & (1<<PD0)) == 0){  //RXD low?
+		
+	  PORTD |= (1<<PD1);      //TXD high
+      _delay_us(10);
+		if (PIND & (1<<PD0)) use_uart = 1; // RXD high?
+	}
+	DDRD &= ~(1<<1);
+    if ( use_uart){
+		UART_INIT();
+    	UART_PUTC(0x0c); // form feed
+    	UART_PUTS("RSSI "); //greeting
+    	UART_NEWLINE();
+	}
     /* init procerssor register */
     fbhal_Init();
 
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
-    /* init eeprom modul and RAM structure */ 
+    /* init eeprom modul and RAM structure */
     eeprom_Init(&nodeParam[0], EEPROM_SIZE);
     /* we need values from nodeParam for fbrfhal_init() */
     fbrfhal_init();
@@ -895,7 +926,7 @@ int main(void)
 #endif
     /* activate watchdog */
     ENABLE_WATCHDOG ( WDTO_250MS );
-    // DDRD |= 0x03;  // PD0, PD1 are outputs
+    if (! use_uart) DDRD |= ((1<<PD0)|(1<<PD1));  // PD0, PD1 are outputs
 
     /***************************/
     /* the main loop / polling */
@@ -911,8 +942,8 @@ int main(void)
 		}
         fbprot_msg_handler();
         myrfleds = PORTD & 0xFC;
-        myrfleds |= fbrfhal_polling();
-        // PORTD = myrfleds;
+        myrfleds |= fbrfhal_polling() ^ 0x03;
+        if (! use_uart) PORTD = myrfleds;
 
 
         /* check if 130ms timer is ready 
@@ -925,8 +956,14 @@ int main(void)
             TIFR1 |= (1U<<OCF1A);
 #ifndef HARDWARETEST
             timerOverflowFunction();
-            UART_PUTHEX(mem_ReadByte( RF_RSSI));
-            UART_NEWLINE();
+			if (use_uart){
+				uint8_t rssi = mem_ReadByte( RF_RSSI);
+				if ( rssi != old_rssi ){
+					old_rssi = rssi;
+					UART_PUTHEX(rssi);
+					UART_PUTC(0x0d);   // return
+				}
+			}
 #else
     		//sendTestTelegram();
             hardwaretest();

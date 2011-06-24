@@ -248,7 +248,6 @@ void uart_newline(void)
     return;
 }
 
-#endif
 
 /** 
 * Write the given binary data to rs232 using the queueing system.
@@ -297,3 +296,4 @@ static uint8_t AppendToQueue(struct msg *current, uint8_t character)
     }
     return 0;
 }
+#endif
