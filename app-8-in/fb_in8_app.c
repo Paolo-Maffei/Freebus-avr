@@ -894,7 +894,11 @@ int main(void)
 
     /* init internal Message System */
     msg_queue_init();
-       
+
+    /* init eeprom modul and RAM structure already here,
+       because we need eeprom values for fbrfhal_init() */
+    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+
     /* init procerssor register */
     fbhal_Init();
 
@@ -910,9 +914,6 @@ int main(void)
 
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
-
-    /* init eeprom modul and RAM structure */ 
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
 
     /* init protocol layer */
     /* load default values */
