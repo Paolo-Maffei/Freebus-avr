@@ -695,7 +695,11 @@ int main(void)
     DEBUG_NEWLINE_BLOCKING();
     DEBUG_PUTS_BLOCKING("V0.1");
     DEBUG_NEWLINE_BLOCKING();
-       
+
+    /* init eeprom modul and RAM structure already here,
+       because we need eeprom values for fbrfhal_init() */
+    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+
     /* init procerssor register */
     fbhal_Init();
 #ifdef FB_RF
@@ -709,9 +713,6 @@ int main(void)
 #endif
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
-
-    /* init eeprom modul and RAM structure */ 
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
 
     /* init protocol layer */
     /* load default values */

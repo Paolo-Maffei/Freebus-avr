@@ -99,7 +99,7 @@ PROJECTNAME=fbrf-pir
 #OPTLEVEL=
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS=-DFB_RF
+CUSTOM_CFLAGS=-DFB_RF -DUSE_UART
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program

@@ -1,12 +1,18 @@
 Der freebus bootloader.
 =======================
 9. 2. 2011  Dirk Armbrust (tuxbow)
+update 3. 3. 2011
 
 nur für AVR ATMEGA328P. Denn der bootloader ist fast 4k byte.
 
 Beim ATMEGA328 müssen die fuses gesetzt werden so dass
  at reset jump to bootloader,
  bootloader size: 4k byte (2k words) bootloader size.
+
+Für das "alte" AVR Board (3.01) :
+efuse = 05
+hfuse = D1
+lfuse = FF
 
 Der Bootloader prüft, wenn ca 8 Sekunden lang kein telegramm
 an ihn eingegangen ist, das flash byte auf adresse 0, also das
@@ -24,6 +30,7 @@ wird die PA der App auch für den Bootloader verwendet.
 
 Wie startet man den Bootloader von der App aus?
 Durch einen A_Memory_Write auf Adresse 0x8000, 2 byte, vorzugsweise 0x00, 0x00.
+Das geht aber nur mit der neuesten avr-lib, derzeit nur im git verfügbar.
 
 Es müssen nun A_Memory_Write Telegramme folgen.
 Gültig sind nur gerade Adressen und geradzahlige Anzahl von bytes.
@@ -79,9 +86,9 @@ Danach wartet der bootloader noch ca. 8 Sekunden, und wenn er nichts mehr vom
 Bus bekommt, startet er die App.
 
 Natürlich muss man das nicht alles zu Fuß machen.
-Ich habe dazu ein eibd tool geschrieben, das heisst mupload.
+Ich habe dazu ein eibd tool geschrieben, das heisst fb-fwupload.
 
-mupload ip:myname 0.0.7 <appcode.bin>
+fb-fwupload ip:myname 0.0.7 <appcode.bin>
 
 <appcode.bin> ist der Name der Datei mit der App, es muss ein .bin file sein.
 Man kann die avr-gcc toolchain dazu bewegen, ein .bin file auszugeben.

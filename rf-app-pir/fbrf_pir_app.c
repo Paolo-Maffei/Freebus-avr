@@ -40,6 +40,7 @@
 #include "fb_hal.h"
 #include "fb_prot.h"
 #include "fbrf_hal.h"
+#include "fbrf_prot.h"
 #include "fb_app.h"
 #include "fbrf_pir_app.h"
 #ifdef IO_TEST
@@ -865,7 +866,8 @@ int main(void)
         /* init internal Message System */
         msg_queue_init();
     
-	DEBUG_INIT();
+    UART_INIT();
+    DEBUG_INIT();
     DEBUG_NEWLINE_BLOCKING();
     DEBUG_PUTS_BLOCKING("V0.1");
     DEBUG_NEWLINE_BLOCKING();
@@ -893,7 +895,7 @@ int main(void)
 #endif
     /* activate watchdog */
     ENABLE_WATCHDOG ( WDTO_250MS );
-    DDRD |= 0x03;  // PD0, PD1 are outputs
+    // DDRD |= 0x03;  // PD0, PD1 are outputs
 
     /***************************/
     /* the main loop / polling */
@@ -910,7 +912,7 @@ int main(void)
         fbprot_msg_handler();
         myrfleds = PORTD & 0xFC;
         myrfleds |= fbrfhal_polling();
-        PORTD = myrfleds;
+        // PORTD = myrfleds;
 
 
         /* check if 130ms timer is ready 
@@ -923,6 +925,8 @@ int main(void)
             TIFR1 |= (1U<<OCF1A);
 #ifndef HARDWARETEST
             timerOverflowFunction();
+            UART_PUTHEX(mem_ReadByte( RF_RSSI));
+            UART_NEWLINE();
 #else
     		//sendTestTelegram();
             hardwaretest();
