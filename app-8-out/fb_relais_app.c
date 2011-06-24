@@ -54,15 +54,9 @@
  * DEFINITIONS
  **************************************************************************/
 
-#ifdef BOARD301
-#define PWM_SETPOINT    0x64 //0x64=100 //0x4B=75 besser aber bei erschütterung nicht okay //=51=20% neg 
+#define PWM_SETPOINT    0x55   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  10
-#else
-#define PWM_SETPOINT    0x0154  /* PWM duty cycle 33%, use timer 1 */
-/** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  3 /* 3 * 130ms */
-#endif
+#define PWM_DELAY_TIME  3      /* 3 * 130ms */
 
 /**************************************************************************
  * DECLARATIONS
@@ -120,7 +114,8 @@ void io_test(void);
  **************************************************************************/
 
 /** 
- * Timer1 is used as application timer. It increase the variable currentTime every 130ms and currentTimeOverflow if
+ * Timer1 is used as application timer.
+ * It increase the variable currentTime every 130ms and currentTimeOverflow if
  * currentTime runs over 16-bit.
  * 
  * @return 
@@ -249,10 +244,7 @@ uint8_t restartApplication(void)
 
     /* enable timer to increase user timer used for timer functions etc. */
     RELOAD_APPLICATION_TIMER();
-    /* configure pwm timer */
-    waitToPWM = 0;
-    ENABLE_PWM(PWM_SETPOINT);
-
+    /* pwm timer is already started by switchObjects() */
 
     return 1;
 } /* restartApplication() */
@@ -557,11 +549,7 @@ void switchObjects(void)
 
     /* change PWM to supply relais with full power */
     waitToPWM = PWM_DELAY_TIME;
-    #ifdef BOARD301
-      ENABLE_PWM(0xFFFF); // --> This is 100% negative duty cycle (active low)
-    #else
-      ENABLE_PWM(0x0000); // --> This is 100% negative duty cycle (active low)
-    #endif
+    ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
@@ -742,7 +730,6 @@ int main(void)
         fbprot_msg_handler();
         /* check if 130ms timer is ready
            we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
- //               fbrfhal_polling();
         if(TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
 #ifdef FB_RF

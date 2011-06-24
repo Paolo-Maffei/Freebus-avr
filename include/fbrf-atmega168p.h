@@ -142,57 +142,19 @@
 /** 
 * Enable PWM, PWM pin (OC1A / PB1) is set by hardware.
 * 
-* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
+* @param x Duty-cycle = x/511 (active low)
 * 
 */
 #define ENABLE_PWM(x)               {                                   \
-        TCCR1A |= (1<<COM1A1);                     /* switch PWM pin when TCNT1 matches OCR1A  */ \
-        OCR1A = (x);                               /* duty cycle 33%, active low */ \
+        TCCR1A |= ((1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
+        OCR1A = (2*x);                              /* set duty cycle, active low */ \
      }
 
 /** Disable PWM and set PWM pin to high */
 #define DISABLE_PWM()               {                                   \
           TCCR1A &= ~((1<<COM1A1)|(1<<COM1A0)); /* disable PWM pin  */  \
-          SETPIN_CTRL(ON);                      /* set port to low */   \
+          SETPIN_CTRL(ON);                      /* set port to high */   \
      }
-#if 0
-/** without RF, use timer2 for PWM, instead we use timer1 */
-/** Checkcondition for application timer overrun */
-#define TIMER1_OVERRUN              (TIFR1 & (1U<<OCF1A))
-
-/** Clear overrun bit set for application timer */
-#define CLEAR_TIMER1_OVERRUN        TIFR1 = (1U<<OCF1A)
-
-/** Reload the application timer (Timer1) to start from 0 */
-#define RELOAD_APPLICATION_TIMER()  {                                   \
-          TCCR1A = 0;             /* CTC (Clear Timer on Compate match) */ \
-          TCCR1B = (1U<<WGM12)|(1U<<CS11)|(1U<<CS10); /* CTC-mode, prescale to 64 */ \
-          OCR1A  = 16249;         /* every 130 ms OCR1A=(delay*F_CPU)/(prescaler)-1 */ \
-          TCNT1  = 0;             /* reset timer */                     \
-     }
-
-/** 
-* Enable PWM, PWM pin (PB3) is set by hardware.
-* 
-* New Frequency to get out of the hearable frequency. (At least at the end of it.)
-* freq = F_CPU/(Prescaler*510) = 8000000/(1*510) = 15868 Hz
-*
-* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
-* 
-*/
-#define ENABLE_PWM(x)               {                                   \
-          TCCR2A = (1<<WGM20)|(1<<COM2A1)|(1<<COM2A0);/* Phase correct PWM and enable OC2a pin */ \
-          TCCR2B = (1<<CS20);     /* prescaler 0 */                     \
-          TCNT2  = 0;             /* reset timer2 */                    \
-          OCR2A  = (x);           /* defines the duty cycle */          \
-     }
-
-/** Disable PWM and set PWM pin to high */
-#define DISABLE_PWM()               {                                   \
-          TCCR2A &= ~((1<<COM2A1)|(1<<COM2A0)); /* disable PWM pin  */  \
-          SETPIN_CTRL(ON);                     /* set port to high */   \
-     }
-#endif
 
 /** Enable interrupt for UART0 */
 #define ENABLE_UART_TX_IRQ()        {                            \

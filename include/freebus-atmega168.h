@@ -107,7 +107,7 @@
 /** 
 * Enable PWM, PWM pin (PB3) is set by hardware.
 * 
-* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
+* @param x Duty-cycle = x/255 active low
 * 
 */
 #define ENABLE_PWM(x)               {                                   \
