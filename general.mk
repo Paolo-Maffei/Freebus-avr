@@ -1,6 +1,8 @@
 # determine libraries to link in and CPU frequency, depending on RF
 ifneq (,$(findstring FB_RF,$(CUSTOM_CFLAGS)))
-	CUSTOM_CFLAGS += -DF_CPU=10000000UL
+	ifeq (,$(findstring F_CPU,$(CUSTOM_CFLAGS)))
+		CUSTOM_CFLAGS += -DF_CPU=10000000UL
+	endif
 	ifneq (,$(findstring FB_TP,$(CUSTOM_CFLAGS)))
 		LIBS?=-lfbtprf$(DEBUG) -L..
 	else
@@ -8,7 +10,9 @@ ifneq (,$(findstring FB_RF,$(CUSTOM_CFLAGS)))
 	endif
 else
 	ifneq (,$(findstring FB_TP,$(CUSTOM_CFLAGS)))
-		CUSTOM_CFLAGS += -DF_CPU=8000000UL
+		ifeq (,$(findstring F_CPU,$(CUSTOM_CFLAGS)))
+		    CUSTOM_CFLAGS += -DF_CPU=8000000UL
+		endif
 		ifneq (,$(findstring BOARD301,$(CUSTOM_CFLAGS)))
 			LIBS?=-lavreib$(DEBUG) -L..
 		else

@@ -12,21 +12,20 @@ doc:
 
 hex:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i hex; done
+bin:
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i bin; done
 
 debug-hex:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-hex; done
 
+debug-bin:
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-bin; done
+
 clean:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i clean; done
 
-distclean:
-	@for i in $(DIRECTORIES); do $(MAKE) -C $$i distclean; done
-
 debug-clean:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-clean; done
-
-debug-distclean:
-	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug-distclean; done
 
 stats:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done
@@ -42,8 +41,8 @@ avrlib-debug:
 avrlib-clean:
 	$(MAKE) -C lib clean
 
-.PHONY: avrlib-distclean avrlib-clean
-avrlib-distclean: avrlib-clean
+avrlib-distclean:
+	$(MAKE) -C lib clean
 	$(RM) *.a
 
 avrlib-install:

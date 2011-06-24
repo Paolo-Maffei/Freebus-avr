@@ -86,7 +86,6 @@ PROJECTNAME=fbrf-pir
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
 # (NOT .s !!!) for assembly source code files.
-#PRJSRC=
 
 # additional includes (e.g. -I/path/to/mydir)
 #INC=
@@ -125,4 +124,5 @@ CUSTOM_CFLAGS=-DFB_RF -DUSE_UART
 # Include global config file
 -include ../Make.config
 -include ../general.mk
+PRJSRC+=uart.c
 -include ../build.mk

@@ -1,7 +1,7 @@
 # Name of target controller 
 # (e.g. 'at90s8515', see the available avr-gcc mmcu 
 # options for possible values)
-MCU?=atmega168p
+MCU?=atmega328p
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
@@ -9,7 +9,7 @@ MCU?=atmega168p
 # accept the same MCU name as avr-gcc (for example
 # for ATmega8s, avr-gcc expects 'atmega8' and 
 # avrdude requires 'm8')
-PROGRAMMER_MCU?=m168
+PROGRAMMER_MCU?=m328p
 
 # Source files
 # List C/C++/Assembly source files:
@@ -26,11 +26,12 @@ INC?=-I/usr/local/avr/include -I. -I.. -I../include/
 OPTLEVEL?=s
 
 # define additional flags for the compiler
-CUSTOM_CFLAGS?=-Wall -DFB_TP -DBOARD301
+# you may want to override CLFLAGS (CommandLineFLAGS) on the command line 
+CLFLAGS?=-DFB_TP -DBOARD301
+CUSTOM_CFLAGS?=-Wall $(CLFLAGS)
 
 # Search the files one level up
 VPATH?=..
-
 
 # programmer id--check the avrdude for complete list
 # of available opts.  These should include stk500,
