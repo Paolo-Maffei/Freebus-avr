@@ -77,6 +77,8 @@
 */
 #define _NOP() do { __asm__ __volatile__ ("nop"); } while (0)
 
+#define pBootloader() do { __asm__ __volatile__ ("call 0x03800"); } while (0)
+
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
@@ -92,6 +94,7 @@ HAL_EXT void fb_hal_restart(void);
 HAL_EXT uint8_t fb_hal_txqueue_msg(struct msg* tx);
 HAL_EXT void sendTestTelegram(void);
 HAL_EXT void panic(uint8_t reason);
+HAL_EXT void jumpToBootloader(uint8_t flags);
  
 
 #endif /* _FB_HAL_H */

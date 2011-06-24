@@ -701,8 +701,8 @@ int main(void)
     fbrfhal_init();
 #else
     /* we use RFM22 clock output, so we have to set the frequency */
-    // SpiInit();
-    // rf22_init();
+     SpiInit();
+     rf22_init();
 #endif
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();

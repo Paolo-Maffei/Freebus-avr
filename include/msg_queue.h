@@ -101,7 +101,9 @@ MSG_EXT void msg_queue_init(void);
 MSG_EXT struct msg* AllocMsgI(void);
 MSG_EXT void dequeuemsg(struct msg* *ptr);
 MSG_EXT void queuemsg(struct msg* *ptr, struct msg *pmsg, void (*trigger)(void));
-
+#ifdef BOOTLOADER
+MSG_EXT void freemsg ( struct msg* pmsg );
+#endif
 
 /**************************************************************************
 * IMPLEMENTATION
@@ -115,7 +117,11 @@ MSG_EXT void queuemsg(struct msg* *ptr, struct msg *pmsg, void (*trigger)(void))
 */
 static inline void FreeMsg(struct msg* pmsg)
 {
-	free(pmsg);
+#ifndef BOOTLOADER
+    free(pmsg);
+#else
+    freemsg(pmsg);
+#endif
 }
 
 /** 

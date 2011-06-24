@@ -3,6 +3,7 @@
 *.o
 *.lst
 *.hex
+*.bin
 *.out*
 *.d
 compiler_flags
