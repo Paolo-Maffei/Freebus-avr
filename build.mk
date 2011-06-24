@@ -99,7 +99,9 @@ OBJDEPS=$(CFILES:.c=.o)    \
 	$(ASMFILES:.S=.o)
 
 # Use depedencies
+ifneq ($(MAKECMDGOALS),clean)
 -include $(OBJDEPS:.o=.d)
+endif
 
 # Define all lst files.
 LST=$(filter %.lst, $(OBJDEPS:.o=.lst))
