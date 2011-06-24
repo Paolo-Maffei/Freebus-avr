@@ -213,7 +213,7 @@ Fuses für ATMEGA328P
 ------
 efuse = 0x05
 hfuse = 0xD1
-lfuse = 0xC0 (ext clock from RFM22), 0xCF (crystal oscillator)
+lfuse = 0xC0 (ext clock from RFM22), 0xFF (crystal oscillator)
 
 Fuses für ATMEGA168(P)
 ------

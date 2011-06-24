@@ -79,7 +79,7 @@ PROGRAMMER_MCU=m328p
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
-PROJECTNAME=fb-bootloader
+PROJECTNAME=fb-bootloader_tp
 
 # Source files
 # List C/C++/Assembly source files:

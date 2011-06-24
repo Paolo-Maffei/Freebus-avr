@@ -79,7 +79,7 @@ PROGRAMMER_MCU=m328p
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
-PROJECTNAME=fb-bootloader_rf
+PROJECTNAME=fb-bootloader_board301
 
 # Source files
 # List C/C++/Assembly source files:
@@ -100,7 +100,7 @@ PROJECTNAME=fb-bootloader_rf
 
 # define additional flags for the compiler
 # board with RFM22
-CUSTOM_CFLAGS=-DFB_RF -DEXT_CPU_CLOCK -DF_CPU=10000000 -DBOOTLOADER
+CUSTOM_CFLAGS=-DFB_TP -DBOARD301 -DF_CPU=8000000 -DBOOTLOADER
 # board without RFM22
 #CUSTOM_CFLAGS=-DFB_TP -DF_CPU=8000000 -DBOOTLOADER
 
@@ -116,9 +116,8 @@ STAT_BLSECSIZE = 0x3ff
 
 EMB_FLASHEND = 0x3FFF
 EMB_BOOTLOADER_SECTION_START = 0x7000
-EMB_BOOTLOADER_FLAVOR = 1
 
-# CUSTOM_CFLAGS+=-DBOOTLOADER_FLAVOR=$(EMB_BOOTLOADER_FLAVOR) -DBLSECSTRT=$(STAT_BLSECSIZE)
+CUSTOM_CFLAGS+= -DBLSECSTRT=$(STAT_BLSECSIZE)
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program
@@ -189,9 +188,8 @@ ASMFLAGS =-I. $(INC) -mmcu=$(MCU)        \
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
 	-lm $(LIBS)
 #LDFLAGS += -Wl,--defsym=app_start=$(EMB_BOOTLOADER_SECTION_START)
-LDFLAGS += -Wl,--section-start=.xbootloader=0x6800
 LDFLAGS += -Wl,--section-start=.text=$(EMB_BOOTLOADER_SECTION_START)
-LDFLAGS += -T fb-avr5.x
+
 
 ##### executables ####
 CC=avr-gcc
@@ -309,7 +307,7 @@ $(TRG): $(OBJDEPS)
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
 .out.hex:
-	$(OBJCOPY) -j .text -j .xbootloader \
+	$(OBJCOPY) -j .text -j .xbootloader  \
 		-j .data                       \
 		-O $(HEXFORMAT) $< $@
 
@@ -323,7 +321,7 @@ $(TRG): $(OBJDEPS)
 # bin files from elf
 #####  Generating a gdb initialisation file    #####
 .out.bin:
-	$(OBJCOPY) -j .text  -j .xbootloader \
+	$(OBJCOPY) -j .text -j .xbootloader  \
 		-j .data                       \
 		-O $(BINFORMAT) $< $@
 
