@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__eeprom_8c.html#a53d6293cbd69348099446f41c12943a3" title="Write data to the eeprom cache and trigger background process to write eeprom cache to real eeprom..." alt="" coords="177,59,305,88"/>
-<area shape="rect" id="node5" href="$fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="381,5,509,35"/>
-<area shape="rect" id="node7" href="$fb__prot_8c.html#ac3b30c7591e51974ab895440929395c6" title="Set the received address as our new device address." alt="" coords="356,59,535,88"/>
-<area shape="rect" id="node9" href="$fb__relais__app_8c.html#aac9e4f65925a5a959cb5df9ed091b3b7" title="Switch the objects to state in portValue and save value to eeprom if necessary." alt="" coords="391,112,500,141"/>
-<area shape="rect" id="node11" href="$fb__relais__app_8c.html#a1f6d9eb16dbc08dfcfac5f8ceb8d7f40" title="processOutputs" alt="" coords="591,85,713,115"/>
-<area shape="rect" id="node15" href="$fb__relais__app_8c.html#aabc97de0ba2150af0af7d2ddb8293824" title="Function is called when microcontroller gets power or if the application must be restarted." alt="" coords="585,139,719,168"/>
-<area shape="rect" id="node13" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="769,85,881,115"/>
-</map>

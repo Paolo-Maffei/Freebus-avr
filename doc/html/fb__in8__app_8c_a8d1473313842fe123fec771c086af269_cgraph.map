@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__eeprom_8h.html#a9eb1d517bad2009ea1fcaa3dfb8d87f2" title="Read data from the eeprom cache and return it." alt="" coords="697,5,820,35"/>
-<area shape="rect" id="node5" href="$fb__prot_8h.html#a5374dc4335d063166646c8c268f17e92" title="Send telegram as response to signal current state of the port to other devices." alt="" coords="187,57,299,87"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="457,57,537,87"/>
-<area shape="rect" id="node9" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="420,164,575,193"/>
-<area shape="rect" id="node13" href="$fb__prot_8h.html#a313ffcd6f35f6b76ed97d80765dd9faf" title="Search through group address list and return the matching position of a group address which is an res..." alt="" coords="348,111,647,140"/>
-<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="713,164,804,193"/>
-</map>

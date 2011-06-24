@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__in8__app_8c.html#a8d1473313842fe123fec771c086af269" title="Port Function: Jalousie." alt="" coords="165,5,299,35"/>
-<area shape="rect" id="node5" href="$fb__in8__app_8c.html#a71a91b98ae9a796dac4ab23c7e3ff6d8" title="Port Function: switch." alt="" coords="169,59,295,88"/>
-<area shape="rect" id="node7" href="$fb__relais__app_8c.html#a1f6d9eb16dbc08dfcfac5f8ceb8d7f40" title="processOutputs" alt="" coords="171,112,293,141"/>
-<area shape="rect" id="node9" href="$fb__relais__app_8c.html#a30773cfc4105728c9628fca36c8c7c20" title="Function is called if A_GroupValue_Write is received." alt="" coords="348,112,460,141"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="213,5,293,35"/>
-<area shape="rect" id="node5" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="176,59,331,88"/>
-<area shape="rect" id="node9" href="$fb__eeprom_8h.html#a9eb1d517bad2009ea1fcaa3dfb8d87f2" title="Read data from the eeprom cache and return it." alt="" coords="192,112,315,141"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="379,59,469,88"/>
-</map>

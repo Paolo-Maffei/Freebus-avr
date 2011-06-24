@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb_8h.html" title="Define general values used in bus communication." alt="" coords="5,160,51,189"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html" title="Definitions for the message queue system used for telegrams and communucation like debugging (also rs..." alt="" coords="76,83,185,112"/>
-<area shape="rect" id="node7" href="$fb__hardware_8h.html" title="Hardware specific options which includes the platforms (like ATmega8, ATmega168...)" alt="" coords="75,160,187,189"/>
-</map>

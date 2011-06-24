@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="141,5,219,35"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="135,59,225,88"/>
-<area shape="rect" id="node9" href="$lib_2uart_8c.html#ae932bf3c92fedb84aafd92ee88d6b6c1" title="Start the send progress and write all queued data to rs232 interface." alt="" coords="132,112,228,141"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="279,5,359,35"/>
-</map>

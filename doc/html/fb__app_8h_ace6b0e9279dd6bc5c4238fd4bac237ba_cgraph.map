@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="213,5,293,35"/>
-<area shape="rect" id="node5" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="176,59,331,88"/>
-<area shape="rect" id="node9" href="$fb__eeprom_8h.html#a9eb1d517bad2009ea1fcaa3dfb8d87f2" title="Read data from the eeprom cache and return it." alt="" coords="380,163,503,192"/>
-<area shape="rect" id="node11" href="$fb__ain10v_8c.html#a1e40bd2b97ada2ca31c9dad1fdabe923" title="read_obj_type" alt="" coords="197,163,309,192"/>
-<area shape="rect" id="node14" href="$fb__ain10v_8c.html#af335f935e90e2e0311db66d066cde8c3" title="bringt den Messwert ins Sendeformat 8 Bit oder 16 Bit" alt="" coords="209,216,297,245"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="396,59,487,88"/>
-</map>

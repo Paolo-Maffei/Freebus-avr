@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__eeprom_8h.html#a7b1be2223a2fe16a4791caa396ca5253" title="store the default parameter directly to the eeprom" alt="" coords="141,5,331,35"/>
-<area shape="rect" id="node5" href="$fb__eeprom_8h.html#a4106e144334e369c48eed9dfe23e593c" title="Print the complete eeprom to DEBUG defined." alt="" coords="183,59,289,88"/>
-<area shape="rect" id="node7" href="$fb__eeprom_8h.html#a9eb1d517bad2009ea1fcaa3dfb8d87f2" title="Read data from the eeprom cache and return it." alt="" coords="380,111,503,140"/>
-<area shape="rect" id="node10" href="$fb__prot_8c.html#aaec72f885e36952a75395779cf20d684" title="Read the group addresses from the eeprom and save them in the struct grp_addr." alt="" coords="179,163,293,192"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__hal_8h.html#af70a4606fe5ce0777a371e0c6c3540fb" title="Queue message for sending." alt="" coords="133,5,288,35"/>
-<area shape="rect" id="node7" href="$fb__prot_8c.html#a1ca66f4c62a2c7c7ff2c8ebef64465da" title="Create a new telegram and and return pointer to it." alt="" coords="160,59,261,88"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="336,5,427,35"/>
-<area shape="rect" id="node9" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="341,59,421,88"/>
-</map>

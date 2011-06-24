@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$include_2uart_8h.html#a8eaa1ed3292777a3ed02045bd4b612c3" title="Queue a character and start background sending to rs232." alt="" coords="136,85,219,115"/>
-<area shape="rect" id="node5" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="292,5,369,35"/>
-<area shape="rect" id="node9" href="$lib_2uart_8c.html#a58126d0fedcb396337923dfa97a6a0c0" title="Take the given char and append it to a debug message queue (return 1)." alt="" coords="268,59,393,88"/>
-<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="285,112,376,141"/>
-<area shape="rect" id="node13" href="$lib_2uart_8c.html#ae932bf3c92fedb84aafd92ee88d6b6c1" title="Start the send progress and write all queued data to rs232 interface." alt="" coords="283,165,379,195"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="444,5,524,35"/>
-</map>

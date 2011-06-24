@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__adc_8c.html" title="Test program to use ADC to measure bus voltage The ADC return a 10&#45;bit value. Vin=(ADC * Vref) / 1024..." alt="" coords="5,83,107,112"/>
-<area shape="rect" id="node5" href="$fb__ain10v_8c.html" title="to use the 09609110.vd1 Analog&#45;Sensorschnittstelle 4&#45;fach at the moment only for 0&#45;10V !!..." alt="" coords="131,83,269,112"/>
-<area shape="rect" id="node7" href="$fb__2-dimmer__app_8c.html" title="Dimmer application based on the Gira 1032 2 channel dimmer." alt="" coords="293,83,536,112"/>
-<area shape="rect" id="node9" href="$fb__in8__app_8c.html" title="The application for 8 binary inputs Manufactorer code is 0x04 = Jung &#160;Device type (2118) 0x..." alt="" coords="560,83,717,112"/>
-<area shape="rect" id="node11" href="$fb__relais__app_8c.html" title="The relais application to switch 8 relais Manufactorer code is 0x04 = Jung &#160;Device type (2038..." alt="" coords="741,83,925,112"/>
-<area shape="rect" id="node13" href="$fb__hal_8c.html" title="Freebus Hardware Layer. Implementation of a software&#45; uart + timer handling This file consists of fun..." alt="" coords="949,83,1037,112"/>
-<area shape="rect" id="node15" href="$fb__prot_8c.html" title="Handle all requests which are EIB bases like write current address or group address." alt="" coords="1061,83,1157,112"/>
-</map>

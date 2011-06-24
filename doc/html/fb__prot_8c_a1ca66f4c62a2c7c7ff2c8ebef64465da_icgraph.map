@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__prot_8c.html#a4a0be801ed4f2d9b2cbce548adf56a76" title="Read the values from the ADC converter." alt="" coords="407,5,508,35"/>
-<area shape="rect" id="node5" href="$fb__prot_8c.html#a37d55968595e78e21dc1dba21418acf4" title="Is called if information for the BCU type is requested." alt="" coords="372,59,543,88"/>
-<area shape="rect" id="node7" href="$fb__prot_8c.html#af2931210aae10a2c39698d2f1fb3c98c" title="Read data from eeprom and return send it as telegram back to the requester." alt="" coords="396,165,519,195"/>
-<area shape="rect" id="node9" href="$fb__prot_8c.html#ae42ed05d4ccf0a841bdaa32fe7af4478" title="Returns the address of the device." alt="" coords="149,215,323,244"/>
-<area shape="rect" id="node11" href="$fb__prot_8c.html#a440973c20d3055721521a359aee68536" title="Sicherungslayer." alt="" coords="199,111,273,140"/>
-<area shape="rect" id="node16" href="$fb__prot_8c.html#afae8acdc71d1ebff494c621459c097cf" title="Write recieved data to the eeprom." alt="" coords="396,112,519,141"/>
-</map>

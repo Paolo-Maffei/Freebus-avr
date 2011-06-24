@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$group__pfleury__lcd.html#gafa7e36b95c43d603f510273ad077cbbe" title="Display character at current cursor position." alt="" coords="153,85,231,115"/>
-<area shape="rect" id="node5" href="$lcd-lib_8c.html#ac86567882f677c3ea60730d172d86072" title="Display a character as digit." alt="" coords="288,5,365,35"/>
-<area shape="rect" id="node7" href="$lcd-lib_8c.html#aebffee1fce6172fdae085e26c81f1299" title="Display a char as hex." alt="" coords="291,59,363,88"/>
-<area shape="rect" id="node9" href="$group__pfleury__lcd.html#ga8ffdfcac7638368ff04364c14984266e" title="Display string without auto linefeed." alt="" coords="288,112,365,141"/>
-<area shape="rect" id="node11" href="$group__pfleury__lcd.html#ga9022a24a56a9b15681f62eb6ba77e5de" title="Display string from program memory without auto linefeed." alt="" coords="280,165,373,195"/>
-</map>

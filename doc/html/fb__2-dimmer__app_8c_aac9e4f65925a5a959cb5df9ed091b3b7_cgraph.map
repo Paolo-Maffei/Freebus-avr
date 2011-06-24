@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fb__eeprom_8h.html#a9eb1d517bad2009ea1fcaa3dfb8d87f2" title="Read data from the eeprom cache and return it." alt="" coords="167,5,289,35"/>
-<area shape="rect" id="node5" href="$fb__eeprom_8h.html#a734ed3d1f9147def7f23ae10c7156e92" title="Write data to the eeprom cache and trigger background process to write eeprom cache to real eeprom..." alt="" coords="164,59,292,88"/>
-<area shape="rect" id="node15" href="$fb__relais__app_8c.html#a1b095ee2c2a03aa9b1dc27409959e5a1" title="switch all of the output pins" alt="" coords="181,112,275,141"/>
-<area shape="rect" id="node7" href="$msg__queue_8h.html#aadc5609c7a2263c8cae4ab0d8eae7c4d" title="Allocate a new message." alt="" coords="364,5,441,35"/>
-<area shape="rect" id="node11" href="$msg__queue_8h.html#af35d846267d1aaaf1df04c8bff03047e" title="Add a new message to the message queue." alt="" coords="357,59,448,88"/>
-<area shape="rect" id="node13" href="$fb__eeprom_8c.html#ac92e88b86efd0e0e32beaee667bfc226" title="Start to write the first byte to eeprom." alt="" coords="343,112,463,141"/>
-<area shape="rect" id="node9" href="$msg__queue_8h.html#aa3b6fa424df78c0dbbbaa16a7dd32acb" title="Allocate space for a message and return a pointer to it." alt="" coords="513,5,593,35"/>
-</map>

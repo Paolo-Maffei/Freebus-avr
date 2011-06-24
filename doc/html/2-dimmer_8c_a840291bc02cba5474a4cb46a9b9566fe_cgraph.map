@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$2-dimmer_8c.html#a69ce247d23ca6be7f8de52cf65672c67" title="Public Function: TWIS_ReadAck." alt="" coords="128,5,243,35"/>
-<area shape="rect" id="node5" href="$2-dimmer_8c.html#a52e35c7d668fa2cc29fc2c8c0bd65edc" title="Public Function: TWIS_ReadNack." alt="" coords="125,59,245,88"/>
-<area shape="rect" id="node7" href="$2-dimmer_8c.html#a00acd57e50b1f259871e44010732081c" title="Public Function: TWIS_ResonseRequired." alt="" coords="104,112,267,141"/>
-<area shape="rect" id="node9" href="$2-dimmer_8c.html#a4ccb93c7481cdfb82cd5cf33133149dc" title="Public Function: TWIS_Stop." alt="" coords="141,165,229,195"/>
-<area shape="rect" id="node11" href="$2-dimmer_8c.html#aba398ef6d2b9f80899b2d65ca9a0fe7d" title="USART_Init" alt="" coords="141,219,229,248"/>
-</map>

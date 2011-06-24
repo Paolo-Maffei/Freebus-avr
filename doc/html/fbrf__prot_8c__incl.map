@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$fbrf22_8h_source.html" title="fbrf22.h" alt="" coords="5,160,77,189"/>
-<area shape="rect" id="node5" href="$fbrf__hal_8h_source.html" title="fbrf_hal.h" alt="" coords="221,83,304,112"/>
-<area shape="rect" id="node17" href="$fbrf__prot_8h.html" title="Define the protocol specific definitions Implementation of the communication protocol..." alt="" coords="107,83,197,112"/>
-<area shape="rect" id="node21" href="$bit_8h_source.html" title="bit.h" alt="" coords="328,83,379,112"/>
-<area shape="rect" id="node11" href="$rfmsg__queue_8h_source.html" title="rfmsg_queue.h" alt="" coords="101,160,221,189"/>
-<area shape="rect" id="node13" href="$fbrf__hardware_8h_source.html" title="fbrf_hardware.h" alt="" coords="99,237,224,267"/>
-<area shape="rect" id="node15" href="$fbrf-atmega8_8h_source.html" title="fbrf&#45;atmega8.h" alt="" coords="100,315,223,344"/>
-</map>
