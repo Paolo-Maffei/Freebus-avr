@@ -60,5 +60,12 @@
 #define XBOOT_SECTION
 #endif
 
+#ifdef __GNUC__
+#define __UNUSED__  __attribute__ ((unused))
+#else
+#define __UNUSED__
+#endif
+
+
 #endif /* _FB_H */
 /*********************************** EOF *********************************/
