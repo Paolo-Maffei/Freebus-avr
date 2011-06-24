@@ -901,9 +901,11 @@ int main(void)
 #ifdef FB_RF
     fbrfhal_init();
 #else
+#ifdef EXT_CPU_CLOCK
     /* we use RFM22 clock output, so we have to set the frequency */
-    // SpiInit();
-    // rf22_init();
+    SpiInit();
+    rf22_init();
+#endif
 #endif
 
     /* enable interrupts */

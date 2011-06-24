@@ -121,9 +121,9 @@ PROT_EXT void sendExtTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t o
 PROT_EXT void sendTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t offset);
 PROT_EXT uint8_t findRespondGroupAddressByObjectNumber(uint8_t commObjectNumber, uint8_t offset);
 PROT_EXT uint8_t fb_handlemsg(struct msg *rxmsg);
-PROT_EXT void fbprot_msg_handler ( void );
+PROT_EXT void fbprot_msg_handler ( void )XBOOT_SECTION;
 PROT_EXT void fbprot_forward_msg ( struct msg *rxmsg );
-PROT_EXT void fbprot_Init(const STRUCT_DEFPARAM *pParam);
+PROT_EXT void fbprot_Init(const STRUCT_DEFPARAM *pParam)XBOOT_SECTION;
 
 #endif /* _FB_PROT_H */
 /*********************************** EOF *********************************/

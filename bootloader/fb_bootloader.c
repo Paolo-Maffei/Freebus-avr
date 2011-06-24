@@ -69,6 +69,11 @@ enum spm_state {
 /*************************************************************************
  * FUNCTION PROTOTYPES
  **************************************************************************/
+void jumpToApplication (void)  XBOOT_SECTION;
+void bootloader_init(void) XBOOT_SECTION;
+uint8_t restartApplication(void) XBOOT_SECTION;
+uint8_t runApplication(struct msg *rxmsg) /* XBOOT_SECTION */;
+void jumpToApplication(void) XBOOT_SECTION;
 
 /**************************************************************************
  * IMPLEMENTATION
@@ -133,6 +138,8 @@ uint8_t runApplication(struct msg *rxmsg)
     struct fbus_hdr * old = (struct fbus_hdr *) rxmsg->data;
     uint8_t len  = (old->apci & 0x0f) ;
     addr = (rxmsg->data[8] << 8) + rxmsg->data[9] - 0x1000;
+    /* protect the bootloader */
+    if (( addr + len ) > 0x6800 ) return FB_NACK;
     /* addr and len both must be even */
     if (( addr & 0x0001 ) || ( len & 0x01)) return FB_NACK;
     len /= 2;
@@ -179,23 +186,17 @@ void  spm_handler(void)
     }
     ENABLE_IRQS
 }
-
+    
 /**
- * The start point of the program, init all libraries, start the bus interface,
- * the application and check the status of the program button.
+ * The init code of the vootloader.
+ * extra function because it may be located in NRWW section
  *
  * @return 
  *   
  */
-int main(void)
+void bootloader_init (void )
 {
-    static volatile uint8_t addr0 = 0;
-
-    /* check if we came here through a watchdog reset
-       in tis case jump to application directly, skip bootloader*/
-    if ( MCUSR & (1<<WDRF)) jumpToApplication();
-
-    /* disable wd after restart_app via watchdog */
+/* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
     DDRB=0;
@@ -254,6 +255,23 @@ int main(void)
 
     /* config application hardware */
     (void)restartApplication();
+}
+
+/**
+ * The start point of the program, init all libraries, start the bus interface,
+ * the application and check the status of the program button.
+ *
+ * @return 
+ *   
+ */
+int main(void)
+{
+    static volatile uint8_t addr0 = 0;
+
+    /* check if we came here through a watchdog reset
+       in tis case jump to application directly, skip bootloader*/
+    if ( MCUSR & (1<<WDRF)) jumpToApplication();
+    bootloader_init();
 
     /***************************/
     /* the main loop / polling */
@@ -262,7 +280,8 @@ int main(void)
         /* Auswerten des Programmiertasters */
 //        if(fbhal_checkProgTaster()) {
 //        }
-        fbprot_msg_handler();
+        if ( spmstatus == SPM_NOP )
+            fbprot_msg_handler(); // only if programming not in progress,
         spm_handler();
         // check for timeout, in case jump to application
         if (TIFR1 & (1<<TOV1)){

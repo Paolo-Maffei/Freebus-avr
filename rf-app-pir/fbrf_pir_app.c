@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: fb_relais_app.c 2132 2010-08-05 19:30:16Z do13 $ */
 /*
  *      __________  ________________  __  _______
  *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
@@ -8,7 +8,6 @@
  *                                      
  *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
  *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
- *  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -16,7 +15,7 @@
  */
 /**
  * @file   fb_relais_app.c
- * @author Matthias Fechner, Christian Bode, Dirk Armbrust
+ * @author Matthias Fechner, Christian Bode
  * @date   Sat Jan 05 17:44:47 2008
  * 
  * @brief  The relais application to switch 8 relais
@@ -25,14 +24,13 @@
  *
  * To enable IO test compile with -DIO_TEST
  */
-#ifndef _FB_RELAIS_APP_C
-#define _FB_RELAIS_APP_C
+#ifndef _FB_PIR_APP_C
+#define _FB_PIR_APP_C
 
 
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-#include <avr/wdt.h>
 #include "fb.h"
 #include "fb_hardware.h"
 #include "freebus-debug.h"
@@ -40,12 +38,10 @@
 #include "msg_queue.h"
 //#include "1wire.h"
 #include "fb_hal.h"
-#include "Spi.h"
-#include "rf22.h"
 #include "fb_prot.h"
 #include "fbrf_hal.h"
 #include "fb_app.h"
-#include "fb_relais_app.h"
+#include "fbrf_pir_app.h"
 #ifdef IO_TEST
 #include <util/delay.h>
 #endif
@@ -53,29 +49,53 @@
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
+/* application parameters */
+#define PORTFUNCTION_12     0x01CE  ///< @todo add documentation
+#define PORTFUNCTION_34     0x01CF  ///< @todo add documentation
+#define PORTFUNCTION_56     0x01D0  ///< @todo add documentation
+#define PORTFUNCTION_78     0x01D1  ///< @todo add documentation
+#define DEBOUNCE_FACTOR     0x01D2  ///< @todo add documentation 
+#define POWERONDELAY_FACTOR 0x01D4  ///< @todo add documentation
+/* Funktion Schalten */
+/* #define PORTFUNC_BASEADR    0x01D5  ///< @todo add documentation wofür?? */
+#define PORTFUNC_EDGEFUNC   0x01DA  ///< @todo add documentation
+#define PORTFUNC_OWNFUNC    0x01E2  ///< @todo add documentation
 
-#ifdef BOARD301
-#define PWM_SETPOINT    0x64 //0x64=100 //0x4B=75 besser aber bei erschütterung nicht okay //=51=20% neg 
-/** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  10
-#else
-#define PWM_SETPOINT    0x0154  /* PWM duty cycle 33%, use timer 1 */
-/** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  3 /* 3 * 130ms */
-#endif
+#define DAYLIGHT_THRESHOLD_DAY    0x01F2
+#define DAYLIGHT_THRESHOLD_NIGHT  0x01F4
+
+#define OBJ_SIZE            8       ///< @todo add documentation
+
+/** @todo add documentation */
+typedef enum
+{
+    eFunc_none,                 ///< @todo add documentation
+    eFunc_schalten,             ///< @todo add documentation
+    eFunc_dimmen,               ///< @todo add documentation
+    eFunc_jalousie,             ///< @todo add documentation
+    eFunc_dimmwertgeber,        ///< @todo add documentation
+    eFunc_Lichtszene,           ///< @todo add documentation
+    eFunc_Wertgeber,            ///< @todo add documentation
+    eFunc_Temperaturwertgeber,  ///< @todo add documentation
+    eFunc_Helligkeitswertgeber, ///< @todo add documentation
+    eFunc_Impulszaehler,        ///< @todo add documentation
+    eFunc_Schaltzaehler,        ///< @todo add documentation
+} EFUNC_PORT;
+
 
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
 extern struct grp_addr_s grp_addr;
-static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
-                                             but will be switched delayed depending on the delay */
+static uint8_t portValue;                 /**< state of output port pins */
+static uint8_t pinValue;                  /**< state of input port pins */
 static uint16_t delayValues[8];           /**< save value for delays */
-static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
-
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
-static uint16_t objectStates;
+static volatile uint8_t ctrlTimer;
 static uint8_t blockedStates;
+static uint16_t objectStates;
+static uint16_t inputStates;
+
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
@@ -98,14 +118,18 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
         { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
     };
 
-
 /*************************************************************************
  * FUNCTION PROTOTYPES
  **************************************************************************/
 void timerOverflowFunction(void);
 void switchObjects(void);
 void switchPorts(uint8_t port);
+EFUNC_PORT getPortFunction(uint8_t port);
+uint8_t ReadPorts(void);
+void PortFunc_Switch(uint8_t port, uint8_t newPinValue);
 void processOutputs ( uint8_t commObjectNumber, uint8_t data );
+void PortEdgeFunc ( uint8_t port, uint8_t edgeFunc );
+
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -129,24 +153,29 @@ void io_test(void);
 void timerOverflowFunction(void)
 {
     uint8_t i;
+    uint8_t pinChanged;
+    uint8_t pinNewValue;
 
     /* check if programm is running */
     if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
         return;
- 
-    /* check if we can enable PWM */
-    /* if waitToPWM==1 enable PWM, 0==no change */
-    if(waitToPWM == 1) {
-        DEBUG_PUTS("PWM");
-        DEBUG_NEWLINE();
-        ENABLE_PWM(PWM_SETPOINT);
+
+    /* toggle ctrl pin for LDR       CTRL ----/\/\/\--*- AIN1  */
+                                  /*          LDR     |        */
+    if ( ++ctrlTimer == 10 ){     /*                 ---       */
+        SETPIN_CTRL(0);           /*            100n ---       */
+    }                             /*                  |        */
+    if ( ctrlTimer == 20 ){       /*                 GND       */
+        SETPIN_CTRL(1);
+        ctrlTimer = 0;
+        ENABLE_RX_INT()      /* the app uses the FB_TP RX interrupt for dayligt sensor */
     }
 
-    /* check if we need to lower PWM delay mode */
-    if(waitToPWM > 0)
-        waitToPWM--;
-     
-    /* now check if we have to switch a port */
+
+    /* set flags for new input level */
+    pinNewValue = ReadPorts() & INPUT_MASK;
+    pinChanged = pinValue ^ pinNewValue;
+    
     for(i=0; i<8; i++) {
         uint8_t j = 1<<i;
         // DEBUG_PUTHEX(timerRunning);
@@ -166,7 +195,20 @@ void timerOverflowFunction(void)
 
             switchObjects();
         }
+        /* check inputs for changes */
+        if (j & pinChanged & INPUT_MASK) {
+            switch(getPortFunction(i))
+            {
+                case eFunc_schalten:
+                    /* toDo: Hier Sperrobjekt checken */
+                    PortFunc_Switch(i, pinNewValue);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+    pinValue =  pinNewValue;
 }
 
 /** 
@@ -176,6 +218,17 @@ void timerOverflowFunction(void)
 ISR(TIMER1_COMPB_vect)
 {
     return;
+}
+
+/* daylight sensor capture */
+ISR(TIMER1_CAPT_vect)
+{
+    uint16_t thr;
+    thr = (mem_ReadByte ( DAYLIGHT_THRESHOLD_DAY  +1 )<<8) |mem_ReadByte(DAYLIGHT_THRESHOLD_DAY);
+    if ( TCNT1 < thr ) { SETPIN_IO4 (0) }  //it is day
+    thr = (mem_ReadByte ( DAYLIGHT_THRESHOLD_NIGHT+1 )<<8) |mem_ReadByte(DAYLIGHT_THRESHOLD_NIGHT);
+    if ( TCNT1 > thr ) { SETPIN_IO4 (1) }  // it is night
+    DISABLE_RX_INT() ;                    //ICF1 interrupt disable, enable in timerOverflowFunction
 }
 
 /** 
@@ -189,34 +242,27 @@ uint8_t restartApplication(void)
     uint8_t i,temp;
     uint16_t initialPortValue;
 
-    /* reset global timer values */
-
     /* IO configuration */
     SET_IO_IO1(IO_OUTPUT);
     SET_IO_IO2(IO_OUTPUT);
     SET_IO_IO3(IO_OUTPUT);
     SET_IO_IO4(IO_OUTPUT);
-    SET_IO_IO5(IO_OUTPUT);
-    SET_IO_IO6(IO_OUTPUT);
-    SET_IO_IO7(IO_OUTPUT);
-    SET_IO_IO8(IO_OUTPUT);
-#ifdef BOARD301
-#if (HARDWARETEST != 1)
-    SET_IO_RES1(IO_OUTPUT);
-    SET_IO_RES2(IO_OUTPUT);
-    SET_IO_RES3(IO_OUTPUT);
-    SET_IO_RES4(IO_OUTPUT);
-#else
-    /* Port configuration for hardwaretest */
-    SET_IO_RES1(IO_OUTPUT);
-    SET_IO_RES2(IO_OUTPUT);
-    SET_IO_RES3(IO_OUTPUT);
-    SET_IO_RES4(IO_OUTPUT);
-#endif
-#endif
+
+    SET_IO_IO5(IO_INPUT);
+    SETPIN_IO5(1);  //pullup
+    SET_IO_IO6(IO_INPUT);
+    SETPIN_IO6(1);  //pullup
+    SET_IO_IO7(IO_INPUT);
+    SETPIN_IO7(1);  //pullup
+    SET_IO_IO8(IO_INPUT);
+    //SETPIN_IO8(1);  //pullup
 
     /* CTRL-Port */
     SET_IO_CTRL(IO_OUTPUT);
+
+    /* initial state of input pins / objects */
+    pinValue = 0xF7;
+    inputStates = 0;
 
 #ifdef IO_TEST
 	/* should we do an IO test? */
@@ -224,19 +270,21 @@ uint8_t restartApplication(void)
 #endif
 
     // check if at power loss we have to restore old values (see 0x01F6) and do it here
-    portValue = mem_ReadByte(0x0100);
+    portValue = mem_ReadByte(0x0000);
     initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
     for(i=0; i<=7; i++) {
+        uint8_t j = 1<<i;
+        if (!(j & OUTPUT_MASK )) continue;
         temp = (initialPortValue>>(i*2)) & 0x03;
         // DEBUG_PUTHEX(temp);
         if(temp == 0x01) {
             // open contact
-            portValue &= (uint8_t)(~(1U<<i));
+            portValue &= ~j;
             // DEBUG_PUTHEX(i);
             // DEBUG_PUTS("P");
         } else if(temp == 0x02) {
             // close contact
-            portValue |= (1<<i);
+            portValue |= j;
             // DEBUG_PUTHEX(i);
             // DEBUG_PUTS("L");
 
@@ -248,14 +296,166 @@ uint8_t restartApplication(void)
     switchObjects();
 
     /* enable timer to increase user timer used for timer functions etc. */
-    RELOAD_APPLICATION_TIMER();
-    /* configure pwm timer */
-    waitToPWM = 0;
-    ENABLE_PWM(PWM_SETPOINT);
+    //RELOAD_APPLICATION_TIMER();
+          TCCR1A = 0;             /* CTC (Clear Timer on Compate match) */ \
+          TCCR1B = (1U<<WGM12)|(1U<<CS11)|(1U<<CS10); /* CTC-mode, prescale to 64 */ \
+          OCR1A  = 16249;         /* every 130 ms OCR1A=(delay*F_CPU)/(prescaler)-1 */ \
+          TCNT1  = 0;             /* reset timer */                     \
 
+
+    ENABLE_RX_INT()      /* the app uses the FB_TP RX interrupt for dayligt sensor */
+
+    ACSR |= ((1<<ACIC) | (1<<ACBG)) ;    //analog comparator input capture, bandgap on +input.
 
     return 1;
 } /* restartApplication() */
+
+/**                                                                       
+* Port Function: switch
+*
+* @param port
+* @param newPinValue
+* @param pinChanged
+*/
+void PortFunc_Switch(uint8_t port, uint8_t newPinValue)
+{
+    uint8_t edgeFunc;
+
+    edgeFunc = mem_ReadByte(PORTFUNC_EDGEFUNC + port );
+
+    if ((newPinValue>>port) & 0x01)
+    {
+        /* rising edge */
+
+        PortEdgeFunc ( port, edgeFunc >> 2 );
+        PortEdgeFunc ( port+8, edgeFunc >> 6 );
+    }
+    else
+    {
+        /* falling edge */
+        PortEdgeFunc ( port, edgeFunc );
+        PortEdgeFunc ( port+8, edgeFunc >> 4 );
+    }
+}
+            
+void PortEdgeFunc ( uint8_t port, uint8_t edgeFunc )
+{
+    uint8_t val, ownFunc;
+    uint16_t j = 1<<port;
+    uint16_t *p;
+    p = ( INPUT_MASK & j )? &objectStates : &inputStates;
+    switch ( edgeFunc & 0x03 )
+    {
+        case 0x00:
+            /* do nothing */
+            return;
+        case 0x01:
+            /* object x.n = EIN */
+            val = 1;
+            break;
+        case 0x02:
+            /* object x.n = AUS */
+            val = 0;
+            break;
+        case 0x03:
+            /* object x.n = UM */
+            val = ( *p & j)?0:1;
+          break;
+    }
+    sendTelegram(port, val, 0x00);
+    if (val) *p |=  j;
+        else *p &= ~j;
+
+    if (port > 7) return;
+    ownFunc = mem_ReadByte(PORTFUNC_OWNFUNC + port );
+    if (! ownFunc ) return;
+    processOutputs ( ownFunc-1, val );
+    if ( ownFunc < 9 )
+        sendTelegram(ownFunc-1,(portValue & (1<<(ownFunc-1)))?1:0, 0x0C);
+
+}
+
+
+/**                                                                       
+* Get the function code for the select port
+*
+* @return port function
+*   
+*/
+EFUNC_PORT getPortFunction(uint8_t port)
+{
+    uint8_t portfunction;
+
+    switch(port)
+    {
+        case 0:
+            portfunction = mem_ReadByte(PORTFUNCTION_12);
+            break;
+
+        case 1:
+            portfunction = mem_ReadByte(PORTFUNCTION_12)>>4;
+            break;
+        case 2:
+            portfunction = mem_ReadByte(PORTFUNCTION_34);
+            break;
+
+        case 3:
+            portfunction = mem_ReadByte(PORTFUNCTION_34)>>4;
+            break;
+
+        case 4:
+            portfunction = mem_ReadByte(PORTFUNCTION_56);
+            break;
+
+        case 5:
+            portfunction = mem_ReadByte(PORTFUNCTION_56)>>4;
+            break;
+
+        case 6:
+            portfunction = mem_ReadByte(PORTFUNCTION_78);
+            break;
+
+        case 7:
+            portfunction = mem_ReadByte(PORTFUNCTION_78)>>4;
+            break;
+
+        default:
+            portfunction = 0;
+            break;
+    }
+
+    return (EFUNC_PORT)portfunction & 0x0F;
+}
+
+/**                                                                       
+* Read all inputpins and store values into a byte
+*
+* @return port
+*   
+*/
+uint8_t ReadPorts(void)
+{
+    uint8_t port;
+
+    port  = (uint8_t)GETPIN_IO8();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO7();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO6();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO5();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO4();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO3();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO2();
+    port  = port<<1;
+    port |= (uint8_t)GETPIN_IO1();
+
+    return port;
+}
+
 
 /** 
  * Read status from port and return it.
@@ -292,7 +492,7 @@ uint8_t readApplication(struct msg *rxmsg)
         // now check if received address is equal with the safed group addresses, substract one
         // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
         // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
+        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && ((1<<commObjectNumber) & OUTPUT_MASK)) {
             // found group address
 
             /** @todo check if read value is allowed */
@@ -305,7 +505,7 @@ uint8_t readApplication(struct msg *rxmsg)
             hdr = (struct fbus_hdr *) resp->data;
 
             resp->repeat = 3;
-            resp->len    = 9;
+            resp->len    = 8; // war 9 und damit falsch.
 
             hdr->ctrl    = 0xBC;
             hdr->src[0]  = mem_ReadByte(PA_ADDRESS_HIGH);
@@ -318,11 +518,6 @@ uint8_t readApplication(struct msg *rxmsg)
             hdr->apci    = 0x40 + ((portValue & (1<<commObjectNumber)) ? 1 : 0);
 
             fb_hal_txqueue_msg(resp);
-        } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
-            // additinal function
-            /** @todo write part additional functions */
-            // DEBUG_PUTS("ZF");
-            // DEBUG_NEWLINE();
         }
     }
     return FB_ACK;
@@ -456,7 +651,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
                     if (data == 0) return;
                     if (data == 1)
                         portValue &= ~(1<<commObjectNumber);
-                    if (data == 2)
+                    else if (data == 2)
                         portValue |= (1<<commObjectNumber);
                     switchObjects();
                     return;
@@ -536,11 +731,10 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 
         //** @todo need to check here for respond
         // send response telegram to inform other devices that port was switched
-        sendTelegram(commObjectNumber, data, 0x0C);
+        //sendRespondTelegram(i,(portValue & (1<<i))?1:0, 0x0C);
     }
     switchObjects();
 }
-
 /** 
  * Switch the objects to state in portValue and save value to eeprom if necessary.
  * 
@@ -555,23 +749,17 @@ void switchObjects(void)
     DEBUG_PUTS("Sw");
     DEBUG_NEWLINE();
 
-    /* change PWM to supply relais with full power */
-    waitToPWM = PWM_DELAY_TIME;
-    #ifdef BOARD301
-      ENABLE_PWM(0xFFFF); // --> This is 100% negative duty cycle (active low)
-    #else
-      ENABLE_PWM(0x0000); // --> This is 100% negative duty cycle (active low)
-    #endif
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
-    savedValue = mem_ReadByte(0x0100);
+    savedValue = mem_ReadByte(0x0000);
     if(savedValue != portValue) {
         // now check if last status must be saved, we write to eeprom only if necessary
         initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
         for(i=0; i<=7; i++) {
+            if (!((1<<i) & OUTPUT_MASK )) continue;
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
-                mem_WriteBlock(0x0100, 1, &portValue);
+                mem_WriteBlock(0x0000, 1, &portValue);
                 DEBUG_PUTS("Sv");
                 break;
             }
@@ -601,22 +789,11 @@ void switchPorts(uint8_t port)
 
     SETPIN_IO3((uint8_t)(port & 0x01));
     port = port>>1;
-
+    
+    /* IO4 is driven by LDR
     SETPIN_IO4((uint8_t)(port & 0x01));
     port = port>>1;
-
-    SETPIN_IO5((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO6((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO7((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO8((uint8_t)(port & 0x01));
-
-    return;
+    */
 }
 
 #ifdef IO_TEST
@@ -678,10 +855,7 @@ void io_test()
  */
 int main(void)
 {
-    uint16_t t1cnt;
-#ifdef FB_RF
-    uint8_t pollcnt;
-#endif
+    uint8_t myrfleds;
     /* disable wd after restart_app via watchdog */
     DISABLE_WATCHDOG()
 
@@ -698,20 +872,14 @@ int main(void)
        
     /* init procerssor register */
     fbhal_Init();
-#ifdef FB_RF
-    fbrfhal_init();
-#else
-#ifdef EXT_CPU_CLOCK
-    /* we use RFM22 clock output, so we have to set the frequency */
-    SpiInit();
-    rf22_init();
-#endif
-#endif
+
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
     /* init eeprom modul and RAM structure */ 
     eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+    /* we need values from nodeParam for fbrfhal_init() */
+    fbrfhal_init();
 
     /* init protocol layer */
     /* load default values */
@@ -725,6 +893,7 @@ int main(void)
 #endif
     /* activate watchdog */
     ENABLE_WATCHDOG ( WDTO_250MS );
+    DDRD |= 0x03;  // PD0, PD1 are outputs
 
     /***************************/
     /* the main loop / polling */
@@ -739,28 +908,25 @@ int main(void)
 #endif
 		}
         fbprot_msg_handler();
-        /* check if 130ms timer is ready
+        myrfleds = PORTD & 0xFC;
+        myrfleds |= fbrfhal_polling();
+        PORTD = myrfleds;
+
+
+        /* check if 130ms timer is ready 
            we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
- //               fbrfhal_polling();
-        if(TIMER1_OVERRUN) {
-            CLEAR_TIMER1_OVERRUN;
-#ifdef FB_RF
-            if ( (pollcnt--) == 0){
-                fbrfhal_polling();
-                pollcnt = 100;          // 10msec pollrate
-            }
-#endif
-#ifndef BOARD301
-            if ( t1cnt-- ) continue;
-            t1cnt = F_CPU/7692;  //10MHz : 1300 * 100µsec = 130msec
-#endif
+        /* we cannot use the macros from fbrf-atmega168(p).h */
+//        if(TIMER1_OVERRUN){
+        if (TIFR1 & (1U<<OCF1A)) {
+        
+//            CLEAR_TIMER1_OVERRUN;
+            TIFR1 |= (1U<<OCF1A);
 #ifndef HARDWARETEST
             timerOverflowFunction();
 #else
-    	    //sendTestTelegram();
+    		//sendTestTelegram();
             hardwaretest();
 #endif
-
         }
 
         // go to sleep mode here

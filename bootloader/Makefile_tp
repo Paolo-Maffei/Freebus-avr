@@ -116,9 +116,8 @@ STAT_BLSECSIZE = 0x3ff
 
 EMB_FLASHEND = 0x3FFF
 EMB_BOOTLOADER_SECTION_START = 0x7000
-EMB_BOOTLOADER_FLAVOR = 1
 
-CUSTOM_CFLAGS+=-DBOOTLOADER_FLAVOR=$(EMB_BOOTLOADER_FLAVOR) -DBLSECSTRT=$(STAT_BLSECSIZE)
+CUSTOM_CFLAGS+= -DBLSECSTRT=$(STAT_BLSECSIZE)
 
 #####      AVR Dude 'writeflash' options       #####
 #####  If you are using the avrdude program
@@ -308,7 +307,7 @@ $(TRG): $(OBJDEPS)
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
 .out.hex:
-	$(OBJCOPY) -j .text                    \
+	$(OBJCOPY) -j .text -j .xbootloader  \
 		-j .data                       \
 		-O $(HEXFORMAT) $< $@
 
@@ -322,7 +321,7 @@ $(TRG): $(OBJDEPS)
 # bin files from elf
 #####  Generating a gdb initialisation file    #####
 .out.bin:
-	$(OBJCOPY) -j .text                    \
+	$(OBJCOPY) -j .text -j .xbootloader  \
 		-j .data                       \
 		-O $(BINFORMAT) $< $@
 

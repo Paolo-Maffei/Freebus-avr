@@ -75,20 +75,25 @@
 
 /* if you don't have RX / TX led, then don't define the following */
 /* we can't use IO6 and IO7 for LEDs !! */
-/*
-#define  RX_LED_PORT   PORTD
-#define  RX_LED_DDR    DDRD
-#define  RX_LED_PIN    PORTD6
-#define  TX_LED_PORT   PORTD
-#define  TX_LED_DDR    DDRD
-#define  TX_LED_PIN    PORTD7
-*/
+
+#define  RX_LED_PORT   rfleds
+/* #define  RX_LED_DDR    DDRD */
+#define  RX_LED_PIN    0
+#define  TX_LED_PORT   rfleds
+/* #define  TX_LED_DDR    DDRD */
+#define  TX_LED_PIN    1
+
+/**************************************************************************
+* DECLARATIONS
+**************************************************************************/
+RFHAL_EXT uint8_t rfleds;      /**< state of RF RX/TX LEDs */
+
 /*************************************************************************
 * FUNCTION PROTOTYPES
 **************************************************************************/
 RFHAL_EXT uint8_t fbrf_hal_txqueue_msg(struct msg* rftx);
 RFHAL_EXT uint8_t fbrfrx_init( void (*pf)(struct msg* rfrxmsg_pointer));
-RFHAL_EXT void fbrfhal_init(void);
-RFHAL_EXT void fbrfhal_polling(void);
+RFHAL_EXT void    fbrfhal_init(void) XBOOT_SECTION;
+RFHAL_EXT uint8_t fbrfhal_polling(void);
 
 #endif

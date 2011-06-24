@@ -1,5 +1,7 @@
 Der freebus bootloader.
 =======================
+9. 2. 2011  Dirk Armbrust (tuxbow)
+
 nur für AVR ATMEGA328P. Denn der bootloader ist fast 4k byte.
 
 Beim ATMEGA328 müssen die fuses gesetzt werden so dass
@@ -102,6 +104,21 @@ Den bootloader gibt's erstmal nur für upload über TP. Upload über RF will ich ab
 noch machen. Es gibt erstmal ein Problem mit dem Umfang des codes, z.Zt. sind es
 6k byte, und die bootsektion des mega328p hat nur 4k.
 
+Nachtrag 16. 2. 2011
+--------------------
+Ich habe jetzt auch einen RF-Bootloader.
+Er wird "normal" über das TP-RF gateway angesprochen.
+Er ist allerdings 6kByte groß, belegt flash ab (byte)addr. 0x6800.
+Einsprungadresse ist aber nach wie vor 0x7000, damit der bootloader auch bei
+reset angesprungen wird. Erreicht habe ich das durch eine extra section
+.xbootloader, und einem eigenen linker script fb-avr5.x .
+0x6800 liegt im NRWW Bereich des flash. Dort sind Teile des codes,
+die während des flash-write nicht ausgeführt werden.
+Der Bootloader schützt sich selbst, ab Adresse 0x6800 kann nicht mehr programmiert werden.
+
+Es gibt unter software/avr/bootloader 2 Makefiles:
+Makefile_tp und Makefile_rf.
+Vorerst muss man noch ein make clean machen, wenn man zwischen den Beiden wechselt.
 
 ---------- als Arbeitshilfe diente mir das Protokoll eines mread ----------
 dirk@dirk:~$ mread ip:slux 0.0.12 104 8

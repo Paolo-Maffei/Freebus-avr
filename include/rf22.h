@@ -175,6 +175,8 @@ rf22_cmd ( addr, 0)
 **************************************************************************/
 RF22_EXT void     rf22_init    (void);
 RF22_EXT uint8_t  rf22_cmd     (uint8_t  addr, uint8_t val);
+RF22_EXT void     rf22_cmd_P   (prog_uint8_t* pgmp);
 RF22_EXT uint8_t  rf22_setxtal (uint8_t newval);
+RF22_EXT uint8_t  rf22_getxtal (void);
 
 #endif /* _RF22_H_ */

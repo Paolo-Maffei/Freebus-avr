@@ -54,5 +54,11 @@
 #define TRUE  (0==0)         /**< macro which will always return true   */
 #endif
 
+#ifdef BOOTLOADER
+#define XBOOT_SECTION __attribute__((section(".xbootloader")))
+#else
+#define XBOOT_SECTION
+#endif
+
 #endif /* _FB_H */
 /*********************************** EOF *********************************/
