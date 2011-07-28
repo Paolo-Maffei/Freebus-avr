@@ -18,7 +18,7 @@
 * BODLEVEL=Brown-out detection at VCC=2.7V\n
 * SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14\n
 *
-* EXTENDED=0x05\n
+* EXTENDED=0xFD\n
 * HIGH=0xD9 (eeprom not preseved through chip erase), or 0xD1 (eeprom preserved)\n
 * HIGH=0xC9 or 0xC1 (as above, but watchdog enabled)
 * LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)\n
