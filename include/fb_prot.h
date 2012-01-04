@@ -67,8 +67,8 @@
 
 #define BASE_ADDRESS_OFFSET           0x0100  /**< Offset in BCU1 EEPROM                               */
 /** @todo delete define */
-#define MANUFACTORER_ADR_LOW          0x0104  ///< Low address for manufactorer id
-#define MANUFACTORER_ADR              0x0104  /**< Low address for manufactorer id                     */
+#define MANUFACTORER_ADR_HIGH         0x0103  ///< High address for manufactorer id                    */
+#define MANUFACTORER_ADR_LOW          0x0104  /**< Low address for manufactorer id                     */
 #define DEVICE_NUMBER_HIGH            0x0105  /**< High address for device id                          */
 #define DEVICE_NUMBER_LOW             0x0106  /**< Low address for device id                           */
 #define SOFTWARE_VERSION_NUMBER       0x0107  /**< Version number of the application                   */
@@ -91,11 +91,102 @@
 #define RF_PHYSICALADRESS_MASK        RF_NODEPARAMS+8
 #endif
 
+/** group address rewrite **/
+
+//-----------------------------------------------------------------------------------------------------------
+// Ramflags
+//-----------------------------------------------------------------------------------------------------------
+#define UPDATE                      0x01
+
+#if 0
+/* BCUx values. Not used yet */
+#define IDLEERROR                   0x01
+#define TRANSMITTING                0x02
+#define TRANSMIT_REQUEST            0x03
+#define DATA_REQUEST                0x04
+#define UPDATE                      0x08
+#define SET_FLG                     0x80
+#define CLR_FLG                     0x00
+#endif
+
+//-----------------------------------------------------------------------------------------------------------
+// ConfigByte
+//-----------------------------------------------------------------------------------------------------------
+#define TX_SYSTEM                   0x00
+#define TX_URGENT                   0x01
+#define TX_NORMAL                   0x02
+#define TX_LOW                      0x03
+#define COMM_ENABLE                 0x04
+#define READ_ENABLE                 0x08
+#define WRITE_ENABLE                0x10
+#define MEMORY_SEGMENT              0x20
+#define TRANSMIT_ENABLE             0x40
+#define UPDATE_ON_RESPONSE          0x80
+
+//-----------------------------------------------------------------------------------------------------------
+// Typebyte
+//-----------------------------------------------------------------------------------------------------------
+#define UINT1                       0x00                    // 1 bit
+#define UINT2                       0x01                    // 2 bit
+#define UINT3                       0x02                    // 3 bit
+#define UINT4                       0x03                    // 4 bit
+#define UINT5                       0x04                    // 5 bit
+#define UINT6                       0x05                    // 6 bit
+
+#define UINT7                       0x06                    // 7 bit
+#define UINT8                       0x07                    // 8 bit
+
+#define UINT16                      0x08                    // 16 bit
+#define TIME_DATE                   0x09                    // 3byte
+#define FLOAT                       0x0A                    // 4byte
+#define DATA6                       0x0B                    // 6byte
+#define DOUBLE                      0x0C                    // 8byte
+#define DATA10                      0x0D                    // 10byte
+#define MAXDATA                     0x0E                    // 14byte
+#define VARDATA                     0x0F                    // 1-14 bytes (???)
+
+struct FBAppInfo
+{
+    const uint8_t           FBApiVersion;
+    const STRUCT_DEFPARAM   *pParam;
+
+/* Not used yet */
+    void (*AppMain)         (void);
+    void (*AppSave)         (void);
+    void (*AppUnload)       (void);
+    uint8_t (*AppReadObject)     (uint8_t objectNr, void* dest, uint8_t len);
+    uint8_t (*AppWriteObject)    (uint8_t objectNr, void* src, uint8_t len);
+    void *ramflags;
+    void *comobjtable;
+    void *assoctable;
+    void *grpaddr;
+}; 
+
+struct assoc_table_s {
+	uint8_t count;
+	struct {
+		uint8_t ganr;
+		uint8_t objnr;
+	} entry[];
+};
+
+struct comm_stab_s {
+    uint8_t count;
+    uint8_t ramptr;
+    struct {
+	uint8_t ptr;
+	uint8_t flags;
+	uint8_t type;
+    } object[];
+};
 
 /** Structure for the group addresses */
 struct grp_addr_s {
-          uint8_t   count;                    /**< Number of group addresses stored on controller */
-          uint16_t ga[FB_MAX_GROUP_ADDR];     /**< The group address (2x8 Bit) */
+	uint8_t   count;                    /**< Number of group addresses stored on controller */
+	union addr_u {
+		uint16_t gai;
+		uint8_t gab[2];
+	} addr[];
 };
 
 /** Structure of the EIB header for each telegram */
@@ -107,23 +198,24 @@ struct fbus_hdr {
         uint8_t tpci;      /**< combination of tpci (t) and apci (a), tttt ttaa */
         uint8_t apci;      /**< application layer protocol control information, here every function has its own number */
 //  uint8_t cmd[2];        /**< command */
-};  
-
-/**************************************************************************
-* DECLARATIONS
-**************************************************************************/
-PROT_EXT uint16_t pa;      /**< the physical adress of the controller */
+};
 
 /*************************************************************************
 * FUNCTION PROTOTYPES
 **************************************************************************/
+PROT_EXT uint8_t TestAndCopyObject (uint8_t objectNr, void* dst, uint8_t len);
+PROT_EXT void SetAndTransmitObject(uint8_t objectNr, void* src, uint8_t len);
+PROT_EXT uint8_t TestObject(uint8_t objectNr);
+PROT_EXT void TransmitObject(uint8_t objectNr);
+PROT_EXT uint8_t ReadObject(uint8_t objectNr);
+PROT_EXT void SetRAMFlags(uint8_t objectNr, uint8_t flags);
+
 PROT_EXT void sendExtTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t offset);
 PROT_EXT void sendTelegram(uint8_t commObjectNumber, uint8_t value, uint8_t offset);
 PROT_EXT uint8_t findRespondGroupAddressByObjectNumber(uint8_t commObjectNumber, uint8_t offset);
 PROT_EXT uint8_t fb_handlemsg(struct msg *rxmsg);
 PROT_EXT void fbprot_msg_handler ( void )XBOOT_SECTION;
 PROT_EXT void fbprot_forward_msg ( struct msg *rxmsg );
-PROT_EXT void fbprot_Init(const STRUCT_DEFPARAM *pParam)XBOOT_SECTION;
-
+PROT_EXT void fbprot_Init(const struct FBAppInfo *pAppinfo)XBOOT_SECTION;
 #endif /* _FB_PROT_H */
 /*********************************** EOF *********************************/

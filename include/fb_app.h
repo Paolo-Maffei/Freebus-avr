@@ -50,8 +50,6 @@
 * FUNCTION PROTOTYPES
 **************************************************************************/
 FBAPP_EXT uint8_t restartApplication(void);
-FBAPP_EXT uint8_t readApplication(struct msg *rxmsg);
-FBAPP_EXT uint8_t runApplication(struct msg *rxmsg);
 
 
 #endif /* _FB_APP_H */

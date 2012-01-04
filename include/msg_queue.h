@@ -100,7 +100,9 @@ struct msg {
 MSG_EXT void msg_queue_init(void);
 MSG_EXT struct msg* AllocMsgI(void);
 MSG_EXT void dequeuemsg(struct msg* *ptr);
+MSG_EXT struct msg* getdequeuemsg(struct msg* *ptr);
 MSG_EXT void queuemsg(struct msg* *ptr, struct msg *pmsg, void (*trigger)(void));
+
 #ifdef BOOTLOADER
 MSG_EXT void freemsg ( struct msg* pmsg );
 #endif
@@ -123,6 +125,19 @@ static inline void FreeMsg(struct msg* pmsg)
     freemsg(pmsg);
 #endif
 }
+
+/** 
+* Save way to get a msg from the queue. Disables IRQs during access.
+* 
+* @return msg
+* 
+*/
+static inline struct msg* getfromqueue(struct msg* queue) { 
+    DISABLE_IRQS
+    struct msg *msg = queue;
+    ENABLE_IRQS
+    return msg;
+};
 
 /** 
 * Allocate a new message. Disables IRQs to prevent interrupt while allocating message here.
