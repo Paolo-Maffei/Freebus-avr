@@ -43,6 +43,7 @@
 #include "Spi.h"
 #include "rf22.h"
 #include "fb_prot.h"
+#include "timer.h"
 #include "fbrf_hal.h"
 #include "fb_app.h"
 #include "fb_relais_app.h"
@@ -54,10 +55,51 @@
  * DEFINITIONS
  **************************************************************************/
 
+/* State used for new lib api */
+#define NEXT_STATE(x) app_state = x
+#define GET_STATE() app_state
+
 /** PWM duty cycle. 0 = 0%, 255 = 100% */
 #define PWM_SETPOINT    0x55   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME  3      /* 3 * 130ms */
+
+/* Objects for the 8-out */
+enum EIGHT_OUT_Objects_e {
+    OBJ_OUT1 = 0,
+    OBJ_OUT2,
+    OBJ_OUT3,
+    OBJ_OUT4,
+    OBJ_OUT5,
+    OBJ_OUT6,
+    OBJ_OUT7,
+    OBJ_OUT8
+};
+
+/* Objekte:
+Nr. Objectname        Funktion     Typ             Flags
+0   Ausgang 1         Schalten     EIS 1 1 Bit     K   S
+1   Ausgang 2         Schalten     EIS 1 1 Bit     K   S
+2   Ausgang 3         Schalten     EIS 1 1 Bit     K   S
+3   Ausgang 4         Schalten     EIS 1 1 Bit     K   S
+4   Ausgang 5         Schalten     EIS 1 1 Bit     K   S
+5   Ausgang 6         Schalten     EIS 1 1 Bit     K   S
+6   Ausgang 7         Schalten     EIS 1 1 Bit     K   S
+7   Ausgang 8         Schalten     EIS 1 1 Bit     K   S
+
+Flag  Name            Bedeutung
+K     Kummunikation   Objekt ist kommunikationsfähig
+L     Lesen           Objektstatus kann abgefragt werden (ETS / Display usw.)
+S     Schreiben       Objekt kann empfangen
+Ü     Übertragen      Objekt kann senden
+
+*/
+ 
+enum states_e {
+    IDLE = 0,
+    WAIT_OFF_TIMER,
+    WAIT_RETRIGGER,
+};
 
 /**************************************************************************
  * DECLARATIONS
@@ -69,12 +111,13 @@ static uint16_t delayValues[8];           /**< save value for delays */
 static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
+extern uint8_t userram[USERRAM_SIZE];
+
 static uint16_t objectStates;             /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
 static uint8_t blockedStates;             /**< 1 bit per object to mark it "blocked" */
 
 /** list of the default parameter for this application */
-const STRUCT_DEFPARAM defaultParam[] PROGMEM =
-    {
+const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
         { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
         { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
         { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
@@ -86,13 +129,26 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
         { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
         { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
 
-        { MANUFACTORER_ADR,        0x04 },    /**< Herstellercode 0x04 = Jung                   */
+    { MANUFACTORER_ADR_HIGH,   0x00 },    /**< Herstellercode 0x0004 = Jung                 */
+    { MANUFACTORER_ADR_LOW,    0x04 },    /**< Herstellercode 0x0004 = Jung                 */
         { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
         { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
 
         { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
     };
 
+const struct FBAppInfo AppInfo PROGMEM = {
+    .FBApiVersion = 0x01,
+    .pParam = defaultParam,
+};
+
+static enum states_e app_state;
+
+struct {
+    timer_t timer_on;
+    uint8_t oldpinstate;
+    uint8_t inpstate;
+} app_dat;
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
@@ -113,6 +169,32 @@ void io_test(void);
 /**************************************************************************
  * IMPLEMENTATION
  **************************************************************************/
+
+/** 
+ * Function os called periodically of the application is enabled in the system_state
+ * 
+ */
+void app_loop() {
+    if(TestObject(OBJ_OUT1)) {
+        DEBUG_PUTS("OBJ_1 ");
+        
+        DEBUG_PUTHEX(ReadObject(OBJ_OUT1));
+        DEBUG_SPACE();
+
+        // reset flag
+        SetRAMFlags(OBJ_OUT1, 0);
+
+        if(userram[0] == 0x1)
+            DEBUG_PUTS(" ON ");
+        else
+            DEBUG_PUTS(" OFF ");
+        for(uint8_t i=0;i<USERRAM_SIZE;i++) {
+            DEBUG_PUTHEX(userram[i]);
+            DEBUG_SPACE();
+        }
+        DEBUG_NEWLINE();
+    }
+}
 
 /** 
  * called at overflow of application timer, should occur every 130ms.
@@ -158,7 +240,7 @@ void timerOverflowFunction(void)
             // DEBUG_PUTHEX(portValue);
 
             /* send response telegram to inform other devices that port was switched */
-            //sendTelegram(i,(portValue & j)?1:0, 0x0C); //CommentKrasserMann
+            //sendTelegram(i,(portValue & j)?1:0, 0x0C);
 
             switchObjects();
         }
@@ -247,6 +329,10 @@ uint8_t restartApplication(void)
     RELOAD_APPLICATION_TIMER();
     /* pwm timer is already started by switchObjects() */
 
+    app_dat.oldpinstate = 1;
+    /* Reset State */
+    NEXT_STATE(IDLE);
+
     return 1;
 } /* restartApplication() */
 
@@ -259,6 +345,7 @@ uint8_t restartApplication(void)
  * 
  * @return  The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
  */
+/*
 uint8_t readApplication(struct msg *rxmsg)
 {
     struct fbus_hdr *hdr =( struct fbus_hdr *) rxmsg->data;
@@ -290,7 +377,7 @@ uint8_t readApplication(struct msg *rxmsg)
         if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
             // found group address
 
-            /** @todo check if read value is allowed */
+            /// @todo check if read value is allowed
             struct msg * resp = AllocMsgI();
             if(!resp)
                 return FB_NACK;
@@ -313,13 +400,14 @@ uint8_t readApplication(struct msg *rxmsg)
             fb_hal_txqueue_msg(resp);
         } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
             // additinal function
-            /** @todo write part additional functions */
+            /// @todo write part additional functions
             // DEBUG_PUTS("ZF");
             // DEBUG_NEWLINE();
         }
     }
     return FB_ACK;
-}   /* readApplication() */
+}   // readApplication()
+*/
 
 /** 
  * Function is called if A_GroupValue_Write is received.
@@ -330,6 +418,7 @@ uint8_t readApplication(struct msg *rxmsg)
  * 
  * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
  */
+ /*
 uint8_t runApplication(struct msg *rxmsg)
 {
     struct fbus_hdr * hdr= (struct fbus_hdr *) rxmsg->data;
@@ -343,7 +432,7 @@ uint8_t runApplication(struct msg *rxmsg)
     //uint8_t userRamPointer = mem_ReadByte(0x0100+commStabPtr+1);  // points to user ram
 
     // handle here only data with 1-bit length, maybe we have to add here more code to handle longer data
-    /** @todo handle data with more then 1 bit */
+    /// @todo handle data with more then 1 bit
     uint8_t data = (hdr->apci) & 1;
      
     for(i=0; i<countAssociations; i++) {
@@ -366,8 +455,8 @@ uint8_t runApplication(struct msg *rxmsg)
                  // SETPIN_IO3(1)
 
     return FB_ACK;
-}   /* runApplication() */
-
+}   // runApplication()
+ */
 /** 
  *
  * @param commObjectNumber the adressed object
@@ -547,7 +636,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 
         //** @todo need to check here for respond
         // send response telegram to inform other devices that port was switched
-        //sendTelegram(commObjectNumber, data, 0x0C);  //Comment: KrasserMann
+        //sendTelegram(commObjectNumber, data, 0x0C);
     }
     switchObjects();
 }
@@ -704,7 +793,7 @@ int main(void)
 {
 //    uint16_t t1cnt;
     /* disable wd after restart_app via watchdog */
-    DISABLE_WATCHDOG()
+    DISABLE_WATCHDOG();
 
         /* ROM-Check */
         /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
@@ -725,21 +814,28 @@ int main(void)
     fbhal_Init();
 	/** FBRFHAL_INIT() is defined in fbrf_hal.h .
 	   you may leave it out if you don't use rf */
-    FBRFHAL_INIT();
+    //FBRFHAL_INIT();
+
+    /* init generic timer */
+    timer_init();
 
 	/* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
     /* init protocol layer */
     /* load default values */
-    fbprot_Init(defaultParam);
+    fbprot_Init(&AppInfo);
 
     /* config application hardware */
     (void)restartApplication();
 
+    /* Reset state */
+    NEXT_STATE(IDLE);
+
 #ifdef HARDWARETEST
     sendTestTelegram();
 #endif
+
     /* activate watchdog */
     ENABLE_WATCHDOG ( WDTO_250MS );
 
@@ -747,34 +843,39 @@ int main(void)
     /* the main loop / polling */
     /***************************/
     while(1) {
+		fbprot_msg_handler();
+
         /* calm the watchdog */
         wdt_reset();
+
         /* Auswerten des Programmiertasters */
         if(fbhal_checkProgTaster()) {
 #ifdef SENDTESTTEL
 			sendTestTelegram();
 #endif
 		}
-        fbprot_msg_handler();
-        /* check if 130ms timer is ready
-           we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
-        if(TIMER1_OVERRUN) {
-            CLEAR_TIMER1_OVERRUN;
-			/** FBRFHAL_POLLING() is defined in fbrf_hal.h .
-			   you may leave it out if you don't use rf */
-			FBRFHAL_POLLING();
-			/** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. */
-#ifndef BOARD301
-			if ( ! APP_TIMER_OVERRUN() ) continue;
-#endif
-#ifndef HARDWARETEST
-            timerOverflowFunction();
-#else
-    	    //sendTestTelegram();
-            hardwaretest();
-#endif
 
-        }
+        app_loop();
+
+/*         /\* check if 130ms timer is ready */
+/*            we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. *\/ */
+/*         if(TIMER1_OVERRUN) { */
+/*             CLEAR_TIMER1_OVERRUN; */
+/* 			/\** FBRFHAL_POLLING() is defined in fbrf_hal.h . */
+/* 			   you may leave it out if you don't use rf *\/ */
+/* 			FBRFHAL_POLLING(); */
+/* 			/\** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. *\/ */
+/* #ifndef BOARD301 */
+/* 			if ( ! APP_TIMER_OVERRUN() ) continue; */
+/* #endif */
+/* #ifndef HARDWARETEST */
+/*             timerOverflowFunction(); */
+/* #else */
+/*     	    //sendTestTelegram(); */
+/*             hardwaretest(); */
+/* #endif */
+
+        /* } */
 
         // go to sleep mode here
         // wakeup via interrupt check then the programming button and application timer for an overrun
