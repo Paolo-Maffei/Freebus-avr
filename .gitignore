@@ -21,3 +21,5 @@ app-8-out/default/freebus-avr-8-out
 *.d
 compiler_flags
 linker_flags
+*.aps
+*.aws
