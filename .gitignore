@@ -23,3 +23,6 @@ compiler_flags
 linker_flags
 *.aps
 *.aws
+/app-pir/Release/Makefile
+/app-pir/Release/freebus-avr-pir
+/app-pir/Release/freebus-avr-pir.eep
