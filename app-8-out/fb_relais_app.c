@@ -175,6 +175,9 @@ void io_test(void);
  * 
  */
 void app_loop() {
+    uint8_t i;
+    uint8_t value;
+
     if(TestObject(OBJ_OUT1)) {
         DEBUG_PUTS("OBJ_1 ");
         
@@ -188,10 +191,13 @@ void app_loop() {
             DEBUG_PUTS(" ON ");
         else
             DEBUG_PUTS(" OFF ");
-        for(uint8_t i=0;i<USERRAM_SIZE;i++) {
+        for(i=0;i<USERRAM_SIZE;i++) {
             DEBUG_PUTHEX(userram[i]);
             DEBUG_SPACE();
         }
+
+        TestAndCopyObject(OBJ_OUT1, (void *)&value, 1);
+        DEBUG_PUTHEX(value);
         DEBUG_NEWLINE();
     }
 }
