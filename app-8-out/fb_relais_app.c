@@ -7,7 +7,6 @@
  *  /_/   /_/ |_/_____/_____/_____/\____//____/  
  *                                      
  *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
- *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
  *  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -16,7 +15,7 @@
  */
 /**
  * @file   fb_relais_app.c
- * @author Matthias Fechner, Christian Bode, Dirk Armbrust
+ * @author Matthias Fechner, Dirk Armbrust
  * @date   Sat Jan 05 17:44:47 2008
  * 
  * @brief  The relais application to switch 8 relais
@@ -24,6 +23,8 @@
  * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
  *
  * To enable IO test compile with -DIO_TEST
+ *
+ * This version is designed to be used with the new API.
  */
 #ifndef _FB_RELAIS_APP_C
 #define _FB_RELAIS_APP_C
@@ -59,11 +60,6 @@
 #define NEXT_STATE(x) app_state = x
 #define GET_STATE() app_state
 
-/** PWM duty cycle. 0 = 0%, 255 = 100% */
-#define PWM_SETPOINT    0x55   /* 33% duty cycle */
-/** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  3      /* 3 * 130ms */
-
 /* Objects for the 8-out */
 enum EIGHT_OUT_Objects_e {
     OBJ_OUT0 = 0,
@@ -73,7 +69,13 @@ enum EIGHT_OUT_Objects_e {
     OBJ_OUT4,
     OBJ_OUT5,
     OBJ_OUT6,
-    OBJ_OUT7
+    OBJ_OUT7,
+    OBJ_OUT8, // start of special objects user to lock or combine objects
+    OBJ_OUT9,
+    OBJ_OUT10,
+    OBJ_OUT11,
+    OBJ_OUT12,
+    OBJ_OUT13,
 };
 
 /* Objekte:
@@ -104,6 +106,10 @@ enum states_e {
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
+static const uint8_t delay_values[] PROGMEM = { M2TICS(130), M2TICS(260), M2TICS(520), SEC2TICS(1), M2TICS(2100), M2TICS(4200), M2TICS(8400),
+                                               SEC2TICS(17), SEC2TICS(34) //, and more
+};
+
 extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
@@ -118,23 +124,23 @@ static uint8_t blockedStates;             /**< 1 bit per object to mark it "bloc
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
-        { SOFTWARE_VERSION_NUMBER, 0x01 },    /**< version number                               */
-        { APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
-        { COMMSTAB_ADDRESS,        0x9A },    /**< COMMSTAB Pointer                             */
-        { APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
+    { SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
+    { APPLICATION_RUN_STATUS,       0xFF },    /**< Run-Status (00=stop FF=run)                  */
+    { COMMSTAB_ADDRESS,             0x9A },    /**< COMMSTAB Pointer                             */
+    { APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
 
-        { 0x0000,                  0x00 },    /**< default is off                               */
-        { 0x01EA,                  0x00 },    /**< no timer active                              */
-        { 0x01F6,                  0x55 },    /**< don't save status at power loss (number 1-4) */
-        { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
-        { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
+    { 0x0000,                       0x00 },    /**< default is off                               */
+    { APP_DELAY_ACTIVE,             0x00 },    /**< no timer active                              */
+    { APP_CLOSER_MODE,              0x00 },    /**< closer mode for all relais                   */
+    { APP_RESTORE_AFTER_PL_LOW,     0x55 },    /**< don't save status at power loss (number 1-4) */
+    { APP_RESTORE_AFTER_PL_HIGH,    0x55 },    /**< don't save status at power loss (number 5-8) */
 
     { MANUFACTORER_ADR_HIGH,   0x00 },    /**< Herstellercode 0x0004 = Jung                 */
     { MANUFACTORER_ADR_LOW,    0x04 },    /**< Herstellercode 0x0004 = Jung                 */
-        { DEVICE_NUMBER_HIGH,      0x20 },    /**< device type (2038.10) 2060h                   */
-        { DEVICE_NUMBER_LOW,       0x60 },    /**<                                              */
+    { DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2038.10) 2060h                  */
+    { DEVICE_NUMBER_LOW,            0x60 },    /**<                                              */
 
-        { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
+    { 0xFF,                         0xFF }     /**< END-sign; do not change                      */
     };
 
 const struct FBAppInfo AppInfo PROGMEM = {
@@ -178,31 +184,43 @@ void app_loop() {
     uint8_t i;
     uint8_t value;
 
-    if(TestObject(OBJ_OUT0)) {
-        DEBUG_PUTS("OBJ_0 ");
+    // Iterate over all objects and check if the status has changed
+    for(i=OBJ_OUT0; i<=OBJ_OUT13; i++) {
+        if(TestObject(i)) {
+            DEBUG_PUTS("OBJ_");
+            DEBUG_PUTHEX(i);
+            DEBUG_SPACE();
         
         // reset flag
-        SetRAMFlags(OBJ_OUT0, 0);
+            SetRAMFlags(i, 0);
 
-        if(userram[5] == 0x01)
-            DEBUG_PUTS("ON ");
-        else
-            DEBUG_PUTS("OFF ");
-        DEBUG_NEWLINE();
+            // check if we have a delayed action for this object, only Outputs
+            if(i<= OBJ_OUT7 && (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<i))) {
+                // Check for delay factor for on
+                if(mem_ReadByte(APP_DELAY_FACTOR_ON+i)) {
+                    DEBUG_PUTS("DELAY_ON ");
+                }
+                // Check for delay factor for off
+                if(mem_ReadByte(APP_DELAY_FACTOR_OFF+1)) {
+                    DEBUG_PUTS("DELAY_OFF ");
+                }
 
-        for(i=0;i<USERRAM_SIZE;i++) {
-            DEBUG_PUTHEX(userram[i]);
+                // Get delay base
+                uint8_t delayBase=mem_ReadByte(APP_DELAY_BASE+i);
+                delayBase = i%2 ? delayBase&0x0F : (delayBase & 0xF0)>>4;
+                DEBUG_PUTHEX(delayBase);
             DEBUG_SPACE();
         }
+
+            if(userram[i + 4] == 0x01)
+                DEBUG_PUTS("ON ");
+            else
+                DEBUG_PUTS("OFF ");
         DEBUG_NEWLINE();
 
-        TestAndCopyObject(OBJ_OUT0, (void *)&value, 1);
-        DEBUG_PUTHEX(value);
-        DEBUG_NEWLINE();
-
-        DEBUG_PUTS("END");
-        DEBUG_NEWLINE();
     }
+}
+
 }
 
 /** 

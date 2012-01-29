@@ -47,6 +47,26 @@
 * DECLARATIONS
 **************************************************************************/
 
+/** PWM duty cycle. 0 = 0%, 255 = 100% */
+#define PWM_SETPOINT    0x55   /* 33% duty cycle */
+/** How long we hold the relais at 100% before we enable PWM again */
+#define PWM_DELAY_TIME  3      /* 3 * 130ms */
+
+#define APP_SPECIAL_FUNC_OBJ_1_2     0x01D8
+#define APP_SPECIAL_FUNC_OBJ_3_4     0x01D9
+#define APP_DELAY_FACTOR_ON          0x01DA
+#define APP_DELAY_FACTOR_OFF         0x01E2
+#define APP_DELAY_ACTIVE             0x01EA
+#define APP_DELAY_ACTION             0x01EB
+
+#define APP_SPECIAL_FUNC_MODE        0x01ED
+
+#define APP_CLOSER_MODE              0x01F2
+#define APP_REPORT_BACK_INVERT       0x01F3
+#define APP_RESTORE_AFTER_PL_LOW     0x01F6
+#define APP_RESTORE_AFTER_PL_HIGH    0x01F7
+#define APP_DELAY_BASE               0x01F9
+
 
 /*************************************************************************
 * FUNCTION PROTOTYPES
