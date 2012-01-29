@@ -66,14 +66,14 @@
 
 /* Objects for the 8-out */
 enum EIGHT_OUT_Objects_e {
-    OBJ_OUT1 = 0,
+    OBJ_OUT0 = 0,
+    OBJ_OUT1,
     OBJ_OUT2,
     OBJ_OUT3,
     OBJ_OUT4,
     OBJ_OUT5,
     OBJ_OUT6,
-    OBJ_OUT7,
-    OBJ_OUT8
+    OBJ_OUT7
 };
 
 /* Objekte:
@@ -178,26 +178,29 @@ void app_loop() {
     uint8_t i;
     uint8_t value;
 
-    if(TestObject(OBJ_OUT1)) {
-        DEBUG_PUTS("OBJ_1 ");
+    if(TestObject(OBJ_OUT0)) {
+        DEBUG_PUTS("OBJ_0 ");
         
-        DEBUG_PUTHEX(ReadObject(OBJ_OUT1));
-        DEBUG_SPACE();
-
         // reset flag
-        SetRAMFlags(OBJ_OUT1, 0);
+        SetRAMFlags(OBJ_OUT0, 0);
 
-        if(userram[0] == 0x1)
-            DEBUG_PUTS(" ON ");
+        if(userram[5] == 0x01)
+            DEBUG_PUTS("ON ");
         else
-            DEBUG_PUTS(" OFF ");
+            DEBUG_PUTS("OFF ");
+        DEBUG_NEWLINE();
+
         for(i=0;i<USERRAM_SIZE;i++) {
             DEBUG_PUTHEX(userram[i]);
             DEBUG_SPACE();
         }
+        DEBUG_NEWLINE();
 
-        TestAndCopyObject(OBJ_OUT1, (void *)&value, 1);
+        TestAndCopyObject(OBJ_OUT0, (void *)&value, 1);
         DEBUG_PUTHEX(value);
+        DEBUG_NEWLINE();
+
+        DEBUG_PUTS("END");
         DEBUG_NEWLINE();
     }
 }
