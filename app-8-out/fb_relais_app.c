@@ -99,15 +99,15 @@ S     Schreiben       Objekt kann empfangen
  
 enum states_e {
     IDLE = 0,
+    WAIT_ON_TIMER,
     WAIT_OFF_TIMER,
-    WAIT_RETRIGGER,
 };
 
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
-static const uint8_t delay_values[] PROGMEM = { M2TICS(130), M2TICS(260), M2TICS(520), SEC2TICS(1), M2TICS(2100), M2TICS(4200), M2TICS(8400),
-                                               SEC2TICS(17), SEC2TICS(34) //, and more
+static const uint8_t delay_bases[] PROGMEM = { 2^0*M2TICS(130), 2^1*M2TICS(130), 2^2*M2TICS(130), 2^3*M2TICS(130), 2^4*M2TICS(130), 2^5*M2TICS(130), 2^6*M2TICS(130), 2^7*M2TICS(130),
+                                               2^8*M2TICS(130), 2^9*M2TICS(130), 2^10*M2TICS(130), 2^11*M2TICS(130), 2^12*M2TICS(130), 2^13*M2TICS(130), 2^14*M2TICS(130), 2^15*M2TICS(130)
 };
 
 extern struct grp_addr_s grp_addr;
@@ -198,10 +198,12 @@ void app_loop() {
             if(i<= OBJ_OUT7 && (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<i))) {
                 // Check for delay factor for on
                 if(mem_ReadByte(APP_DELAY_FACTOR_ON+i)) {
+                    NEXT_STATE(WAIT_ON_TIMER);
                     DEBUG_PUTS("DELAY_ON ");
                 }
                 // Check for delay factor for off
                 if(mem_ReadByte(APP_DELAY_FACTOR_OFF+1)) {
+                    NEXT_STATE(WAIT_OFF_TIMER);
                     DEBUG_PUTS("DELAY_OFF ");
                 }
 
@@ -221,6 +223,13 @@ void app_loop() {
     }
 }
 
+    if(GET_STATE() == WAIT_OFF_TIMER) {
+        // action for off timer
+    }
+
+    if(GET_STATE() == WAIT_ON_TIMER) {
+        // action for on timer
+    }
 }
 
 /** 
