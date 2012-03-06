@@ -70,7 +70,7 @@ enum EIGHT_OUT_Objects_e {
     OBJ_OUT5,
     OBJ_OUT6,
     OBJ_OUT7,
-    OBJ_OUT8, // start of special objects user to lock or combine objects
+    OBJ_OUT8, // start of special objects used to lock or combine objects
     OBJ_OUT9,
     OBJ_OUT10,
     OBJ_OUT11,
