@@ -158,7 +158,7 @@ void timerOverflowFunction(void)
             // DEBUG_PUTHEX(portValue);
 
             /* send response telegram to inform other devices that port was switched */
-            sendTelegram(i,(portValue & j)?1:0, 0x0C);
+            //sendTelegram(i,(portValue & j)?1:0, 0x0C); //CommentKrasserMann
 
             switchObjects();
         }
@@ -547,10 +547,11 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 
         //** @todo need to check here for respond
         // send response telegram to inform other devices that port was switched
-        sendTelegram(commObjectNumber, data, 0x0C);
+        //sendTelegram(commObjectNumber, data, 0x0C);  //Comment: KrasserMann
     }
     switchObjects();
 }
+
 
 /** 
  * Switch the objects to state in portValue and save value to eeprom if necessary.
@@ -562,6 +563,8 @@ void switchObjects(void)
     uint8_t portOperationMode;  /**< defines if IO is closer or opener, see address 0x01F2 in eeprom */
     uint8_t savedValue;
     uint8_t i;
+	uint8_t pattern;
+
 
     DEBUG_PUTS("Sw");
     DEBUG_NEWLINE();
@@ -574,6 +577,20 @@ void switchObjects(void)
     /* read saved status and check if it was changed */
     savedValue = mem_ReadByte(0x0100);
     if(savedValue != portValue) {
+
+
+		// Rückmeldungen Senden ( @todo pruefen ob ein rückmeldeobjekt besteht)
+		for (i=0;i<8;i++) {
+			pattern=1<<i;
+			if((portValue&pattern)!=(savedValue&pattern)) {
+				sendTelegram(i, (portValue & pattern) ? 1 : 0, 0x0C);
+			}
+			
+		}
+
+
+
+
         // now check if last status must be saved, we write to eeprom only if necessary
         initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
         for(i=0; i<=7; i++) {
