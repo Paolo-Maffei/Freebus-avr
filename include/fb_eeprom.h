@@ -54,8 +54,8 @@
 #define APPLICATION_MEM_BASE_ADR      0x0000    /**< application memory startaddress */
 #define APPLICATION_MEM_SIZE          0x0017    /**< Size of application memory      */
 #define SYSTEMSTATE                   0x0060    /**< System Status                   */
-#define USERRAM_BASE_ADR              0x00CE    /**< User RAM startaddress           */
-#define USERRAM_SIZE                  0x0012    /**< Size of user RAM                */
+#define USERRAM_BASE_ADR              0x0050    /**< User RAM startaddress           */
+#define USERRAM_SIZE                  0x0100-0x50   /**< Size of user RAM                */
 
 /** Size of data structur           */
 #define EEPROM_SIZE                   NODEPARAM_SIZE + APPLICATION_MEM_SIZE + USERRAM_SIZE
