@@ -43,7 +43,9 @@
 #ifndef _FREEBUS_DEBUG_H
 #define _FREEBUS_DEBUG_H
 
+#ifdef __AVR__
 #include <avr/pgmspace.h>
+#endif
 
 #ifdef DEBUG_LCD
 #include "lcd-lib.h"

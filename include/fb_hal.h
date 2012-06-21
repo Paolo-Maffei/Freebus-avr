@@ -37,8 +37,10 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
+#ifdef __AVR__
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#endif
 #include "msg_queue.h"
 
 
@@ -70,6 +72,7 @@
 #define PANIC_EEPROM		0x03    /**< Error in eeprom */
 #define PANIC_NO_MSG		0x04    /**< No more space for messages is left in allocated message queue */
 
+#ifndef __EIBD__
 /**
 * define _NOP which calls assembler routine nop.
 * Can be used to wait some time and/or to prevent compiler from removing code in optimization
@@ -78,7 +81,10 @@
 #define _NOP() do { __asm__ __volatile__ ("nop"); } while (0)
 
 #define pBootloader() do { __asm__ __volatile__ ("jmp 0x7000"); } while (0)
-
+#else
+#define _NOP() do { } while (0)
+#define pBootloader() do { } while (0)
+#endif
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/

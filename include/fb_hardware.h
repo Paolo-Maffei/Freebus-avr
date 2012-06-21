@@ -29,6 +29,10 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
+#ifdef __AVR__
+#define pgm_read_ptr(x)         pgm_read_word(x)
+#endif
+
 #ifdef BOARD301  /* first freebus AVR board rev. 3.01 */
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
@@ -45,6 +49,8 @@
     #include "fbrf-atmega168.h"
 #elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
     #include "fbrf-atmega168p.h"
+#elif defined(__EIBD__) 
+    #include "fb-eibd.h"
 #else
     #error CPU not supported
 #endif
