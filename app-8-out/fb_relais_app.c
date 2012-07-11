@@ -18,8 +18,8 @@
  * @author Matthias Fechner, Dirk Armbrust
  * @date   Sat Jan 05 17:44:47 2008
  * 
- * @brief  The relais application to switch 8 relais
- * Manufactorer code is 0x04 = Jung\n
+ * @brief  The relays application to switch 8 relays
+ * Manufacturer code is 0x04 = Jung\n
  * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
  *
  * To enable IO test compile with -DIO_TEST
@@ -99,6 +99,7 @@ S     Schreiben       Objekt kann empfangen
  
 enum states_e {
     IDLE = 0,
+	SWITCH,
     WAIT_ON_TIMER,
     WAIT_OFF_TIMER,
 };
@@ -153,7 +154,8 @@ static enum states_e app_state;
 struct {
     timer_t timer_on;
     uint8_t oldpinstate;
-    uint8_t inpstate;
+    uint8_t newpinstate;
+	uint16_t delayValues[8];
 } app_dat;
 
 /*************************************************************************
@@ -181,23 +183,24 @@ void io_test(void);
  * 
  */
 void app_loop() {
-    uint8_t i;
+    uint8_t commObjectNumber;
     uint8_t value;
 
     // Iterate over all objects and check if the status has changed
-    for(i=OBJ_OUT0; i<=OBJ_OUT13; i++) {
-        if(TestObject(i)) {
+    for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT13; commObjectNumber++) {
+		// check if an object has changed its status
+        if(TestObject(commObjectNumber)) {
             DEBUG_PUTS("OBJ_");
-            DEBUG_PUTHEX(i);
+            DEBUG_PUTHEX(commObjectNumber);
             DEBUG_SPACE();
         
-        // reset flag
-            SetRAMFlags(i, 0);
+            // reset object status flag
+            SetRAMFlags(commObjectNumber, 0);
 
             // check if we have a delayed action for this object, only Outputs
-            if(i<= OBJ_OUT7 && (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<i))) {
+            if(commObjectNumber<= OBJ_OUT7 && (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber))) {
                 // Check for delay factor for on
-                if(mem_ReadByte(APP_DELAY_FACTOR_ON+i)) {
+                if(mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber)) {
                     NEXT_STATE(WAIT_ON_TIMER);
                     DEBUG_PUTS("DELAY_ON ");
                 }
@@ -205,31 +208,42 @@ void app_loop() {
                 if(mem_ReadByte(APP_DELAY_FACTOR_OFF+1)) {
                     NEXT_STATE(WAIT_OFF_TIMER);
                     DEBUG_PUTS("DELAY_OFF ");
+					
                 }
 
                 // Get delay base
-                uint8_t delayBase=mem_ReadByte(APP_DELAY_BASE+i);
-                delayBase = i%2 ? delayBase&0x0F : (delayBase & 0xF0)>>4;
+                uint8_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
+                delayBase = commObjectNumber%2 ? delayBase&0x0F : (delayBase & 0xF0)>>4;
                 DEBUG_PUTHEX(delayBase);
             DEBUG_SPACE();
         }
 
-            if(userram[i + 4] == 0x01)
+            if(userram[commObjectNumber + 4] == 0x01) {
                 DEBUG_PUTS("ON ");
-            else
+				app_dat.newpinstate |= 1<<commObjectNumber;
+            } else {
                 DEBUG_PUTS("OFF ");
+				app_dat.newpinstate &= ~(1<<commObjectNumber);
+			}				
         DEBUG_NEWLINE();
-
+            NEXT_STATE(SWITCH);
     }
 }
 
     if(GET_STATE() == WAIT_OFF_TIMER) {
         // action for off timer
+		//DEBUG_PUTS("WAIT_OFF ");
     }
 
     if(GET_STATE() == WAIT_ON_TIMER) {
         // action for on timer
+		//DEBUG_PUTS("WAIT_ON ");
     }
+	
+	if(GET_STATE() == SWITCH) {
+		switchObjects();
+		NEXT_STATE(IDLE);
+}
 }
 
 /** 
@@ -701,7 +715,7 @@ void switchObjects(void)
 
     /* read saved status and check if it was changed */
     savedValue = mem_ReadByte(0x0100);
-    if(savedValue != portValue) {
+    if(savedValue != app_dat.newpinstate) {
 
 
 		// Rückmeldungen Senden ( @todo pruefen ob ein rückmeldeobjekt besteht)
@@ -717,10 +731,10 @@ void switchObjects(void)
 
 
         // now check if last status must be saved, we write to eeprom only if necessary
-        initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
+        initialPortValue = ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_HIGH) << 8) | ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_LOW));
         for(i=0; i<=7; i++) {
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
-                mem_WriteBlock(0x0100, 1, &portValue);
+                mem_WriteBlock(0x0100, 1, &app_dat.newpinstate);
                 DEBUG_PUTS("Sv");
                 break;
             }
@@ -729,7 +743,9 @@ void switchObjects(void)
      
     /* check 0x01F2 for opener or closer and modify data to relect that, then switch the port */
     portOperationMode = mem_ReadByte(0x01F2);
-    switchPorts(portValue^portOperationMode);
+    switchPorts(app_dat.newpinstate^portOperationMode);
+	// Mark all pins as set in configuration
+	app_dat.oldpinstate=app_dat.newpinstate;
 
     return;
 }
@@ -742,6 +758,10 @@ void switchObjects(void)
  */
 void switchPorts(uint8_t port)
 {
+    DEBUG_PUTS("SWITCH ");
+	DEBUG_PUTHEX(port);
+	DEBUG_NEWLINE();
+	
     SETPIN_IO1((uint8_t)(port & 0x01));
     port = port>>1;
 

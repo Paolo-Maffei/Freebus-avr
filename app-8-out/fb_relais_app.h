@@ -56,7 +56,7 @@
 #define APP_SPECIAL_FUNC_OBJ_3_4     0x01D9
 #define APP_DELAY_FACTOR_ON          0x01DA
 #define APP_DELAY_FACTOR_OFF         0x01E2
-#define APP_DELAY_ACTIVE             0x01EA
+#define APP_DELAY_ACTIVE             0x01EA //< 0x00=no timer active, 0x01=timer on object 1 active, 0x03=timer on object 1+2 active
 #define APP_DELAY_ACTION             0x01EB
 
 #define APP_SPECIAL_FUNC_MODE        0x01ED
