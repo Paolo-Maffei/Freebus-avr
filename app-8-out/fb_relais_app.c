@@ -259,7 +259,7 @@ void app_loop() {
             } else {
                 DEBUG_PUTS("OFF ");
                     app_dat.portValue &= ~(1<<commObjectNumber);
-			}				
+                }
             }
             switchObjects();
         }
@@ -276,11 +276,11 @@ void app_loop() {
                     dealloc_timer(&app_dat.timer[commObjectNumber]);
 					app_dat.portValue ^= j;
 					switchObjects();
-    }
+                }
 			}
 		}
 		if(app_dat.runningTimer == 0x0) {
-		NEXT_STATE(IDLE);
+            NEXT_STATE(IDLE);
 		}			
 }
 }
