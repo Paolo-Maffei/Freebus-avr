@@ -190,6 +190,7 @@ void app_loop() {
     for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT13; commObjectNumber++) {
 		// check if an object has changed its status
         if(TestObject(commObjectNumber)) {
+            DEBUG_NEWLINE();
             DEBUG_PUTS("OBJ_");
             DEBUG_PUTHEX(commObjectNumber);
             DEBUG_SPACE();
@@ -706,7 +707,7 @@ void switchObjects(void)
 
 
     DEBUG_PUTS("Sw");
-    DEBUG_NEWLINE();
+    DEBUG_SPACE();
 
     /* change PWM to supply relais with full power */
     waitToPWM = PWM_DELAY_TIME;
@@ -760,7 +761,7 @@ void switchPorts(uint8_t port)
 {
     DEBUG_PUTS("SWITCH ");
 	DEBUG_PUTHEX(port);
-	DEBUG_NEWLINE();
+	DEBUG_SPACE();
 	
     SETPIN_IO1((uint8_t)(port & 0x01));
     port = port>>1;
@@ -858,9 +859,9 @@ int main(void)
         msg_queue_init();
     
 	DEBUG_INIT();
-    DEBUG_NEWLINE_BLOCKING();
-    DEBUG_PUTS_BLOCKING("V0.1");
-    DEBUG_NEWLINE_BLOCKING();
+    DEBUG_NEWLINE();
+    DEBUG_PUTS("V0.1");
+    DEBUG_NEWLINE();
 
     /* init eeprom modul and RAM structure already here,
        because we need eeprom values for fbrfhal_init() */
