@@ -7,6 +7,7 @@
 *  /_/   /_/ |_/_____/_____/_____/\____//____/
 *
 *  Copyright (c) 2010 Dirk Opfer <dirk@do13.de>
+*  Copyright (c) 2012 Matthias Fechner <idefix@fechner.net>
 *
 *  This program is free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License version 2 as
@@ -14,7 +15,7 @@
 */
 /**
 * @file   timer.h
-* @author Dirk Opfer
+* @author Dirk Opfer, Matthias Fechner
 * @date
 *
 * @brief  Generic timerfunctions
@@ -57,7 +58,7 @@ typedef uint32_t timer_t;
 
 TIMER_EXT timer_t get_ticks(void);
 TIMER_EXT void timer_init(void);
-TIMER_EXT void alloc_timer(timer_t *t, int ticks);
+TIMER_EXT void alloc_timer(timer_t *t, timer_t ticks);
 TIMER_EXT uint8_t check_timeout(timer_t *t);
 
 #endif
