@@ -893,7 +893,7 @@ int main(void)
 #endif
 
     /* activate watchdog */
-    ENABLE_WATCHDOG ( WDTO_250MS );
+    //ENABLE_WATCHDOG ( WDTO_250MS );
 
     /***************************/
     /* the main loop / polling */
@@ -902,7 +902,7 @@ int main(void)
 		fbprot_msg_handler();
 
         /* calm the watchdog */
-        wdt_reset();
+        //wdt_reset();
 
         /* Auswerten des Programmiertasters */
         if(fbhal_checkProgTaster()) {
