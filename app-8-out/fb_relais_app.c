@@ -99,17 +99,16 @@ S     Schreiben       Objekt kann empfangen
  
 enum states_e {
     IDLE = 0,
-	SWITCH,
-    WAIT_ON_TIMER,
-    WAIT_OFF_TIMER,
+	INIT_TIMER,
+    TIMER_ACTIVE,
 };
 
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
-static const uint8_t delay_bases[] PROGMEM = { 2^0*M2TICS(130), 2^1*M2TICS(130), 2^2*M2TICS(130), 2^3*M2TICS(130), 2^4*M2TICS(130), 2^5*M2TICS(130), 2^6*M2TICS(130), 2^7*M2TICS(130),
-                                               2^8*M2TICS(130), 2^9*M2TICS(130), 2^10*M2TICS(130), 2^11*M2TICS(130), 2^12*M2TICS(130), 2^13*M2TICS(130), 2^14*M2TICS(130), 2^15*M2TICS(130)
-};
+static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M2TICS(130), 8*M2TICS(130), 16*M2TICS(130), 32*M2TICS(130), 64*M2TICS(130),
+                                                128*M2TICS(130), 256*M2TICS(130), 512*M2TICS(130), 1024*M2TICS(130), 2048*M2TICS(130), 4096*M2TICS(130), 8192*M2TICS(130),
+                                                16384*M2TICS(130), 32768*M2TICS(130)};
 
 extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
@@ -152,10 +151,9 @@ const struct FBAppInfo AppInfo PROGMEM = {
 static enum states_e app_state;
 
 struct {
-    timer_t timer_on;
-    uint8_t oldpinstate;
-    uint8_t newpinstate;
-	uint16_t delayValues[8];
+    uint8_t portValue;
+    timer_t timer[8];
+	uint8_t runningTimer;
 } app_dat;
 
 /*************************************************************************
@@ -197,53 +195,93 @@ void app_loop() {
         
             // reset object status flag
             SetRAMFlags(commObjectNumber, 0);
+			value = userram[commObjectNumber + 4];
 
             // check if we have a delayed action for this object, only Outputs
-            if(commObjectNumber<= OBJ_OUT7 && (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber))) {
-                // Check for delay factor for on
-                if(mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber)) {
-                    NEXT_STATE(WAIT_ON_TIMER);
-                    DEBUG_PUTS("DELAY_ON ");
-                }
-                // Check for delay factor for off
-                if(mem_ReadByte(APP_DELAY_FACTOR_OFF+1)) {
-                    NEXT_STATE(WAIT_OFF_TIMER);
-                    DEBUG_PUTS("DELAY_OFF ");
-					
-                }
-
+            if(commObjectNumber<= OBJ_OUT7) {
                 // Get delay base
-                uint8_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
-                delayBase = commObjectNumber%2 ? delayBase&0x0F : (delayBase & 0xF0)>>4;
+                timer_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
+				if((commObjectNumber & 0x01) == 0x01) {
+				    delayBase&=0x0F;
+			    } else {
+				    delayBase = (delayBase & 0xF0)>>4;
+                }
                 DEBUG_PUTHEX(delayBase);
-            DEBUG_SPACE();
-        }
+                DEBUG_SPACE();
+                delayBase = pgm_read_byte(&delay_bases[delayBase]);
+                DEBUG_PUTHEX(delayBase);
+                DEBUG_SPACE();
 
-            if(userram[commObjectNumber + 4] == 0x01) {
+                // Check for delay factor for off
+                if(app_dat.portValue & (1<<commObjectNumber) && mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber) && !(mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber)) && value == 0) {
+					DEBUG_PUTS("TIMER_OFF ");
+					if(app_dat.runningTimer & 1<<commObjectNumber)
+                        dealloc_timer(&app_dat.timer[commObjectNumber]);
+                    alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
+					app_dat.runningTimer |= 1<<commObjectNumber;
+					//NEXT_STATE(TIMER_ACTIVE);
+                }
+                // Check for delay factor for on
+                if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber) && value == 1) {
+					DEBUG_PUTS("TIMER_ON ");
+					if(app_dat.runningTimer & 1<<commObjectNumber)
+    					dealloc_timer(&app_dat.timer[commObjectNumber]);
+					alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber));
+					app_dat.runningTimer |= 1<<commObjectNumber;
+					//NEXT_STATE(TIMER_ACTIVE);
+                }
+				// Check if we have a timer function
+				DEBUG_PUTS("CHECK ");
+				DEBUG_PUTHEX(app_dat.portValue);
+				DEBUG_SPACE();
+                DEBUG_PUTHEX(delayBase);
+				DEBUG_SPACE();
+				DEBUG_PUTHEX(mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
+				DEBUG_SPACE();
+				DEBUG_PUTHEX(value);
+				DEBUG_SPACE();
+				if (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber) && mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber) && (value == 1)) {
+					DEBUG_PUTS("TIMER ");
+					app_dat.portValue |= (1<<commObjectNumber);
+					if(app_dat.runningTimer & 1<<commObjectNumber)
+    					dealloc_timer(&app_dat.timer[commObjectNumber]);
+					alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
+					app_dat.runningTimer |= 1<<commObjectNumber;
+					NEXT_STATE(TIMER_ACTIVE);
+				}
+
+            }
+
+            if( ! (app_dat.runningTimer & 1<<commObjectNumber)) {
+				if (value == 0x01) {
                 DEBUG_PUTS("ON ");
-				app_dat.newpinstate |= 1<<commObjectNumber;
+                    app_dat.portValue |= 1<<commObjectNumber;
             } else {
                 DEBUG_PUTS("OFF ");
-				app_dat.newpinstate &= ~(1<<commObjectNumber);
+                    app_dat.portValue &= ~(1<<commObjectNumber);
 			}				
-        DEBUG_NEWLINE();
-            NEXT_STATE(SWITCH);
-    }
-}
-
-    if(GET_STATE() == WAIT_OFF_TIMER) {
-        // action for off timer
-		//DEBUG_PUTS("WAIT_OFF ");
+            }
+            switchObjects();
+        }
     }
 
-    if(GET_STATE() == WAIT_ON_TIMER) {
-        // action for on timer
-		//DEBUG_PUTS("WAIT_ON ");
+    if(GET_STATE() == TIMER_ACTIVE) {
+        // action for timer
+        for(commObjectNumber=0; commObjectNumber<8; commObjectNumber++) {
+			if(app_dat.runningTimer && 1<<commObjectNumber) {
+				//DEBUG_PUTS("CTIMEOUT ");
+				if(app_dat.runningTimer & 1<<commObjectNumber && check_timeout(&app_dat.timer[commObjectNumber])) {
+					uint8_t j = 1<<commObjectNumber;
+					app_dat.runningTimer &= ~(1<<commObjectNumber);
+                    dealloc_timer(&app_dat.timer[commObjectNumber]);
+					app_dat.portValue ^= j;
+					switchObjects();
     }
-	
-	if(GET_STATE() == SWITCH) {
-		switchObjects();
+			}
+		}
+		if(app_dat.runningTimer == 0x0) {
 		NEXT_STATE(IDLE);
+		}			
 }
 }
 
@@ -376,11 +414,6 @@ uint8_t restartApplication(void)
     /* switch the output pins */
     switchObjects();
 
-    /* enable timer to increase user timer used for timer functions etc. */
-    RELOAD_APPLICATION_TIMER();
-    /* pwm timer is already started by switchObjects() */
-
-    app_dat.oldpinstate = 1;
     /* Reset State */
     NEXT_STATE(IDLE);
 
@@ -658,13 +691,13 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
         
     // check if we have a timer function
     if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1)) {
-        // special case (switch on immediatly and off after a defined time
+        // special case (switch on immediately and off after a defined time
         DEBUG_PUTS("Fl");
         portValue |= (1<<commObjectNumber);
         delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOff;
     }
 
-    // check who to handle off telegramm while in timer modus
+    // check who to handle off telegram while in timer modus
     if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
         DEBUG_PUTS("TK");
         // only switch off if on 0x01EB the value is equal zero
@@ -709,14 +742,14 @@ void switchObjects(void)
     DEBUG_PUTS("Sw");
     DEBUG_SPACE();
 
-    /* change PWM to supply relais with full power */
+    /* change PWM to supply relays with full power */
     waitToPWM = PWM_DELAY_TIME;
     ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
     // check if timer is active on the commObjectNumber
 
     /* read saved status and check if it was changed */
     savedValue = mem_ReadByte(0x0100);
-    if(savedValue != app_dat.newpinstate) {
+    if(savedValue != app_dat.portValue) {
 
 
 		// Rückmeldungen Senden ( @todo pruefen ob ein rückmeldeobjekt besteht)
@@ -735,7 +768,7 @@ void switchObjects(void)
         initialPortValue = ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_HIGH) << 8) | ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_LOW));
         for(i=0; i<=7; i++) {
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
-                mem_WriteBlock(0x0100, 1, &app_dat.newpinstate);
+                mem_WriteBlock(0x0100, 1, &app_dat.portValue);
                 DEBUG_PUTS("Sv");
                 break;
             }
@@ -744,9 +777,7 @@ void switchObjects(void)
      
     /* check 0x01F2 for opener or closer and modify data to relect that, then switch the port */
     portOperationMode = mem_ReadByte(0x01F2);
-    switchPorts(app_dat.newpinstate^portOperationMode);
-	// Mark all pins as set in configuration
-	app_dat.oldpinstate=app_dat.newpinstate;
+    switchPorts(app_dat.portValue^portOperationMode);
 
     return;
 }
