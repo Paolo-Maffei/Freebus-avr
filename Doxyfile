@@ -1211,8 +1211,8 @@ PREDEFINED             = DEBUG_UART \
                          __AVR_ATmega8__ \
                          __AVR_ATmega16__ \
                          _FB_HARDWARE_H \
-			 FB_TP \
-			 BOARD301
+			             FB_TP \
+			             BOARD301
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 
