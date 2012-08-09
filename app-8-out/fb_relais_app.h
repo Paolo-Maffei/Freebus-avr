@@ -54,7 +54,12 @@
 #define APP_DELAY_ACTIVE             0x01EA //< 0x00=no timer active, 0x01=timer on object 1 active, 0x03=timer on object 1+2 active
 #define APP_DELAY_ACTION             0x01EB
 
+#define APP_SPECIAL_CONNECT          0x01D8 // from 0x01D8-0x01D9
 #define APP_SPECIAL_FUNC_MODE        0x01ED
+#define APP_SPECIAL_LOGIC_MODE       0x01EE
+#define APP_SPECIAL_FUNCTION1        0x01EF
+#define APP_SPECIAL_FUNCTION2        0x01F0
+#define APP_SPECIAL_POLARITY         0x01F1
 
 #define APP_CLOSER_MODE              0x01F2
 #define APP_REPORT_BACK_INVERT       0x01F3

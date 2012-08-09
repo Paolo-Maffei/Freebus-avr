@@ -193,6 +193,104 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
 
 }
 
+void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
+    uint8_t specialFunc;                                // special function number (0: no sf)
+    uint8_t specialFuncTyp;                             // special function type
+    uint8_t logicFuncTyp;                               // type of logic function ( 1: or, 2: and)
+    uint8_t logicState;                                 // state of logic function
+    uint8_t sfOut;                                      // output belonging to sf
+    uint8_t sfMask;                                     // special function bit mask (1 of 4)
+
+    if(*value) {
+        app_dat.objectStates |= (1<<commObjectNumber);
+    } else {
+        app_dat.objectStates &= ~(1<<commObjectNumber);
+    }
+    if(commObjectNumber >= 8) {
+        /** if a special function is addressed (and changed in most cases),
+        * then the "real" object belonging to that sf. has to be evaluated again
+        * taking into account the changed logic and blocking states. */
+        /* determine the output belonging to that sf */
+        sfOut = mem_ReadByte(APP_SPECIAL_CONNECT+((commObjectNumber-8)>>1))>>(((commObjectNumber-8)&1)*4) & 0x0F;
+        /* get associated object no. and state of that object*/
+        if (sfOut) {
+            if (sfOut > 8) {
+                return;
+            }                
+            commObjectNumber =  sfOut-1;
+            *value = (app_dat.objectStates>>(sfOut-1))&1;
+        } else {
+            return;
+        }            
+        /* do new evaluation of that object */
+    }
+
+    /** logic function */
+    /* check if we have a special function for this object */
+    specialFunc  = 0;
+    logicFuncTyp = 0;
+    for (specialFunc=0; specialFunc < 4; specialFunc++) {
+        sfMask = 1<<specialFunc;
+        sfOut = mem_ReadByte(APP_SPECIAL_FUNC_OBJ_1_2 + (specialFunc>>1))>> ((specialFunc&1)*4) & 0x0F;
+        if (sfOut == (commObjectNumber+1)) {
+            /* we have a special function, see which type it is */
+            specialFuncTyp = (mem_ReadByte(APP_SPECIAL_FUNC_MODE))>>(specialFunc*2)&0x03;
+            /* get the logic state from the special function object */
+            logicState = ((app_dat.objectStates>>specialFunc)>>8)&0x01;
+            if (specialFuncTyp == 0) {
+                /* logic function */
+                logicFuncTyp = (mem_ReadByte(APP_SPECIAL_LOGIC_MODE))>>(specialFunc*2)&0x03;
+                if (logicFuncTyp == 1) {  // or
+                    *value |= logicState;
+                }
+                if (logicFuncTyp == 2) {  // and
+                    *value &= logicState;
+                }
+            }
+
+            if (specialFuncTyp == 1) {
+                /* blocking function */
+                if (((app_dat.objectStates>>8) ^ mem_ReadByte(APP_SPECIAL_POLARITY)) & sfMask) {
+                    /* start blocking */
+                    if (app_dat.blockedStates & sfMask) {
+                        return; // we are blocked, do nothing
+                    }                        
+                    app_dat.blockedStates |= sfMask;
+                    *value = (mem_ReadByte(APP_SPECIAL_FUNCTION1 + (specialFunc>>1)))>>((specialFunc&1)*4)&0x03;
+                    if (*value == 0) {
+                        return;
+                    }                        
+                    if (*value == 1) {
+                        app_dat.portValue &= ~(1<<commObjectNumber);
+                        uint8_t *status=0;
+                        SetAndTransmitObject(commObjectNumber, status, 0);
+                    }                        
+                    if (*value == 2) {
+                        app_dat.portValue |= (1<<commObjectNumber);
+                        uint8_t *status=1;
+                        SetAndTransmitObject(commObjectNumber, status, 0);
+                    }                        
+                    switchObjects();
+                    return;
+                } else {
+                    /* end blocking */
+                    if (app_dat.blockedStates & sfMask ) {  // we have to unblock
+                        app_dat.blockedStates &= ~sfMask;
+                        /* action at end of blocking, 0: nothing, 1: off, 2: on */
+                        *value = (mem_ReadByte(APP_SPECIAL_FUNCTION1 + (specialFunc>>1)))>>((specialFunc&1)*4+2)&0x03;
+                        if (*value == 0) {
+                            return;
+                        }                            
+                        *value--;
+                        /* we are unblocked, continue as normal */
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 /**
  * Function os called periodically of the application is enabled in the system_state
  *
@@ -215,6 +313,8 @@ void app_loop() {
             // get value of object (0=off, 1=on)
             value = userram[commObjectNumber + 4];
 
+            // handle the logic part
+            handleLogicFunction(commObjectNumber, &value);
 
             // check if we have a delayed action for this object, only Outputs
             if(commObjectNumber >= OBJ_OUT0 && commObjectNumber <= OBJ_OUT7) {
