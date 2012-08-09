@@ -36,17 +36,12 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-
+#include "fb_prot.h"
+#include "fb_app.h"
 
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
-
-
-/**************************************************************************
-* DECLARATIONS
-**************************************************************************/
-
 /** PWM duty cycle. 0 = 0%, 255 = 100% */
 #define PWM_SETPOINT    0x55   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
@@ -66,6 +61,38 @@
 #define APP_RESTORE_AFTER_PL_LOW     0x01F6
 #define APP_RESTORE_AFTER_PL_HIGH    0x01F7
 #define APP_DELAY_BASE               0x01F9
+
+/** list of the default parameter for this application */
+const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
+{ SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
+{ APPLICATION_RUN_STATUS,       0xFF },    /**< Run-Status (00=stop FF=run)                  */
+{ COMMSTAB_ADDRESS,             0x9A },    /**< COMMSTAB Pointer                             */
+{ APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
+
+{ 0x0000,                       0x00 },    /**< default is off                               */
+{ APP_DELAY_ACTIVE,             0x00 },    /**< no timer active                              */
+{ APP_CLOSER_MODE,              0x00 },    /**< closer mode for all relais                   */
+{ APP_RESTORE_AFTER_PL_LOW,     0x55 },    /**< don't save status at power loss (number 1-4) */
+{ APP_RESTORE_AFTER_PL_HIGH,    0x55 },    /**< don't save status at power loss (number 5-8) */
+
+{ MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode 0x0004 = Jung                 */
+{ MANUFACTORER_ADR_LOW,         0x04 },    /**< Herstellercode 0x0004 = Jung                 */
+{ DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2038.10) 2060h                  */
+{ DEVICE_NUMBER_LOW,            0x60 },    /**<                                              */
+
+{ 0xFF,                         0xFF }     /**< END-sign; do not change                      */
+};
+
+const struct FBAppInfo AppInfo PROGMEM = {
+    .FBApiVersion = 0x01,
+    .pParam = defaultParam,
+};
+
+
+/**************************************************************************
+* DECLARATIONS
+**************************************************************************/
+
 
 
 /*************************************************************************

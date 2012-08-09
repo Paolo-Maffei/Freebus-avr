@@ -36,15 +36,22 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-#include "msg_queue.h"
+
 
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
+FBAPP_EXT const STRUCT_DEFPARAM defaultParam[] PROGMEM;
+FBAPP_EXT const struct FBAppInfo AppInfo PROGMEM;
+
 
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
+/* State used for new lib api */
+#define NEXT_STATE(x) app_state = x ///< Defined the next state for the application
+#define GET_STATE() app_state       ///< Get the current state the application is in
+
 
 /*************************************************************************
 * FUNCTION PROTOTYPES

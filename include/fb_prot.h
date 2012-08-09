@@ -216,6 +216,6 @@ PROT_EXT uint8_t findRespondGroupAddressByObjectNumber(uint8_t commObjectNumber,
 PROT_EXT uint8_t fb_handlemsg(struct msg *rxmsg);
 PROT_EXT void fbprot_msg_handler ( void )XBOOT_SECTION;
 PROT_EXT void fbprot_forward_msg ( struct msg *rxmsg );
-PROT_EXT void fbprot_Init(const struct FBAppInfo *pAppinfo)XBOOT_SECTION;
+PROT_EXT void fbprot_LibInit(void);
 #endif /* _FB_PROT_H */
 /*********************************** EOF *********************************/

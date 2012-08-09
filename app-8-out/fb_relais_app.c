@@ -33,32 +33,12 @@
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-#include <avr/wdt.h>
-#include "fb.h"
-#include "fb_hardware.h"
-#include "freebus-debug.h"
-#include "fb_eeprom.h"
-#include "msg_queue.h"
 //#include "1wire.h"
-#include "fb_hal.h"
-#include "Spi.h"
-#include "rf22.h"
-#include "fb_prot.h"
-#include "timer.h"
-#include "fbrf_hal.h"
-#include "fb_app.h"
 #include "fb_relais_app.h"
-#ifdef IO_TEST
-#include <util/delay.h>
-#endif
 
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
-
-/* State used for new lib api */
-#define NEXT_STATE(x) app_state = x
-#define GET_STATE() app_state
 
 /* Objects for the 8-out */
 enum EIGHT_OUT_Objects_e {
@@ -121,32 +101,6 @@ extern uint8_t userram[USERRAM_SIZE];
 
 static uint16_t objectStates;             /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
 static uint8_t blockedStates;             /**< 1 bit per object to mark it "blocked" */
-
-/** list of the default parameter for this application */
-const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
-    { SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
-    { APPLICATION_RUN_STATUS,       0xFF },    /**< Run-Status (00=stop FF=run)                  */
-    { COMMSTAB_ADDRESS,             0x9A },    /**< COMMSTAB Pointer                             */
-    { APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
-
-    { 0x0000,                       0x00 },    /**< default is off                               */
-    { APP_DELAY_ACTIVE,             0x00 },    /**< no timer active                              */
-    { APP_CLOSER_MODE,              0x00 },    /**< closer mode for all relais                   */
-    { APP_RESTORE_AFTER_PL_LOW,     0x55 },    /**< don't save status at power loss (number 1-4) */
-    { APP_RESTORE_AFTER_PL_HIGH,    0x55 },    /**< don't save status at power loss (number 5-8) */
-
-    { MANUFACTORER_ADR_HIGH,   0x00 },    /**< Herstellercode 0x0004 = Jung                 */
-    { MANUFACTORER_ADR_LOW,    0x04 },    /**< Herstellercode 0x0004 = Jung                 */
-    { DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2038.10) 2060h                  */
-    { DEVICE_NUMBER_LOW,            0x60 },    /**<                                              */
-
-    { 0xFF,                         0xFF }     /**< END-sign; do not change                      */
-    };
-
-const struct FBAppInfo AppInfo PROGMEM = {
-    .FBApiVersion = 0x01,
-    .pParam = defaultParam,
-};
 
 static enum states_e app_state;
 
@@ -879,43 +833,7 @@ void io_test()
  */
 int main(void)
 {
-//    uint16_t t1cnt;
-    /* disable wd after restart_app via watchdog */
-    DISABLE_WATCHDOG();
-
-        /* ROM-Check */
-        /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
-
-        /* init internal Message System */
-        msg_queue_init();
-    
-	DEBUG_INIT();
-    DEBUG_NEWLINE();
-    DEBUG_PUTS("V0.1");
-    DEBUG_NEWLINE();
-
-    /* init eeprom modul and RAM structure already here,
-       because we need eeprom values for fbrfhal_init() */
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
-
-    /* init procerssor register */
-    fbhal_Init();
-	/** FBRFHAL_INIT() is defined in fbrf_hal.h .
-	   you may leave it out if you don't use rf */
-    //FBRFHAL_INIT();
-
-    /* init generic timer */
-    timer_init();
-
-	/* enable interrupts */
-    ENABLE_ALL_INTERRUPTS();
-
-    /* init protocol layer */
-    /* load default values */
-    fbprot_Init(&AppInfo);
-
-    /* config application hardware */
-    (void)restartApplication();
+    fbprot_LibInit();
 
     /* Reset state */
     NEXT_STATE(IDLE);
