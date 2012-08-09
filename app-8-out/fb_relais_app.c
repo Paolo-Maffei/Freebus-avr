@@ -92,8 +92,6 @@ static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M
                                                (timer_t) 16384*M2TICS(130), (timer_t) 32768*M2TICS(130)};
 
 extern struct grp_addr_s grp_addr;
-static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
-                                             but will be switched delayed depending on the delay */
 static uint16_t delayValues[8];           /**< save value for delays */
 static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
 
@@ -106,9 +104,12 @@ static uint8_t blockedStates;             /**< 1 bit per object to mark it "bloc
 static enum states_e app_state;
 
 struct {
-    uint8_t portValue;
+    uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
+                                             but will be switched delayed depending on the delay */
     timer_t timer[8];
 	uint8_t runningTimer;
+    uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
+    uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
 } app_dat;
 
 /*************************************************************************
@@ -150,6 +151,7 @@ void app_loop() {
         
             // reset object status flag
             SetRAMFlags(commObjectNumber, 0);
+            // get value of object (0=off, 1=on)
 			value = userram[commObjectNumber + 4];
 
             // check if we have a delayed action for this object, only Outputs
@@ -226,10 +228,14 @@ void app_loop() {
 			if(app_dat.runningTimer && 1<<commObjectNumber) {
 				//DEBUG_PUTS("CTIMEOUT ");
 				if(app_dat.runningTimer & 1<<commObjectNumber && check_timeout(&app_dat.timer[commObjectNumber])) {
+                    DEBUG_PUTS("TIMEOUT ");
 					uint8_t j = 1<<commObjectNumber;
 					app_dat.runningTimer &= ~(1<<commObjectNumber);
                     dealloc_timer(&app_dat.timer[commObjectNumber]);
 					app_dat.portValue ^= j;
+                    
+                    uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
+                    SetAndTransmitObject(commObjectNumber, &value, 0);
 					switchObjects();
                 }
 			}
