@@ -131,10 +131,71 @@ void io_test(void);
 /**************************************************************************
  * IMPLEMENTATION
  **************************************************************************/
+void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
+                // Get delay base
+                timer_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
+    if((commObjectNumber & 0x01) == 0x01) {
+        delayBase&=0x0F;
+    } else {
+        delayBase = (delayBase & 0xF0)>>4;
+                }
+                delayBase = pgm_read_byte(&delay_bases[delayBase]);
 
-/** 
+    // Set some variables to make next commands better readable
+    uint8_t timerActive = mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber);
+    uint8_t timerOffActive = mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber);
+    uint8_t timerOnActive = mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber);
+    uint8_t timerRunning = app_dat.runningTimer & (1<<commObjectNumber);
+    
+    /// @bug a timer function with a delay on one will not work
+                // Check for delay factor for off
+    if(app_dat.portValue & (1<<commObjectNumber) && timerOffActive && !(timerActive) && value == 0) {
+        DEBUG_PUTS("TIMER_OFF ");
+        if(timerRunning)
+                        dealloc_timer(&app_dat.timer[commObjectNumber]);
+        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
+        app_dat.runningTimer |= 1<<commObjectNumber;
+        NEXT_STATE(TIMER_ACTIVE);
+                }
+                // Check for delay factor for on
+    if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && value == 1) {
+        DEBUG_PUTS("TIMER_ON ");
+        if(timerRunning)
+            dealloc_timer(&app_dat.timer[commObjectNumber]);
+        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
+        app_dat.runningTimer |= 1<<commObjectNumber;
+        NEXT_STATE(TIMER_ACTIVE);
+                }
+    // Check if we have a timer function
+    if (timerActive && timerOffActive && (value == 1)) {
+        DEBUG_PUTS("TIMER ");
+        app_dat.portValue |= (1<<commObjectNumber);
+        if(timerRunning)
+            dealloc_timer(&app_dat.timer[commObjectNumber]);
+        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
+        app_dat.runningTimer |= 1<<commObjectNumber;
+        NEXT_STATE(TIMER_ACTIVE);
+    }
+
+    // check how to handle off telegram while in timer modus
+    if (timerActive && timerOffActive && value == 0) {
+        DEBUG_PUTS("TK ");
+        // only switch off if on APP_DELAY_ACTION the value is equal zero
+        if(!(mem_ReadByte(APP_DELAY_ACTION) & (1<<commObjectNumber))) {
+            DEBUG_PUTS("TIMER_DISABLE ");
+            if(app_dat.runningTimer & (1<<commObjectNumber)) {
+                dealloc_timer(&app_dat.timer[commObjectNumber]);
+                app_dat.runningTimer &= ~(1<<commObjectNumber);
+                app_dat.portValue &= ~(1<<commObjectNumber);
+            }
+        }
+    }
+
+}
+
+/**
  * Function os called periodically of the application is enabled in the system_state
- * 
+ *
  */
 void app_loop() {
     uint8_t commObjectNumber;
@@ -142,73 +203,25 @@ void app_loop() {
 
     // Iterate over all objects and check if the status has changed
     for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT13; commObjectNumber++) {
-		// check if an object has changed its status
+        // check if an object has changed its status
         if(TestObject(commObjectNumber)) {
             DEBUG_NEWLINE();
             DEBUG_PUTS("OBJ_");
             DEBUG_PUTHEX(commObjectNumber);
             DEBUG_SPACE();
-        
+
             // reset object status flag
             SetRAMFlags(commObjectNumber, 0);
             // get value of object (0=off, 1=on)
-			value = userram[commObjectNumber + 4];
+            value = userram[commObjectNumber + 4];
+
 
             // check if we have a delayed action for this object, only Outputs
-            if(commObjectNumber<= OBJ_OUT7) {
-                // Get delay base
-                timer_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
-				if((commObjectNumber & 0x01) == 0x01) {
-				    delayBase&=0x0F;
-			    } else {
-				    delayBase = (delayBase & 0xF0)>>4;
-                }
-                DEBUG_PUTHEX(delayBase);
-                DEBUG_SPACE();
-                delayBase = pgm_read_byte(&delay_bases[delayBase]);
-                DEBUG_PUTHEX(delayBase);
-                DEBUG_SPACE();
-
-                // Check for delay factor for off
-                if(app_dat.portValue & (1<<commObjectNumber) && mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber) && !(mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber)) && value == 0) {
-					DEBUG_PUTS("TIMER_OFF ");
-					if(app_dat.runningTimer & 1<<commObjectNumber)
-                        dealloc_timer(&app_dat.timer[commObjectNumber]);
-                    alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
-					app_dat.runningTimer |= 1<<commObjectNumber;
-					//NEXT_STATE(TIMER_ACTIVE);
-                }
-                // Check for delay factor for on
-                if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber) && value == 1) {
-					DEBUG_PUTS("TIMER_ON ");
-					if(app_dat.runningTimer & 1<<commObjectNumber)
-    					dealloc_timer(&app_dat.timer[commObjectNumber]);
-					alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber));
-					app_dat.runningTimer |= 1<<commObjectNumber;
-					//NEXT_STATE(TIMER_ACTIVE);
-                }
-				// Check if we have a timer function
-				DEBUG_PUTS("CHECK ");
-				DEBUG_PUTHEX(app_dat.portValue);
-				DEBUG_SPACE();
-                DEBUG_PUTHEX(delayBase);
-				DEBUG_SPACE();
-				DEBUG_PUTHEX(mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
-				DEBUG_SPACE();
-				DEBUG_PUTHEX(value);
-				DEBUG_SPACE();
-				if (mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber) && mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber) && (value == 1)) {
-					DEBUG_PUTS("TIMER ");
-					app_dat.portValue |= (1<<commObjectNumber);
-					if(app_dat.runningTimer & 1<<commObjectNumber)
-    					dealloc_timer(&app_dat.timer[commObjectNumber]);
-					alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber));
-					app_dat.runningTimer |= 1<<commObjectNumber;
-					NEXT_STATE(TIMER_ACTIVE);
-				}
-
+            if(commObjectNumber >= OBJ_OUT0 && commObjectNumber <= OBJ_OUT7) {
+                handleTimers(commObjectNumber, value);
             }
 
+                            
             if( ! (app_dat.runningTimer & 1<<commObjectNumber)) {
 				if (value == 0x01) {
                 DEBUG_PUTS("ON ");
