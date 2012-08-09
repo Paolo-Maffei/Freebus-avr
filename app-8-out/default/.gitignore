@@ -4,3 +4,4 @@
 *.hex
 *.map
 *.o
+/makedep.mk
