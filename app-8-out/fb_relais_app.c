@@ -367,31 +367,32 @@ void app_loop() {
  * @return 
  * @todo test interrupt lock in this function that it is not disturbing TX and RX of telegrams
  */
+/*
 void timerOverflowFunction(void)
 {
     uint8_t i;
 
-    /* check if programm is running */
+    // check if programm is running
     if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
         return;
  
-    /* check if we can enable PWM */
-    /* if waitToPWM==1 enable PWM, 0==no change */
+    // check if we can enable PWM
+    // if waitToPWM==1 enable PWM, 0==no change
     if(waitToPWM == 1) {
         DEBUG_PUTS("PWM");
         DEBUG_NEWLINE();
         ENABLE_PWM(PWM_SETPOINT);
     }
 
-    /* check if we need to lower PWM delay mode */
+    // check if we need to lower PWM delay mode
     if(waitToPWM > 0)
         waitToPWM--;
      
-    /* now check if we have to switch a port */
+    // now check if we have to switch a port
     for(i=0; i<8; i++) {
         uint8_t j = 1<<i;
         // DEBUG_PUTHEX(timerRunning);
-        /* check if we have to switch a port */
+        // check if we have to switch a port
         // we need to check timer for port i
         if ( delayValues[i] ) {
             if (--delayValues[i]) continue;
@@ -402,13 +403,14 @@ void timerOverflowFunction(void)
             portValue ^= j;
             // DEBUG_PUTHEX(portValue);
 
-            /* send response telegram to inform other devices that port was switched */
+            // send response telegram to inform other devices that port was switched
             //sendTelegram(i,(portValue & j)?1:0, 0x0C);
 
             switchObjects();
         }
     }
 }
+*/
 
 /** 
  * ISR is called if on TIMER1 the comparator B matches the defined condition.
@@ -629,6 +631,7 @@ uint8_t runApplication(struct msg *rxmsg)
  * 
  * @return
  */
+/*
 void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 {
     uint8_t delayFactorOn=0;            // the factor for the delay timer (on delay)
@@ -648,20 +651,20 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     if (data) objectStates |=  (1<<commObjectNumber);
         else  objectStates &= ~(1<<commObjectNumber);
     if (commObjectNumber >= 8){
-		/** if a special function is adressed (and changed in most cases),
-		* then the "real" object belonging to that sf. has to be evaluated again
-		* taking into account the changed logic and blocking states. */
-        /* detemine the output belonging to that sf */
+        // if a special function is addressed (and changed in most cases),
+        // then the "real" object belonging to that sf. has to be evaluated again
+        // taking into account the changed logic and blocking states.
+        // determine the output belonging to that sf
         sfOut = mem_ReadByte(0x01D8+((commObjectNumber-8)>>1))>>
                     (((commObjectNumber-8)&1)*4) & 0x0F;
-        /* get associated object no. and state of that object*/
+        // get associated object no. and state of that object
         if (sfOut){
              if (sfOut > 8) return;
              commObjectNumber =  sfOut-1;
              data = (objectStates>>(sfOut-1))&1;
         }
         else return;
-		/* do new evaluation of that object */
+        // do new evaluation of that object
     }
     
     // read communication object (3 Byte)
@@ -681,20 +684,20 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     else
         delayBase = (delayBase & 0xF0)>>4;
 
-    /** logic function */
-    /* check if we have a special function for this object */
+    //** logic function 
+    //* check if we have a special function for this object
     specialFunc  = 0;
     logicFuncTyp = 0;
     for ( specialFunc=0; specialFunc < 4; specialFunc++ ){
         sfMask = 1<<specialFunc;
         sfOut = mem_ReadByte(0x01D8 + (specialFunc>>1))>> ((specialFunc&1)*4) & 0x0F;
         if (sfOut == (commObjectNumber+1)){
-            /* we have a special function, see which type it is */
+            // we have a special function, see which type it is
             specialFuncTyp = (mem_ReadByte(0x01ED))>>(specialFunc*2)&0x03;
-            /* get the logic state from the special function object */
+            // get the logic state from the special function object
             logicState = ((objectStates>>specialFunc)>>8)&0x01;
             if ( specialFuncTyp == 0 ){
-                /* logic function */
+                // logic function
                 logicFuncTyp = (mem_ReadByte(0x01EE))>>(specialFunc*2)&0x03;
                 if ( logicFuncTyp == 1 ){  // or
                 data |= logicState;
@@ -705,9 +708,9 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
             }
 
             if ( specialFuncTyp == 1 ){
-                /* blocking function */
+                // blocking function
                 if ( ((objectStates>>8) ^ mem_ReadByte(0x01F1)) & sfMask ){
-                    /* start blocking */
+                    // start blocking
                     if ( blockedStates & sfMask ) return; // we are blocked, do nothing
                     blockedStates |= sfMask;
                     data = (mem_ReadByte(0x01EF + (specialFunc>>1)))>>((specialFunc&1)*4)&0x03;
@@ -721,22 +724,22 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
 
                 }
                 else {
-                    /* end blocking */
+                    // end blocking
                     if ( blockedStates & sfMask ){  // we have to unblock
                         blockedStates &= ~sfMask;
-                        /* action at end of blocking, 0: nothing, 1: off, 2: on */
+                        // action at end of blocking, 0: nothing, 1: off, 2: on
                         data = (mem_ReadByte(0x01EF + (specialFunc>>1)))
                             >>((specialFunc&1)*4+2)&0x03;
                         if (data == 0) return;
                         data--;
-                    /* we are unblocked, continue as normal */
+                        // we are unblocked, continue as normal
                     }
                 }
             }
 
         }
     }
-    /** @todo check if write is enabled */
+    //** @todo check if write is enabled
 
     // reset saved timer settings
     // delayValues[commObjectNumber]=0;
@@ -782,7 +785,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     }
     DEBUG_PUTHEX(commObjectNumber);
         
-    /** check for delays */
+    //** check for delays
     if( !delayValues[commObjectNumber]) {
         // no delay is defined so we switch immediatly
         if(data == 0) {
@@ -798,6 +801,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
     }
     switchObjects();
 }
+*/
 
 
 /** 
