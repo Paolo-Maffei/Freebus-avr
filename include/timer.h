@@ -36,7 +36,6 @@
 * INCLUDES
 *************************************************************************/
 
-#include "fb.h"
 
 /**************************************************************************
 * DEFINITIONS
@@ -59,6 +58,7 @@ typedef uint32_t timer_t;
 TIMER_EXT timer_t get_ticks(void);
 TIMER_EXT void timer_init(void);
 TIMER_EXT void alloc_timer(timer_t *t, timer_t ticks);
+TIMER_EXT void dealloc_timer(timer_t *t);
 TIMER_EXT uint8_t check_timeout(timer_t *t);
 
 #endif

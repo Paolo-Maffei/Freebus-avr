@@ -38,8 +38,12 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-#include "fb.h"
-#include "msg_queue.h"
+#include <avr/wdt.h>
+#include "fb_eeprom.h"
+#include "fb_hal.h"
+#include "rf22.h"
+#include "timer.h"
+#include "freebus-debug.h"
 
 /**************************************************************************
 * DEFINITIONS
