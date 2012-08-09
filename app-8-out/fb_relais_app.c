@@ -87,8 +87,9 @@ enum states_e {
  * DECLARATIONS
  **************************************************************************/
 static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M2TICS(130), 8*M2TICS(130), 16*M2TICS(130), 32*M2TICS(130), 64*M2TICS(130),
-                                                128*M2TICS(130), 256*M2TICS(130), 512*M2TICS(130), 1024*M2TICS(130), 2048*M2TICS(130), 4096*M2TICS(130), 8192*M2TICS(130),
-                                                16384*M2TICS(130), 32768*M2TICS(130)};
+                                               128*M2TICS(130), 256*M2TICS(130), 512*M2TICS(130), 1024*M2TICS(130), 2048*M2TICS(130),
+                                               (timer_t) 4096*M2TICS(130), (timer_t) 8192*M2TICS(130),
+                                               (timer_t) 16384*M2TICS(130), (timer_t) 32768*M2TICS(130)};
 
 extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
