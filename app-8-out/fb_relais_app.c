@@ -467,19 +467,19 @@ uint8_t restartApplication(void)
 #endif
 
     // check if at power loss we have to restore old values (see 0x01F6) and do it here
-    portValue = mem_ReadByte(0x0100);
-    initialPortValue = ((uint16_t)mem_ReadByte(0x01F7) << 8) | ((uint16_t)mem_ReadByte(0x01F6));
+    app_dat.portValue = mem_ReadByte(0x0100);
+    initialPortValue = ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_HIGH) << 8) | ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_LOW));
     for(i=0; i<=7; i++) {
         temp = (initialPortValue>>(i*2)) & 0x03;
         // DEBUG_PUTHEX(temp);
         if(temp == 0x01) {
             // open contact
-            portValue &= (uint8_t)(~(1U<<i));
+            app_dat.portValue &= (uint8_t)(~(1U<<i));
             // DEBUG_PUTHEX(i);
             // DEBUG_PUTS("P");
         } else if(temp == 0x02) {
             // close contact
-            portValue |= (1<<i);
+            app_dat.portValue |= (1<<i);
             // DEBUG_PUTHEX(i);
             // DEBUG_PUTS("L");
 
