@@ -78,6 +78,7 @@ typedef struct
 * FUNCTION PROTOTYPES
 **************************************************************************/
 EEPROM_EXT uint8_t mem_ReadByte(uint16_t wAdr);
+EEPROM_EXT uint16_t mem_Read2Bytes(uint16_t addr);
 EEPROM_EXT void mem_WriteBlock(uint16_t addr, uint8_t len, uint8_t *dat);
 EEPROM_EXT uint8_t eeprom_busy(void);
 EEPROM_EXT void eeprom_ParamSetDefault(const STRUCT_DEFPARAM *pParam );
