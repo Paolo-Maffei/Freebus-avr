@@ -63,7 +63,7 @@
 
 #define APP_CLOSER_MODE              0x01F2
 #define APP_REPORT_BACK_INVERT       0x01F3
-#define APP_RESTORE_AFTER_PL_LOW     0x01F6
+#define APP_RESTORE_AFTER_PL         0x01F6 // 0x01F6-0x01F7 Verhalten nach Spannungswiederkehr
 #define APP_RESTORE_AFTER_PL_HIGH    0x01F7
 #define APP_DELAY_BASE               0x01F9
 
@@ -77,7 +77,7 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 { 0x0000,                       0x00 },    /**< default is off                               */
 { APP_DELAY_ACTIVE,             0x00 },    /**< no timer active                              */
 { APP_CLOSER_MODE,              0x00 },    /**< closer mode for all relais                   */
-{ APP_RESTORE_AFTER_PL_LOW,     0x55 },    /**< don't save status at power loss (number 1-4) */
+{ APP_RESTORE_AFTER_PL,         0x55 },    /**< don't save status at power loss (number 1-4) */
 { APP_RESTORE_AFTER_PL_HIGH,    0x55 },    /**< don't save status at power loss (number 5-8) */
 
 { MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode 0x0004 = Jung                 */

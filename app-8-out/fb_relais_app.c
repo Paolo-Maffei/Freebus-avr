@@ -478,9 +478,12 @@ uint8_t restartApplication(void)
 	io_test();
 #endif
 
-    // check if at power loss we have to restore old values (see 0x01F6) and do it here
+    // check if at power loss we have to restore old values (see APP_RESTORE_AFTER_PL) and do it here
+    DEBUG_PUTS("SET PINS ");
     app_dat.portValue = mem_ReadByte(0x0100);
-    initialPortValue = ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_HIGH) << 8) | ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_LOW));
+	DEBUG_PUTHEX(app_dat.portValue);
+    DEBUG_SPACE();
+    initialPortValue=mem_Read2Bytes(APP_RESTORE_AFTER_PL);
     for(i=0; i<=7; i++) {
         temp = (initialPortValue>>(i*2)) & 0x03;
         // DEBUG_PUTHEX(temp);
@@ -856,7 +859,7 @@ void switchObjects(void) {
 
 
         // now check if last status must be saved, we write to eeprom only if necessary
-        initialPortValue = ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_HIGH) << 8) | ((uint16_t)mem_ReadByte(APP_RESTORE_AFTER_PL_LOW));
+        initialPortValue = mem_Read2Bytes(APP_RESTORE_AFTER_PL);
         for(i=0; i<=7; i++) {
             if(((initialPortValue>>(i*2)) & 0x03) == 0x0) {
                 mem_WriteBlock(0x0100, 1, &app_dat.portValue);
