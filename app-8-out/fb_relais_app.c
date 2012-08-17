@@ -323,7 +323,6 @@ void app_loop() {
                 handleTimers(commObjectNumber, value);
             }
 
-                            
             if( ! (app_dat.runningTimer & 1<<commObjectNumber)) {
 				if (value == 0x01) {
                 DEBUG_PUTS("ON ");
