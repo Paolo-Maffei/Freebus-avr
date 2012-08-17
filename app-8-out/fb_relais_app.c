@@ -869,8 +869,8 @@ void switchObjects(void) {
         }
     }
      
-    /* check 0x01F2 for opener or closer and modify data to relect that, then switch the port */
-    portOperationMode = mem_ReadByte(0x01F2);
+    /* check 0x01F2 for opener or closer and modify data to reflect that, then switch the port */
+    portOperationMode = mem_ReadByte(APP_CLOSER_MODE);
     switchPorts(app_dat.portValue^portOperationMode);
 
     return;
