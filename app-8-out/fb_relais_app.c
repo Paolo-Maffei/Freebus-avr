@@ -77,10 +77,12 @@ S     Schreiben       Objekt kann empfangen
 
 */
  
+/// Bit list of states the program can be in
 enum states_e {
     IDLE = 0,
-	INIT_TIMER,
-    TIMER_ACTIVE,
+    INIT_TIMER = (1),
+    TIMER_ACTIVE = (1<<1),
+    PWM_TIMER_ACTIVE = (1<<2),
 };
 
 /**************************************************************************
@@ -155,7 +157,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
                         dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
-        NEXT_STATE(TIMER_ACTIVE);
+        SET_STATE(TIMER_ACTIVE);
                 }
                 // Check for delay factor for on
     if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && value == 1) {
@@ -164,7 +166,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
             dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
-        NEXT_STATE(TIMER_ACTIVE);
+        SET_STATE(TIMER_ACTIVE);
                 }
     // Check if we have a timer function
     if (timerActive && timerOffActive && (value == 1)) {
@@ -174,7 +176,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
             dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
-        NEXT_STATE(TIMER_ACTIVE);
+        SET_STATE(TIMER_ACTIVE);
     }
 
     // check how to handle off telegram while in timer modus
@@ -335,7 +337,7 @@ void app_loop() {
         }
     }
 
-    if(GET_STATE() == TIMER_ACTIVE) {
+    if(IN_STATE(TIMER_ACTIVE)) {
         // action for timer
         for(commObjectNumber=0; commObjectNumber<8; commObjectNumber++) {
 			if(app_dat.runningTimer && 1<<commObjectNumber) {
@@ -354,7 +356,7 @@ void app_loop() {
 			}
 		}
 		if(app_dat.runningTimer == 0x0) {
-            NEXT_STATE(IDLE);
+            UNSET_STATE(TIMER_ACTIVE);
 		}			
 }
 }
@@ -491,7 +493,7 @@ uint8_t restartApplication(void)
     switchObjects();
 
     /* Reset State */
-    NEXT_STATE(IDLE);
+    RESET_STATE();
 
     return 1;
 } /* restartApplication() */
