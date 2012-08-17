@@ -264,13 +264,11 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
                     }                        
                     if (*value == 1) {
                         app_dat.portValue &= ~(1<<commObjectNumber);
-                        uint8_t *status=0;
-                        SetAndTransmitObject(commObjectNumber, status, 0);
+                        SetAndTransmitBit(commObjectNumber, 0);
                     }                        
                     if (*value == 2) {
                         app_dat.portValue |= (1<<commObjectNumber);
-                        uint8_t *status=1;
-                        SetAndTransmitObject(commObjectNumber, status, 0);
+                        SetAndTransmitBit(commObjectNumber, 1);
                     }                        
                     switchObjects();
                     return;
@@ -314,9 +312,13 @@ void app_loop() {
             SetRAMFlags(commObjectNumber, 0);
             // get value of object (0=off, 1=on)
             value = userram[commObjectNumber + 4];
+            DEBUG_PUTHEX(value);
+            DEBUG_SPACE();
 
             // handle the logic part
             handleLogicFunction(commObjectNumber, &value);
+            DEBUG_PUTHEX(value);
+            DEBUG_SPACE();
 
             // check if we have a delayed action for this object, only Outputs
             if(commObjectNumber >= OBJ_OUT0 && commObjectNumber <= OBJ_OUT7) {
@@ -359,7 +361,7 @@ void app_loop() {
 					app_dat.portValue ^= j;
                     
                     uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
-                    SetAndTransmitObject(commObjectNumber, &value, 0);
+                    SetAndTransmitBit(commObjectNumber, value);
 					switchObjects();
                 }
 			}
@@ -498,8 +500,12 @@ uint8_t restartApplication(void)
             // DEBUG_PUTS("L");
 
         }
+        // Send status of every object to bus on power on
+        SetAndTransmitBit(i, (app_dat.portValue >> i) & 0x1 );
     }
     // DEBUG_PUTHEX(portValue);
+    DEBUG_PUTS("Done.");
+    DEBUG_NEWLINE();
 
     /* switch the output pins */
     switchObjects();
