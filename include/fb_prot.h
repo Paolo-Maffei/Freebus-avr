@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2007 Dirk Opfer <dirk@do13.de>
 *  Copyright (c) 2007 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
@@ -20,7 +20,7 @@
 * @file   fb_prot.h
 * @author Dirk Opfer, Matthias Fechner, Christian Bode, Dirk Armbrust
 * @date   Fri Dec 21 18:28:22 2007
-* 
+*
 * @brief  Define the protocol specific definitions
 *        Implementation of the communication protocol
 *
@@ -164,7 +164,7 @@ struct FBAppInfo
     void *comobjtable;
     void *assoctable;
     void *grpaddr;
-}; 
+};
 
 struct assoc_table_s {
 	uint8_t count;
@@ -209,6 +209,7 @@ struct fbus_hdr {
 **************************************************************************/
 PROT_EXT uint8_t TestAndCopyObject (uint8_t objectNr, void* dst, uint8_t len);
 PROT_EXT void SetAndTransmitObject(uint8_t objectNr, void* src, uint8_t len);
+PROT_EXT void SetAndTransmitBit(uint8_t objectNr, uint8_t value);
 PROT_EXT uint8_t TestObject(uint8_t objectNr);
 PROT_EXT void TransmitObject(uint8_t objectNr);
 PROT_EXT uint8_t ReadObject(uint8_t objectNr);
