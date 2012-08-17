@@ -95,7 +95,6 @@ static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M
 
 extern struct grp_addr_s grp_addr;
 static uint16_t delayValues[8];           /**< save value for delays */
-static uint8_t waitToPWM;                 /**< defines wait time until PWM get active again (counts down in 130ms steps), 1==enable PWM, 0==no change */
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
@@ -109,6 +108,7 @@ struct {
     uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
     timer_t timer[8];
+    timer_t pwmTimer;           /// stores a reference to the generic timer
 	uint8_t runningTimer;
     uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
@@ -335,6 +335,16 @@ void app_loop() {
             }
             switchObjects();
         }
+    }
+
+    // check if we can enable PWM
+    // if app_state==PWM_TIMER_ACTIVE and pwmTimer is reached enable PWM, else no change
+    if(IN_STATE(PWM_TIMER_ACTIVE) && check_timeout(&app_dat.pwmTimer)) {
+        DEBUG_PUTS("DISABLE PWM");
+        DEBUG_NEWLINE();
+        dealloc_timer(&app_dat.pwmTimer);
+        ENABLE_PWM(PWM_SETPOINT);
+        UNSET_STATE(PWM_TIMER_ACTIVE);
     }
 
     if(IN_STATE(TIMER_ACTIVE)) {
@@ -810,8 +820,7 @@ void processOutputs ( uint8_t commObjectNumber, uint8_t data )
  * Switch the objects to state in portValue and save value to eeprom if necessary.
  * 
  */
-void switchObjects(void)
-{
+void switchObjects(void) {
     uint16_t initialPortValue;
     uint8_t portOperationMode;  /**< defines if IO is closer or opener, see address 0x01F2 in eeprom */
     uint8_t savedValue;
@@ -823,7 +832,9 @@ void switchObjects(void)
     DEBUG_SPACE();
 
     /* change PWM to supply relays with full power */
-    waitToPWM = PWM_DELAY_TIME;
+    DEBUG_PUTS("ENABLE PWM ");
+    alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
+    SET_STATE(PWM_TIMER_ACTIVE);
     ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
     // check if timer is active on the commObjectNumber
 
@@ -868,8 +879,7 @@ void switchObjects(void)
  * @param port contains values for 8 output pins. They may be on different ports of the avr.
  *   
  */
-void switchPorts(uint8_t port)
-{
+void switchPorts(uint8_t port) {
     DEBUG_PUTS("SWITCH ");
 	DEBUG_PUTHEX(port);
 	DEBUG_SPACE();
@@ -907,8 +917,7 @@ void switchPorts(uint8_t port)
  * Can be used to check if LEDs and relais are working correctly.
  * 
  */
-void io_test()
-{
+void io_test() {
 	SETPIN_IO1(ON);
 	_delay_ms(1000);
 	SETPIN_IO1(OFF);
@@ -957,12 +966,8 @@ void io_test()
  * @return 
  *   
  */
-int main(void)
-{
+int main(void) {
     fbprot_LibInit();
-
-    /* Reset state */
-    NEXT_STATE(IDLE);
 
 #ifdef HARDWARETEST
     sendTestTelegram();

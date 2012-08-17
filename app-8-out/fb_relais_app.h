@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
 *
@@ -18,7 +18,7 @@
 * @file   fb_relais_app.h
 * @author Matthias Fechner, Christian Bode
 * @date   Sat Jan 05 17:58:58 2008
-* 
+*
 * @brief  The relais application to switch 8 relais
 * Manufactorer code is 0x04 = Jung\n
 * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
@@ -45,7 +45,7 @@
 /** PWM duty cycle. 0 = 0%, 255 = 100% */
 #define PWM_SETPOINT    0x55   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
-#define PWM_DELAY_TIME  3      /* 3 * 130ms */
+#define PWM_DELAY_TIME               3*M2TICS(130)      /* 3 * 130ms */
 
 #define APP_SPECIAL_FUNC_OBJ_1_2     0x01D8
 #define APP_SPECIAL_FUNC_OBJ_3_4     0x01D9
