@@ -20,7 +20,8 @@
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
     <eraseonlaunchrule>0</eraseonlaunchrule>
-    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtool>
+    </avrtool>
     <avrtoolinterface>
     </avrtoolinterface>
     <com_atmel_avrdbg_tool_stk600>

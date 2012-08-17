@@ -29,7 +29,6 @@
 #ifndef _FB_RELAIS_APP_C
 #define _FB_RELAIS_APP_C
 
-
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
@@ -93,14 +92,8 @@ static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M
                                                (timer_t) 4096*M2TICS(130), (timer_t) 8192*M2TICS(130),
                                                (timer_t) 16384*M2TICS(130), (timer_t) 32768*M2TICS(130)};
 
-extern struct grp_addr_s grp_addr;
-static uint16_t delayValues[8];           /**< save value for delays */
-
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
-
-static uint16_t objectStates;             /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
-static uint8_t blockedStates;             /**< 1 bit per object to mark it "blocked" */
 
 static enum states_e app_state;
 
@@ -117,10 +110,8 @@ struct {
 /*************************************************************************
  * FUNCTION PROTOTYPES
  **************************************************************************/
-void timerOverflowFunction(void);
 void switchObjects(void);
 void switchPorts(uint8_t port);
-void processOutputs ( uint8_t commObjectNumber, uint8_t data );
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -192,7 +183,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
             }
         }
     }
-
 }
 
 void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
@@ -290,7 +280,6 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
     }
 }
 
-
 /**
  * Function os called periodically of the application is enabled in the system_state
  *
@@ -373,64 +362,10 @@ void app_loop() {
 }
 
 /** 
- * called at overflow of application timer, should occur every 130ms.
- * handle finishing of 100% PWM after switchObjects().
- * handle delayed switching.
- * 
- * @return 
- * @todo test interrupt lock in this function that it is not disturbing TX and RX of telegrams
- */
-/*
-void timerOverflowFunction(void)
-{
-    uint8_t i;
-
-    // check if programm is running
-    if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
-        return;
- 
-    // check if we can enable PWM
-    // if waitToPWM==1 enable PWM, 0==no change
-    if(waitToPWM == 1) {
-        DEBUG_PUTS("PWM");
-        DEBUG_NEWLINE();
-        ENABLE_PWM(PWM_SETPOINT);
-    }
-
-    // check if we need to lower PWM delay mode
-    if(waitToPWM > 0)
-        waitToPWM--;
-     
-    // now check if we have to switch a port
-    for(i=0; i<8; i++) {
-        uint8_t j = 1<<i;
-        // DEBUG_PUTHEX(timerRunning);
-        // check if we have to switch a port
-        // we need to check timer for port i
-        if ( delayValues[i] ) {
-            if (--delayValues[i]) continue;
-            // delayValue changed from 1 to 0
-            // DEBUG_PUTS("SDP");
-            
-            DEBUG_PUTHEX(i);
-            portValue ^= j;
-            // DEBUG_PUTHEX(portValue);
-
-            // send response telegram to inform other devices that port was switched
-            //sendTelegram(i,(portValue & j)?1:0, 0x0C);
-
-            switchObjects();
-        }
-    }
-}
-*/
-
-/** 
  * ISR is called if on TIMER1 the comparator B matches the defined condition.
  * 
  */
-ISR(TIMER1_COMPB_vect)
-{
+ISR(TIMER1_COMPB_vect) {
     return;
 }
 
@@ -440,8 +375,7 @@ ISR(TIMER1_COMPB_vect)
  * 
  * @return FB_ACK or FB_NACK
  */
-uint8_t restartApplication(void)
-{
+uint8_t restartApplication(void) {
     uint8_t i,temp;
     uint16_t initialPortValue;
 
@@ -515,314 +449,6 @@ uint8_t restartApplication(void)
 
     return 1;
 } /* restartApplication() */
-
-/** 
- * Function is called if A_GroupValue_Read is received.
- * Check if group adress is in address table. If yes,
- * read status from port and put a A_GroupValue_Response into the tx queue.
- * 
- * @param rxmsg pointer to received telegram.
- * 
- * @return  The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
- */
-/*
-uint8_t readApplication(struct msg *rxmsg)
-{
-    struct fbus_hdr *hdr =( struct fbus_hdr *) rxmsg->data;
-    DEBUG_PUTS("Read");
-
-    uint8_t i;
-    uint16_t destAddr = ((uint16_t)(hdr->dest[0])<<8) | (hdr->dest[1]);
-
-    uint8_t assocTabPtr;            // points to start of association table (0x0100+assocTabPtr)
-    uint8_t countAssociations;      // number of associations saved in associations table
-    uint8_t numberInGroupAddress;   // reference from association table to group address table
-    uint8_t commObjectNumber;       // reference from association table to communication object table
-
-    assocTabPtr = mem_ReadByte(ASSOCTABPTR);
-    countAssociations = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr);
- 
-    for(i=0; i<countAssociations; i++) {
-        numberInGroupAddress = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2));
-
-        // check if valid group address reference
-        if(numberInGroupAddress == 0xFE)
-            continue;
-
-        commObjectNumber = mem_ReadByte(BASE_ADDRESS_OFFSET + assocTabPtr + 1 + (i*2) + 1);
-
-        // now check if received address is equal with the safed group addresses, substract one
-        // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
-        // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if((destAddr == grp_addr.ga[numberInGroupAddress-1]) && (commObjectNumber <= 7)) {
-            // found group address
-
-            /// @todo check if read value is allowed
-            struct msg * resp = AllocMsgI();
-            if(!resp)
-                return FB_NACK;
-
-            hdr = (struct fbus_hdr *) resp->data;
-
-            resp->repeat = 3;
-            resp->len    = 9;
-
-            hdr->ctrl    = 0xBC;
-            hdr->src[0]  = mem_ReadByte(PA_ADDRESS_HIGH);
-            hdr->src[1]  = mem_ReadByte(PA_ADDRESS_LOW);
-            hdr->dest[0] = grp_addr.ga[numberInGroupAddress-1]>>8;
-            hdr->dest[1] = grp_addr.ga[numberInGroupAddress-1];
-            hdr->npci    = 0xE1;
-            hdr->tpci    = 0x00;
-            // put data into the apci octet
-            hdr->apci    = 0x40 + ((portValue & (1<<commObjectNumber)) ? 1 : 0);
-
-            fb_hal_txqueue_msg(resp);
-        } else if((commObjectNumber > 7) && (commObjectNumber < 12)) {
-            // additinal function
-            /// @todo write part additional functions
-            // DEBUG_PUTS("ZF");
-            // DEBUG_NEWLINE();
-        }
-    }
-    return FB_ACK;
-}   // readApplication()
-*/
-
-/** 
- * Function is called if A_GroupValue_Write is received.
- * The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
- * Determine the addressed object and call processOutputs()
- *
- * @param rxmsg pointer to received telegram.
- * 
- * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
- */
- /*
-uint8_t runApplication(struct msg *rxmsg)
-{
-    struct fbus_hdr * hdr= (struct fbus_hdr *) rxmsg->data;
-    uint8_t i;
-    uint16_t destAddr=((hdr->dest[0])<<8 | hdr->dest[1]);
-    uint8_t assocTabPtr = mem_ReadByte(ASSOCTABPTR);                             // points to start of association table (0x0100+assocTabPtr)
-    uint8_t countAssociations = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr);   // number of associations saved in associations table
-    uint8_t numberInGroupAddress;                              // reference from association table to group address table
-    uint8_t commObjectNumber;                                  // reference from association table to communication object table
-    //uint8_t countCommObjects = mem_ReadByte(0x0100+commStabPtr);  // number of communication objects in table
-    //uint8_t userRamPointer = mem_ReadByte(0x0100+commStabPtr+1);  // points to user ram
-
-    // handle here only data with 1-bit length, maybe we have to add here more code to handle longer data
-    /// @todo handle data with more then 1 bit
-    uint8_t data = (hdr->apci) & 1;
-     
-    for(i=0; i<countAssociations; i++) {
-        numberInGroupAddress = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2));
-
-        // check if valid group address reference
-        if(numberInGroupAddress == 0xFE)
-            continue;
-
-        commObjectNumber = mem_ReadByte(BASE_ADDRESS_OFFSET+assocTabPtr+1+(i*2)+1);
-
-        // now check if received address is equal with the safed group addresses, substract one
-        // because 0 is the physical address, check also if commObjectNumber is between 0 and 7
-        // (commObjectNumber is uint8_t so cannot be negative don't need to check if >= 0)
-        if(destAddr == grp_addr.ga[numberInGroupAddress-1]){
-            // found group address
-            processOutputs ( commObjectNumber, data );
-        }
-    }
-                 // SETPIN_IO3(1)
-
-    return FB_ACK;
-}   // runApplication()
- */
-/** 
- *
- * @param commObjectNumber the adressed object
- * @param data data to be assigned to that object
- *
- * store data (1 bit) in objectStates.
- * If a special function is addressed, then determine the "real" object belongin to it,
- * and continue as follows.
- * If a "real" object is addressed, evaluate the logic and blocking (if avail. for the object).
- * if no delay is programmed for the object, switch the associated output.
- * If a delay is programmed, then set the corresponding delayValue.
- * 
- * @return
- */
-/*
-void processOutputs ( uint8_t commObjectNumber, uint8_t data )
-{
-    uint8_t delayFactorOn=0;            // the factor for the delay timer (on delay)
-    uint8_t delayFactorOff=0;           // the factor for the delay timer (off delay)
-    uint8_t delayActive;                // is timer active 1=yes
-    uint8_t delayBase;
-    uint8_t timerActive = mem_ReadByte(0x01EA);      // set bit value if delay on a channel is active
-    uint8_t commStabPtr = mem_ReadByte(COMMSTAB_ADDRESS);     // points to communication object table (0x0100+commStabPtr)
-    uint8_t specialFunc ;                               // special function number (0: no sf)
-    uint8_t specialFuncTyp ;                            // special function type
-    uint8_t logicFuncTyp ;                              // type of logic function ( 1: or, 2: and)
-    uint8_t logicState   ;                              // state of logic function
-    uint8_t sfOut;                                      // output belonging to sf
-    uint8_t sfMask;                                     // special function bitmask (1 of 4)
-
-    if(commObjectNumber >= 12) return;
-    if (data) objectStates |=  (1<<commObjectNumber);
-        else  objectStates &= ~(1<<commObjectNumber);
-    if (commObjectNumber >= 8){
-        // if a special function is addressed (and changed in most cases),
-        // then the "real" object belonging to that sf. has to be evaluated again
-        // taking into account the changed logic and blocking states.
-        // determine the output belonging to that sf
-        sfOut = mem_ReadByte(0x01D8+((commObjectNumber-8)>>1))>>
-                    (((commObjectNumber-8)&1)*4) & 0x0F;
-        // get associated object no. and state of that object
-        if (sfOut){
-             if (sfOut > 8) return;
-             commObjectNumber =  sfOut-1;
-             data = (objectStates>>(sfOut-1))&1;
-        }
-        else return;
-        // do new evaluation of that object
-    }
-    
-    // read communication object (3 Byte)
-    uint8_t commValuePointer = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3));
-    uint8_t commConfigByte   = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+1));
-    uint8_t commValueType    = mem_ReadByte(BASE_ADDRESS_OFFSET+commStabPtr+2+(commObjectNumber*3+2));
-    
-    delayActive      = mem_ReadByte(0x01EA);
-    // read delay factor for on and off
-    delayFactorOn    = mem_ReadByte(0x01DA+commObjectNumber);
-    delayFactorOff   = mem_ReadByte(0x01E2+commObjectNumber);
-
-    // read delay base, 0=130ms, 1=260 and so on
-    delayBase        = mem_ReadByte(0x01F9+((commObjectNumber+1)>>1));
-    if((commObjectNumber & 0x01) == 0x01)
-        delayBase&=0x0F;
-    else
-        delayBase = (delayBase & 0xF0)>>4;
-
-    //** logic function 
-    //* check if we have a special function for this object
-    specialFunc  = 0;
-    logicFuncTyp = 0;
-    for ( specialFunc=0; specialFunc < 4; specialFunc++ ){
-        sfMask = 1<<specialFunc;
-        sfOut = mem_ReadByte(0x01D8 + (specialFunc>>1))>> ((specialFunc&1)*4) & 0x0F;
-        if (sfOut == (commObjectNumber+1)){
-            // we have a special function, see which type it is
-            specialFuncTyp = (mem_ReadByte(0x01ED))>>(specialFunc*2)&0x03;
-            // get the logic state from the special function object
-            logicState = ((objectStates>>specialFunc)>>8)&0x01;
-            if ( specialFuncTyp == 0 ){
-                // logic function
-                logicFuncTyp = (mem_ReadByte(0x01EE))>>(specialFunc*2)&0x03;
-                if ( logicFuncTyp == 1 ){  // or
-                data |= logicState;
-                }
-                if ( logicFuncTyp == 2 ){  // and
-                    data &= logicState;
-                }
-            }
-
-            if ( specialFuncTyp == 1 ){
-                // blocking function
-                if ( ((objectStates>>8) ^ mem_ReadByte(0x01F1)) & sfMask ){
-                    // start blocking
-                    if ( blockedStates & sfMask ) return; // we are blocked, do nothing
-                    blockedStates |= sfMask;
-                    data = (mem_ReadByte(0x01EF + (specialFunc>>1)))>>((specialFunc&1)*4)&0x03;
-                    if (data == 0) return;
-                    if (data == 1)
-                        portValue &= ~(1<<commObjectNumber);
-                    if (data == 2)
-                        portValue |= (1<<commObjectNumber);
-                    switchObjects();
-                    return;
-
-                }
-                else {
-                    // end blocking
-                    if ( blockedStates & sfMask ){  // we have to unblock
-                        blockedStates &= ~sfMask;
-                        // action at end of blocking, 0: nothing, 1: off, 2: on
-                        data = (mem_ReadByte(0x01EF + (specialFunc>>1)))
-                            >>((specialFunc&1)*4+2)&0x03;
-                        if (data == 0) return;
-                        data--;
-                        // we are unblocked, continue as normal
-                    }
-                }
-            }
-
-        }
-    }
-    //** @todo check if write is enabled
-
-    // reset saved timer settings
-    // delayValues[commObjectNumber]=0;
-
-    // we received a new state for object commObjectNumber
-    // check if we have a delay on that port
-
-    // check if we must switch off a port where timers are running
-    if((!delayFactorOff) && (data == 0))
-    {
-        DEBUG_PUTC('K');
-        delayValues[commObjectNumber] = 0;
-    }
-
-    // check for delayed switch off
-    if(portValue & (1<<commObjectNumber) && delayFactorOff && !(timerActive & (1<<commObjectNumber)) && (data==0)) {
-        // switch of but delayed
-        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase)*(uint16_t)delayFactorOff;
-    }
-
-    // check if we have a delayed switch on
-    if(((portValue & (1<<commObjectNumber)) == 0x00) && delayFactorOn && (data == 1)) {
-        // switch on but delayed
-        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOn;
-    }
-        
-    // check if we have a timer function
-    if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 1)) {
-        // special case (switch on immediately and off after a defined time
-        DEBUG_PUTS("Fl");
-        portValue |= (1<<commObjectNumber);
-        delayValues[commObjectNumber] = (uint16_t)(1<<delayBase) * (uint16_t)delayFactorOff;
-    }
-
-    // check who to handle off telegram while in timer modus
-    if(timerActive & (1<<commObjectNumber) && delayFactorOff && (data == 0)) {
-        DEBUG_PUTS("TK");
-        // only switch off if on 0x01EB the value is equal zero
-        if(!(mem_ReadByte(0x01EB) & (1<<commObjectNumber))) {
-            delayValues[commObjectNumber] = 0;
-            portValue    &= ~(1<<commObjectNumber);
-        }
-    }
-    DEBUG_PUTHEX(commObjectNumber);
-        
-    //** check for delays
-    if( !delayValues[commObjectNumber]) {
-        // no delay is defined so we switch immediatly
-        if(data == 0) {
-            // switch port off
-            portValue &= ~(1<<commObjectNumber);
-        } else if(data == 1) {
-            portValue |= (1<<commObjectNumber);
-        }
-
-        //** @todo need to check here for respond
-        // send response telegram to inform other devices that port was switched
-        //sendTelegram(commObjectNumber, data, 0x0C);
-    }
-    switchObjects();
-}
-*/
-
 
 /** 
  * Switch the objects to state in portValue and save value to eeprom if necessary.
@@ -1042,8 +668,7 @@ int main(void) {
  * @return 
  *
  */
-void hardwaretest(void)
-{
+void hardwaretest(void) {
     static uint8_t pinstate = 0x01; 
 
     switchPorts(pinstate);
