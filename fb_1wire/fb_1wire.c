@@ -61,14 +61,16 @@
 struct Sensors1 {
           uint16_t ga;     /**< The group address (2x8 Bit) */
           OW_DEVICE_ID id;
-          int32_t temp;
+          uint8_t delay_state;
+          uint32_t delVal;
+          int16_t temp;
 };
 
 
 /** Structure for 1-wire */
 struct Sensors2 {
-          uint8_t count;
-          uint16_t pollTime;
+          uint8_t firstReadOk;
+		  uint8_t count;
           uint8_t index;
           uint8_t step;
           uint8_t convTime;
@@ -84,10 +86,10 @@ struct Sensors2 sensors;
 extern struct grp_addr_s grp_addr;
 
 static uint32_t currentTime;              /**< defines the current time in 10ms steps (2=20ms) */
-static uint32_t currentTime2;
 uint8_t zyk_senden_basis;
 unsigned char sende_sofort_bus_return;
 uint8_t cycle = 0;
+uint8_t zyk_senden_basis;
 
 
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
@@ -101,10 +103,6 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
         { APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
 
         { 0x0000,                  0x00 },    /**< default is off                               */
-        { 0x01EA,                  0x00 },    /**< no timer active                              */
-        { 0x01F6,                  0x55 },    /**< don't save status at power loss (number 1-4) */
-        { 0x01F7,                  0x55 },    /**< don't save status at power loss (number 5-8) */
-        { 0x01F2,                  0x00 },    /**< closer mode for all relais                   */
 
         { MANUFACTORER_ADR,        0x08 },    /**< Herstellercode 0x08 = Giera                  */
         { DEVICE_NUMBER_HIGH,      0xB0 },    /**< Devicetype 0xB003 = GIRA Analogeingang 960 00  */
@@ -152,6 +150,7 @@ void sendTemp(int32_t temp_eminus4, uint16_t ga,uint8_t type);
 void uart_put_temp_eis5(int32_t tval);
 static void uart_put_temp_maxres2(int32_t tval);
 uint8_t DS18X20_format_from_maxres( int32_t temperaturevalue, char str[], uint8_t n);
+void doTempconversion(void);
 
 
 /**************************************************************************
@@ -429,112 +428,30 @@ unsigned int find_ga(unsigned char objno)
  */
 void timerOverflowFunction(void)
 {
+	uint8_t zyk_faktor;
+	uint32_t zyk_val;
 	/* check if programm is running */
 	if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
 		return;
 	currentTime++;
 	currentTime&=0x00FFFFFF;
-/*
-	if (currentTime == 1){
-		DEBUG_PUTS("start Temp-Conversion");
-		DEBUG_NEWLINE();
-		uint8_t ret = ow_tempStartConversion(&sensors.sensor[0].id);
-	    DEBUG_PUTS("start_conv=");
-	    DEBUG_PUTHEX(ret);
-	    DEBUG_NEWLINE();
-	}else if (currentTime == CONVTIME){
-		uint8_t ret = ow_tempReadTemperature2(&sensors.sensor[0].id,&sensors.sensor[0].temp);
-	    DEBUG_PUTS("read Temp=");
-	    DEBUG_PUTHEX(ret);
-	    DEBUG_NEWLINE();
-	    uart_put_temp_maxres2(sensors.sensor[0].temp);
-	}
-*/
-	if (sensors.count > 0){
-		if (currentTime2 == sensors.pollTime){
-			currentTime2 = 0;
-			sensors.index = 0;
-			sensors.step = 1;
-		}else{
-			currentTime2++;
-		}
-		if (sensors.step == 1){
-			uint8_t ret = ow_tempStartConversion(&sensors.sensor[sensors.index].id);
-			if (ret == 0){
-				//ret = ow_StrongPullup(1);
-				if (ret){
-					DEBUG_PUTS("F #4\r\n");
-				}else{
-					sensors.convTime = 0;
-					sensors.step = 2;
-				}
-			}else{
-				DEBUG_PUTS("F #3 ");
-				DEBUG_PUTHEX(ret);
-				DEBUG_PUTS("\r\n");
-			}
-		}else if (sensors.step == 2){
-			sensors.convTime ++;
-			if (sensors.convTime == CONVTIME){
-				uint8_t ret;
-				ret = ow_StrongPullup(0);
-				if (ret == 0){
-					//ret = ow_tempReadTemperature2(&sensors.sensor[sensors.index].id,&sensors.sensor[sensors.index].temp);
-					int16_t t1 = 0;
-					ret = ow_tempReadTemperature(&sensors.sensor[sensors.index].id,&t1);
-					sensors.sensor[sensors.index].temp = t1;
-					sensors.sensor[sensors.index].temp /= 16;
-					sensors.sensor[sensors.index].temp *= 10000;
-					sensors.sensor[sensors.index].temp += (t1 & 0x000F) * 625;
-					if (ret == 0){
-						DEBUG_PUTS("#");
-						DEBUG_PUTHEX(sensors.index+1);
-						//DEBUG_PUTS(" ");
-						//DEBUG_PUTHEX(t1 >> 8);
-						//DEBUG_PUTHEX(t1 & 0xFF);
-						DEBUG_PUTS(" ");
-						uart_put_temp_maxres2(sensors.sensor[sensors.index].temp);
-						if (sensors.sensor[sensors.index].temp != 850000){
-							sendTemp(sensors.sensor[sensors.index].temp,sensors.sensor[sensors.index].ga,2);
-							sensors.index++;
-							if (sensors.index < sensors.count){
-								//start next sensor
-								sensors.step = 1;
-							}else{
-								//ready !!
-								sensors.step = 10;
-							}
-						}else{
-							//once again
-							sensors.step = 1;
-							DEBUG_PUTS("F #2\r\n");
-						}
-					}else{
-						//once again
-						sensors.step = 1;
-						DEBUG_PUTS("F #1 ");
-						DEBUG_PUTHEX(ret);
-						DEBUG_PUTS("\r\n");
-					}
-				}else{
-					//once again
-					sensors.step = 1;
-					DEBUG_PUTS("F #4\r\n");
-				}
+	for (int i = 0;i < sensors.count;i++){
+		if (sensors.sensor[i].delay_state != 0x00){
+			if (sensors.sensor[i].delVal == currentTime){
+				//DEBUG_PUTS("#");
+				DEBUG_PUTHEX(i+1);
+				DEBUG_PUTS("c\r\n");
+				//set to new val
+				zyk_faktor = mem_ReadByte(0x016A+(i*16))&0x7F;
+				zyk_val=(zyk_faktor<<zyk_senden_basis);
+				zyk_val=zyk_val+currentTime;
+				zyk_val&=0x00FFFFFF;
+				sensors.sensor[i].delVal = zyk_val;
+				sendTemp(sensors.sensor[i].temp,sensors.sensor[i].ga,2);
 			}
 		}
+
 	}
-	/*
-	cycle++;
-	if (cycle == 10){
-		DEBUG_PUTS_BLOCKING("Z ");
-		DEBUG_PUTHEX_BLOCKING(currentTime >> 16);
-		DEBUG_PUTHEX_BLOCKING(currentTime >> 8);
-		DEBUG_PUTHEX_BLOCKING(currentTime);
-		DEBUG_NEWLINE_BLOCKING();
-		cycle = 0;
-	}
-	*/
     return;
 }
 
@@ -573,6 +490,11 @@ uint8_t restartApplication(void)
         DEBUG_PUTHEX_BLOCKING(grp_addr.ga[i] & 0xFF );
         DEBUG_NEWLINE_BLOCKING();
     }
+    zyk_senden_basis = mem_ReadByte(0x0160)&0x0F;
+    DEBUG_PUTS("basis= ");
+    DEBUG_PUTHEX(zyk_senden_basis);
+    DEBUG_NEWLINE();
+
     i2c_Init();
     ret = ow_Init();
     DEBUG_PUTS_BLOCKING("ow_init=");
@@ -614,14 +536,12 @@ uint8_t restartApplication(void)
     DEBUG_NEWLINE_BLOCKING();
     */
 
-    sensors.count = 9;
     //sensors.count = 0;
-    sensors.pollTime = 461; //every 1min.
-    sensors.step = 0;
-    currentTime2 = sensors.pollTime;
-    sensors.index = 0; //start with index 1
+    //sensors.pollTime = 461; //every 1min.
+    //currentTime2 = sensors.pollTime;
+    /*
+    sensors.count = 9;
     //ist Temp Bad
-
     sensors.sensor[0].ga = 0x010A;
     sensors.sensor[0].id.familyId = 0x28;
     sensors.sensor[0].id.serialNr[0] = 0xAE;
@@ -711,6 +631,59 @@ uint8_t restartApplication(void)
     sensors.sensor[8].id.serialNr[4] = 0x00;
     sensors.sensor[8].id.serialNr[5] = 0x00;
     sensors.sensor[8].id.crc = 0x80;
+	*/
+
+
+    sensors.step = 0;
+    sensors.index = 0; //start with index 1
+    sensors.firstReadOk = 0;
+    sensors.count = mem_ReadByte(0x0161);
+    if (grp_addr.count != sensors.count){
+    	//error count not matching
+    	sensors.count = 0;
+    }
+    for (i = 0;i < sensors.count;i++){
+    	sensors.sensor[i].ga = grp_addr.ga[i];
+    	sensors.sensor[i].id.familyId = mem_ReadByte(0x0162 + (i*16));
+    	sensors.sensor[i].id.serialNr[0] = mem_ReadByte(0x0162 + (i*16) + 1);
+    	sensors.sensor[i].id.serialNr[1] = mem_ReadByte(0x0162 + (i*16) + 2);
+    	sensors.sensor[i].id.serialNr[2] = mem_ReadByte(0x0162 + (i*16) + 3);
+    	sensors.sensor[i].id.serialNr[3] = mem_ReadByte(0x0162 + (i*16) + 4);
+    	sensors.sensor[i].id.serialNr[4] = mem_ReadByte(0x0162 + (i*16) + 5);
+    	sensors.sensor[i].id.serialNr[5] = mem_ReadByte(0x0162 + (i*16) + 6);
+    	sensors.sensor[i].id.crc = mem_ReadByte(0x0162 + (i*16) + 7);
+		sensors.sensor[i].delay_state = 0;
+		sensors.sensor[i].delVal = 0;
+    }
+
+    DEBUG_PUTS_BLOCKING("Count=");
+    DEBUG_PUTHEX_BLOCKING(sensors.count);
+    DEBUG_NEWLINE_BLOCKING();
+    for (i = 0; i < sensors.count; i++){
+        DEBUG_PUTS_BLOCKING("#");
+        DEBUG_PUTHEX_BLOCKING(i+1);
+        DEBUG_PUTS_BLOCKING(" ga=");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].ga >> 8 );
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].ga & 0xFF );
+        DEBUG_PUTS_BLOCKING(" SNr=");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.familyId );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[0] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[1] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[2] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[3] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[4] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.serialNr[5] );
+        DEBUG_PUTS_BLOCKING(":");
+        DEBUG_PUTHEX_BLOCKING(sensors.sensor[i].id.crc );
+        DEBUG_NEWLINE_BLOCKING();
+    }
+
 
 
 
@@ -775,7 +748,7 @@ void sendTemp(int32_t temp_eminus4, uint16_t ga,uint8_t type){
 	//<- Vorzeichen
 	//  <- Exponent
 	//      <- Mantisse
-	int32_t tval = temp_eminus4 / 100;
+	int32_t tval = temp_eminus4;
 	while(tval > 2047){
 		tval = tval >> 1;
 		exp++;
@@ -885,7 +858,7 @@ int main(void)
         if(TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
             timerOverflowFunction();
-
+            doTempconversion();
 			#ifdef test
 				send_value2(2,1);
 			#endif
@@ -893,6 +866,71 @@ int main(void)
     }   /* while(1) */
 
 }   /* main() */
+
+void doTempconversion(void){
+if (sensors.step == 0){
+	uint8_t ret = ow_tempStartConversion(&sensors.sensor[sensors.index].id);
+	if (ret == 0){
+		sensors.convTime = 0;
+		sensors.step = 2;
+	}else{
+		DEBUG_PUTS("F #3 ");
+		DEBUG_PUTHEX(ret);
+		DEBUG_PUTS("\r\n");
+	}
+}else if (sensors.step == 2){
+	sensors.convTime ++;
+	if (sensors.convTime == CONVTIME){
+		uint8_t ret;
+		ret = ow_StrongPullup(0);
+		if (ret == 0){
+			int16_t t1 = 0;
+			int32_t t2 = 0;
+			ret = ow_tempReadTemperature(&sensors.sensor[sensors.index].id,&t1);
+			t2 = t1 >> 4;
+			t2 *= 10000;
+			t2 += (t1 & 0x000F) * 625;
+			t2 = t2 / 100;
+			if (ret == 0){
+				if (t2 != 8500){
+					sensors.sensor[sensors.index].temp = (int16_t)t2;
+					DEBUG_PUTS("#");
+					DEBUG_PUTHEX(sensors.index+1);
+					DEBUG_PUTS(" ");
+					uart_put_temp_maxres2((int32_t)sensors.sensor[sensors.index].temp * 100);
+					if (sensors.firstReadOk == 0){
+						//read cyclic send Value
+						sensors.sensor[sensors.index].delay_state = mem_ReadByte(0x016A + (sensors.index*16))&0x80;
+						sensors.sensor[sensors.index].delVal = (currentTime + 1) & 0x00FFFFFF;
+					}
+					sensors.index++;
+					if (sensors.index >= sensors.count){
+						if (sensors.firstReadOk == 0){
+							sensors.firstReadOk = 1;
+						}
+						sensors.index = 0;
+					}
+					sensors.step = 0;
+				}else{
+					//once again
+					sensors.step = 0;
+					DEBUG_PUTS("F #2\r\n");
+				}
+			}else{
+				//once again
+				sensors.step = 0;
+				DEBUG_PUTS("F #1 ");
+				DEBUG_PUTHEX(ret);
+				DEBUG_PUTS("\r\n");
+			}
+		}else{
+			//once again
+			sensors.step = 0;
+			DEBUG_PUTS("F #4\r\n");
+		}
+	}
+}
+}
 
 
 #endif /* _FB_1WIRE_C */
