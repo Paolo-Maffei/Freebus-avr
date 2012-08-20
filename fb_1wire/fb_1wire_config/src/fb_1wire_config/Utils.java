@@ -45,9 +45,35 @@ public class Utils {
 	public static String makeGrpAdrItoS(int i1){
 		String s1 = "";
 		if (i1 > 0){
-			s1 = String.valueOf(i1 >> 11) + "/" + String.valueOf((i1 >> 8) & 0x0F) + "/" + String.valueOf(i1 & 0xFF);
+			s1 = String.valueOf(i1 >> 11) + "/" + String.valueOf((i1 >> 8) & 0x07) + "/" + String.valueOf(i1 & 0xFF);
 		}else{
 			s1 = "0/0/0";
+		}
+		return s1;
+	}
+	public static int makePhysAdrStoI(String s1){
+		int grpAdr = 0;
+		String s[] = s1.split(".");
+		if (s.length == 3){
+			//  aaaallll mmmmmmmm
+			// area line member
+			//area
+			grpAdr += (Integer.parseInt(s[0]) << 12);
+			//line
+			grpAdr += (Integer.parseInt(s[1]) << 8);
+			//member
+			grpAdr += Integer.parseInt(s[2]);
+			
+		}
+		return grpAdr;
+	}
+	
+	public static String makePhysAdrItoS(int i1){
+		String s1 = "";
+		if (i1 > 0){
+			s1 = String.valueOf(i1 >> 12) + "." + String.valueOf((i1 >> 8) & 0x0F) + "." + String.valueOf(i1 & 0xFF);
+		}else{
+			s1 = "0.0.0";
 		}
 		return s1;
 	}

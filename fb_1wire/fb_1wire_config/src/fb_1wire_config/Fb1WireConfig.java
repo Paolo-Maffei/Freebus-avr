@@ -102,7 +102,7 @@ public class Fb1WireConfig extends JPanel implements ActionListener{
 			jContentPane.add(getJToolBar(), java.awt.BorderLayout.NORTH);
 			jContentPane.add(getJScrollPane1(),java.awt.BorderLayout.WEST);
 			//jContentPane.add(getJPanelCenter(), java.awt.BorderLayout.CENTER);
-			txtPysAddr.setText("0/0/0");
+			txtPysAddr.setText("0.0.0");
 			txtNrSensors.setText("0");
 			setTreeItems(Integer.parseInt(txtNrSensors.getText()));
 			
@@ -762,7 +762,7 @@ public class Fb1WireConfig extends JPanel implements ActionListener{
 					//physikal address
 					b1[0] = buffer[23];
 					b1[1] = buffer[24];
-					txtPysAddr.setText(Utils.makeGrpAdrItoS(Utils.byteToInt(b1)));
+					txtPysAddr.setText(Utils.makePhysAdrItoS(Utils.byteToInt(b1)));
 					//cyclic send basis
 					cmbSendBasis.setSelectedIndex((int)buffer[96] & 0x0F);
 					//number of Group-adresses
@@ -834,7 +834,7 @@ public class Fb1WireConfig extends JPanel implements ActionListener{
    	   			//number of Group-adresses
 				buffer[22] = (byte)(Integer.parseInt(txtNrSensors.getText()) + 1);
 				//physikal address
-   	   			b1 = Utils.intToByte(Utils.makeGrpAdrStoI(txtPysAddr.getText()));
+   	   			b1 = Utils.intToByte(Utils.makePhysAdrStoI(txtPysAddr.getText()));
 				buffer[23] = b1[1];
 				buffer[24] = b1[0];
 				int offs = 25;
