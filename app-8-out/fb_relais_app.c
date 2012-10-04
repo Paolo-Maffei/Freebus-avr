@@ -441,11 +441,11 @@ uint8_t restartApplication(void) {
     DEBUG_PUTS("Done.");
     DEBUG_NEWLINE();
 
-    /* switch the output pins */
-    switchObjects();
-
     /* Reset State */
     RESET_STATE();
+
+    /* switch the output pins */
+    switchObjects();
 
     return 1;
 } /* restartApplication() */
