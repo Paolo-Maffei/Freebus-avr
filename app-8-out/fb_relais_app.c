@@ -382,14 +382,14 @@ uint8_t restartApplication(void) {
     /* reset global timer values */
 
     /* IO configuration */
-    SET_IO_IO1(IO_OUTPUT);
-    SET_IO_IO2(IO_OUTPUT);
-    SET_IO_IO3(IO_OUTPUT);
-    SET_IO_IO4(IO_OUTPUT);
-    SET_IO_IO5(IO_OUTPUT);
-    SET_IO_IO6(IO_OUTPUT);
-    SET_IO_IO7(IO_OUTPUT);
-    SET_IO_IO8(IO_OUTPUT);
+    IO_SET_DIR(1,IO_OUTPUT);
+    IO_SET_DIR(2,IO_OUTPUT);
+    IO_SET_DIR(3,IO_OUTPUT);
+    IO_SET_DIR(4,IO_OUTPUT);
+    IO_SET_DIR(5,IO_OUTPUT);
+    IO_SET_DIR(6,IO_OUTPUT);
+    IO_SET_DIR(7,IO_OUTPUT);
+    IO_SET_DIR(8,IO_OUTPUT);
 #ifdef BOARD301
 #if (HARDWARETEST != 1)
     SET_IO_RES1(IO_OUTPUT);
@@ -518,28 +518,21 @@ void switchPorts(uint8_t port) {
 	DEBUG_PUTHEX(port);
 	DEBUG_SPACE();
 	
-    SETPIN_IO1((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(1,(uint8_t)(port & 0x01));
 
-    SETPIN_IO2((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(2,(uint8_t)(port & 0x02));
 
-    SETPIN_IO3((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(3,(uint8_t)(port & 0x04));
 
-    SETPIN_IO4((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(4,(uint8_t)(port & 0x08));
 
-    SETPIN_IO5((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(5,(uint8_t)(port & 0x10));
 
-    SETPIN_IO6((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(6,(uint8_t)(port & 0x20));
 
-    SETPIN_IO7((uint8_t)(port & 0x01));
-    port = port>>1;
+    IO_SET(7,(uint8_t)(port & 0x40));
 
-    SETPIN_IO8((uint8_t)(port & 0x01));
+    IO_SET(8,(uint8_t)(port & 0x80));
 
     return;
 }
@@ -552,44 +545,44 @@ void switchPorts(uint8_t port) {
  * 
  */
 void io_test() {
-	SETPIN_IO1(ON);
+    IO_SET(1,ON);
 	_delay_ms(1000);
-	SETPIN_IO1(OFF);
+    IO_SET(1,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO2(ON);
+    IO_SET(2,ON);
 	_delay_ms(1000);
-	SETPIN_IO2(OFF);
+    IO_SET(2,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO3(ON);
+    IO_SET(3,ON);
 	_delay_ms(1000);
-	SETPIN_IO3(OFF);
+    IO_SET(3,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO4(ON);
+    IO_SET(4,ON);
 	_delay_ms(1000);
-	SETPIN_IO4(OFF);
+    IO_SET(4,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO5(ON);
+    IO_SET(5,ON);
 	_delay_ms(1000);
-	SETPIN_IO5(OFF);
+    IO_SET(5,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO6(ON);
+    IO_SET(6,ON);
 	_delay_ms(1000);
-	SETPIN_IO6(OFF);
+    IO_SET(6,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO7(ON);
+    IO_SET(7,ON);
 	_delay_ms(1000);
-	SETPIN_IO7(OFF);
+    IO_SET(7,OFF);
 
 	_delay_ms(1000);
-	SETPIN_IO8(ON);
+    IO_SET(8,ON);
 	_delay_ms(1000);
-	SETPIN_IO8(OFF);
+    IO_SET(8,OFF);
 }
 #endif
 

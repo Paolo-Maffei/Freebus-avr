@@ -31,24 +31,11 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-#include <inttypes.h>
-#include <avr/io.h>
-#include <avr/eeprom.h>
-#include <avr/pgmspace.h>
-#include <avr/interrupt.h> 
-#include <avr/wdt.h>
-#include <avr/sleep.h>
-#include <util/parity.h>
-#include <util/delay.h>
 #include <string.h>
 
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
-#define ENABLE_ALL_INTERRUPTS()     sei()                   /**< global interrupt enable */ 
-#define DISABLE_IRQS    unsigned char _sreg = SREG; cli();  /**< Disable IRQs, save status before doing this */
-#define ENABLE_IRQS     { if(_sreg & 0x80) sei(); }         /**< Enable IRQs if they are enabled before DISABLE_IRQS is called */
-
 #define ENABLE_RFM22_INT()          {  \
           EIMSK |= 1<<INT1;            \
      }
@@ -182,18 +169,6 @@ static uint8_t inline appTimerOverrun (void)
 /** Store one byte in UART0 send buffer. */
 #define UART_SEND_BYTE(tx_char)     {           \
           UDR0 =(uint8_t)(tx_char);             \
-     }
-
-/** Enable internal hardware watchdog */
-#define ENABLE_WATCHDOG(x)          {           \
-          wdt_enable(x);                        \
-     }
-
-
-/** Disable internal hardware watchdog */
-#define DISABLE_WATCHDOG()          {           \
-          MCUSR = 0;                            \
-          wdt_disable();                        \
      }
 
 /** Execute some EEPROM specific commmands

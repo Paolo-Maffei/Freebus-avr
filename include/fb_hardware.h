@@ -31,6 +31,7 @@
 *************************************************************************/
 #ifdef __AVR__
 #define pgm_read_ptr(x)         pgm_read_word(x)
+#include "freebus-avr.h"
 #endif
 
 #ifdef BOARD301  /* first freebus AVR board rev. 3.01 */
@@ -56,94 +57,6 @@
 #endif
 
 #endif  /* board selection*/
-
-#define SETPIN_IO1(val)         if(val)                                 \
-                                {                                       \
-                                    IO1_PORT |= (1U<<IO1_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO1_PORT &= ~(1U<<IO1_PIN);         \
-                                }
-#define GETPIN_IO1()            ((IO1_IN>>IO1_PIN) & 0x01)
-#define SET_IO_IO1(type)        IO1_DDR = (IO1_DDR & ~(1U<<IO1_PIN)) | (type<<IO1_PIN)
-
-#define SETPIN_IO2(val)         if(val)                                 \
-                                {                                       \
-                                    IO2_PORT |= (1U<<IO2_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO2_PORT &= ~(1U<<IO2_PIN);         \
-                                }
-#define GETPIN_IO2()            ((IO2_IN>>IO2_PIN) & 0x01)
-#define SET_IO_IO2(type)        IO2_DDR = (IO2_DDR & ~(1U<<IO2_PIN)) | (type<<IO2_PIN)
-
-#define SETPIN_IO3(val)         if(val)                                 \
-                                {                                       \
-                                    IO3_PORT |= (1U<<IO3_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO3_PORT &= ~(1U<<IO3_PIN);         \
-                                }
-#define GETPIN_IO3()            ((IO3_IN>>IO3_PIN) & 0x01)
-#define SET_IO_IO3(type)        IO3_DDR = (IO3_DDR & ~(1U<<IO3_PIN)) | (type<<IO3_PIN)
-
-#define SETPIN_IO4(val)         if(val)                                 \
-                                {                                       \
-                                    IO4_PORT |= (1U<<IO4_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO4_PORT &= ~(1U<<IO4_PIN);         \
-                                }
-#define GETPIN_IO4()            ((IO4_IN>>IO4_PIN) & 0x01)
-#define SET_IO_IO4(type)        IO4_DDR = (IO4_DDR & ~(1U<<IO4_PIN)) | (type<<IO4_PIN)
-
-#define SETPIN_IO5(val)         if(val)                                 \
-                                {                                       \
-                                    IO5_PORT |= (1U<<IO5_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO5_PORT &= ~(1U<<IO5_PIN);         \
-                                }
-#define GETPIN_IO5()            ((IO5_IN>>IO5_PIN) & 0x01)
-#define SET_IO_IO5(type)        IO5_DDR = (IO5_DDR & ~(1U<<IO5_PIN)) | (type<<IO5_PIN)
-
-#define SETPIN_IO6(val)         if(val)                                 \
-                                {                                       \
-                                    IO6_PORT |= (1U<<IO6_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO6_PORT &= ~(1U<<IO6_PIN);         \
-                                }
-#define GETPIN_IO6()            ((IO6_IN>>IO6_PIN) & 0x01)
-#define SET_IO_IO6(type)        IO6_DDR = (IO6_DDR & ~(1U<<IO6_PIN)) | (type<<IO6_PIN)
-
-#define SETPIN_IO7(val)         if(val)                                 \
-                                {                                       \
-                                    IO7_PORT |= (1U<<IO7_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO7_PORT &= ~(1U<<IO7_PIN);         \
-                                }
-#define GETPIN_IO7()            ((IO7_IN>>IO7_PIN) & 0x01)
-#define SET_IO_IO7(type)        IO7_DDR = (IO7_DDR & ~(1U<<IO7_PIN)) | (type<<IO7_PIN)
-
-#define SETPIN_IO8(val)         if(val)                                 \
-                                {                                       \
-                                    IO8_PORT |= (1U<<IO8_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
-                                    IO8_PORT &= ~(1U<<IO8_PIN);         \
-                                }
-#define GETPIN_IO8()            ((IO8_IN>>IO8_PIN) & 0x01)
-#define SET_IO_IO8(type)        IO8_DDR = (IO8_DDR & ~(1U<<IO8_PIN)) | (type<<IO8_PIN)
 
 #define SETPIN_PROG(val)        if(val)                                 \
                                 {                                       \

@@ -160,7 +160,7 @@ struct {
 uint8_t restartApplication(void)
 {
 	/* IO configuration */
-	SET_IO_IO1(IO_INPUT);
+	IO_SET_DIR(1, IO_INPUT);
 
 	app_dat.oldpinstate = 1;
 	/* Reset state */
@@ -211,7 +211,7 @@ DEBUG_NEWLINE();
 	}
 
 	/* Get actual input value from PIR */
-	app_dat.inpstate = GETPIN_IO1();
+	app_dat.inpstate = IO_GET(1);
 
 	/* Check if value changed ? */
 	if (app_dat.inpstate ^ app_dat.oldpinstate) {
