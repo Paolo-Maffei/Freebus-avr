@@ -13,7 +13,9 @@ else
 		ifeq (,$(findstring F_CPU,$(CUSTOM_CFLAGS)))
 		    CUSTOM_CFLAGS += -DF_CPU=8000000UL
 		endif
-		ifneq (,$(findstring BOARD301,$(CUSTOM_CFLAGS)))
+		ifneq (,$(findstring TPUART,$(CUSTOM_CFLAGS)))
+			LIBS?=-lfbtpuart$(DEBUG) -L..
+		else ifneq (,$(findstring BOARD301,$(CUSTOM_CFLAGS)))
 			LIBS?=-lavreib$(DEBUG) -L..
 		else
 			LIBS?=-lfbtp$(DEBUG) -L..

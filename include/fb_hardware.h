@@ -48,9 +48,11 @@
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
     #include "fbrf-atmega168.h"
-#elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
+#elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__)
     #include "fbrf-atmega168p.h"
-#elif defined(__EIBD__) 
+#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+    #include "freebus-atmega644p.h"
+#elif defined(__EIBD__)
     #include "fb-eibd.h"
 #else
     #error CPU not supported
