@@ -48,8 +48,8 @@
 // 100 ms -> 10 TICKS
 // 1 sec -> 1000 msec -> 100 TICKS
 
-//typedef uint16_t timer_t;
 typedef uint32_t timer_t;
+#define timed_out(a, b) ((int32_t)(a) - (int32_t)(b) > 0)
 
 /*************************************************************************
 * FUNCTION PROTOTYPES
@@ -58,7 +58,6 @@ typedef uint32_t timer_t;
 TIMER_EXT timer_t get_ticks(void);
 TIMER_EXT void timer_init(void);
 TIMER_EXT void alloc_timer(timer_t *t, timer_t ticks);
-TIMER_EXT void dealloc_timer(timer_t *t);
 TIMER_EXT uint8_t check_timeout(timer_t *t);
 
 #endif

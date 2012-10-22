@@ -144,8 +144,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
                 // Check for delay factor for off
     if(app_dat.portValue & (1<<commObjectNumber) && timerOffActive && !(timerActive) && value == 0) {
         DEBUG_PUTS("TIMER_OFF ");
-        if(timerRunning)
-                        dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
         SET_STATE(TIMER_ACTIVE);
@@ -153,8 +151,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
                 // Check for delay factor for on
     if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && value == 1) {
         DEBUG_PUTS("TIMER_ON ");
-        if(timerRunning)
-            dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
         SET_STATE(TIMER_ACTIVE);
@@ -163,8 +159,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
     if (timerActive && timerOffActive && (value == 1)) {
         DEBUG_PUTS("TIMER ");
         app_dat.portValue |= (1<<commObjectNumber);
-        if(timerRunning)
-            dealloc_timer(&app_dat.timer[commObjectNumber]);
         alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
         app_dat.runningTimer |= 1<<commObjectNumber;
         SET_STATE(TIMER_ACTIVE);
@@ -177,7 +171,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
         if(!(mem_ReadByte(APP_DELAY_ACTION) & (1<<commObjectNumber))) {
             DEBUG_PUTS("TIMER_DISABLE ");
             if(app_dat.runningTimer & (1<<commObjectNumber)) {
-                dealloc_timer(&app_dat.timer[commObjectNumber]);
                 app_dat.runningTimer &= ~(1<<commObjectNumber);
                 app_dat.portValue &= ~(1<<commObjectNumber);
             }
@@ -332,7 +325,6 @@ void app_loop() {
     if(IN_STATE(PWM_TIMER_ACTIVE) && check_timeout(&app_dat.pwmTimer)) {
         DEBUG_PUTS("DISABLE PWM");
         DEBUG_NEWLINE();
-        dealloc_timer(&app_dat.pwmTimer);
         ENABLE_PWM(PWM_SETPOINT);
         UNSET_STATE(PWM_TIMER_ACTIVE);
     }
@@ -346,7 +338,6 @@ void app_loop() {
                     DEBUG_PUTS("TIMEOUT ");
 					uint8_t j = 1<<commObjectNumber;
 					app_dat.runningTimer &= ~(1<<commObjectNumber);
-                    dealloc_timer(&app_dat.timer[commObjectNumber]);
 					app_dat.portValue ^= j;
                     
                     uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
