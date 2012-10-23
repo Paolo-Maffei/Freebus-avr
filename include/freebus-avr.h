@@ -61,6 +61,8 @@
 #define IO_GET(nr)  ((IO##nr##_IN>>IO##nr##_PIN) & 0x01)
 #define IO_SET_DIR(nr,type) do {IO##nr##_DDR = (IO##nr##_DDR & ~(1U<<IO##nr##_PIN)) | (type<<IO##nr##_PIN); } while(0)
 
+typedef uint8_t prog_uint8_t;
+
 #endif /* _FREEBUS_AVR_H */
 #endif /* _FB_HARDWARE_H */
 /*********************************** EOF *********************************/
