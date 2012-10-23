@@ -138,7 +138,6 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
     uint8_t timerActive = mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber);
     uint8_t timerOffActive = mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber);
     uint8_t timerOnActive = mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber);
-    uint8_t timerRunning = app_dat.runningTimer & (1<<commObjectNumber);
     
     /// @bug a timer function with a delay on one will not work
                 // Check for delay factor for off
