@@ -101,7 +101,7 @@ HAL_EXT uint8_t fb_hal_txqueue_msg(struct msg* tx);
 HAL_EXT void sendTestTelegram(void);
 HAL_EXT void panic(uint8_t reason);
 HAL_EXT void jumpToBootloader(void);
- 
+HAL_EXT void freebus_sleep_mode(void);
 
 #endif /* _FB_HAL_H */
 /*********************************** EOF *********************************/

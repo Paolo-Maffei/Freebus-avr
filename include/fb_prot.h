@@ -222,5 +222,6 @@ PROT_EXT uint8_t fb_handlemsg(struct msg *rxmsg);
 PROT_EXT void fbprot_msg_handler ( void )XBOOT_SECTION;
 PROT_EXT void fbprot_forward_msg ( struct msg *rxmsg );
 PROT_EXT void fbprot_LibInit(void);
+PROT_EXT void app_loop(void);
 #endif /* _FB_PROT_H */
 /*********************************** EOF *********************************/
