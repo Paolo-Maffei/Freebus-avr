@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2007 Dirk Opfer <dirk@do13.de>
 *  Copyright (c) 2007 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
@@ -19,10 +19,10 @@
 * @file   fb_hal.h
 * @author Dirk Opfer, Matthias Fechner, Christian Bode
 * @date   Tue Jan 08 11:19:00 2008
-* 
+*
 * @brief  Definitions on Hardware Abstration Layer
-* 
-* 
+*
+*
 */
 #ifndef _FB_HAL_H
 #define _FB_HAL_H

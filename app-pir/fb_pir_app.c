@@ -100,7 +100,7 @@ enum states_e {
  * DECLARATIONS
  **************************************************************************/
 /* Fixed delay values
-   0,5 sec ... 2 sec 
+   0,5 sec ... 2 sec
    values stored in table a directly converted into ticks
 */
 
@@ -172,7 +172,7 @@ uint8_t restartApplication(void)
 
 
 /**
- * Function is called periodically if the application is enabled in system_state 
+ * Function is called periodically if the application is enabled in system_state
  *
  */
 void app_loop()
@@ -226,7 +226,7 @@ DEBUG_NEWLINE();
 				//0x01FD  Bit 7-7  Param-ID: 188177  Timebase for Off-Delay  Schalten aufgrund Bewegung  Master/Slave  Bewegung Kanal 1
 				//	0  Sekunden
 				//	1  Minuten
-				
+
 				//0x01FD  Bit 0-6  Param-ID: 188198  Off-Delay  Retrigger  Einschalten  Master/Slave  Bewegung Kanal 1
 
 				uint16_t off_delay = mem_ReadByte(0x1fd) & 0x7f;
