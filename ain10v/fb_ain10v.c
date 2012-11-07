@@ -827,14 +827,15 @@ int main(void)
     DEBUG_PUTS_BLOCKING("V0.1");
     DEBUG_NEWLINE_BLOCKING();
        
+    /* init eeprom modul and RAM structure */ 
+    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+
     /* init procerssor register */
     fbhal_Init();
 
     /* enable interrupts */
     ENABLE_ALL_INTERRUPTS();
 
-    /* init eeprom modul and RAM structure */ 
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
 
     /* init protocol layer */
     /* load default values */
@@ -843,15 +844,21 @@ int main(void)
     /* config application hardware */
     (void)restartApplication();
 
+    /* activate watchdog */
+    ENABLE_WATCHDOG ( WDTO_250MS );
+
 
     /***************************/
     /* the main loop / polling */
     /***************************/
     while(1) {
+        /* calm the watchdog */
+        wdt_reset();
           /* Auswerten des Programmiertasters */
 		if(fbhal_checkProgTaster()) {
 
 		}
+        fbprot_msg_handler();
 		if(TIMER1_OVERRUN) {
 			CLEAR_TIMER1_OVERRUN;
 		     timerOverflowFunction();
