@@ -455,8 +455,6 @@ void switchObjects(void) {
     uint8_t portOperationMode;  /**< defines if IO is closer or opener, see address 0x01F2 in eeprom */
     uint8_t savedValue;
     uint8_t i;
-	uint8_t pattern;
-
 
     DEBUG_PUTS("Sw");
     DEBUG_SPACE();
@@ -465,20 +463,6 @@ void switchObjects(void) {
     /// @todo maybe we can write to eeprom if we have a power failure only
     savedValue = mem_ReadByte(0x0100);
     if(savedValue != app_dat.portValue) {
-
-
-		// Rückmeldungen Senden ( @todo pruefen ob ein rückmeldeobjekt besteht)
-		for (i=0;i<8;i++) {
-			pattern=1<<i;
-			if((portValue&pattern)!=(savedValue&pattern)) {
-				sendTelegram(i, (portValue & pattern) ? 1 : 0, 0x0C);
-			}
-			
-		}
-
-
-
-
         // now check if last status must be saved, we write to eeprom only if necessary
         initialPortValue = mem_Read2Bytes(APP_RESTORE_AFTER_PL);
         for(i=0; i<=7; i++) {
