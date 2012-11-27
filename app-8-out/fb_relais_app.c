@@ -100,6 +100,7 @@ static enum states_e app_state;
 struct {
     uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
+    uint8_t oldValue;           /// hold the old value to check if we must enable a PWM or not (enable PWM only if switching from low -> high
     timer_t timer[8];
     timer_t pwmTimer;           /// stores a reference to the generic timer
 	uint8_t runningTimer;
@@ -111,7 +112,7 @@ struct {
  * FUNCTION PROTOTYPES
  **************************************************************************/
 void switchObjects(void);
-void switchPorts(uint8_t port);
+void switchPorts(uint8_t port, uint8_t oldPort);
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -279,6 +280,7 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
 void app_loop() {
     uint8_t commObjectNumber;
     uint8_t value;
+    uint8_t needToSwitch=0;
 
     // Iterate over all objects and check if the status has changed
     for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT13; commObjectNumber++) {
@@ -315,14 +317,14 @@ void app_loop() {
                     app_dat.portValue &= ~(1<<commObjectNumber);
                 }
             }
-            switchObjects();
+            needToSwitch=1;
         }
     }
 
     // check if we can enable PWM
     // if app_state==PWM_TIMER_ACTIVE and pwmTimer is reached enable PWM, else no change
     if(IN_STATE(PWM_TIMER_ACTIVE) && check_timeout(&app_dat.pwmTimer)) {
-        DEBUG_PUTS("DISABLE PWM");
+        DEBUG_PUTS("ENABLE PWM");
         DEBUG_NEWLINE();
         ENABLE_PWM(PWM_SETPOINT);
         UNSET_STATE(PWM_TIMER_ACTIVE);
@@ -341,13 +343,17 @@ void app_loop() {
                     
                     uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
                     SetAndTransmitBit(commObjectNumber, value);
-					switchObjects();
+                    needToSwitch=1;
                 }
 			}
 		}
 		if(app_dat.runningTimer == 0x0) {
             UNSET_STATE(TIMER_ACTIVE);
 		}			
+}
+
+    if(needToSwitch) {
+        switchObjects();
 }
 }
 
@@ -455,14 +461,8 @@ void switchObjects(void) {
     DEBUG_PUTS("Sw");
     DEBUG_SPACE();
 
-    /* change PWM to supply relays with full power */
-    DEBUG_PUTS("ENABLE PWM ");
-    alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
-    SET_STATE(PWM_TIMER_ACTIVE);
-    ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
-    // check if timer is active on the commObjectNumber
-
     /* read saved status and check if it was changed */
+    /// @todo maybe we can write to eeprom if we have a power failure only
     savedValue = mem_ReadByte(0x0100);
     if(savedValue != app_dat.portValue) {
 
@@ -492,22 +492,32 @@ void switchObjects(void) {
      
     /* check 0x01F2 for opener or closer and modify data to reflect that, then switch the port */
     portOperationMode = mem_ReadByte(APP_CLOSER_MODE);
-    switchPorts(app_dat.portValue^portOperationMode);
+    switchPorts(app_dat.portValue^portOperationMode, app_dat.oldValue^portOperationMode);
 
     return;
 }
 
 /**                                                                       
  * switch all of the output pins
+ * @todo check if it is ok to switch all 8 ports at once, or to we have to delay the switches to give the capacity enough time to recharge again.
  *
  * @param port contains values for 8 output pins. They may be on different ports of the avr.
  *   
  */
-void switchPorts(uint8_t port) {
+void switchPorts(uint8_t port, uint8_t oldPort) {
     DEBUG_PUTS("SWITCH ");
 	DEBUG_PUTHEX(port);
 	DEBUG_SPACE();
 	
+    // Disable PWM only if we switch an IO to high, release a relay does not need power.
+    if(port != oldPort && ((oldPort & 0x00) | port)) {
+        /* change PWM to supply relays with full power */
+        DEBUG_PUTS("DISABLE PWM ");
+        alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
+        SET_STATE(PWM_TIMER_ACTIVE);
+        ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
+    }
+
     IO_SET(1,(uint8_t)(port & 0x01));
 
     IO_SET(2,(uint8_t)(port & 0x02));
@@ -524,6 +534,7 @@ void switchPorts(uint8_t port) {
 
     IO_SET(8,(uint8_t)(port & 0x80));
 
+    app_dat.oldValue=app_dat.portValue;
     return;
 }
 

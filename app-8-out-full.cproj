@@ -101,7 +101,7 @@
     <ListValues>
       <Value>BOARD301</Value>
       <Value>FB_TP</Value>
-      <Value>DEBUG_UART</Value>
+      <Value>DEBUG_UAR</Value>
       <Value>F_CPU=8000000UL</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
