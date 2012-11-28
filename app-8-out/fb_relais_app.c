@@ -2,10 +2,10 @@
 /*
  *      __________  ________________  __  _______
  *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
- *    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
- *   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
- *  /_/   /_/ |_/_____/_____/_____/\____//____/  
- *                                      
+ *    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+ *   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+ *  /_/   /_/ |_/_____/_____/_____/\____//____/
+ *
  *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
  *  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
  *
@@ -17,7 +17,7 @@
  * @file   fb_relais_app.c
  * @author Matthias Fechner, Dirk Armbrust
  * @date   Sat Jan 05 17:44:47 2008
- * 
+ *
  * @brief  The relays application to switch 8 relays
  * Manufacturer code is 0x04 = Jung\n
  * Device type (2038.10) 0x2060 Ordernumber: 2138.10REG\n
@@ -75,7 +75,7 @@ S     Schreiben       Objekt kann empfangen
 Ü     Übertragen      Objekt kann senden
 
 */
- 
+
 /// Bit list of states the program can be in
 enum states_e {
     IDLE = 0,
@@ -139,7 +139,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
     uint8_t timerActive = mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber);
     uint8_t timerOffActive = mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber);
     uint8_t timerOnActive = mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber);
-    
+
     /// @bug a timer function with a delay on one will not work
                 // Check for delay factor for off
     if(app_dat.portValue & (1<<commObjectNumber) && timerOffActive && !(timerActive) && value == 0) {
@@ -201,12 +201,12 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
         if (sfOut) {
             if (sfOut > 8) {
                 return;
-            }                
+            }
             commObjectNumber =  sfOut-1;
             *value = (app_dat.objectStates>>(sfOut-1))&1;
         } else {
             return;
-        }            
+        }
         /* do new evaluation of that object */
     }
 
@@ -239,20 +239,20 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
                     /* start blocking */
                     if (app_dat.blockedStates & sfMask) {
                         return; // we are blocked, do nothing
-                    }                        
+                    }
                     app_dat.blockedStates |= sfMask;
                     *value = (mem_ReadByte(APP_SPECIAL_FUNCTION1 + (specialFunc>>1)))>>((specialFunc&1)*4)&0x03;
                     if (*value == 0) {
                         return;
-                    }                        
+                    }
                     if (*value == 1) {
                         app_dat.portValue &= ~(1<<commObjectNumber);
                         SetAndTransmitBit(commObjectNumber, 0);
-                    }                        
+                    }
                     if (*value == 2) {
                         app_dat.portValue |= (1<<commObjectNumber);
                         SetAndTransmitBit(commObjectNumber, 1);
-                    }                        
+                    }
                     switchObjects();
                     return;
                 } else {
@@ -263,7 +263,7 @@ void handleLogicFunction( uint8_t commObjectNumber, uint8_t *value ) {
                         *value = (mem_ReadByte(APP_SPECIAL_FUNCTION1 + (specialFunc>>1)))>>((specialFunc&1)*4+2)&0x03;
                         if (*value == 0) {
                             return;
-                        }                            
+                        }
                         *value--;
                         /* we are unblocked, continue as normal */
                     }
@@ -340,7 +340,7 @@ void app_loop() {
 					uint8_t j = 1<<commObjectNumber;
 					app_dat.runningTimer &= ~(1<<commObjectNumber);
 					app_dat.portValue ^= j;
-                    
+
                     uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
                     SetAndTransmitBit(commObjectNumber, value);
                     needToSwitch=1;
@@ -349,7 +349,7 @@ void app_loop() {
 		}
 		if(app_dat.runningTimer == 0x0) {
             UNSET_STATE(TIMER_ACTIVE);
-		}			
+		}
 }
 
     if(needToSwitch) {
@@ -357,18 +357,18 @@ void app_loop() {
 }
 }
 
-/** 
+/**
  * ISR is called if on TIMER1 the comparator B matches the defined condition.
- * 
+ *
  */
 ISR(TIMER1_COMPB_vect) {
     return;
 }
 
-/** 
+/**
  * Function is called when microcontroller gets power or if the application must be restarted.
  * It restores data like in the parameters defined.
- * 
+ *
  * @return FB_ACK or FB_NACK
  */
 uint8_t restartApplication(void) {
@@ -446,9 +446,9 @@ uint8_t restartApplication(void) {
     return 1;
 } /* restartApplication() */
 
-/** 
+/**
  * Switch the objects to state in portValue and save value to eeprom if necessary.
- * 
+ *
  */
 void switchObjects(void) {
     uint16_t initialPortValue;
@@ -473,7 +473,7 @@ void switchObjects(void) {
             }
         }
     }
-     
+
     /* check 0x01F2 for opener or closer and modify data to reflect that, then switch the port */
     portOperationMode = mem_ReadByte(APP_CLOSER_MODE);
     switchPorts(app_dat.portValue^portOperationMode, app_dat.oldValue^portOperationMode);
@@ -481,20 +481,22 @@ void switchObjects(void) {
     return;
 }
 
-/**                                                                       
+/**
  * switch all of the output pins
  * @todo check if it is ok to switch all 8 ports at once, or to we have to delay the switches to give the capacity enough time to recharge again.
  *
  * @param port contains values for 8 output pins. They may be on different ports of the avr.
- *   
+ *
  */
 void switchPorts(uint8_t port, uint8_t oldPort) {
     DEBUG_PUTS("SWITCH ");
+	DEBUG_PUTHEX(oldPort);
+	DEBUG_PUTS(" TO ");
 	DEBUG_PUTHEX(port);
-	DEBUG_SPACE();
-	
+    DEBUG_SPACE();
+
     // Disable PWM only if we switch an IO to high, release a relay does not need power.
-    if(port != oldPort && ((oldPort & 0x00) | port)) {
+    if((oldPort ^ port) & port) {
         /* change PWM to supply relays with full power */
         DEBUG_PUTS("DISABLE PWM ");
         alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
@@ -523,11 +525,11 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
 }
 
 #ifdef IO_TEST
-/** 
+/**
  * Set all IO for IO pin for 1 second to high, with a break of 1 second.
  * Function is called on power on of the controller or after a reset.
  * Can be used to check if LEDs and relais are working correctly.
- * 
+ *
  */
 void io_test() {
     IO_SET(1,ON);
@@ -572,14 +574,14 @@ void io_test() {
 #endif
 
 #ifdef HARDWARETEST
-/** 
+/**
  * test function: processor and hardware
- * 
- * @return 
+ *
+ * @return
  *
  */
 void hardwaretest(void) {
-    static uint8_t pinstate = 0x01; 
+    static uint8_t pinstate = 0x01;
 
     switchPorts(pinstate);
 
