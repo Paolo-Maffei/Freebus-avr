@@ -26,4 +26,7 @@ linker_flags
 /app-pir/Release/Makefile
 /app-pir/Release/freebus-avr-pir
 /app-pir/Release/freebus-avr-pir.eep
-Debug/
+Debug
+lib
+
+app-8-in/default/makedep.mk
