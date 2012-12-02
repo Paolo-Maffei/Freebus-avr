@@ -41,6 +41,49 @@
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
+/* application parameters */
+#define PORTFUNCTION_12     0x01CE  ///< @todo add documentation
+#define PORTFUNCTION_34     0x01CF  ///< @todo add documentation
+#define PORTFUNCTION_56     0x01D0  ///< @todo add documentation
+#define PORTFUNCTION_78     0x01D1  ///< @todo add documentation
+#define DEBOUNCE_FACTOR     0x01D2  ///< @todo add documentation 
+#define POWERONDELAY_FACTOR 0x01D4  ///< @todo add documentation
+/* Funktion Schalten */
+#define PORTFUNC_BASEADR    0x01D5  ///< @todo add documentation
+#define PORTFUNC_EDGEFUNC   0x01D7  ///< @todo add documentation
+/* Funktion Jalousie */
+#define PORTFUNC_T1_FAKTOR  0x01D6  ///< @todo add documentation
+#define PORTFUNC_T2_FAKTOR  0x01D7  ///< @todo add documentation
+#define PORTFUNC_JALOMODE   0x01D8  ///< @todo add documentation
+#define PORTFUNC_T1_BASIS   0x01F6  ///< @todo add documentation
+#define PORTFUNC_T2_BASIS   0x01FA  ///< @todo add documentation
+
+#define POWERONDELAY_BASE   0x01FE  ///< @todo add documentation
+
+#define OBJ_SIZE            8       ///< @todo add documentation
+
+
+/* EIB Device Parameter Values */
+
+#define EIB_PAR_UP          0U     /**< Jalousie Actor value for UP */
+#define EIB_PAR_DOWN        1U     /**< Jalousie Actor value for DOWN */
+
+/** list of the default parameter for this application */
+const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
+{ MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode 0x0004 = Jung                 */
+{ MANUFACTORER_ADR_LOW,         0x04 },    /**< Herstellercode 0x0004 = Jung                 */
+{ DEVICE_NUMBER_HIGH,           0x70 },    /**< Ger�te Typ (2118) 7054h                      */
+{ DEVICE_NUMBER_LOW,            0x54 },
+{ SOFTWARE_VERSION_NUMBER,      0x02 },    /**< Versionsnummer                               */
+{ APPLICATION_RUN_STATUS,       0xFF },    /**< Run-Status (00=stop FF=run)                  */
+{ COMMSTAB_ADDRESS,             0x84 },    /**< COMMSTAB Pointer                             */
+{ APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
+
+{ PA_ADDRESS_HIGH,              0x11 },    /**< default address is 1.1.52                    */
+{ PA_ADDRESS_LOW,               0x34 },    /**<                                              */
+
+{ 0xFF,                         0xFF }     /**< END-sign; do not change                      */
+};
 
 
 /**************************************************************************
