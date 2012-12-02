@@ -30,7 +30,6 @@
 /* - Lauflicht mit 130 ms Pulslaenge (Applikationtimer) */
 /* - Testtelegramme (Ausmessen des Bustimings */
 
-
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
@@ -89,8 +88,7 @@
 
 
 /** @todo add documentation */
-typedef enum
-{
+typedef enum {
     eFunc_none,                 ///< @todo add documentation
     eFunc_schalten,             ///< @todo add documentation
     eFunc_dimmen,               ///< @todo add documentation
@@ -107,10 +105,8 @@ typedef enum
 /** 
 * @todo add documentation
 */
-typedef union 
-{
-    struct
-    {
+typedef union {
+    struct {
         uint8_t objectVal_1;
         uint8_t objectVal_2;
     } Schalten; ///< @todo add documentation
@@ -122,7 +118,6 @@ typedef union
         uint8_t intState   : 2;
     } Jalousie; ///< @todo add documentation
 } INTVAL_UNION;
-
 
 /**************************************************************************
 * DECLARATIONS
@@ -142,8 +137,6 @@ static uint8_t currentTimeOverflow;       /**< the amount of overflows from curr
 
 static uint8_t powerOnDelay;              ///< @todo add documentation
 
-
-
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 
 /** list of the default parameter for this application */
@@ -162,7 +155,6 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM =
 
     { 0xFF,                    0xFF }     /**< END-sign; do not change                      */
 };
-
 
 /*************************************************************************
 * FUNCTION PROTOTYPES
@@ -189,8 +181,7 @@ void hardwaretest(void);
 * 
 * @return 
 */
-void timerOverflowFunction(void)
-{
+void timerOverflowFunction(void) {
     uint8_t i;
     uint8_t powerOnFunction;
     uint8_t portChanged;
@@ -198,36 +189,29 @@ void timerOverflowFunction(void)
     uint8_t debounceFactor;
     
     /* check if programm is running */
-    if(mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF)
-    {
+    if (mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF) {
         /* Do nothing */
         ;
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    else if(powerOnDelay)
-    {
+    else if (powerOnDelay) {
         powerOnDelay--;
-        if(powerOnDelay == 0)
-        {
+        if (powerOnDelay == 0) {
             /* Read Input Ports */
             portValue = ReadPorts();
 
-            for(i=0; i<8; i++)
-            {
-                powerOnFunction = (mem_ReadByte(PORTFUNC_BASEADR + (i * 4)) & 0xC0);
+            for (i = 0; i < 8; i++) {
+                powerOnFunction = (mem_ReadByte(PORTFUNC_BASEADR + (i * 4))
+                        & 0xC0);
 
-                switch(getPortFunction(i))
-                {
+                switch (getPortFunction(i)) {
                     case eFunc_schalten:
-                        if(powerOnFunction == 0x40)
-                        {
+                    if (powerOnFunction == 0x40) {
                             /* send ON message */
                             sendTelegram(i, 1, 0x00);
                             sendTelegram((i + 8), 1, 0x00);
-                        }
-                        else if(powerOnFunction == 0x80)
-                        {
+                    } else if (powerOnFunction == 0x80) {
                             /* send OFF message */
                             sendTelegram(i, 0, 0x00);
                             sendTelegram((i + 8), 0, 0x00);
@@ -242,13 +226,10 @@ void timerOverflowFunction(void)
                     case eFunc_dimmen:
                         break;
                     case eFunc_jalousie:
-                        if(powerOnFunction == 0x40)
-                        {
+                    if (powerOnFunction == 0x40) {
                             /* send DOWN message */
                             sendTelegram((i + 8), EIB_PAR_DOWN, 0x00);
-                        }
-                        else if(powerOnFunction == 0x80)
-                        {
+                    } else if (powerOnFunction == 0x80) {
                             /* send UP message */
                             sendTelegram((i + 8), EIB_PAR_UP, 0x00);
                         }
@@ -258,18 +239,13 @@ void timerOverflowFunction(void)
                 }
             }
         }                                            
-    }
-    else
-    {
+    } else {
         /* process application */
 
-        if(currentTime == 0xFFFF)
-        {
+        if (currentTime == 0xFFFF) {
             currentTime = 0;
             currentTimeOverflow++;
-        }
-        else
-        {
+        } else {
             currentTime++;
         }
 
@@ -277,30 +253,23 @@ void timerOverflowFunction(void)
         portChanged = portValue ^ ReadPorts();
 
         /* new input level => start debaunce time */
-        if(portChanged != 0)
-        {
+        if (portChanged != 0) {
             /* Debounce */
             debounceFactor = mem_ReadByte(DEBOUNCE_FACTOR);
 
-            for(i=0; i<debounceFactor; i++)
-            {
+            for (i = 0; i < debounceFactor; i++) {
                 /* delay time 0.5 ms */
                 _delay_us(500);
             } 
     
             portNewValue = ReadPorts();
-        }
-        else
-        {
+        } else {
             portNewValue = portValue;
         }
 
-
         /* process the port function */
-        for(i=0; i<8; i++)
-        {
-            switch(getPortFunction(i))
-            {
+        for (i = 0; i < 8; i++) {
+            switch (getPortFunction(i)) {
                 case eFunc_schalten:
                     /* toDo: Hier Sperrobjekt checken */
                     PortFunc_Switch(i, portNewValue, portChanged);
@@ -338,14 +307,12 @@ ISR(TIMER1_COMPB_vect)
 * 
 * @return 
 */
-uint8_t restartApplication(void)
-{
+uint8_t restartApplication(void) {
     uint8_t i;
 
     /* Reset Object and Port State */
     portValue = 0U;
-    for(i=0; i<OBJ_SIZE; i++)
-    {
+    for (i = 0; i < OBJ_SIZE; i++) {
         intVal[i].Schalten.objectVal_1 = 0U;
         intVal[i].Schalten.objectVal_2 = 0U;
     }
@@ -407,8 +374,7 @@ uint8_t restartApplication(void)
 * 
 * @return 
 */
-uint8_t readApplication(struct msg *rxmsg)
-{
+uint8_t readApplication(struct msg *rxmsg) {
     return FB_ACK;
 }   /* readApplication() */
 
@@ -420,8 +386,7 @@ uint8_t readApplication(struct msg *rxmsg)
 * 
 * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
 */
-uint8_t runApplication(struct msg *rxmsg)
-{
+uint8_t runApplication(struct msg *rxmsg) {
 
 	return FB_ACK; // must not return NACK, causes confusion with other devices responding
 }   /* runApplication() */
@@ -432,12 +397,10 @@ uint8_t runApplication(struct msg *rxmsg)
 * @return port function
 *   
 */
-EFUNC_PORT getPortFunction(uint8_t port)
-{
+EFUNC_PORT getPortFunction(uint8_t port) {
     uint8_t portfunction;
 
-    switch(port)
-    {
+    switch (port) {
         case 0:
             portfunction = (mem_ReadByte(PORTFUNCTION_12) & 0x0F);
             break;
@@ -507,131 +470,94 @@ uint8_t ReadPorts(void)
 * @param newPortValue
 * @param portChanged
 */
-void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged)
-{
+void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
     uint8_t edgeFunc;
 
     edgeFunc = mem_ReadByte(PORTFUNC_EDGEFUNC + (port * 4));
 
-    if((portChanged & (1U<<port)) != 0)
-    {
-        if(((newPortValue>>port) & 0x01) != 0) 
-        {
+    if ((portChanged & (1U << port)) != 0) {
+        if (((newPortValue >> port) & 0x01) != 0) {
             /* rising edge */
-            if((edgeFunc & 0x0C) == 0x04)
-            {
+            if ((edgeFunc & 0x0C) == 0x04) {
                 /* object x.1 = EIN */
                 sendTelegram(port, 1, 0x00);
                 intVal[port].Schalten.objectVal_1 = 1U;
 
-            }
-            else if((edgeFunc & 0x0C) == 0x08)
-            {
+            } else if ((edgeFunc & 0x0C) == 0x08) {
                 /* object x.1 = AUS */
                 sendTelegram(port, 0, 0x00);
                 intVal[port].Schalten.objectVal_1 = 0U;
-            }
-            else if((edgeFunc & 0x0C) == 0x0C)
-            {
+            } else if ((edgeFunc & 0x0C) == 0x0C) {
                 /* object x.1 = UM */
-                if(intVal[port].Schalten.objectVal_1)
-                {
+                if (intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
                     sendTelegram(port, 0, 0x00);
                     intVal[port].Schalten.objectVal_1 = 0U;
-                }
-                else
-                {
+                } else {
                     /* switch 0 => 1 */
                     sendTelegram(port, 1, 0x00);
                     intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
-            if((edgeFunc & 0xC0) == 0x40)
-            {
+            if ((edgeFunc & 0xC0) == 0x40) {
                 /* object x.2 = EIN */
                 sendTelegram((port + 8), 1, 0x00);
                 intVal[port].Schalten.objectVal_2 = 1U;
-            }
-            else if((edgeFunc & 0xC0) == 0x80)
-            {
+            } else if ((edgeFunc & 0xC0) == 0x80) {
                 /* object x.2 = AUS */
                 sendTelegram((port + 8), 0, 0x00);
                 intVal[port].Schalten.objectVal_2 = 0U;
-            }
-            else if((edgeFunc & 0xC0) == 0xC0)
-            {
+            } else if ((edgeFunc & 0xC0) == 0xC0) {
                 /* object x.2 = UM */
-                if(intVal[port].Schalten.objectVal_2)
-                {
+                if (intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
                     sendTelegram((port + 8), 0, 0x00);
                     intVal[port].Schalten.objectVal_2 = 0U;
-                }
-                else
-                {
+                } else {
                     /* switch 0 => 1 */
                     sendTelegram((port + 8), 1, 0x00);
                     intVal[port].Schalten.objectVal_2 = 1U;
                 }
             }
-        }            
-        else
-        {
+        } else {
             /* falling edge */
-            if((edgeFunc & 0x03) == 0x01)
-            {
+            if ((edgeFunc & 0x03) == 0x01) {
                 /* object x.1 = EIN */
                 sendTelegram(port, 1, 0x00);
                 intVal[port].Schalten.objectVal_1 = 1U;
-            }
-            else if((edgeFunc & 0x03) == 0x02)
-            {
+            } else if ((edgeFunc & 0x03) == 0x02) {
                 /* object x.1 = AUS */
                 sendTelegram(port, 0, 0x00);
                 intVal[port].Schalten.objectVal_1 = 0U;
-            }
-            else if((edgeFunc & 0x03) == 0x03)
-            {
+            } else if ((edgeFunc & 0x03) == 0x03) {
                 /* object x.1 = UM */
-                if(intVal[port].Schalten.objectVal_1)
-                {
+                if (intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
                     sendTelegram(port, 0, 0x00);
                     intVal[port].Schalten.objectVal_1 = 0U;
-                }
-                else
-                {
+                } else {
                     /* switch 0 => 1 */
                     sendTelegram(port, 1, 0x00);
                     intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
-            if((edgeFunc & 0x30) == 0x10)
-            {
+            if ((edgeFunc & 0x30) == 0x10) {
                 /* object x.2 = EIN */
                 sendTelegram((port + 8), 1, 0x00);
                 intVal[port].Schalten.objectVal_2 = 1U;
-            }
-            else if((edgeFunc & 0x30) == 0x20)
-            {
+            } else if ((edgeFunc & 0x30) == 0x20) {
                 /* object x.2 = AUS */
                 sendTelegram((port + 8), 0, 0x00);
                 intVal[port].Schalten.objectVal_2 = 0U;
-            }
-            else if((edgeFunc & 0x30) == 0x30)
-            {
+            } else if ((edgeFunc & 0x30) == 0x30) {
                 /* object x.2 = UM */
-                if(intVal[port].Schalten.objectVal_2)
-                {
+                if (intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
                     sendTelegram((port + 8), 0, 0x00);
                     intVal[port].Schalten.objectVal_2 = 0U;
-                }
-                else
-                {
+                } else {
                     /* switch 0 => 1 */
                     sendTelegram((port + 8), 1, 0x00);
                     intVal[port].Schalten.objectVal_2 = 1U;
@@ -770,9 +696,9 @@ uint16_t jalousieTimer;
                     }
 
                     /* Delaytime T2 */
-                    jalousieTimer = mem_ReadByte(PORTFUNC_T2_BASIS + ((port+1)>>1));
-                    if( (port & 0x01) != 0)
-                    {
+                jalousieTimer = mem_ReadByte(
+                        PORTFUNC_T2_BASIS + ((port + 1) >> 1));
+                if ((port & 0x01) != 0) {
                         jalousieTimer =  (jalousieTimer >> 4) + 1;
                     }
 
@@ -782,52 +708,39 @@ uint16_t jalousieTimer;
                     intVal[port].Jalousie.timer =  jalousieTimer - 1U;
                     intVal[port].Jalousie.intState = 2U;
                 }
-            }
-            else
-            {
+        } else {
                 /* Bedienkonzept lang-kurz */
-                if( intVal[port].Jalousie.timer != 0)
-                {
+            if (intVal[port].Jalousie.timer != 0) {
                     intVal[port].Jalousie.timer--;
 
                     /* detect falling edge */
-                    if( (~newPortValue & portChanged & (1U<<port)) != 0U)
-                    {
+                if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                         /* send STEP (STOP) telegramm */
                         sendTelegram(port, 0, 0x00);
                         intVal[port].Jalousie.intState = 0U;
                     }
-                }
-                else
-                {
+            } else {
                     intVal[port].Jalousie.intState = 0U;
                 }
             }
             break;
 
         case 2:     // State Lang
-            if( (jalousieMode & 0x08) == 0U)
-            {
+        if ((jalousieMode & 0x08) == 0U) {
                 /* Bedienkonzept kurz-lang-kurz */
-                if( intVal[port].Jalousie.timer != 0)
-                {
+            if (intVal[port].Jalousie.timer != 0) {
                     intVal[port].Jalousie.timer--;
 
                     /* detect falling edge */
-                    if( (~newPortValue & portChanged & (1U<<port)) != 0U)
-                    {
+                if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                         sendTelegram(port, 0, 0x00);
                         intVal[port].Jalousie.intState = 0U;
                     }
-                }
-                else
-                {
+            } else {
                     intVal[port].Jalousie.intState = 0U;
                 }
 
-            }
-            else
-            {
+        } else {
                 intVal[port].Jalousie.intState = 0U;
             }
             break;
@@ -880,14 +793,12 @@ void switchPorts(uint8_t port)
 * @return 
 *   
 */
-int main(void)
-{
+int main(void) {
     uint16_t t1cnt;
 #ifdef FB_RF
     uint8_t pollcnt;
 #endif
-    /* disable wd after restart_app via watchdog */
-    DISABLE_WATCHDOG()
+    /* disable wd after restart_app via watchdog */DISABLE_WATCHDOG()
 
     /* ROM-Check */
     /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
@@ -904,8 +815,7 @@ int main(void)
 	/** FBRFHAL_INIT() is defined in fbrf_hal.h .
 	   you may leave it out if you don't use rf */
     FBRFHAL_INIT();
-    /* enable interrupts */
-    ENABLE_ALL_INTERRUPTS();
+    /* enable interrupts */ENABLE_ALL_INTERRUPTS();
 
     /* init protocol layer */
     /* load default values */
@@ -924,8 +834,7 @@ int main(void)
     /***************************/
     /* the main loop / polling */
     /***************************/
-    while(1)
-    {
+    while (1) {
         /* calm the watchdog */
         wdt_reset();
         /* Auswerten des Programmiertasters */
@@ -934,15 +843,15 @@ int main(void)
         fbprot_msg_handler();
 
         /* check if 130ms timer is ready */
-        if(TIMER1_OVERRUN)
-        {
+        if (TIMER1_OVERRUN) {
             CLEAR_TIMER1_OVERRUN;
 			/** FBRFHAL_POLLING() is defined in fbrf_hal.h .
 			   you may leave it out if you don't use rf */
 			FBRFHAL_POLLING();
 			/** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. */
 #ifndef BOARD301
-			if ( ! APP_TIMER_OVERRUN() ) continue;
+            if (!APP_TIMER_OVERRUN())
+                continue;
 #endif
 #ifndef HARDWARETEST
             timerOverflowFunction();
