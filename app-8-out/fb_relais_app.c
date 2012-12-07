@@ -350,11 +350,11 @@ void app_loop() {
 		if(app_dat.runningTimer == 0x0) {
             UNSET_STATE(TIMER_ACTIVE);
 		}
-}
+    }
 
     if(needToSwitch) {
         switchObjects();
-}
+    }
 }
 
 /**
