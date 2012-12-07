@@ -33,7 +33,7 @@
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-#include "fb_relais_app.h"
+#include "fb_in8_app.h"
 
 /**************************************************************************
  * DEFINITIONS
@@ -58,8 +58,10 @@ enum EIGHT_IN_Objects_e {
 
 /// Bit list of states the program can be in
 enum states_e {
-    IDLE = 0, INIT_TIMER = (1), TIMER_ACTIVE = (1 << 1), PWM_TIMER_ACTIVE = (1
-            << 2),
+    IDLE = 0,
+    INIT_TIMER = (1),
+    TIMER_ACTIVE = (1 << 1),
+    PWM_TIMER_ACTIVE = (1 << 2),
 };
 
 /** @todo add documentation */
@@ -96,7 +98,6 @@ typedef union {
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
-extern struct grp_addr_s grp_addr;
 
 static uint8_t portValue; /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
  but will be switched delayed depending on the delay */
@@ -112,6 +113,7 @@ static uint8_t currentTimeOverflow; /**< the amount of overflows from currentTim
 static uint8_t powerOnDelay;              ///< @todo add documentation
 
 uint8_t nodeParam[EEPROM_SIZE]; /**< parameterstructure (RAM) */
+extern uint8_t userram[USERRAM_SIZE];
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
@@ -249,7 +251,8 @@ void timerOverflowFunction(void) {
 /** 
  * ISR is called if on TIMER1 the comparator B matches the defined condition.
  *
- */ISR(TIMER1_COMPB_vect) {
+ */
+ISR(TIMER1_COMPB_vect) {
     return;
 }
 
@@ -279,14 +282,14 @@ uint8_t restartApplication(void) {
 
 #ifndef HARDWARETEST
     /* IO configuration */
-    SET_IO_IO1(IO_INPUT);
-    SET_IO_IO2(IO_INPUT);
-    SET_IO_IO3(IO_INPUT);
-    SET_IO_IO4(IO_INPUT);
-    SET_IO_IO5(IO_INPUT);
-    SET_IO_IO6(IO_INPUT);
-    SET_IO_IO7(IO_INPUT);
-    SET_IO_IO8(IO_INPUT);
+    IO_SET_DIR(1, IO_INPUT);
+    IO_SET_DIR(2, IO_INPUT);
+    IO_SET_DIR(3, IO_INPUT);
+    IO_SET_DIR(4, IO_INPUT);
+    IO_SET_DIR(5, IO_INPUT);
+    IO_SET_DIR(6, IO_INPUT);
+    IO_SET_DIR(7, IO_INPUT);
+    IO_SET_DIR(8, IO_INPUT);
 #ifdef BOARD301
     SET_IO_RES1(IO_INPUT);
     SET_IO_RES2(IO_INPUT);
@@ -397,7 +400,7 @@ EFUNC_PORT getPortFunction(uint8_t port) {
  * Read all inputpins and store values into a byte
  *
  * @return port
- *
+ * @todo add parameter, how many ports to read
  */
 uint8_t ReadPorts(void) {
     uint8_t port = 0;
@@ -672,41 +675,6 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
     return;
 }
 
-#ifdef HARDWARETEST
-/**                                                                       
- * switch all of the output pins
- *
- * @param
- *
- */
-void switchPorts(uint8_t port)
-{
-    SETPIN_IO1((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO2((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO3((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO4((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO5((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO6((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO7((uint8_t)(port & 0x01));
-    port = port>>1;
-
-    SETPIN_IO8((uint8_t)(port & 0x01));
-
-    return;
-}
-#endif
 /**                                                                       
  * The start point of the program, init all libraries, start the bus interface,
  * the application and check the status of the program button.
@@ -715,104 +683,9 @@ void switchPorts(uint8_t port)
  *
  */
 int main(void) {
-    uint16_t t1cnt;
-#ifdef FB_RF
-    uint8_t pollcnt;
-#endif
-    /* disable wd after restart_app via watchdog */DISABLE_WATCHDOG()
-
-        /* ROM-Check */
-        /** @todo Funktion fuer CRC-Check bei PowerOn fehlt noch */
-
-        /* init internal Message System */
-    msg_queue_init();
-
-    /* init eeprom modul and RAM structure already here,
-     because we need eeprom values for fbrfhal_init() */
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
-
-    /* init procerssor register */
-    fbhal_Init();
-    /** FBRFHAL_INIT() is defined in fbrf_hal.h .
-     you may leave it out if you don't use rf */
-    FBRFHAL_INIT();
-    /* enable interrupts */ENABLE_ALL_INTERRUPTS();
-
-    /* init protocol layer */
-    /* load default values */
-    fbprot_Init(defaultParam);
-
-    /* config application hardware */
-    (void) restartApplication();
-
-#ifdef HARDWARETEST
-    sendTestTelegram();
-#endif
-    /* activate watchdog */
-    ENABLE_WATCHDOG( WDTO_250MS);
-
-    /***************************/
-    /* the main loop / polling */
-    /***************************/
-    while (1) {
-        /* calm the watchdog */
-        wdt_reset();
-        /* Auswerten des Programmiertasters */
-        fbhal_checkProgTaster();
-
-        fbprot_msg_handler();
-
-        /* check if 130ms timer is ready */
-        if (TIMER1_OVERRUN) {
-            CLEAR_TIMER1_OVERRUN;
-            /** FBRFHAL_POLLING() is defined in fbrf_hal.h .
-             you may leave it out if you don't use rf */
-            FBRFHAL_POLLING();
-            /** APP_TIMER_OVERRUN() is not defined if you use avr board rev. 3.01. */
-#ifndef BOARD301
-            if (!APP_TIMER_OVERRUN())
-                continue;
-#endif
-#ifndef HARDWARETEST
-            timerOverflowFunction();
-#else
-//    		sendTestTelegram();
-            hardwaretest();
-#endif
-        }
-
-        // go to sleep mode here
-        // wakeup via interrupt check then the programming button and application timer for an overrun
-        // for detailed list see datasheet page 40ff
-        // MC need about 6 cyles to wake up at 8 MHZ that are 6*0.125�s
-//        PRR |= (1<<PRADC)|(1<<PRSPI)|(1<<PRTWI);
-//        set_sleep_mode(SLEEP_MODE_IDLE);
-
-    } /* while(1) */
+    timerOverflowFunction();
 
 } /* main() */
-
-#ifdef HARDWARETEST
-/** 
- * test function: processor and hardware
- *
- * @return
- *
- */
-void hardwaretest(void)
-{
-    static uint8_t pinstate = 0x01;
-
-    switchPorts(pinstate);
-
-    pinstate = pinstate<<1;
-    if(pinstate == 0x00)
-    {
-        pinstate = 1;
-    }
-    return;
-}
-#endif
 
 #endif /* _FB_IN8_APP_C */
 /*********************************** EOF *********************************/
