@@ -358,14 +358,6 @@ void app_loop() {
 }
 
 /**
- * ISR is called if on TIMER1 the comparator B matches the defined condition.
- *
- */
-ISR(TIMER1_COMPB_vect) {
-    return;
-}
-
-/**
  * Function is called when microcontroller gets power or if the application must be restarted.
  * It restores data like in the parameters defined.
  *
@@ -504,21 +496,14 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
         ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
     }
 
-    IO_SET(1,(uint8_t)(port & 0x01));
-
-    IO_SET(2,(uint8_t)(port & 0x02));
-
-    IO_SET(3,(uint8_t)(port & 0x04));
-
-    IO_SET(4,(uint8_t)(port & 0x08));
-
-    IO_SET(5,(uint8_t)(port & 0x10));
-
-    IO_SET(6,(uint8_t)(port & 0x20));
-
-    IO_SET(7,(uint8_t)(port & 0x40));
-
-    IO_SET(8,(uint8_t)(port & 0x80));
+    IO_SET(1,(uint8_t)(port & 1<<0));
+    IO_SET(2,(uint8_t)(port & 1<<1));
+    IO_SET(3,(uint8_t)(port & 1<<2));
+    IO_SET(4,(uint8_t)(port & 1<<3));
+    IO_SET(5,(uint8_t)(port & 1<<4));
+    IO_SET(6,(uint8_t)(port & 1<<5));
+    IO_SET(7,(uint8_t)(port & 1<<6));
+    IO_SET(8,(uint8_t)(port & 1<<7));
 
     app_dat.oldValue=app_dat.portValue;
     return;
