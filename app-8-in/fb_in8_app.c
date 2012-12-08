@@ -99,12 +99,18 @@ typedef union {
  * DECLARATIONS
  **************************************************************************/
 
-static uint8_t portValue; /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
- but will be switched delayed depending on the delay */
-INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
+struct {
+    uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
+                                             but will be switched delayed depending on the delay */
+    uint8_t oldValue;           /// hold the old value to check if we must enable a PWM or not (enable PWM only if switching from low -> high
+    timer_t timer[8];
+    timer_t pwmTimer;           /// stores a reference to the generic timer
+    uint8_t runningTimer;
+    uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
+    uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
+} app_dat;
 
-//static uint8_t portSperre;                /**< ??? */
-//static uint8_t portSperreOld;             /**< ???  */
+INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
 
 static uint16_t currentTime; /**< defines the current time in 10ms steps (2=20ms) */
 static uint8_t currentTimeOverflow; /**< the amount of overflows from currentTime */
@@ -158,7 +164,7 @@ void timerOverflowFunction(void) {
         powerOnDelay--;
         if (powerOnDelay == 0) {
             /* Read Input Ports */
-            portValue = ReadPorts();
+            app_dat.portValue = ReadPorts();
 
             for (i = 0; i < 8; i++) {
                 powerOnFunction = (mem_ReadByte(PORTFUNC_BASEADR + (i * 4))
@@ -176,8 +182,8 @@ void timerOverflowFunction(void) {
                         sendTelegram((i + 8), 0, 0x00);
                     } else if (powerOnFunction == 0xC0) {
                         /* send message with port value */
-                        sendTelegram(i, ((portValue >> i) & 0x01), 0x00);
-                        sendTelegram((i + 8), ((portValue >> i) & 0x01), 0x00);
+                        sendTelegram(i, ((app_dat.portValue >> i) & 0x01), 0x00);
+                        sendTelegram((i + 8), ((app_dat.portValue >> i) & 0x01), 0x00);
                     }
                     break;
                 case eFunc_dimmen:
@@ -207,7 +213,7 @@ void timerOverflowFunction(void) {
         }
 
         /* set flags for new input level */
-        portChanged = portValue ^ ReadPorts();
+        portChanged = app_dat.portValue ^ ReadPorts();
 
         /* new input level => start debaunce time */
         if (portChanged != 0) {
@@ -221,7 +227,7 @@ void timerOverflowFunction(void) {
 
             portNewValue = ReadPorts();
         } else {
-            portNewValue = portValue;
+            portNewValue = app_dat.portValue;
         }
 
         /* process the port function */
@@ -242,17 +248,9 @@ void timerOverflowFunction(void) {
         }
 
         if (portChanged != 0) {
-            portValue = portNewValue;
+            app_dat.portValue = portNewValue;
         }
     } /* END process application */
-    return;
-}
-
-/** 
- * ISR is called if on TIMER1 the comparator B matches the defined condition.
- *
- */
-ISR(TIMER1_COMPB_vect) {
     return;
 }
 
@@ -266,7 +264,7 @@ uint8_t restartApplication(void) {
     uint8_t i;
 
     /* Reset Object and Port State */
-    portValue = 0U;
+    app_dat.portValue = 0U;
     for (i = 0; i < OBJ_SIZE; i++) {
         intVal[i].Schalten.objectVal_1 = 0U;
         intVal[i].Schalten.objectVal_2 = 0U;
@@ -322,30 +320,6 @@ uint8_t restartApplication(void) {
 
     return 1;
 } /* restartApplication() */
-
-/** 
- * Read status from port and return it.
- *
- * @param rxmsg
- *
- * @return
- */
-uint8_t readApplication(struct msg *rxmsg) {
-    return FB_ACK;
-} /* readApplication() */
-
-/** 
- * Function is called if A_GroupValue_Write is received. The type it is the function "EIS1" or "Data Type Boolean" for the relais module.
- * Read all parameters in that function and set global variables.
- *
- * @param rxmsg
- *
- * @return The return value defies if a ACK or a NACK should be sent (FB_ACK, FB_NACK)
- */
-uint8_t runApplication(struct msg *rxmsg) {
-
-    return FB_ACK; // must not return NACK, causes confusion with other devices responding
-} /* runApplication() */
 
 /**                                                                       
  * Get the function code for the select port
@@ -405,14 +379,14 @@ EFUNC_PORT getPortFunction(uint8_t port) {
 uint8_t ReadPorts(void) {
     uint8_t port = 0;
 
-    port |= (uint8_t) GETPIN_IO1();
-    port |= (((uint8_t) GETPIN_IO2()) << 1);
-    port |= (((uint8_t) GETPIN_IO3()) << 2);
-    port |= (((uint8_t) GETPIN_IO4()) << 3);
-    port |= (((uint8_t) GETPIN_IO5()) << 4);
-    port |= (((uint8_t) GETPIN_IO6()) << 5);
-    port |= (((uint8_t) GETPIN_IO7()) << 6);
-    port |= (((uint8_t) GETPIN_IO8()) << 7);
+    port |= (uint8_t) IO_GET(1);
+    port |= (((uint8_t) IO_GET(2)) << 1);
+    port |= (((uint8_t) IO_GET(3)) << 2);
+    port |= (((uint8_t) IO_GET(4)) << 3);
+    port |= (((uint8_t) IO_GET(5)) << 4);
+    port |= (((uint8_t) IO_GET(6)) << 5);
+    port |= (((uint8_t) IO_GET(7)) << 6);
+    port |= (((uint8_t) IO_GET(8)) << 7);
 
     return port;
 }
@@ -675,17 +649,13 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
     return;
 }
 
-/**                                                                       
- * The start point of the program, init all libraries, start the bus interface,
- * the application and check the status of the program button.
- *
- * @return
+/**
+ * Function os called periodically of the application is enabled in the system_state
  *
  */
-int main(void) {
+void app_loop() {
     timerOverflowFunction();
-
-} /* main() */
+}
 
 #endif /* _FB_IN8_APP_C */
 /*********************************** EOF *********************************/
