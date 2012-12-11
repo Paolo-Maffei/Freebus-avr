@@ -79,7 +79,7 @@ typedef enum {
     eFunc_Schaltzaehler,        ///< @todo add documentation
 } EFUNC_PORT;
 
-/** 
+/**
  * @todo add documentation
  */
 typedef union {
@@ -100,6 +100,8 @@ typedef union {
  **************************************************************************/
 
 struct {
+    INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
+
     uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
     uint8_t oldValue;           /// hold the old value to check if we must enable a PWM or not (enable PWM only if switching from low -> high
@@ -110,7 +112,6 @@ struct {
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
 } app_dat;
 
-INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
 
 static uint16_t currentTime; /**< defines the current time in 10ms steps (2=20ms) */
 static uint8_t currentTimeOverflow; /**< the amount of overflows from currentTime */
@@ -134,7 +135,7 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged);
  * IMPLEMENTATION
  **************************************************************************/
 
-/** 
+/**
  * Timer1 is used as application timer. It increase the variable currentTime every 130ms and currentTimeOverflow if
  * currentTime runs over 16-bit.
  *
@@ -248,7 +249,7 @@ void timerOverflowFunction(void) {
     return;
 }
 
-/** 
+/**
  * Function is called when microcontroller gets power or if the application must be restarted.
  * It restores data like in the parameters defined.
  *
@@ -260,8 +261,8 @@ uint8_t restartApplication(void) {
     /* Reset Object and Port State */
     app_dat.portValue = 0U;
     for (i = 0; i < OBJ_SIZE; i++) {
-        intVal[i].Schalten.objectVal_1 = 0U;
-        intVal[i].Schalten.objectVal_2 = 0U;
+        app_dat.intVal[i].Schalten.objectVal_1 = 0U;
+        app_dat.intVal[i].Schalten.objectVal_2 = 0U;
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
@@ -291,7 +292,7 @@ uint8_t restartApplication(void) {
     return 1;
 } /* restartApplication() */
 
-/**                                                                       
+/**
  * Get the function code for the select port
  *
  * @return port function
@@ -340,7 +341,7 @@ EFUNC_PORT getPortFunction(uint8_t port) {
     return (EFUNC_PORT) portfunction;
 }
 
-/**                                                                       
+/**
  * Read all inputpins and store values into a byte
  *
  * @return port
@@ -361,7 +362,7 @@ uint8_t ReadPorts(void) {
     return port;
 }
 
-/**                                                                       
+/**
  * Port Function: switch
  *
  * @param port
@@ -380,42 +381,42 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
                 /* object x.1 = EIN */
                 /* set comobj and send */
                 SetAndTransmitBit(port, 1);
-                intVal[port].Schalten.objectVal_1 = 1U;
+                app_dat.intVal[port].Schalten.objectVal_1 = 1U;
             } else if ((edgeFunc & 0x0C) == 0x08) {
                 /* object x.1 = AUS */
                 SetAndTransmitBit(port, 0);
-                intVal[port].Schalten.objectVal_1 = 0U;
+                app_dat.intVal[port].Schalten.objectVal_1 = 0U;
             } else if ((edgeFunc & 0x0C) == 0x0C) {
                 /* object x.1 = UM */
-                if (intVal[port].Schalten.objectVal_1) {
+                if (app_dat.intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
                     SetAndTransmitBit(port, 0);
-                    intVal[port].Schalten.objectVal_1 = 0U;
+                    app_dat.intVal[port].Schalten.objectVal_1 = 0U;
                 } else {
                     /* switch 0 => 1 */
                     SetAndTransmitBit(port, 1);
-                    intVal[port].Schalten.objectVal_1 = 1U;
+                    app_dat.intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
             if ((edgeFunc & 0xC0) == 0x40) {
                 /* object x.2 = EIN */
                 SetAndTransmitBit((port + 8), 1);
-                intVal[port].Schalten.objectVal_2 = 1U;
+                app_dat.intVal[port].Schalten.objectVal_2 = 1U;
             } else if ((edgeFunc & 0xC0) == 0x80) {
                 /* object x.2 = AUS */
                 SetAndTransmitBit((port + 8), 0);
-                intVal[port].Schalten.objectVal_2 = 0U;
+                app_dat.intVal[port].Schalten.objectVal_2 = 0U;
             } else if ((edgeFunc & 0xC0) == 0xC0) {
                 /* object x.2 = UM */
-                if (intVal[port].Schalten.objectVal_2) {
+                if (app_dat.intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
                     SetAndTransmitBit((port +8), 0);
-                    intVal[port].Schalten.objectVal_2 = 0U;
+                    app_dat.intVal[port].Schalten.objectVal_2 = 0U;
                 } else {
                     /* switch 0 => 1 */
                     SetAndTransmitBit((port + 8), 1);
-                    intVal[port].Schalten.objectVal_2 = 1U;
+                    app_dat.intVal[port].Schalten.objectVal_2 = 1U;
                 }
             }
         } else {
@@ -423,42 +424,42 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
             if ((edgeFunc & 0x03) == 0x01) {
                 /* object x.1 = EIN */
                 SetAndTransmitBit(port, 1);
-                intVal[port].Schalten.objectVal_1 = 1U;
+                app_dat.intVal[port].Schalten.objectVal_1 = 1U;
             } else if ((edgeFunc & 0x03) == 0x02) {
                 /* object x.1 = AUS */
                 SetAndTransmitBit(port, 0);
-                intVal[port].Schalten.objectVal_1 = 0U;
+                app_dat.intVal[port].Schalten.objectVal_1 = 0U;
             } else if ((edgeFunc & 0x03) == 0x03) {
                 /* object x.1 = UM */
-                if (intVal[port].Schalten.objectVal_1) {
+                if (app_dat.intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
                     SetAndTransmitBit(port, 0);
-                    intVal[port].Schalten.objectVal_1 = 0U;
+                    app_dat.intVal[port].Schalten.objectVal_1 = 0U;
                 } else {
                     /* switch 0 => 1 */
                     SetAndTransmitBit(port, 1);
-                    intVal[port].Schalten.objectVal_1 = 1U;
+                    app_dat.intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
             if ((edgeFunc & 0x30) == 0x10) {
                 /* object x.2 = EIN */
                 SetAndTransmitBit((port + 8), 1);
-                intVal[port].Schalten.objectVal_2 = 1U;
+                app_dat.intVal[port].Schalten.objectVal_2 = 1U;
             } else if ((edgeFunc & 0x30) == 0x20) {
                 /* object x.2 = AUS */
                 SetAndTransmitBit((port + 8), 0);
-                intVal[port].Schalten.objectVal_2 = 0U;
+                app_dat.intVal[port].Schalten.objectVal_2 = 0U;
             } else if ((edgeFunc & 0x30) == 0x30) {
                 /* object x.2 = UM */
-                if (intVal[port].Schalten.objectVal_2) {
+                if (app_dat.intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
                     SetAndTransmitBit((port +8), 0);
-                    intVal[port].Schalten.objectVal_2 = 0U;
+                    app_dat.intVal[port].Schalten.objectVal_2 = 0U;
                 } else {
                     /* switch 0 => 1 */
                     SetAndTransmitBit((port + 8), 1);
-                    intVal[port].Schalten.objectVal_2 = 1U;
+                    app_dat.intVal[port].Schalten.objectVal_2 = 1U;
                 }
             }
         }
@@ -470,7 +471,7 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
     return;
 }
 
-/**                                                                       
+/**
  * Port Function: Jalousie
  *
  * @param port
@@ -483,7 +484,7 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
 
     jalousieMode = mem_ReadByte(PORTFUNC_JALOMODE + (port * 4));
 
-    switch (intVal[port].Jalousie.intState) {
+    switch (app_dat.intVal[port].Jalousie.intState) {
     case 0: /* waiting */
         if ((newPortValue & portChanged & (1U << port)) != 0U) {
             /* detect rising edge */
@@ -495,21 +496,21 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
                 /* Bedienkonzept lang-kurz */
                 if ((jalousieMode & 0x10) != 0U) {
                     /* send MOVE telegramm with UP command */
-                    intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                    app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
                     SetAndTransmitBit((port + 8), EIB_PAR_UP);
                 } else if ((jalousieMode & 0x20) != 0U) {
                     /* send MOVE telegramm with DOWN command */
-                    intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                    app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
                     SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                 } else if ((jalousieMode & 0x40) != 0U) {
                     /* send MOVE telegramm with CHANGE command */
-                    if (intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
+                    if (app_dat.intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
                         /* send MOVE telegramm with UP command */
-                        intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                        app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
                         SetAndTransmitBit((port + 8), EIB_PAR_UP);
                     } else {
                         /* send MOVE telegramm with DOWN command */
-                        intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                        app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
                         SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                     }
                 }
@@ -524,8 +525,8 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
             jalousieTimer = jalousieTimer & 0x0F;
             jalousieTimer *= mem_ReadByte(PORTFUNC_T1_FAKTOR + (port * 4));
 
-            intVal[port].Jalousie.timer = jalousieTimer - 1U;
-            intVal[port].Jalousie.intState = 1U;
+            app_dat.intVal[port].Jalousie.timer = jalousieTimer - 1U;
+            app_dat.intVal[port].Jalousie.intState = 1U;
         }
 
         break;
@@ -533,32 +534,32 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
     case 1:     // State Kurz
         if ((jalousieMode & 0x08) == 0U) {
             /* Bedienkonzept kurz-lang-kurz */
-            if (intVal[port].Jalousie.timer != 0) {
-                intVal[port].Jalousie.timer--;
+            if (app_dat.intVal[port].Jalousie.timer != 0) {
+                app_dat.intVal[port].Jalousie.timer--;
 
                 /* detect falling edge */
                 if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                     /* send STEP (STOP) telegramm */
-                    intVal[port].Jalousie.intState = 0U;
+                    app_dat.intVal[port].Jalousie.intState = 0U;
                 }
             } else {
                 if ((jalousieMode & 0x10) != 0U) {
                     /* send MOVE telegramm with UP command */
-                    intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                    app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
                     SetAndTransmitBit((port + 8), EIB_PAR_UP);
                 } else if ((jalousieMode & 0x20) != 0U) {
                     /* send MOVE telegramm with DOWN command */
-                    intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                    app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
                     SetAndTransmitBit((port +8), EIB_PAR_DOWN);
                 } else if ((jalousieMode & 0x40) != 0U) {
                     /* send MOVE telegramm with CHANGE command */
-                    if (intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
+                    if (app_dat.intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
                         /* send MOVE telegramm with UP command */
-                        intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
+                        app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
                         SetAndTransmitBit((port + 8), EIB_PAR_UP);
                     } else {
                         /* send MOVE telegramm with DOWN command */
-                        intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
+                        app_dat.intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
                         SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                     }
                 }
@@ -573,22 +574,22 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
                 jalousieTimer = jalousieTimer & 0x0F;
                 jalousieTimer *= mem_ReadByte(PORTFUNC_T2_FAKTOR + (port * 4));
 
-                intVal[port].Jalousie.timer = jalousieTimer - 1U;
-                intVal[port].Jalousie.intState = 2U;
+                app_dat.intVal[port].Jalousie.timer = jalousieTimer - 1U;
+                app_dat.intVal[port].Jalousie.intState = 2U;
             }
         } else {
             /* Bedienkonzept lang-kurz */
-            if (intVal[port].Jalousie.timer != 0) {
-                intVal[port].Jalousie.timer--;
+            if (app_dat.intVal[port].Jalousie.timer != 0) {
+                app_dat.intVal[port].Jalousie.timer--;
 
                 /* detect falling edge */
                 if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                     /* send STEP (STOP) telegramm */
                     SetAndTransmitBit(port, 0);
-                    intVal[port].Jalousie.intState = 0U;
+                    app_dat.intVal[port].Jalousie.intState = 0U;
                 }
             } else {
-                intVal[port].Jalousie.intState = 0U;
+                app_dat.intVal[port].Jalousie.intState = 0U;
             }
         }
         break;
@@ -596,20 +597,20 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
     case 2:     // State Lang
         if ((jalousieMode & 0x08) == 0U) {
             /* Bedienkonzept kurz-lang-kurz */
-            if (intVal[port].Jalousie.timer != 0) {
-                intVal[port].Jalousie.timer--;
+            if (app_dat.intVal[port].Jalousie.timer != 0) {
+                app_dat.intVal[port].Jalousie.timer--;
 
                 /* detect falling edge */
                 if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                     SetAndTransmitBit(port, 0);
-                    intVal[port].Jalousie.intState = 0U;
+                    app_dat.intVal[port].Jalousie.intState = 0U;
                 }
             } else {
-                intVal[port].Jalousie.intState = 0U;
+                app_dat.intVal[port].Jalousie.intState = 0U;
             }
 
         } else {
-            intVal[port].Jalousie.intState = 0U;
+            app_dat.intVal[port].Jalousie.intState = 0U;
         }
         break;
     default:
