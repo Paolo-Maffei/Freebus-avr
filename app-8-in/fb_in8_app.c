@@ -130,12 +130,6 @@ uint8_t ReadPorts(void);
 void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged);
 void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged);
 
-#ifdef HARDWARETEST
-void switchPorts(uint8_t port);
-/** test function: processor and hardware */
-void hardwaretest(void);
-#endif
-
 /**************************************************************************
  * IMPLEMENTATION
  **************************************************************************/
@@ -174,16 +168,16 @@ void timerOverflowFunction(void) {
                 case eFunc_schalten:
                     if (powerOnFunction == 0x40) {
                         /* send ON message */
-                        sendTelegram(i, 1, 0x00);
-                        sendTelegram((i + 8), 1, 0x00);
+                        SetAndTransmitBit(i, 1);
+                        SetAndTransmitBit((i + 8), 1);
                     } else if (powerOnFunction == 0x80) {
                         /* send OFF message */
-                        sendTelegram(i, 0, 0x00);
-                        sendTelegram((i + 8), 0, 0x00);
+                        SetAndTransmitBit(i, 0);
+                        SetAndTransmitBit((i + 8), 0);
                     } else if (powerOnFunction == 0xC0) {
                         /* send message with port value */
-                        sendTelegram(i, ((app_dat.portValue >> i) & 0x01), 0x00);
-                        sendTelegram((i + 8), ((app_dat.portValue >> i) & 0x01), 0x00);
+                        SetAndTransmitBit(i, ((app_dat.portValue >> i) & 0x01));
+                        SetAndTransmitBit((i + 8), ((app_dat.portValue >> i) & 0x01));
                     }
                     break;
                 case eFunc_dimmen:
@@ -191,10 +185,10 @@ void timerOverflowFunction(void) {
                 case eFunc_jalousie:
                     if (powerOnFunction == 0x40) {
                         /* send DOWN message */
-                        sendTelegram((i + 8), EIB_PAR_DOWN, 0x00);
+                        SetAndTransmitBit((i + 8), EIB_PAR_DOWN);
                     } else if (powerOnFunction == 0x80) {
                         /* send UP message */
-                        sendTelegram((i + 8), EIB_PAR_UP, 0x00);
+                        SetAndTransmitBit((i + 8), EIB_PAR_UP);
                     }
                     break;
                 default:
@@ -278,7 +272,6 @@ uint8_t restartApplication(void) {
     currentTime = 0;
     currentTimeOverflow = 0;
 
-#ifndef HARDWARETEST
     /* IO configuration */
     IO_SET_DIR(1, IO_INPUT);
     IO_SET_DIR(2, IO_INPUT);
@@ -288,29 +281,6 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(6, IO_INPUT);
     IO_SET_DIR(7, IO_INPUT);
     IO_SET_DIR(8, IO_INPUT);
-#ifdef BOARD301
-    SET_IO_RES1(IO_INPUT);
-    SET_IO_RES2(IO_INPUT);
-    SET_IO_RES3(IO_INPUT);
-    SET_IO_RES4(IO_INPUT);
-#endif
-#else
-    /* Port configuration for hardwaretest */
-    SET_IO_IO1(IO_OUTPUT);
-    SET_IO_IO2(IO_OUTPUT);
-    SET_IO_IO3(IO_OUTPUT);
-    SET_IO_IO4(IO_OUTPUT);
-    SET_IO_IO5(IO_OUTPUT);
-    SET_IO_IO6(IO_OUTPUT);
-    SET_IO_IO7(IO_OUTPUT);
-    SET_IO_IO8(IO_OUTPUT);
-#ifdef BOARD301
-    SET_IO_RES1(IO_OUTPUT);
-    SET_IO_RES2(IO_OUTPUT);
-    SET_IO_RES3(IO_OUTPUT);
-    SET_IO_RES4(IO_OUTPUT);
-#endif
-#endif
 
     /* CTRL-Port */
     SET_IO_CTRL(IO_INPUT);
@@ -408,43 +378,43 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
             /* rising edge */
             if ((edgeFunc & 0x0C) == 0x04) {
                 /* object x.1 = EIN */
-                sendTelegram(port, 1, 0x00);
+                /* set comobj and send */
+                SetAndTransmitBit(port, 1);
                 intVal[port].Schalten.objectVal_1 = 1U;
-
             } else if ((edgeFunc & 0x0C) == 0x08) {
                 /* object x.1 = AUS */
-                sendTelegram(port, 0, 0x00);
+                SetAndTransmitBit(port, 0);
                 intVal[port].Schalten.objectVal_1 = 0U;
             } else if ((edgeFunc & 0x0C) == 0x0C) {
                 /* object x.1 = UM */
                 if (intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
-                    sendTelegram(port, 0, 0x00);
+                    SetAndTransmitBit(port, 0);
                     intVal[port].Schalten.objectVal_1 = 0U;
                 } else {
                     /* switch 0 => 1 */
-                    sendTelegram(port, 1, 0x00);
+                    SetAndTransmitBit(port, 1);
                     intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
             if ((edgeFunc & 0xC0) == 0x40) {
                 /* object x.2 = EIN */
-                sendTelegram((port + 8), 1, 0x00);
+                SetAndTransmitBit((port + 8), 1);
                 intVal[port].Schalten.objectVal_2 = 1U;
             } else if ((edgeFunc & 0xC0) == 0x80) {
                 /* object x.2 = AUS */
-                sendTelegram((port + 8), 0, 0x00);
+                SetAndTransmitBit((port + 8), 0);
                 intVal[port].Schalten.objectVal_2 = 0U;
             } else if ((edgeFunc & 0xC0) == 0xC0) {
                 /* object x.2 = UM */
                 if (intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
-                    sendTelegram((port + 8), 0, 0x00);
+                    SetAndTransmitBit((port +8), 0);
                     intVal[port].Schalten.objectVal_2 = 0U;
                 } else {
                     /* switch 0 => 1 */
-                    sendTelegram((port + 8), 1, 0x00);
+                    SetAndTransmitBit((port + 8), 1);
                     intVal[port].Schalten.objectVal_2 = 1U;
                 }
             }
@@ -452,42 +422,42 @@ void PortFunc_Switch(uint8_t port, uint8_t newPortValue, uint8_t portChanged) {
             /* falling edge */
             if ((edgeFunc & 0x03) == 0x01) {
                 /* object x.1 = EIN */
-                sendTelegram(port, 1, 0x00);
+                SetAndTransmitBit(port, 1);
                 intVal[port].Schalten.objectVal_1 = 1U;
             } else if ((edgeFunc & 0x03) == 0x02) {
                 /* object x.1 = AUS */
-                sendTelegram(port, 0, 0x00);
+                SetAndTransmitBit(port, 0);
                 intVal[port].Schalten.objectVal_1 = 0U;
             } else if ((edgeFunc & 0x03) == 0x03) {
                 /* object x.1 = UM */
                 if (intVal[port].Schalten.objectVal_1) {
                     /* switch 1 => 0 */
-                    sendTelegram(port, 0, 0x00);
+                    SetAndTransmitBit(port, 0);
                     intVal[port].Schalten.objectVal_1 = 0U;
                 } else {
                     /* switch 0 => 1 */
-                    sendTelegram(port, 1, 0x00);
+                    SetAndTransmitBit(port, 1);
                     intVal[port].Schalten.objectVal_1 = 1U;
                 }
             }
 
             if ((edgeFunc & 0x30) == 0x10) {
                 /* object x.2 = EIN */
-                sendTelegram((port + 8), 1, 0x00);
+                SetAndTransmitBit((port + 8), 1);
                 intVal[port].Schalten.objectVal_2 = 1U;
             } else if ((edgeFunc & 0x30) == 0x20) {
                 /* object x.2 = AUS */
-                sendTelegram((port + 8), 0, 0x00);
+                SetAndTransmitBit((port + 8), 0);
                 intVal[port].Schalten.objectVal_2 = 0U;
             } else if ((edgeFunc & 0x30) == 0x30) {
                 /* object x.2 = UM */
                 if (intVal[port].Schalten.objectVal_2) {
                     /* switch 1 => 0 */
-                    sendTelegram((port + 8), 0, 0x00);
+                    SetAndTransmitBit((port +8), 0);
                     intVal[port].Schalten.objectVal_2 = 0U;
                 } else {
                     /* switch 0 => 1 */
-                    sendTelegram((port + 8), 1, 0x00);
+                    SetAndTransmitBit((port + 8), 1);
                     intVal[port].Schalten.objectVal_2 = 1U;
                 }
             }
@@ -520,27 +490,27 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
             if ((jalousieMode & 0x08) == 0U) {
                 /* Bedienkonzept kurz-lang-kurz */
                 /* send STEP (STOP) telegramm */
-                sendTelegram(port, 0, 0x00);
+                SetAndTransmitBit(port, 0);
             } else {
                 /* Bedienkonzept lang-kurz */
                 if ((jalousieMode & 0x10) != 0U) {
                     /* send MOVE telegramm with UP command */
                     intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
-                    sendTelegram((port + 8), EIB_PAR_UP, 0x00);
+                    SetAndTransmitBit((port + 8), EIB_PAR_UP);
                 } else if ((jalousieMode & 0x20) != 0U) {
                     /* send MOVE telegramm with DOWN command */
                     intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
-                    sendTelegram((port + 8), EIB_PAR_DOWN, 0x00);
+                    SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                 } else if ((jalousieMode & 0x40) != 0U) {
                     /* send MOVE telegramm with CHANGE command */
                     if (intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
                         /* send MOVE telegramm with UP command */
                         intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
-                        sendTelegram((port + 8), EIB_PAR_UP, 0x00);
+                        SetAndTransmitBit((port + 8), EIB_PAR_UP);
                     } else {
                         /* send MOVE telegramm with DOWN command */
                         intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
-                        sendTelegram((port + 8), EIB_PAR_DOWN, 0x00);
+                        SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                     }
                 }
             }
@@ -575,21 +545,21 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
                 if ((jalousieMode & 0x10) != 0U) {
                     /* send MOVE telegramm with UP command */
                     intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
-                    sendTelegram((port + 8), EIB_PAR_UP, 0x00);
+                    SetAndTransmitBit((port + 8), EIB_PAR_UP);
                 } else if ((jalousieMode & 0x20) != 0U) {
                     /* send MOVE telegramm with DOWN command */
                     intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
-                    sendTelegram((port + 8), EIB_PAR_DOWN, 0x00);
+                    SetAndTransmitBit((port +8), EIB_PAR_DOWN);
                 } else if ((jalousieMode & 0x40) != 0U) {
                     /* send MOVE telegramm with CHANGE command */
                     if (intVal[port].Jalousie.MoveVal == EIB_PAR_DOWN) {
                         /* send MOVE telegramm with UP command */
                         intVal[port].Jalousie.MoveVal = EIB_PAR_UP;
-                        sendTelegram((port + 8), EIB_PAR_UP, 0x00);
+                        SetAndTransmitBit((port + 8), EIB_PAR_UP);
                     } else {
                         /* send MOVE telegramm with DOWN command */
                         intVal[port].Jalousie.MoveVal = EIB_PAR_DOWN;
-                        sendTelegram((port + 8), EIB_PAR_DOWN, 0x00);
+                        SetAndTransmitBit((port + 8), EIB_PAR_DOWN);
                     }
                 }
 
@@ -614,7 +584,7 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
                 /* detect falling edge */
                 if ((~newPortValue & portChanged & (1U << port)) != 0U) {
                     /* send STEP (STOP) telegramm */
-                    sendTelegram(port, 0, 0x00);
+                    SetAndTransmitBit(port, 0);
                     intVal[port].Jalousie.intState = 0U;
                 }
             } else {
@@ -631,7 +601,7 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
 
                 /* detect falling edge */
                 if ((~newPortValue & portChanged & (1U << port)) != 0U) {
-                    sendTelegram(port, 0, 0x00);
+                    SetAndTransmitBit(port, 0);
                     intVal[port].Jalousie.intState = 0U;
                 }
             } else {

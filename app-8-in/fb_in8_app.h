@@ -86,6 +86,10 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 { 0xFF,                         0xFF }     /**< END-sign; do not change                      */
 };
 
+const struct FBAppInfo AppInfo PROGMEM = {
+    .FBApiVersion = 0x01,
+    .pParam = defaultParam,
+};
 
 /**************************************************************************
 * DECLARATIONS
