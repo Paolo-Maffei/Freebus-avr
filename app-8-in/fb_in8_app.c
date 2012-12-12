@@ -146,12 +146,6 @@ void timerOverflowFunction(void) {
     uint8_t portNewValue;
     uint8_t debounceFactor;
 
-    /* check if programm is running */
-    if (mem_ReadByte(APPLICATION_RUN_STATUS) != 0xFF) {
-        /* Do nothing */
-        ;
-    }
-
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
     else if (app_dat.powerOnDelay) {
         app_dat.powerOnDelay--;
