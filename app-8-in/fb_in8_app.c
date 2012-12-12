@@ -101,13 +101,12 @@ typedef union {
 
 struct {
     INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
+    uint8_t powerOnDelay;              ///< Delay to wait before device starts to work
 
     uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
                                              but will be switched delayed depending on the delay */
-    uint8_t oldValue;           /// hold the old value to check if we must enable a PWM or not (enable PWM only if switching from low -> high
     timer_t timer[8];
     timer_t pwmTimer;           /// stores a reference to the generic timer
-    uint8_t runningTimer;
     uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
 } app_dat;
@@ -117,7 +116,6 @@ static uint16_t currentTime; /**< defines the current time in 10ms steps (2=20ms
 static uint8_t currentTimeOverflow; /**< the amount of overflows from currentTime */
 //static uint8_t currentTimeOverflowBuffer; /**< is set to one if overflow happened, is 0 if overflow was processed */
 
-static uint8_t powerOnDelay;              ///< @todo add documentation
 
 uint8_t nodeParam[EEPROM_SIZE]; /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
@@ -155,9 +153,9 @@ void timerOverflowFunction(void) {
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    else if (powerOnDelay) {
-        powerOnDelay--;
-        if (powerOnDelay == 0) {
+    else if (app_dat.powerOnDelay) {
+        app_dat.powerOnDelay--;
+        if (app_dat.powerOnDelay == 0) {
             /* Read Input Ports */
             app_dat.portValue = ReadPorts();
 
@@ -266,7 +264,7 @@ uint8_t restartApplication(void) {
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    powerOnDelay = mem_ReadByte(POWERONDELAY_FACTOR)
+    app_dat.powerOnDelay = mem_ReadByte(POWERONDELAY_FACTOR)
             << (mem_ReadByte(POWERONDELAY_BASE) >> 4);
 
     /* reset global timer values */
