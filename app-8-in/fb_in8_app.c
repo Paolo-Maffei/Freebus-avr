@@ -59,7 +59,7 @@ enum EIGHT_IN_Objects_e {
 /// Bit list of states the program can be in
 enum states_e {
     IDLE = 0,
-    INIT_TIMER = (1),
+    POWER_ON_DELAY = (1),
     TIMER_ACTIVE = (1 << 1),
     PWM_TIMER_ACTIVE = (1 << 2),
 };
@@ -103,9 +103,9 @@ struct {
     INTVAL_UNION intVal[OBJ_SIZE];              ///< @todo add documentation
     uint8_t powerOnDelay;              ///< Delay to wait before device starts to work
 
-    uint8_t portValue;          /**< defines the port status. LSB IO0 and MSB IO8, ports with delay can be set to 1 here
-                                             but will be switched delayed depending on the delay */
-    timer_t timer[8];
+    uint8_t portValue;          ///< defines the port status. LSB IO0 and MSB IO8
+    timer_t app_timer;          ///< App timer, is used to execute every 130ms
+
     timer_t pwmTimer;           /// stores a reference to the generic timer
     uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
@@ -119,6 +119,7 @@ static uint8_t currentTimeOverflow; /**< the amount of overflows from currentTim
 
 uint8_t nodeParam[EEPROM_SIZE]; /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
+static enum states_e app_state;
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
@@ -147,7 +148,7 @@ void timerOverflowFunction(void) {
     uint8_t debounceFactor;
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    else if (app_dat.powerOnDelay) {
+    if (app_dat.powerOnDelay) {
         app_dat.powerOnDelay--;
         if (app_dat.powerOnDelay == 0) {
             /* Read Input Ports */
@@ -258,9 +259,13 @@ uint8_t restartApplication(void) {
     }
 
     /* Verzoegerungszeit bei Bussspannungswiederkehr */
-    app_dat.powerOnDelay = mem_ReadByte(POWERONDELAY_FACTOR)
-            << (mem_ReadByte(POWERONDELAY_BASE) >> 4);
-
+    app_dat.powerOnDelay = mem_ReadByte(POWERONDELAY_FACTOR) << (mem_ReadByte(POWERONDELAY_BASE) >> 4);
+    DEBUG_PUTS("DELAY ");
+    DEBUG_PUTHEX(app_dat.powerOnDelay);
+    DEBUG_NEWLINE();
+    if(app_dat.powerOnDelay) {
+        SET_STATE(POWER_ON_DELAY);
+    }
     /* reset global timer values */
     currentTime = 0;
     currentTimeOverflow = 0;
@@ -279,7 +284,7 @@ uint8_t restartApplication(void) {
     SET_IO_CTRL(IO_INPUT);
 
     /* enable timer to increase user timer used for timer functions etc. */
-    RELOAD_APPLICATION_TIMER();
+    alloc_timer(&app_dat.app_timer, 1*M2TICS(130));
 
     return 1;
 } /* restartApplication() */
@@ -617,7 +622,11 @@ void PortFunc_Jalousie(uint8_t port, uint8_t newPortValue, uint8_t portChanged) 
  *
  */
 void app_loop() {
-    timerOverflowFunction();
+    // Check if 130ms timer reached, reload timer and call timerOverflow function
+    if(check_timeout(&app_dat.app_timer)) {
+        alloc_timer(&app_dat.app_timer, 1*M2TICS(130));
+        timerOverflowFunction();
+    }
 }
 
 #endif /* _FB_IN8_APP_C */
