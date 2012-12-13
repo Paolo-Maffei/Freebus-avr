@@ -205,6 +205,10 @@ void timerOverflowFunction(void) {
 
         /* new input level => start debaunce time */
         if (portChanged != 0) {
+            DEBUG_PUTHEX(app_dat.portValue);
+            DEBUG_PUTS(" -> ");
+            DEBUG_PUTHEX(portChanged);
+            DEBUG_NEWLINE();
             /* Debounce */
             debounceFactor = mem_ReadByte(DEBOUNCE_FACTOR);
 
