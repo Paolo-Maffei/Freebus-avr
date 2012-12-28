@@ -65,14 +65,39 @@
         EECR &= ~(1U<<EERIE);                    \
     }
 
+/**
+* Enable PWM, PWM pin (PB3) is set by hardware.
+*
+* New Frequency to get out of the hearable frequency. (At least at the end of it.)
+* freq = F_CPU/(Prescaler*510) = 8000000/(1*510) = 15868 Hz
+*
+* @param x Duty-cycle (0xF2=6,3%, 0x01=100%)
+*
+*/
+#define ENABLE_PWM(x)               {                                   \
+          TCCR2A = (1<<WGM20)|(1<<COM2A1)|(1<<COM2A0);/* Phase correct PWM and enable OC2a pin */ \
+          TCCR2B = (1<<CS20);     /* prescaler 0 */                     \
+          TCNT2  = 0;             /* reset timer2 */                    \
+          OCR2A  = (x);           /* defines the duty cycle */          \
+     }
+
+/** Disable PWM and set PWM pin to high */
+#define DISABLE_PWM()               {                                   \
+          TCCR2A &= ~((1<<COM2A1)|(1<<COM2A0)); /* disable PWM pin  */  \
+          SETPIN_CTRL(ON);                     /* set port to high */   \
+     }
+
+
 // map interrupts
 /** map uart interrupt*/
-#define SIG_UART_TRANS              USART_TX_vect
+#define SIG_UART_TRANS              USART0_TX_vect
 /** map eeprom ready vector */
 #define EE_RDY_vect                 EE_READY_vect
 
 /* TPUART specific, use TPUART connected via USART1*/
+#define	TPUART_BAUDRATE		19200
 #define TPUART_RX_VEC		USART1_RX_vect
+#define TPUART_TX_VEC		USART1_TX_vect
 #define TPUART_UCSRA		UCSR1A
 #define TPUART_FE			FE1
 #define TPUART_DOR			DOR1
@@ -89,6 +114,9 @@
 #define TPUART_TXEN			TXEN1
 #define TPUART_TXCIE		TXCIE1
 #define TPUART_UCSRC		UCSR1C
+#define TPUART_UPM1			UPM11
+#define TPUART_UCSZ1		UCSZ11
+#define TPUART_UCSZ0		UCSZ10
 #define TPUART_UDRE			UDRE1
 #define TPUART_U2X			U2X1
 

@@ -40,6 +40,8 @@
     #include "freebus-atmega168.h"
 #elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
     #include "freebus-atmega168p.h"
+#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+    #include "freebus-atmega644p.h"
 #else
     #error CPU not supported
 #endif
