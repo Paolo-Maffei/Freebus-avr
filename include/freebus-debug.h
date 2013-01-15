@@ -98,11 +98,11 @@
 #define DEBUG_SPACE() uart_putc(' ')
 /** Display a space on the device without using the queueing system */
 #define DEBUG_SPACE_BLOCKING() uart_putc_blocking(' ')
-#define DEBUG_MSG(x) do { \
+#define DEBUG_MSG(descr, msg) do { \
 	uint8_t i; \
-	DEBUG_PUTS("MSG: "); \
-	for (i=0;i<x->len;i++) \
-		DEBUG_PUTHEX(x->data[i]); \
+	DEBUG_PUTS(descr); \
+	for (i=0;i<msg->len;i++) \
+		DEBUG_PUTHEX(msg->data[i]); \
 	DEBUG_NEWLINE(); \
 } while (0) 
 
@@ -132,7 +132,7 @@
 /** No debugging map to nothing */
 #define DEBUG_SPACE_BLOCKING()
 /** No debugging map to nothing */
-#define DEBUG_MSG(x)
+#define DEBUG_MSG(x,msg)
 #endif
 
 #ifdef DEBUG_TIMING
