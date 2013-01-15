@@ -175,32 +175,7 @@ static uint8_t inline appTimerOverrun (void)
         EECR &= ~(1U<<EERIE);                    \
     }
 
-/* UART specific */
-#define UART_UCSRA		UCSR0A
-#define UART_FE			FE0
-#define UART_DOR		DOR0
-#define UART_TXC		TXC0
-
-#define UART_UCSRB		UCSR0B
-#define UART_UDR		UDR0
-#define UART_UBRRL		UBRR0L
-#define UART_UBRRH		UBRR0H
-#define UART_RXEN		RXEN0
-#define UART_RXCIE		RXCIE0
-#define UART_TXEN		TXEN0
-#define UART_TXCIE		TXCIE0
-#define UART_UCSRC		UCSR0C
-#define UART_UPM1		UPM01
-#define UART_UPM0		UPM00
-#define UART_UCSZ1		UCSZ01
-#define UART_UCSZ0		UCSZ00
-#define UART_USBS		USBS0
-#define UART_UDRE		UDRE0
-#define UART_U2X		U2X0
-
 // map interrupts
-/** map uart interrupt*/
-#define SIG_UART_TRANS              USART_TX_vect
 /** map eeprom ready vector */
 #define EE_RDY_vect                 EE_READY_vect
 
