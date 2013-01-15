@@ -40,7 +40,7 @@
     #include "freebus-atmega168.h"
 #elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__) 
     #include "freebus-atmega168p.h"
-#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
     #include "freebus-atmega644p.h"
 #else
     #error CPU not supported
@@ -52,7 +52,7 @@
     #include "fbrf-atmega168.h"
 #elif defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__)
     #include "fbrf-atmega168p.h"
-#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__)
+#elif defined(__AVR_ATmega324P__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
     #include "freebus-atmega644p.h"
 #elif defined(__EIBD__)
     #include "fb-eibd.h"
