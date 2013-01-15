@@ -32,21 +32,6 @@
 * DEFINITIONS
 **************************************************************************/
 
-/** Enable interrupt for UART0 */
-#define ENABLE_UART_TX_IRQ()        {                            \
-          UCSR0B |= (1<<TXCIE0);       /* enable transmit IRQ */ \
-     }
-
-/** Disable interrupt for UART0 */
-#define DISABLE_UART_TX_IRQ()       {                                 \
-          UCSR0B &= ~(1<<TXCIE0);      /* disable transmit IRQ */     \
-     }
-
-/** Store one byte in UART0 send buffer. */
-#define UART_SEND_BYTE(tx_char)     {           \
-          UDR0 =(uint8_t)(tx_char);             \
-     }
-
 /** Execute some EEPROM specific commmands
  * configure eeprom to only write and not delete before, that operation will take 1.8ms
  */
@@ -87,10 +72,33 @@
           SETPIN_CTRL(ON);                     /* set port to high */   \
      }
 
+/* UART specific */
+#define UART_UCSRA		UCSR0A
+#define UART_FE			FE0
+#define UART_DOR		DOR0
+#define UART_TXC		TXC0
+
+#define UART_UCSRB		UCSR0B
+#define UART_UDR		UDR0
+#define UART_UBRRL		UBRR0L
+#define UART_UBRRH		UBRR0H
+#define UART_RXEN		RXEN0
+#define UART_RXCIE		RXCIE0
+#define UART_TXEN		TXEN0
+#define UART_TXCIE		TXCIE0
+#define UART_UCSRC		UCSR0C
+#define UART_UPM1		UPM01
+#define UART_UPM0		UPM00
+#define UART_UCSZ1		UCSZ01
+#define UART_UCSZ0		UCSZ00
+#define UART_USBS		USBS0
+#define UART_UDRE		UDRE0
+#define UART_U2X		U2X0
 
 // map interrupts
 /** map uart interrupt*/
 #define SIG_UART_TRANS              USART0_TX_vect
+#define SIG_UART_RECV				USART0_RX_vect
 /** map eeprom ready vector */
 #define EE_RDY_vect                 EE_READY_vect
 

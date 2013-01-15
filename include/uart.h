@@ -32,6 +32,13 @@
 #define _UART_H
 
 extern void uart_init(void);
+extern void uart_open(uint32_t baud, uint8_t charsize, char parity, uint8_t stopb);
+extern void uart_rx_flush(void);
+extern void uart_rx_enable(void);
+extern void uart_rx_disable(void);
+extern uint8_t uart_rx_empty(void);
+extern uint8_t uart_rx_get(void);
+extern uint8_t uart_rx_cnt(void);
 extern void uart_putc(unsigned char c);
 extern void uart_puts(const char *s);
 extern void uart_hex(unsigned char h);
