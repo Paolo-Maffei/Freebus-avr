@@ -122,18 +122,21 @@ void hardwaretest(void);
 void io_test(void);
 #endif
 
-/**************************************************************************
- * IMPLEMENTATION
- **************************************************************************/
+/**
+ * Funktion:     handleTimers()
+ * Parameter: commObjectNumber  0 ... 7
+ *                      value   0 ... 256
+**/
 void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
-                // Get delay base
-                timer_t delayBase=mem_ReadByte(APP_DELAY_BASE+commObjectNumber);
+    // Get delay base
+    uint8_t delayBaseIndex=mem_ReadByte(APP_DELAY_BASE+((commObjectNumber+1)>>1));
+
     if((commObjectNumber & 0x01) == 0x01) {
-        delayBase&=0x0F;
+        delayBaseIndex&=0x0F;
     } else {
-        delayBase = (delayBase & 0xF0)>>4;
-                }
-                delayBase = pgm_read_byte(&delay_bases[delayBase]);
+        delayBaseIndex = (delayBaseIndex>>4) & 0x0F;
+    }
+    timer_t delayBase = pgm_read_dword(&delay_bases[delayBaseIndex]);
 
     // Set some variables to make next commands better readable
     uint8_t timerActive = mem_ReadByte(APP_DELAY_ACTIVE) & (1<<commObjectNumber);
