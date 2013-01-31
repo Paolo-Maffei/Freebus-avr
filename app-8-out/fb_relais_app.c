@@ -143,39 +143,60 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
     uint8_t timerOffActive = mem_ReadByte(APP_DELAY_FACTOR_OFF+commObjectNumber);
     uint8_t timerOnActive = mem_ReadByte(APP_DELAY_FACTOR_ON+commObjectNumber);
 
-    /// @bug a timer function with a delay on one will not work
-                // Check for delay factor for off
-    if(app_dat.portValue & (1<<commObjectNumber) && timerOffActive && !(timerActive) && value == 0) {
-        DEBUG_PUTS("TIMER_OFF ");
-        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
-        app_dat.runningTimer |= 1<<commObjectNumber;
-        SET_STATE(TIMER_ACTIVE);
-                }
-                // Check for delay factor for on
-    if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && value == 1) {
-        DEBUG_PUTS("TIMER_ON ");
-        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
-        app_dat.runningTimer |= 1<<commObjectNumber;
-        SET_STATE(TIMER_ACTIVE);
-                }
-    // Check if we have a timer function
-    if (timerActive && timerOffActive && (value == 1)) {
-        DEBUG_PUTS("TIMER ");
-        app_dat.portValue |= (1<<commObjectNumber);
-        alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
-        app_dat.runningTimer |= 1<<commObjectNumber;
-        SET_STATE(TIMER_ACTIVE);
-    }
+    if( !timerActive ) {
+        // Check for delay factor for off
+        if((app_dat.portValue & (1<<commObjectNumber)) && timerOffActive && (value == 0)) {
+            DEBUG_PUTS("TIMER_OFF ");
+            alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
+            app_dat.runningTimer |= 1<<commObjectNumber;
+            SET_STATE(TIMER_ACTIVE);
+        }
+        
+        // Check for delay factor for on
+        if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && (value == 1)) {
+            DEBUG_PUTS("TIMER_ON ");
+            alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
+            app_dat.runningTimer |= 1<<commObjectNumber;
+            SET_STATE(TIMER_ACTIVE);
+        }
+    } else {
+        if(!timerOnActive)  {
+            // Check for a timer function without delay factor for on
+            if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && (value == 1)) {
+                DEBUG_PUTS("TIMER ");
+                app_dat.portValue |= (1<<commObjectNumber);
+                alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
+                app_dat.runningTimer |= 1<<commObjectNumber;
+                SET_STATE(TIMER_ACTIVE);
+            }
+        } else {
+            // Check for a timer function with delay factor for on
+            if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && (value == 1)) {
+                DEBUG_PUTS("TF_TIMER_ON ");
+                alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOnActive);
+                app_dat.runningTimer |= 1<<commObjectNumber;
+                SET_STATE(TIMER_ACTIVE);
+            }
 
-    // check how to handle off telegram while in timer modus
-    if (timerActive && timerOffActive && value == 0) {
-        DEBUG_PUTS("TK ");
-        // only switch off if on APP_DELAY_ACTION the value is equal zero
-        if(!(mem_ReadByte(APP_DELAY_ACTION) & (1<<commObjectNumber))) {
-            DEBUG_PUTS("TIMER_DISABLE ");
-            if(app_dat.runningTimer & (1<<commObjectNumber)) {
-                app_dat.runningTimer &= ~(1<<commObjectNumber);
-                app_dat.portValue &= ~(1<<commObjectNumber);
+            // Check for delay factor for off
+            if((app_dat.portValue & (1<<commObjectNumber)) && value == 1) {
+                DEBUG_PUTS("TF_TIMER_OFF ");
+                alloc_timer(&app_dat.timer[commObjectNumber], delayBase * (uint16_t) timerOffActive);
+                app_dat.runningTimer |= 1<<commObjectNumber;
+                SET_STATE(TIMER_ACTIVE);
+            }
+        }
+        
+        // check how to handle off telegram while in timer modus
+        if((app_dat.portValue & (1<<commObjectNumber)) && value == 0) {
+            DEBUG_PUTS("TK ");
+            // only switch off if on APP_DELAY_ACTION the value is equal zero
+            if(!(mem_ReadByte(APP_DELAY_ACTION) & (1<<commObjectNumber))) {
+                DEBUG_PUTS("TIMER_DISABLE ");
+                if(app_dat.runningTimer & (1<<commObjectNumber)) {
+                    app_dat.runningTimer &= ~(1<<commObjectNumber);
+                    app_dat.portValue &= ~(1<<commObjectNumber);
+                }
             }
         }
     }
@@ -345,6 +366,9 @@ void app_loop() {
 					app_dat.portValue ^= j;
 
                     uint8_t value=(app_dat.portValue >> commObjectNumber) & 0x1;
+
+                    handleTimers(commObjectNumber, value);
+
                     SetAndTransmitBit(commObjectNumber, value);
                     needToSwitch=1;
                 }
