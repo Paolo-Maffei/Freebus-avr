@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8</ToolchainName>
-    <ProjectGuid>{86e8383f-daf1-42ba-ae29-38d3ed7b0b59}</ProjectGuid>
+    <ProjectGuid>{3792f317-e70c-3bac-a30b-af908e9bf119}</ProjectGuid>
     <avrdevice>ATmega328P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -13,14 +13,31 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>freebus_avr</AssemblyName>
-    <Name>app-8-out-full</Name>
+    <Name>app-bootloader-full</Name>
     <RootNamespace>freebus_avr</RootNamespace>
     <ToolchainFlavour>WinAVR 20100110</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtoolinterface />
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolName xmlns="">AVR Simulator</ToolName>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <KeepTimersRunning xmlns="">true</KeepTimersRunning>
+      <OverrideVtor xmlns="">false</OverrideVtor>
+      <OverrideVtorValue xmlns="">
+      </OverrideVtorValue>
+      <Channel xmlns="">
+        <host>127.0.0.1</host>
+        <port>62113</port>
+        <ssl>False</ssl>
+      </Channel>
+    </com_atmel_avrdbg_tool_simulator>
+    <AsfVersion>2.11.1</AsfVersion>
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
     <eraseonlaunchrule>0</eraseonlaunchrule>
-    <AsfVersion>3.5.0</AsfVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -48,6 +65,7 @@
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
         <avrgcc.compiler.general.SubroutinesFunctionPrologues>True</avrgcc.compiler.general.SubroutinesFunctionPrologues>
         <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
@@ -62,6 +80,7 @@
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>../include</Value>
+            <Value>../lib/inc</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -82,13 +101,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="lib" />
-    <Folder Include="app-8-out" />
+    <Folder Include="app-bootloader" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="app-8-out\fb_relais_app.c">
+    <Compile Include="app-bootloader\fb_bootloader.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="app-8-out\fb_relais_app.h">
+    <Compile Include="app-bootloader\fb_bootloader.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lib\adc.c">
