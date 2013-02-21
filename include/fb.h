@@ -44,7 +44,8 @@
 #define SS_ALE      (1 << 3) /**< bit for application layer enable      */
 #define SS_SE       (1 << 4) /**< bit for serial (PEI) interface enable */
 #define SS_UE       (1 << 5) /**< bit for user program enable           */
-#define SS_DM       (1 << 6) /**< bit for bootloader-download mode      */
+#define SS_DM       (1 << 6) /**< bit for download mode                 */
+#define SS_PARITY   (1 << 7) //*< parity bit for systenState. Even parity is used @todo implement parity bit */
 
 #ifndef FALSE
 #define FALSE (0!=0)         /**< macro which will always return false  */
