@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2007 Dirk Opfer <dirk@do13.de>
 *  Copyright (c) 2007 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
@@ -19,9 +19,9 @@
 * @file   fb.h
 * @author Dirk Opfer
 * @date   Sat Apr 05 22:52:06 2008
-* 
+*
 * @brief  Define general values used in bus communication.
-* 
+*
 */
 
 #ifndef _FB_H
@@ -33,8 +33,8 @@
 #define FB_BUSY     0xC0    /**< Value for BUSY     */
 
 
-/** Number of group adreses stored in eeprom */ 
-#define FB_MAX_GROUP_ADDR   19  
+/** Number of group adreses stored in eeprom */
+#define FB_MAX_GROUP_ADDR   19
 
 
 /* bit values for the systemstate register */
