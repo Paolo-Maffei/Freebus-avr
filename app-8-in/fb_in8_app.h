@@ -18,7 +18,7 @@
 * @file   fb_in8_app.h
 * @author Matthias Fechner, Christian Bode
 * @date   Sat Jan 05 17:58:58 2008
-* 
+*
 * @brief  The application for 8 binary inputs
 * Manufactorer code is 0x04 = Jung\n
 * Device type (2118) 0x7054 Ordernumber: 2118 REG\n
@@ -61,14 +61,14 @@
                                              //        XXXX xxxx  Eingang 8
 
                                              // Aufbau fuer die Port 1 ... 8 ist identsich
-                                             // 0x01D5 Basisadresse Eingang 1 
-                                             // 0x01D9 Basisadresse Eingang 2 
-                                             // 0x01DD Basisadresse Eingang 3 
-                                             // 0x01E1 Basisadresse Eingang 4 
-                                             // 0x01E5 Basisadresse Eingang 5 
-                                             // 0x01E9 Basisadresse Eingang 6 
-                                             // 0x01ED Basisadresse Eingang 7 
-                                             // 0x01F1 Basisadresse Eingang 8 
+                                             // 0x01D5 Basisadresse Eingang 1
+                                             // 0x01D9 Basisadresse Eingang 2
+                                             // 0x01DD Basisadresse Eingang 3
+                                             // 0x01E1 Basisadresse Eingang 4
+                                             // 0x01E5 Basisadresse Eingang 5
+                                             // 0x01E9 Basisadresse Eingang 6
+                                             // 0x01ED Basisadresse Eingang 7
+                                             // 0x01F1 Basisadresse Eingang 8
 /* Funktion Schalten */
 #define APP_PORTFUNC_CONFIG         0x01D5   // Verhalten bei Power ON, Bit XXxx xxxx
                                              // 0 keine, 1 EIN, 2 Aus, 3 Portwert
@@ -78,15 +78,15 @@
                                              // 0 keine, 1 nur EIN, 2 nur Aus, 3 EIn & AUS
                                              // Sperren freigeben, Bit xxxx xxXX
                                              // 00 inaktiv, 01 sperren bei 1, 10 sperren bei 0
-#define APP_PORTFUNC_CYCLIC_FACTOR  0x01D6   // Zeitfaktor für zyklisches senden, Bit xXXX XXXX 
+#define APP_PORTFUNC_CYCLIC_FACTOR  0x01D6   // Zeitfaktor für zyklisches senden, Bit xXXX XXXX
 #define APP_PORTFUNC_EDGEFUNC       0x01D7   // edge Function
                                              //        xxxx xxXX  falling edge object x.1
                                              //        xxxx XXxx  rising edge object x.1
                                              //        xxXX xxxx  falling edge object x.2
                                              //        XXxx xxxx  rising edge object x.2
-#define APP_PORTFUNC_CONFIG2        0x01D8   // Verhalten bei Ende einer Sperrung, Bit xxxx xxXX 
+#define APP_PORTFUNC_CONFIG2        0x01D8   // Verhalten bei Ende einer Sperrung, Bit xxxx xxXX
                                              // 00 keine, 01 EIN, 10 Aus, 11 aktueller Wert
-#define APP_PORTFUNC_CYCLIC_BASE1   0x01F6   // Zeitbasis für zyklisches senden 
+#define APP_PORTFUNC_CYCLIC_BASE1   0x01F6   // Zeitbasis für zyklisches senden
                                              // 0x01F6 XXXX xxxx  object 1.1
                                              // 0x01F7 xxxx XXXX  object 2.1
                                              //        XXXX xxxx  object 3.1
@@ -95,7 +95,7 @@
                                              // 0x01F9 xxxx XXXX  object 6.1
                                              //        XXXX xxxx  object 7.1
                                              // 0x01FA xxxx XXXX  object 8.1
-#define APP_PORTFUNC_CYCLIC_BASE2   0x01FA   // Zeitbasis für zyklisches senden 
+#define APP_PORTFUNC_CYCLIC_BASE2   0x01FA   // Zeitbasis für zyklisches senden
                                              // 0x01FA XXXX xxxx  object 1.2
                                              // 0x01FB xxxx XXXX  object 2.2
                                              //        XXXX xxxx  object 3.2
@@ -112,30 +112,30 @@
                                              // 00 keine, 01 AB, 10 AUF, 11 UM
                                              // Sperren freigeben, Bit xxxx xxXX
                                              // 00 inaktiv, 01 sperren bei 1, 10 sperren bei 0
-#define APP_PORTFUNC_T1_FAKTOR      0x01D6   // Faktor fuer T1, Bit xXXX XXXX 
-#define APP_PORTFUNC_T2_FAKTOR      0x01D7   // faktor fuer T2, Bit xXXX XXXX 
+#define APP_PORTFUNC_T1_FAKTOR      0x01D6   // Faktor fuer T1, Bit xXXX XXXX
+#define APP_PORTFUNC_T2_FAKTOR      0x01D7   // faktor fuer T2, Bit xXXX XXXX
 #define APP_PORTFUNC_JALOCONFIG2    0x01D8   // Bedienkonzept, Bit xxxx Xxxx
                                              // 0 kurz-lang-kurz, 1 lang-kurz
                                              // Reaktion auf steigende Flanke, Bit xxXX xxxx
                                              // 00 keine, 01 AUF, 10 AB, 11 UM
 #define APP_PORTFUNC_T1_BASIS       0x01F6   // Zeitbasis fuer T1
-                                             // 0x01F6 XXXX xxxx  Eingang 1 
-                                             // 0x01F7 xxxx XXXX  Eingang 2 
-                                             //        XXXX xxxx  Eingang 3 
-                                             // 0x01F8 xxxx XXXX  Eingang 4 
-                                             //        XXXX xxxx  Eingang 5 
-                                             // 0x01F9 xxxx XXXX  Eingang 6 
-                                             //        XXXX xxxx  Eingang 7 
-                                             // 0x01FA xxxx XXXX  Eingang 8 
+                                             // 0x01F6 XXXX xxxx  Eingang 1
+                                             // 0x01F7 xxxx XXXX  Eingang 2
+                                             //        XXXX xxxx  Eingang 3
+                                             // 0x01F8 xxxx XXXX  Eingang 4
+                                             //        XXXX xxxx  Eingang 5
+                                             // 0x01F9 xxxx XXXX  Eingang 6
+                                             //        XXXX xxxx  Eingang 7
+                                             // 0x01FA xxxx XXXX  Eingang 8
 #define APP_PORTFUNC_T2_BASIS       0x01FA   //  Zeitbasis fuer T2
-                                             // 0x01FA XXXX xxxx  Eingang 1 
-                                             // 0x01FB xxxx XXXX  Eingang 2 
-                                             //        XXXX xxxx  Eingang 3 
-                                             // 0x01FC xxxx XXXX  Eingang 4 
-                                             //        XXXX xxxx  Eingang 5 
-                                             // 0x01FD xxxx XXXX  Eingang 6 
-                                             //        XXXX xxxx  Eingang 7 
-                                             // 0x01FE xxxx XXXX  Eingang 8 
+                                             // 0x01FA XXXX xxxx  Eingang 1
+                                             // 0x01FB xxxx XXXX  Eingang 2
+                                             //        XXXX xxxx  Eingang 3
+                                             // 0x01FC xxxx XXXX  Eingang 4
+                                             //        XXXX xxxx  Eingang 5
+                                             // 0x01FD xxxx XXXX  Eingang 6
+                                             //        XXXX xxxx  Eingang 7
+                                             // 0x01FE xxxx XXXX  Eingang 8
 
 
 #define MOVE_UP         0x01
