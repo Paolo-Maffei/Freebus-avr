@@ -30,3 +30,8 @@ Debug
 lib
 
 app-8-in/default/makedep.mk
+app-8-in-full.cproj
+app-8-out-full.cproj
+app-bootloader-full.cproj
+freebus_avr_full.atsln
+freebus_avr_full.atsuo
