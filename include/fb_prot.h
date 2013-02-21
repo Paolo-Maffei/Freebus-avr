@@ -79,7 +79,15 @@
 #define APPLICATION_PROGRAMM          0x010C  /**< Startadress of the application program              */
 /** @todo delete define */
 #define PORT_A_DIRECTION_BIT          0x010C  ///< Port A Direction Bit Setting
-#define APPLICATION_RUN_STATUS        0x010D  /**< status of the application 0x00=run, 0xFF=stop       */
+#define RUN_ERROR_STATUS              0x010D  /**< Error status of the application bit order
+                                                   reserved SYS3_ERR SYS2_ERR OBJ_ERR STK_OVL EEPROM_ERR SYS1_ERR SYS0_ERR
+                                                   SYS0_ERR Internal system error
+                                                   SYS1_ERR Internal system error
+                                                   EEPROM_ERR The EEPROM-check detected an error. The EEPROM-data are probably corrupted
+                                                   STK_OVL A stck overflow was detected
+                                                   OBJ_ERR The AL detected an error in the communication-object or association-table. Probably due to inconsistent EEPROM-data. This error inhibits user-execution
+                                                   SYS2_ERR Internal system error
+                                                   SYS3_ERR Internal system error. Probably due to inconsistent EEPROM-data */
 #define ROUTECOUNT                    0x010E  /**< @todo document variable                             */
 #define ASSOCTABPTR                   0x0111  /**< start of associations in eeprom                     */
 #define COMMSTAB_ADDRESS              0x0112  /**< COMMSTAB Pointer                                    */

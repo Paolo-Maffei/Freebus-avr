@@ -70,7 +70,7 @@
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 { SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
-{ APPLICATION_RUN_STATUS,       0xFF },    /**< Run-Status (00=stop FF=run)                  */
+{ RUN_ERROR_STATUS,             0xFF },    /**< Error-Status (FF=no error)                   */
 { COMMSTAB_ADDRESS,             0x9A },    /**< COMMSTAB Pointer                             */
 { APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
 
