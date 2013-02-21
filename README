@@ -1,65 +1,86 @@
 /** @mainpage
-* <b>Setting Fuses for ATMega168(P):</b>\n
-*
-* Boot Rom not used\n
-* SPIEN=on\n
-* BODLEVEL=Brown-out detection at VCC=2.7V\n
-* SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14\n
-*
-* EXTENDED=0x01\n
-* HIGH=0xDD (eeprom not preseved through chip erase), or 0xD5 (eeprom preserved)\n
-* HIGH=0xCD or 0xC5 (as above, but watchdog enabled)
-* LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)\n
-*
-* <b>Setting Fuses for ATMega328P:</b>\n
-*
-* Boot Rom not used\n
-* SPIEN=on\n
-* BODLEVEL=Brown-out detection at VCC=2.7V\n
-* SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14\n
-*
-* EXTENDED=0xFD\n
-* HIGH=0xD9 (eeprom not preseved through chip erase), or 0xD1 (eeprom preserved)\n
-* HIGH=0xC9 or 0xC1 (as above, but watchdog enabled)
-* LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)\n
-*
-* <b>Compile and create HEX files:</b>\n
-* To compile your self developed app or the existing ones finished build scripts for Windows (AVR Studio) and Linux/Unix/MacOSX (Makefiles) is in place.\n
-* You can use AVR Studio to generate the hex files or GNU Make, what you prefer.
-*
-* Windows:\n
-* Load the existing project file in AVR-Studio, e.g. app-8-out\fb_app_8_out.aps and compile it with AVR Studio, for more details see the start-avr.pdf manual.
-*
-* Linux/Unix/MacOSX:\n
-* Some default parameters are already defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
-* To create all .hex files you can type in the directory software/avr/ then:\n
-* make hex\n
-* you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
-*
-* <b>Compiler defines in your own application</b>\n
-* In order to select the right library and CPU frequency, you should define\n
-* <b>-DFB_TP</b> freebus (twisted pair) device\n
-* <b>-DFB_RF</b> freebus-rf device\n
-* <b>-DFB_TP -DFB_RF</b> device with both, twisted pair and rf, this applies for a gateway\n
-* <b>-DFB_TP -DBOARD301</b> for the old Rev 3.01 board (twisted pair, of course)\n
-* if you use GNU make you can set the variable CUSTOM_CFLAGS in your application's Makefile.\n
-*
-* <b>General notes if developing your own application:</b>\n
-* If you develop an application you should not use an ISR in that application it can disturb the extreme
-* critical timing in the EIB bus communication. I you need timers you should check instead registers if a
-* special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible
-* and check every condition you can imagine that it is secured that the bus communication is handled correctly.\n
-* Transfers which a very error phrone are:\n
-* * ACKS sent and received (at the end of a telegram)\n
-* * Long communication like programming of group addresses and parameters\n
-* * Receiving of data while a bit is read\n
-*
-* The following functions must exist in each application (take as example fb_relais_app.c):\n
-* * \link fb_relais_app.c#main(void) main(void)\endlink\n
-* * \link fb_relais_app.c#runApplication(struct msg *rxmsg) runApplication(struct msg *rxmsg)\endlink\n
-* * \link fb_relais_app.c#readApplication(struct msg *rxmsg) readApplication(struct msg *rxmsg)\endlink\n
-* * \link fb_relais_app.c#restartApplication(void) restartApplication(void)\endlink\n
-* * \link fb_relais_app.c#setApplicationDefaults(void) setApplicationDefaults(void)\endlink\n
-* 
-* @todo complete list of conditions that must be checked
+\tableofcontents
+
+\section fuses-168 Setting Fuses for ATMega168(P)
+Warning, this controller type is not supported anymore. Use the 328P(A) instead.
+
+Boot Rom not used<br>
+SPIEN=on<br>
+BODLEVEL=Brown-out detection at VCC=2.7V<br>
+SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14<br>
+
+EXTENDED=0x01<br>
+HIGH=0xDD (eeprom not preseved through chip erase), or 0xD5 (eeprom preserved)<br>
+HIGH=0xCD or 0xC5 (as above, but watchdog enabled)<br>
+LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)<br>
+
+\section fuses-328 Setting Fuses for ATMega328P(A)
+This is the suggested microcontroller which have enough size to support the bootloader mode.
+
+Boot Rom not used<br>
+SPIEN=on<br>
+BODLEVEL=Brown-out detection at VCC=2.7V<br>
+SUT_CKSEL=Ext. Crystal Osc. 8.0- MHz; Start-up time: PWRDWN/RESET: 1K CK /14<br>
+
+EXTENDED=0xFD<br>
+HIGH=0xD9 (eeprom not preseved through chip erase), or 0xD1 (eeprom preserved)<br>
+HIGH=0xC9 or 0xC1 (as above, but watchdog enabled)
+LOW=0xCF (crystal oscillator), or 0xC0 (external clock from RFM22)<br>
+
+\section compile Compile and create HEX files
+To compile your self developed applications or compile already existing ones you have:
+- \ref compile-windows "for Windows with Atmel Studio 6 you must create a project as described"
+- \ref compile-linux "for Linux/Unix/MacOSX Makefiles are available"
+
+\subsection compile-windows Windows
+Read avr-atmel-studio-project-anlegen.pdf and start-avr.pdf manual.
+Make sure to always defined the compile switch -DF_CPU=8000000UL.
+
+\subsection compile-linux Linux/Unix/MacOSX
+Some default parameters are already defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
+To create all .hex files you can type in the directory software/avr/ then:<br>
+make hex<br>
+you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
+
+<b>Compiler defines in your own application</b><br>
+In order to select the right library and CPU frequency, you should define<br>
+<b>-DFB_TP</b> freebus (twisted pair) device<br>
+<b>-DFB_RF</b> freebus-rf device<br>
+<b>-DFB_TP -DFB_RF</b> device with both, twisted pair and rf, this applies for a gateway<br>
+<b>-DFB_TP -DBOARD301</b> for the old Rev 3.01 board (twisted pair, of course)<br>
+if you use GNU make you can set the variable CUSTOM_CFLAGS in your application's Makefile.<br>
+
+\section notes General notes if developing your own application:
+If you develop an application you should not use an ISR in that application it can disturb the extreme
+critical timing in the EIB bus communication. I you need timers you should check instead registers if a
+special event was triggered. If you absolutely cannot avoid the use of ISRs make sure that they run as short as possible
+and check every condition you can imagine that it is secured that the bus communication is handled correctly.<br>
+Transfers which a very error phrone are:<br>
+- ACKS sent and received (at the end of a telegram)<br>
+- Long communication like programming of group addresses and parameters<br>
+- Receiving of data while a bit is read<br>
+
+The following functions must exist in each application (take as example fb_relais_app.c):
+- \link fb_relais_app.c#main(void) main(void)\endlink<br>
+- \link fb_relais_app.c#runApplication(struct msg *rxmsg) runApplication(struct msg *rxmsg)\endlink<br>
+- \link fb_relais_app.c#readApplication(struct msg *rxmsg) readApplication(struct msg *rxmsg)\endlink<br>
+- \link fb_relais_app.c#restartApplication(void) restartApplication(void)\endlink<br>
+- \link fb_relais_app.c#setApplicationDefaults(void) setApplicationDefaults(void)\endlink<br>
+
+
+\section firmware New Firmware
+We have several libraries available. Which one has to be used depends on the hardware you use. The table lists firmware available and which one must be used.
+
+Library          | Description
+---------------- | -----------
+libfbrf.a        | AVR controller board with radio frequency module only, not connection to KNX
+libfbrftp.a      | AVR controller board with radio frequency modules and KNX connection (gateway)
+libfbtp.a        | AVR controller board with KNX connection only
+libavreib.a      | AVR controller board with hardware revision 3.01
+libfbrfdebug.a   | AVR controller board with radio frequency module only, not connection to KNX with enabled debugging
+libfbrftpdebug.a | AVR controller board with radio frequency modules and KNX connection (gateway) with enabled debugging
+libfbtpdebug.a   | AVR controller board with KNX connection only with enabled debugging
+libavreibdebug.a | AVR controller board with hardware revision 3.01 with enabled debugging
+
+@todo complete list of conditions that must be checked
 */
