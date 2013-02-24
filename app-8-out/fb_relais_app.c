@@ -53,8 +53,14 @@ enum EIGHT_OUT_Objects_e {
     OBJ_OUT9,
     OBJ_OUT10,
     OBJ_OUT11,
-    OBJ_OUT12,
-    OBJ_OUT13,
+    OBJ_RESP1,	/* Feedback Ch 1 */
+    OBJ_RESP2,	/* Feedback Ch 2 */
+    OBJ_RESP3,	/* Feedback Ch 3 */
+    OBJ_RESP4,	/* Feedback Ch 4 */
+    OBJ_RESP5,	/* Feedback Ch 5 */
+    OBJ_RESP6,	/* Feedback Ch 6 */
+    OBJ_RESP7,	/* Feedback Ch 7 */
+    OBJ_RESP8,	/* Feedback Ch 8 */
 };
 
 /* Objekte:
@@ -67,6 +73,18 @@ Nr. Objectname        Funktion     Typ             Flags
 5   Ausgang 6         Schalten     EIS 1 1 Bit     K   S
 6   Ausgang 7         Schalten     EIS 1 1 Bit     K   S
 7   Ausgang 8         Schalten     EIS 1 1 Bit     K   S
+8
+9
+10
+11
+12  Rueckm. 1         Rueckmeldung  EIS 1 1 Bit     K     Ü
+13  Rueckm. 2         Rueckmeldung  EIS 1 1 Bit     K     Ü
+14  Rueckm. 3         Rueckmeldung  EIS 1 1 Bit     K     Ü
+15  Rueckm. 4         Rueckmeldung  EIS 1 1 Bit     K     Ü
+16  Rueckm. 5         Rueckmeldung  EIS 1 1 Bit     K     Ü
+17  Rueckm. 6         Rueckmeldung  EIS 1 1 Bit     K     Ü
+18  Rueckm. 7         Rueckmeldung  EIS 1 1 Bit     K     Ü
+19  Rueckm. 8         Rueckmeldung  EIS 1 1 Bit     K     Ü
 
 Flag  Name            Bedeutung
 K     Kummunikation   Objekt ist kommunikationsfähig
@@ -307,7 +325,7 @@ void app_loop() {
     uint8_t needToSwitch=0;
 
     // Iterate over all objects and check if the status has changed
-    for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT13; commObjectNumber++) {
+    for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT11; commObjectNumber++) {
         // check if an object has changed its status
         if(TestObject(commObjectNumber)) {
             DEBUG_NEWLINE();
@@ -508,14 +526,32 @@ void switchObjects(void) {
  *
  */
 void switchPorts(uint8_t port, uint8_t oldPort) {
+	uint8_t change = oldPort ^ port;
     DEBUG_PUTS("SWITCH ");
 	DEBUG_PUTHEX(oldPort);
 	DEBUG_PUTS(" TO ");
 	DEBUG_PUTHEX(port);
     DEBUG_SPACE();
 
+    if (change) {
+    	/* Output pins changed, send feedback */
+    	uint8_t invert = mem_ReadByte(APP_REPORT_BACK_INVERT);
+        uint8_t mask = 0x01, i;
+        for(i=0; i<=7; i++) {
+            if (change & mask) {
+                /* Changed */
+                uint8_t val = port;
+                if (invert & mask)
+                    val ^= val;        /* invert value */
+                /* Set and transmit feedback object */
+                SetAndTransmitBit(OBJ_RESP1 + i, (val & mask) ? 1 : 0);
+            }
+            mask <<= 1;
+        }
+    }
+
     // Disable PWM only if we switch an IO to high, release a relay does not need power.
-    if((oldPort ^ port) & port) {
+    if(change & port) {
         /* change PWM to supply relays with full power */
         DEBUG_PUTS("DISABLE PWM ");
         alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
