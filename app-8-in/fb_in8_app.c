@@ -41,30 +41,30 @@
  **************************************************************************/
 /* Objects for the app-8-in */
 enum EIGHT_IN_Objects_e {
-    OBJ_IN0 = 0,
-    OBJ_IN1,
-    OBJ_IN2,
-    OBJ_IN3,
-    OBJ_IN4,
-    OBJ_IN5,
-    OBJ_IN6,
-    OBJ_IN7,
-    OBJ_IN8, // start of special objects used to lock or combine objects
-    OBJ_IN9,
-    OBJ_IN10,
-    OBJ_IN11,
-    OBJ_IN12,
-    OBJ_IN13,
-    OBJ_IN14,
-    OBJ_IN15,
-    OBJ_IN16, // sperren Ausgang 1
-    OBJ_IN17, // sperren Ausgang 2
-    OBJ_IN18, // sperren Ausgang 3
-    OBJ_IN19, // sperren Ausgang 4
-    OBJ_IN20, // sperren Ausgang 5
-    OBJ_IN21, // sperren Ausgang 6
-    OBJ_IN22, // sperren Ausgang 7
-    OBJ_IN23  // sperren Ausgang 8
+    OBJ_OUT0 = 0,
+    OBJ_OUT1,
+    OBJ_OUT2,
+    OBJ_OUT3,
+    OBJ_OUT4,
+    OBJ_OUT5,
+    OBJ_OUT6,
+    OBJ_OUT7,
+    OBJ_OUT8, 
+    OBJ_OUT9,
+    OBJ_OUT10,
+    OBJ_OUT11,
+    OBJ_OUT12,
+    OBJ_OUT13,
+    OBJ_OUT14,
+    OBJ_OUT15,
+    OBJ_OUT16, // sperren Eingang 1
+    OBJ_OUT17, // sperren Eingang 2
+    OBJ_OUT18, // sperren Eingang 3
+    OBJ_OUT19, // sperren Eingang 4
+    OBJ_OUT20, // sperren Eingang 5
+    OBJ_OUT21, // sperren Eingang 6
+    OBJ_OUT22, // sperren Eingang 7
+    OBJ_OUT23  // sperren Eingang 8
 };
 
 /* Objekte:
@@ -230,7 +230,7 @@ void app_loop() {
 
     // Iterate over all objects and check if the status has changed
     // Einlesen der Sperrobjekte
-    for(commObjectNumber=0; commObjectNumber<=OBJ_IN23; commObjectNumber++) {
+    for(commObjectNumber=0; commObjectNumber<=OBJ_OUT23; commObjectNumber++) {
         // check if an object has changed its status
         if(TestObject(commObjectNumber)) {
             DEBUG_NEWLINE();
@@ -249,10 +249,10 @@ void app_loop() {
 
             // Tranfer MsgData to bit structure (xxValue)
             if(msgVal == 1) {
-                app_dat.safty |= (1<<(commObjectNumber - OBJ_IN16));
+                app_dat.safty |= (1<<(commObjectNumber - OBJ_OUT16));
             }
             else if(msgVal == 0) {
-                app_dat.safty &= ~(1<<(commObjectNumber - OBJ_IN16));
+                app_dat.safty &= ~(1<<(commObjectNumber - OBJ_OUT16));
             }
         }
     }   // for()
