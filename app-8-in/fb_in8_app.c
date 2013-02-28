@@ -68,7 +68,7 @@ enum EIGHT_IN_Objects_e {
 };
 
 /* Objekte:
-Nr. Objectname        Funktion          Typ             Flags
+Nr. Objectname        Function          Typ             Flags
 Funktion: Schalten
 0   Eingang 1         Schalten 1.1      EIS 1   1 Bit   K  S  Ü (L)
 1   Eingang 2         Schalten 2.1      EIS 1   1 Bit   K  S  Ü (L)
@@ -90,6 +90,22 @@ Funktion: Schalten
 Funktion: Dimmen
 
 Funktion: Jalousie
+0   Eingang 1         Kurzzeitbetr. 1   EIS 1   1 Bit   K  S  Ü (L)
+1   Eingang 2         Kurzzeitbetr. 2   EIS 1   1 Bit   K  S  Ü (L)
+2   Eingang 3         Kurzzeitbetr. 3   EIS 1   1 Bit   K  S  Ü (L)
+3   Eingang 4         Kurzzeitbetr. 4   EIS 1   1 Bit   K  S  Ü (L)
+4   Eingang 5         Kurzzeitbetr. 5   EIS 1   1 Bit   K  S  Ü (L)
+5   Eingang 6         Kurzzeitbetr. 6   EIS 1   1 Bit   K  S  Ü (L)
+6   Eingang 7         Kurzzeitbetr. 7   EIS 1   1 Bit   K  S  Ü (L)
+7   Eingang 8         Kurzzeitbetr. 8   EIS 1   1 Bit   K  S  Ü (L)
+8   Eingang 1         Langzeitbetr. 1   EIS 1   1 Bit   K  S  Ü (L)
+9   Eingang 2         Langzeitbetr. 2   EIS 7   1 Bit   K  S  Ü (L)
+10  Eingang 3         Langzeitbetr. 3   EIS 7   1 Bit   K  S  Ü (L)
+11  Eingang 4         Langzeitbetr. 4   EIS 7   1 Bit   K  S  Ü (L)
+12  Eingang 5         Langzeitbetr. 5   EIS 7   1 Bit   K  S  Ü (L)
+13  Eingang 6         Langzeitbetr. 6   EIS 7   1 Bit   K  S  Ü (L)
+14  Eingang 7         Langzeitbetr. 7   EIS 7   1 Bit   K  S  Ü (L)
+15  Eingang 8         Langzeitbetr. 8   EIS 7   1 Bit   K  S  Ü (L)
 
 Funktion: Wertgeber (Dimmwertgeber)
 
@@ -140,7 +156,7 @@ typedef enum
     eFunc_Schaltzaehler,        ///< @todo add documentation
 } EFUNC_PORT;
 
-#define TIME_MSG_RATE_LIM       (timer_t)128*M2TICS(130)        // 17 sec
+#define TIME_MSG_RATE_LIM       (timer_t)128*M2TICS(130)        // 17 sec fuer Telegrammratenberenzung
 
 
 /**************************************************************************
@@ -181,7 +197,7 @@ struct {
     uint8_t runningCyclTimer2;     /// bitfield for timer active flags
 
     // Variablen fuer Funktion Jalousie
-    uint8_t stateJalousie[8];      ///
+    uint8_t stateJalousie[8];      /// store states for internal jalousie states
 
     uint8_t safty;                 /// bitfield for the safty commands
     uint8_t safty_old;             /// bitfield for the last safty commands
@@ -259,7 +275,7 @@ void app_loop() {
         }
     }
     else {
-        // Telegrammratenbegrenzung
+        // Telegrammratenbegrenzung neu zuruecksetzen
         if(app_dat.runningdefTimer & 0x02) {
             // Begrenzung aktiv
             if(check_timeout(&app_dat.deftimer)) {
@@ -405,7 +421,7 @@ uint8_t ReadPorts(void) {
     portVal |= (((uint8_t)IO_GET(5))<<4);
     portVal |= (((uint8_t)IO_GET(6))<<5);
     portVal |= (((uint8_t)IO_GET(7))<<6);
-    portVal |= (((uint8_t)IO_GET(7))<<7);
+    portVal |= (((uint8_t)IO_GET(8))<<7);
 
     return portVal;
 }
