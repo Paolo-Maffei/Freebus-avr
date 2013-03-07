@@ -387,7 +387,7 @@ void app_loop() {
 
                     handleTimers(commObjectNumber, value);
 
-                    SetAndTransmitBit(commObjectNumber, value);
+//                    SetAndTransmitBit(commObjectNumber, value);
                     needToSwitch=1;
                 }
 			}
@@ -409,7 +409,7 @@ void app_loop() {
  * @return FB_ACK or FB_NACK
  */
 uint8_t restartApplication(void) {
-    uint8_t i,temp;
+    uint8_t i, temp, portOperationMode;
     uint16_t initialPortValue;
 
     /* reset global timer values */
@@ -477,11 +477,45 @@ uint8_t restartApplication(void) {
     /* Reset State */
     RESET_STATE();
 
+    /* check 0x01F2 for opener or closer and modify data to reflect that, then switch the port */
+    portOperationMode = mem_ReadByte(APP_CLOSER_MODE);
+
+	/* Flip each bit */
+	app_dat.oldValue = ~app_dat.portValue;
+
     /* switch the output pins */
-    switchObjects();
+    switchPorts(app_dat.portValue^portOperationMode, app_dat.oldValue^portOperationMode);
 
     return 1;
 } /* restartApplication() */
+
+
+/**
+ * Compare old / new port state and send a feedback telegram if enabled
+ *
+ */
+static void sendFeedback(uint8_t port, uint8_t oldPort)
+{
+    uint8_t change = oldPort ^ port;
+
+    if (change) {
+        /* Output pins changed, send feedback */
+        uint8_t invert = mem_ReadByte(APP_REPORT_BACK_INVERT);
+        uint8_t mask = 0x01, i;
+        for(i=0; i<=7; i++) {
+            if (change & mask) {
+                /* Changed */
+                uint8_t val = port;
+                if (invert & mask)
+                    val ^= val;        /* invert value */
+                /* Set and transmit feedback object */
+                SetAndTransmitBit(OBJ_RESP1 + i, (val & mask) ? 1 : 0);
+            }
+            mask <<= 1;
+        }
+    }
+}
+
 
 /**
  * Switch the objects to state in portValue and save value to eeprom if necessary.
@@ -511,6 +545,9 @@ void switchObjects(void) {
         }
     }
 
+    /* Send feedback telegrams */
+    sendFeedback(app_dat.portValue, app_dat.oldValue);
+
     /* check 0x01F2 for opener or closer and modify data to reflect that, then switch the port */
     portOperationMode = mem_ReadByte(APP_CLOSER_MODE);
     switchPorts(app_dat.portValue^portOperationMode, app_dat.oldValue^portOperationMode);
@@ -526,32 +563,14 @@ void switchObjects(void) {
  *
  */
 void switchPorts(uint8_t port, uint8_t oldPort) {
-	uint8_t change = oldPort ^ port;
     DEBUG_PUTS("SWITCH ");
 	DEBUG_PUTHEX(oldPort);
 	DEBUG_PUTS(" TO ");
 	DEBUG_PUTHEX(port);
     DEBUG_SPACE();
 
-    if (change) {
-    	/* Output pins changed, send feedback */
-    	uint8_t invert = mem_ReadByte(APP_REPORT_BACK_INVERT);
-        uint8_t mask = 0x01, i;
-        for(i=0; i<=7; i++) {
-            if (change & mask) {
-                /* Changed */
-                uint8_t val = port;
-                if (invert & mask)
-                    val ^= val;        /* invert value */
-                /* Set and transmit feedback object */
-                SetAndTransmitBit(OBJ_RESP1 + i, (val & mask) ? 1 : 0);
-            }
-            mask <<= 1;
-        }
-    }
-
     // Disable PWM only if we switch an IO to high, release a relay does not need power.
-    if(change & port) {
+    if((oldPort ^ port) & port) {
         /* change PWM to supply relays with full power */
         DEBUG_PUTS("DISABLE PWM ");
         alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
