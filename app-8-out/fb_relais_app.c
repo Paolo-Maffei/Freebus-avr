@@ -507,7 +507,7 @@ static void sendFeedback(uint8_t port, uint8_t oldPort)
                 /* Changed */
                 uint8_t val = port;
                 if (invert & mask)
-                    val ^= val;        /* invert value */
+                    val = ~val;        /* invert value */
                 /* Set and transmit feedback object */
                 SetAndTransmitBit(OBJ_RESP1 + i, (val & mask) ? 1 : 0);
             }
