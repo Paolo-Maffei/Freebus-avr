@@ -2,11 +2,12 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
-*  Copyright (c) 2010 Matthias Fechner <matthias@fechner.net>
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
+*  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
+*  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
 *
 *  This program is free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License version 2 as
@@ -14,16 +15,18 @@
 *
 */
 /**
-* @file   fb_adc.h
-* @author Matthias Fechner
-* @date   Sun Aug 08 08:01:58 2010
-* 
-* @brief  A test program to use the ADC port 0
+* @file   
+* @author Matthias Fechner, Christian Bode
+* @date   Sat Jan 05 17:58:58 2008
+*
+* @brief  
+* Manufactorer code is
+* Device type
 */
-#ifndef _FB_ADC_APP_H
-#define _FB_ADC_APP_H
+#ifndef _AIN10VNEWLIB_H
+#define _AIN10VNEWLIB_H
 
-#ifdef _FB_ADC_APP_C
+#ifdef _AIN10VNEWLIB_C
 #define APP_EXT
 #else
 /** Set APP_EXT to extern to make clear it is include from an external source like a lib */
@@ -33,6 +36,8 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
+#include "fb_prot.h"
+#include "fb_app.h"
 
 
 /**************************************************************************
@@ -40,9 +45,29 @@
 **************************************************************************/
 
 
+/** list of the default parameter for this application */
+const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
+{ SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
+{ RUN_ERROR_STATUS,             0xFF },    /**< Error-Status (FF=no error)                   */
+{ ASSOCTABPTR,					0x29 },    /**<	ASSOCTAB Pointer							 */
+{ COMMSTAB_ADDRESS,             0x3A },    /**< COMMSTAB Pointer                             */
+{ MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode					             */
+{ MANUFACTORER_ADR_LOW,         0x08 },    /**< Herstellercode						         */
+{ DEVICE_NUMBER_HIGH,           0xB0 },    /**< device type					                 */
+{ DEVICE_NUMBER_LOW,            0x03 },    /**<                                              */
+{ 0xFF,                         0xFF }     /**< END-sign; do not change                      */
+};
+
+const struct FBAppInfo AppInfo PROGMEM = {
+    .FBApiVersion = 0x01,
+    .pParam = defaultParam,
+};
+
+
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
+
 
 
 /*************************************************************************
@@ -50,5 +75,5 @@
 **************************************************************************/
 
 
-#endif /* _FB_ADC_APP_H */
+#endif /* _AIN10VNEWLIB_H */
 /*********************************** EOF *********************************/
