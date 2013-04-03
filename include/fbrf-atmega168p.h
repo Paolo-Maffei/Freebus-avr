@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
 *  Copyright (c) 2010 Dirk Armbrust (tuxbow) <dirk.armbrust@freenet.de>
@@ -18,11 +18,11 @@
 * @file   freebus-atmega168P.h
 * @author Matthias Fechner, Christian Bode, Tobias Buss, Dirk Armbrust
 * @date   Mon Jul 26 20:45:22 2009
-* 
+*
 * @brief  Hardware specific options for the ATmega168P / ATmega328P, for board with RF.
 * DO NOT INCLUDE THAT FILE DIRECTLY, include fb_hardware.h instead.
-* 
-* 
+*
+*
 */
 #if defined(_FB_HARDWARE_H)
 #ifndef _FREEBUS_ATMEGA168P_H
@@ -78,7 +78,7 @@
 
 #define NORMAL_EIB_TIMER() \
           TCCR0B &= ~(1<<CS00);
- 
+
 #define START_EIB_OUT()  { \
           TIFR0   = ( 1<<OCF0B );  /* clear a pending interrupt */ \
           TIMSK0 |= ( 1<<OCIE0B ); /* enable OCRB interrupt */ \
@@ -140,11 +140,11 @@ static uint8_t inline appTimerOverrun (void)
 #define APP_TIMER_OVERRUN()	\
 		appTimerOverrun()
 
-/** 
+/**
 * Enable PWM, PWM pin (OC1A / PB1) is set by hardware.
-* 
+*
 * @param x Duty-cycle = x/511 (active low)
-* 
+*
 */
 #define ENABLE_PWM(x)               {                                   \
         TCCR1A |= ((1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
@@ -169,7 +169,7 @@ static uint8_t inline appTimerOverrun (void)
 #define ENABLE_EEPROM_READY_INT()   {           \
         EECR |= (1U<<EERIE);                    \
     }
-    
+
 /** Disable the EEPROM ready interrupt */
 #define DISABLE_EEPROM_READY_INT()   {           \
         EECR &= ~(1U<<EERIE);                    \
@@ -251,7 +251,7 @@ static uint8_t inline appTimerOverrun (void)
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
- 
+
 
 /*************************************************************************
 * FUNCTION PROTOTYPES
