@@ -413,7 +413,8 @@ uint8_t restartApplication(void) {
     uint16_t initialPortValue;
 
     /* reset global timer values */
-
+	RELOAD_APPLICATION_TIMER();
+	
     /* IO configuration */
     IO_SET_DIR(1,IO_OUTPUT);
     IO_SET_DIR(2,IO_OUTPUT);
