@@ -47,6 +47,8 @@
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME               3*M2TICS(130)      /* 3 * 130ms */
 
+#define INPUT_BUTTON (HAND_IN & (1<<HAND_PIN))		/* input of hand actuation pushbutton */
+
 #define APP_SPECIAL_FUNC_OBJ_1_2     0x01D8
 #define APP_SPECIAL_FUNC_OBJ_3_4     0x01D9
 #define APP_DELAY_FACTOR_ON          0x01DA

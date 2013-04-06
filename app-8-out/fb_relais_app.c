@@ -124,13 +124,19 @@ struct {
 	uint8_t runningTimer;
     uint16_t objectStates;      /**< store logic state of objects, 1 bit each, 8 "real" + 4 sf*/
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
+	uint8_t buttonWasEvaluated; /**< 1 bit per object to mark hand actuation pushbutton was pressed */
 } app_dat;
+uint8_t handActuationCounter;	/*
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
  **************************************************************************/
 void switchObjects(void);
 void switchPorts(uint8_t port, uint8_t oldPort);
+uint8_t checkHandActuation(uint8_t commObjectNumber);
+uint8_t getIO(uint8_t inputNr);
+void setIO(uint8_t ioNr, uint8_t val);
+
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -324,6 +330,15 @@ void app_loop() {
     uint8_t value;
     uint8_t needToSwitch=0;
 
+	#ifdef	HAND
+	// manual Operation is enabled
+	// check one butten every app_loop() passing through
+	if (handActuationCounter <= OBJ_OUT7  &&  checkHandActuation(handActuationCounter)){
+		needToSwitch=1;
+	}
+	handActuationCounter++;     //count to 255 for debounce buttons, ca. 30ms
+	#endif
+
     // Iterate over all objects and check if the status has changed
     for(commObjectNumber=OBJ_OUT0; commObjectNumber<=OBJ_OUT11; commObjectNumber++) {
         // check if an object has changed its status
@@ -424,6 +439,9 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(6,IO_OUTPUT);
     IO_SET_DIR(7,IO_OUTPUT);
     IO_SET_DIR(8,IO_OUTPUT);
+	
+	HAND_PORT |= (1<<HAND_PIN);		//set pullup for manual operation button input
+	
 #ifdef BOARD301
 #if (HARDWARETEST != 1)
     SET_IO_RES1(IO_OUTPUT);
@@ -591,6 +609,88 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
     app_dat.oldValue=app_dat.portValue;
     return;
 }
+
+
+/**
+* Function Check whether the hand actuation pushbutton is pressed
+* Remember button status
+* Toggle output status and write to app_dat.portValue
+*
+* \param  Communication object number 0-7
+*
+* @return false:nothing to do    true:change output
+*/
+uint8_t checkHandActuation(uint8_t commObjectNumber) {
+	
+	uint8_t inputState = INPUT_BUTTON;				//read input level
+	uint8_t portState = getIO(commObjectNumber+1);	//read output level
+	setIO(commObjectNumber+1,portState^0x01);		//toggle output
+	_delay_us(1);									//wait for stable input level
+	uint8_t inputState2 = INPUT_BUTTON;				//read input level again, if he has changed button is pressed
+	setIO(commObjectNumber+1,portState);			//set output to originally level
+	if (inputState == inputState2){
+		//button is not pressed
+		app_dat.buttonWasEvaluated &= ~(1<<commObjectNumber);
+		return 0;
+	}
+	else{
+		//button is pressed
+		if (app_dat.buttonWasEvaluated & (1<<commObjectNumber)){
+			return 0;
+		}
+		else{
+			//first query
+			app_dat.portValue ^= (1<<commObjectNumber);		//toggle port state
+			app_dat.buttonWasEvaluated |= (1<<commObjectNumber);
+			return 1;										//return true for needToSwitch
+		}
+	}
+}
+
+
+uint8_t getIO(uint8_t ioNr){
+	switch(ioNr){
+		case 1: return (uint8_t)IO_GET(1);
+		case 2: return (uint8_t)IO_GET(2);
+		case 3: return (uint8_t)IO_GET(3);
+		case 4: return (uint8_t)IO_GET(4);
+		case 5: return (uint8_t)IO_GET(5);
+		case 6: return (uint8_t)IO_GET(6);
+		case 7: return (uint8_t)IO_GET(7);
+		case 8: return (uint8_t)IO_GET(8);
+	}
+}
+
+
+void setIO(uint8_t ioNr, uint8_t val){
+	switch(ioNr){
+		case 1:
+		IO_SET(1,(uint8_t)val);
+		break;
+		case 2:
+		IO_SET(2,(uint8_t)val);
+		break;
+		case 3:
+		IO_SET(3,(uint8_t)val);
+		break;
+		case 4:
+		IO_SET(4,(uint8_t)val);
+		break;
+		case 5:
+		IO_SET(5,(uint8_t)val);
+		break;
+		case 6:
+		IO_SET(6,(uint8_t)val);
+		break;
+		case 7:
+		IO_SET(7,(uint8_t)val);
+		break;
+		case 8:
+		IO_SET(8,(uint8_t)val);
+		break;
+	}
+}
+
 
 #ifdef IO_TEST
 /**

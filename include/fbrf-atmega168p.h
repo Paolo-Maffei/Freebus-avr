@@ -242,6 +242,11 @@ static uint8_t inline appTimerOverrun (void)
 #define EIBIN_IN     PINB       /**< input port (byte) of EIB-IN        */
 #define EIBIN_PIN    0        /**< bit position of EIB-IN             */
 
+#define HAND_PORT   PORTD	    /**< output port (byte) of hand actuation pushbutton  */
+#define HAND_DDR    DDRD	    /**< data direction byte of hand actuation pushbutton */
+#define HAND_IN     PIND        /**< input port (byte) of hand actuation pushbutton   */
+#define HAND_PIN    2         /**< bit position of hand actuation pushbutton        */
+
 
 /**************************************************************************
 * DECLARATIONS
