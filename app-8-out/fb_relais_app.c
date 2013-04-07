@@ -126,7 +126,7 @@ struct {
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
 	uint8_t buttonWasEvaluated; /**< 1 bit per object to mark hand actuation pushbutton was pressed */
 } app_dat;
-uint8_t handActuationCounter;	/*
+uint8_t handActuationCounter;	/* */
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
@@ -330,7 +330,7 @@ void app_loop() {
     uint8_t value;
     uint8_t needToSwitch=0;
 
-	#ifdef	HAND
+	#ifdef HAND
 	// manual Operation is enabled
 	// check one butten every app_loop() passing through
 	if (handActuationCounter <= OBJ_OUT7  &&  checkHandActuation(handActuationCounter)){
@@ -438,8 +438,10 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(6,IO_OUTPUT);
     IO_SET_DIR(7,IO_OUTPUT);
     IO_SET_DIR(8,IO_OUTPUT);
-	
+
+#ifdef HAND	
 	HAND_PORT |= (1<<HAND_PIN);		//set pullup for manual operation button input
+#endif
 	
 #ifdef BOARD301
 #if (HARDWARETEST != 1)
@@ -619,7 +621,7 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
     return;
 }
 
-
+#ifdef HAND
 /**
 * Function Check whether the hand actuation pushbutton is pressed
 * Remember button status
@@ -655,7 +657,7 @@ uint8_t checkHandActuation(uint8_t commObjectNumber) {
 		}
 	}
 }
-
+#endif
 
 uint8_t getIO(uint8_t ioNr){
 	switch(ioNr){
@@ -668,6 +670,7 @@ uint8_t getIO(uint8_t ioNr){
 		case 7: return (uint8_t)IO_GET(7);
 		case 8: return (uint8_t)IO_GET(8);
 	}
+	return 0; /* Shouldn't happen */
 }
 
 
