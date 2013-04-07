@@ -390,7 +390,7 @@ void app_loop() {
     if(IN_STATE(TIMER_ACTIVE)) {
         // action for timer
         for(commObjectNumber=0; commObjectNumber<8; commObjectNumber++) {
-			if(app_dat.runningTimer && 1<<commObjectNumber) {
+			if(app_dat.runningTimer & 1<<commObjectNumber) {
 				//DEBUG_PUTS("CTIMEOUT ");
 				if(app_dat.runningTimer & 1<<commObjectNumber && check_timeout(&app_dat.timer[commObjectNumber])) {
                     DEBUG_PUTS("TIMEOUT ");
