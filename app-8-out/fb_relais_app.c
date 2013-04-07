@@ -464,6 +464,16 @@ uint8_t restartApplication(void) {
 	io_test();
 #endif
 
+    if (mem_ReadByte(0x01C0) == 0x60) {
+        /* Patch datapointer from feedback object 1. ETS has located the data at 0x60 which is the systemstate
+           Writes to this object overwrite the systemstate which results in a not working system.
+           Here we patch the data location to 0x68 which isn't use anymore.
+           Now we have fully working feedback objects.
+         */
+        uint8_t temp = 0x68;
+        mem_WriteBlock(0x01C0, 1, &temp);
+    }
+
     // check if at power loss we have to restore old values (see APP_RESTORE_AFTER_PL) and do it here
     DEBUG_PUTS("SET PINS ");
     app_dat.portValue = mem_ReadByte(0x0100);
