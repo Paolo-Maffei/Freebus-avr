@@ -147,7 +147,7 @@ static uint8_t inline appTimerOverrun (void)
 *
 */
 #define ENABLE_PWM(x)               {                                   \
-        TCCR1A |= ((1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
+        TCCR1A |= ((1<<WGM10)|(1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
         OCR1A = (2*x);                              /* set duty cycle, active low */ \
      }
 
