@@ -25,6 +25,17 @@ endif
 
 BINFORMAT=binary
 
+# check if required variable are defined
+ifeq ($(MCU),)
+$(error Please define processor tpye with variable MCU in Make.config)
+endif
+ifeq ($(MEDIATYPE),)
+$(error Please define media type with variable MEDIATYPE in Make.config)
+endif
+ifeq ($(REVISION),)
+$(error Please define hardware revision with variable REVISION in Make.config)
+endif
+
 # compiler
 CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
@@ -72,7 +83,7 @@ INSTALL:=install
 CMP:=cmp
 
 ##### automatic target names ####
-TRG?=$(PROJECTNAME)$(DEBUG).out
+TRG?=$(PROJECTNAME)_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
 HEXROMTRG=$(TRG).hex
@@ -129,7 +140,8 @@ all: $(TRG)
 debug: CUSTOM_CFLAGS+=-DDEBUG_UART -g
 debug: DEBUG=debug
 debug: $(TRG)
-
+	echo $(TRG)
+	
 disasm: $(DUMPTRG) stats
 
 stats: $(TRG)

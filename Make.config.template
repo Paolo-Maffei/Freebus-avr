@@ -1,7 +1,15 @@
 # Name of target controller 
-# (e.g. 'at90s8515', see the available avr-gcc mmcu 
+# (e.g. 'atmega328p', see the available avr-gcc mmcu 
 # options for possible values)
 MCU?=atmega328p
+
+# Which hardware revision we build
+# See doxygen output for more details
+REVISION=2
+
+# Which bus connection is used
+# See doxygen output for more details
+MEDIATYPE=tp
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
@@ -27,7 +35,7 @@ OPTLEVEL?=s
 
 # define additional flags for the compiler
 # you may want to override CLFLAGS (CommandLineFLAGS) on the command line 
-CLFLAGS?=-DFB_TP -DBOARD301
+CLFLAGS?=
 CUSTOM_CFLAGS?=-Wall $(CLFLAGS)
 
 # Search the files one level up

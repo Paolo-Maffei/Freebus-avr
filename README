@@ -34,14 +34,8 @@ To compile your self developed applications or compile already existing ones you
 
 \subsection compile-windows Windows
 Read avr-atmel-studio-project-anlegen.pdf and start-avr.pdf manual.
-Make sure to always defined the compile switch -DF_CPU=8000000UL.
-
-\subsection compile-linux Linux/Unix/MacOSX
-Some default parameters are already defined, if you like to change them copy the file Make.config.template to Make.config and edit that it matches for wishes.
-To create all .hex files you can type in the directory software/avr/ then:<br>
-make hex<br>
-you will find your hex file in the application folder like app-8-out/freebus-avr-8-out.hex
-
+Make sure to always defined the compile switch -DF_CPU=8000000UL and which connection and hardware is used:<br>
+<br>
 <b>Compiler defines in your own application</b><br>
 In order to select the right library and CPU frequency, you should define<br>
 <b>-DFB_TP</b> freebus (twisted pair) device<br>
@@ -49,6 +43,15 @@ In order to select the right library and CPU frequency, you should define<br>
 <b>-DFB_TP -DFB_RF</b> device with both, twisted pair and rf, this applies for a gateway<br>
 <b>-DFB_TP -DBOARD301</b> for the old Rev 3.01 board (twisted pair, of course)<br>
 if you use GNU make you can set the variable CUSTOM_CFLAGS in your application's Makefile.<br>
+
+\subsection compile-linux Linux/Unix/MacOSX
+If you use the existing Makefile structure you must not care what compile options must be set and you must not define which library to link to, the Makefiles will do everything for you.
+You must say the Makefile only for which processor, media type and hardware you want to build the hexfile.<br>
+To do this, copy the Make.config.template to Make.config and set the first 3 options. See \ref firmware for an explanation of the options.<br>
+To create all .hex files you can type in the main directory:<br>
+make hex<br>
+you will find your hex file in the application folder like app-8-out/freebus-avr-8-out_(MCU)_(MEDIATYPE)_(REVISION)(DEBUG).hex
+
 
 \section notes General notes if developing your own application:
 If you develop an application you should not use an ISR in that application it can disturb the extreme
@@ -68,19 +71,41 @@ The following functions must exist in each application (take as example fb_relai
 - \link fb_relais_app.c#setApplicationDefaults(void) setApplicationDefaults(void)\endlink<br>
 
 
-\section firmware New Firmware
-We have several libraries available. Which one has to be used depends on the hardware you use. The table lists firmware available and which one must be used.
+\section firmware Firmware to link to
+We have several libraries available. Which one has to be used depends on the hardware you use.
+The nameing convention is:<br>
+libfb_(MCU)_(MEDIATYPE)_(REVISION)(DEBUG).a<br>
 
-Library          | Description
+MCU              | Description
 ---------------- | -----------
-libfbrf.a        | AVR controller board with radio frequency module only, not connection to KNX
-libfbrftp.a      | AVR controller board with radio frequency modules and KNX connection (gateway)
-libfbtp.a        | AVR controller board with KNX connection only
-libavreib.a      | AVR controller board with hardware revision 3.01
-libfbrfdebug.a   | AVR controller board with radio frequency module only, not connection to KNX with enabled debugging
-libfbrftpdebug.a | AVR controller board with radio frequency modules and KNX connection (gateway) with enabled debugging
-libfbtpdebug.a   | AVR controller board with KNX connection only with enabled debugging
-libavreibdebug.a | AVR controller board with hardware revision 3.01 with enabled debugging
+atmega328p       | Atmel ATMega 328p MCU
+
+MEDIATYPE        | Description
+---------------- | -----------
+tp               | Twisted pair mode (only connected to KNX bus with twisted pair)
+rf               | Radio frequency module connected, not connected to KNX
+tprf             | Radio frequency module and KNX connected (gateway)
+
+REVISION         | Description
+---------------- | -----------
+1                | AVR controller board with hardware revision 3.01
+2                | AVR controller board with possibility to connect radio frequency module (current board)
+
+DEBUG            | Description
+---------------- | -----------
+debug            | With debugging enabled (use with care, it can make problems with timing). It prints information to rs232 interface.
+<empty>          | Debugging is disabled (should be used to build stable hex files)
+                 
+\subsection example Examples
+<b>libfb_atmega328p_tp_2debug.a</b><br>
+MCU=atmega328p (build for mcu Atmel ATMega328p)<br>
+MEDIATYPE=tp (connected only to KNX bus)<br>
+REVISION=2 (AVR controller board with radio frequency option)<br>
+DEBUG=debug (debugging is enabled)<br>
+<br>
+<b>libfb_atmega328p_tp_2.a</b><br>
+Same as first example, but with no debugging enabled.
 
 @todo complete list of conditions that must be checked
+
 */

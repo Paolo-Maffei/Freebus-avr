@@ -1,26 +1,22 @@
-# determine libraries to link in and CPU frequency, depending on RF
-ifneq (,$(findstring FB_RF,$(CUSTOM_CFLAGS)))
-	ifeq (,$(findstring F_CPU,$(CUSTOM_CFLAGS)))
-		CUSTOM_CFLAGS += -DF_CPU=10000000UL
-	endif
-	ifneq (,$(findstring FB_TP,$(CUSTOM_CFLAGS)))
-		LIBS?=-lfbtprf$(DEBUG) -L..
-	else
-		LIBS?=-lfbrf$(DEBUG) -L..
-	endif
-else
-	ifneq (,$(findstring FB_TP,$(CUSTOM_CFLAGS)))
-		ifeq (,$(findstring F_CPU,$(CUSTOM_CFLAGS)))
-		    CUSTOM_CFLAGS += -DF_CPU=8000000UL
-		endif
-		ifneq (,$(findstring TPUART,$(CUSTOM_CFLAGS)))
-			LIBS?=-lfbtpuart$(DEBUG) -L..
-		else ifneq (,$(findstring BOARD301,$(CUSTOM_CFLAGS)))
-			LIBS?=-lavreib$(DEBUG) -L..
-		else
-			LIBS?=-lfbtp$(DEBUG) -L..
-		endif
-	else
-		LIBS?=-lavreib$(DEBUG) -L..
-	endif
+# determine CPU frequency based on media type
+ifeq ($(MEDIATYPE), tp)
+	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TP
 endif
+ifeq ($(MEDIATYPE), tprf)
+	CUSTOM_CFLAGS += -DF_CPU=10000000UL -DFB_TP -DFB_RF
+endif
+ifeq ($(MEDIATYPE), rf)
+	CUSTOM_CFLAGS += -DF_CPU=10000000UL -DFB_RF
+endif
+ifeq ($MEDIATYPE), tpuart)
+	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TPUART
+endif
+
+# Options for hardware revision
+ifeq ($(REVISION),1)
+	CUSTOM_CFLAGS += -DBOARD301
+endif
+
+# build lib name
+LIBS?=-lfb_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG) -L..
+
