@@ -58,7 +58,7 @@
 #define DEBOUNCE_FACTOR     0x01D2  ///< @todo add documentation 
 #define POWERONDELAY_FACTOR 0x01D4  ///< @todo add documentation
 /* Funktion Schalten */
-/* #define PORTFUNC_BASEADR    0x01D5  ///< @todo add documentation wofür?? */
+/* #define PORTFUNC_BASEADR    0x01D5  ///< @todo add documentation wofï¿½r?? */
 #define PORTFUNC_EDGEFUNC   0x01DA  ///< @todo add documentation
 #define PORTFUNC_OWNFUNC    0x01E2  ///< @todo add documentation
 
@@ -313,7 +313,6 @@ uint8_t restartApplication(void)
     switchObjects();
 
     /* enable timer to increase user timer used for timer functions etc. */
-    //RELOAD_APPLICATION_TIMER();
           TCCR1A = 0;             /* CTC (Clear Timer on Compate match) */ \
           TCCR1B = (1U<<WGM12)|(1U<<CS11)|(1U<<CS10); /* CTC-mode, prescale to 64 */ \
           OCR1A  = 16249;         /* every 130 ms OCR1A=(delay*F_CPU)/(prescaler)-1 */ \
@@ -947,7 +946,7 @@ int main(void)
 
 
         /* check if 130ms timer is ready 
-           we use timer 1 for PWM, overflow each 100µsec, divide by 1300 -> 130msec. */
+           we use timer 1 for PWM, overflow each 100ï¿½sec, divide by 1300 -> 130msec. */
         /* we cannot use the macros from fbrf-atmega168(p).h */
 //        if(TIMER1_OVERRUN){
         if (TIFR1 & (1U<<OCF1A)) {
@@ -973,7 +972,7 @@ int main(void)
         // go to sleep mode here
         // wakeup via interrupt check then the programming button and application timer for an overrun
         // for detailed list see datasheet page 40ff
-        // MC need about 6 cyles to wake up at 8 MHZ that are 6*0.125µs
+        // MC need about 6 cyles to wake up at 8 MHZ that are 6*0.125ï¿½s
         //        PRR |= (1<<PRADC)|(1<<PRSPI)|(1<<PRTWI);
         //        set_sleep_mode(SLEEP_MODE_IDLE);
         //          sleep_enable();

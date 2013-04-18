@@ -45,14 +45,6 @@
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
-/** Reset the internal variables used for the application timer and reload the timer itself
- * @todo check if move of currentTime to this function really does not introduce a bug
- */
-#define RESET_RELOAD_APPLICATION_TIMER() {      \
-        currentTimeOverflowBuffer=0;            \
-        currentTime=0;                          \
-        RELOAD_APPLICATION_TIMER();             \
-    }
 
 #define MAXSENSORS 10
 #define CONVTIME 12
@@ -688,7 +680,6 @@ uint8_t restartApplication(void)
 
 
     /* enable timer to increase user timer used for timer functions etc. */
-    RELOAD_APPLICATION_TIMER();
     return 1;
 } /* restartApplication() */
 

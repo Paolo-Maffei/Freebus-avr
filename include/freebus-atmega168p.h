@@ -64,7 +64,7 @@
           TCNT0  = value             ;            /* set start value */ \
           TIFR0  = (1<<OCF0A)|(1<<OCF0B) ;        /* clear pending interrups */ \
           TIMSK0 = (( 1<<OCIE0A )|( 1<<OCIE0B )); /* enable OCRA, OCRB interrupts */  \
-          TCCR0B = (1<<CS01) ;                    /* start the timer, prescaler :8, increment each 1 µsec */ \
+          TCCR0B = (1<<CS01) ;                    /* start the timer, prescaler :8, increment each 1 usec */ \
     }
 
 #define STOP_EIB_TIMER() { \
@@ -84,14 +84,6 @@
 
 /** Clear overrun bit set for application timer */
 #define CLEAR_TIMER1_OVERRUN        TIFR1  = (1U<<OCF1A)
-
-/** Reload the application timer (Timer1) to start from 0 */
-#define RELOAD_APPLICATION_TIMER()  {                                   \
-          TCCR1A = 0;             /* CTC (Clear Timer on Compate match) */ \
-          TCCR1B = (1U<<WGM12)|(1U<<CS11)|(1U<<CS10); /* CTC-mode, prescale to 64 */ \
-          OCR1A  = 16249;         /* every 130 ms OCR1A=(delay*F_CPU)/(prescaler)-1 */ \
-          TCNT1  = 0;             /* reset timer */                     \
-     }
 
 /** 
 * Enable PWM, PWM pin (PB3) is set by hardware.

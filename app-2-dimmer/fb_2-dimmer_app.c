@@ -21,14 +21,14 @@
 * @brief  Dimmer application based on the Gira 1032 2 channel dimmer.
 */
 // funktiionen die der org dimmer hat
-  //@DODO rückmeldeobjekte
+  //@DODO rï¿½ckmeldeobjekte
   //@DODO zeitfunktionen
   //@DODO Sperrfunktion
   //@DODO Lichtzene
-  //@DODO Status Rückmelden
-  //@DODO wertreückmeldeobjekt vorhanden
+  //@DODO Status Rï¿½ckmelden
+  //@DODO wertreï¿½ckmeldeobjekt vorhanden
   //@DODO lesenobjekte 1Byte
-//funktionen die der Dimmer nie können wird
+//funktionen die der Dimmer nie kï¿½nnen wird
   // kurzschluss melden
   // lastausfall melden
 
@@ -66,8 +66,8 @@ unsigned char einschathellikeit_k1=MAXDIMMWERT;  ///< @todo add documentation
 uint8_t gK1helldunkel=0;				///< 9=heller 0=stop 1=dunkler
 static uint8_t K1dimmwert=0;  ///< @todo add documentation
 static uint8_t K1dimmwert_ausgang=0;  ///< @todo add documentation
-unsigned char mk1=0; ///< merker Kanal1 zum übertragen uber i2c
-unsigned char mk2=0; ///< merker Kanal2 zum übertragen uber i2c
+unsigned char mk1=0; ///< merker Kanal1 zum ï¿½bertragen uber i2c
+unsigned char mk2=0; ///< merker Kanal2 zum ï¿½bertragen uber i2c
 
 
 unsigned char mindimmwert_k2=0x10;		///< minimaldimmwert von der applikation Ok
@@ -94,15 +94,6 @@ static uint8_t currentTimeOverflow;       ///< the amount of overflows from curr
 
 void switchObjects(void);
 void timerOverflowFunction(void);
-
-/** Reset the internal variables used for the application timer and reload the timer itself */
-#define RESET_RELOAD_APPLICATION_TIMER() {                              \
-          currentTimeOverflow=0;                                        \
-          currentTimeOverflowBuffer=0;                                  \
-          RELOAD_APPLICATION_TIMER();                                   \
-     }
-
-
 
 
 /**
@@ -174,7 +165,7 @@ ISR(TIMER1_COMPB_vect)
 void setApplicationDefaults(void)
 {
      write_memory_p(0x0104,0x08);	// Herstellercode 0x04 = Jung  ,0x08 = Gira
-     write_memory_p(0x0105,0x00);	// Geräte Typ (2038.10) 2060h Bestellnummer: 2138.10REG  	//20  //00  gira 1032
+     write_memory_p(0x0105,0x00);	// Gerï¿½te Typ (2038.10) 2060h Bestellnummer: 2138.10REG  	//20  //00  gira 1032
      write_memory_p(0x0106,0x00);  	// 	"	"	"								//60	 //00  gira 1032
      write_memory_p(0x0107,0x01);	// Versionsnummer
 // programm zu gross
@@ -246,8 +237,6 @@ uint8_t restartApplication(void)
 //     DEBUG_PUTHEX(portValue);
 //     switchObjects();
 
-	// enable timer to increase user timer used for timer functions etc.
-     RELOAD_APPLICATION_TIMER();
      return 1;
 }
 

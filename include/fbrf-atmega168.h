@@ -64,7 +64,7 @@
           TCNT0  = value             ;            /* set start value */ \
           TIFR0  = (1<<OCF0A)|(1<<OCF0B) ;        /* clear pending interrups */ \
           TIMSK0 = (( 1<<OCIE0A )|( 1<<OCIE0B )); /* enable OCRA, OCRB interrupts */  \
-          TCCR0B = (1<<CS01) ;                    /* start the timer, prescaler :8, increment each 1 탎ec */ \
+          TCCR0B = (1<<CS01) ;                    /* start the timer, prescaler :8, increment each 1 usec */ \
     }
 
 #define STOP_EIB_TIMER() { \
@@ -113,7 +113,7 @@
 
 /**	with RF, we do't have timer2 for PWM, instead we use timer1.
 *	This also applies for new AVR board in TP only mode !!
-*	timer1 overflows every 102.4 탎ec (10MHz), 128탎ec (8MHz).
+*	timer1 overflows every 102.4 usec (10MHz), 128usec (8MHz).
 *	The application may poll APP_TIMER_OVERRUN() for 130ms time frame.
 *	Only on old board (rev. 3.01) timer2 is used as app timer */
 /** Checkcondition for application timer overrun */
@@ -122,17 +122,11 @@
 /** Clear overrun bit set for application timer */
 #define CLEAR_TIMER1_OVERRUN        TIFR1 |= (1U<<TOV1)
 
-/** Reload the application timer (Timer1) to start from 0 */
-#define RELOAD_APPLICATION_TIMER()  {                                   \
-        TCCR1A = (1<<WGM11);                         /* phase correct PWM, MAX=0x1FF */ \
-        TCCR1B =  (1U<<CS10);                        /* no prescale , 100탎ec per cycle */ \
-     }
-
 static uint8_t inline appTimerOverrun (void)
 {
     static uint16_t t1cnt;
     if ( t1cnt-- ) return 0 ;
-    t1cnt = F_CPU/7692;  //10MHz : 1300 * 100탎ec = 130msec
+    t1cnt = F_CPU/7692;  //10MHz : 1300 * 100usec = 130msec
 	return 1;
 }
 
