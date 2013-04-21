@@ -119,6 +119,7 @@
 *
 */
 #define ENABLE_PWM(x)               {                                   \
+        TCCR1B |= (1U<<CS10);                                  /* set prescaler */ \
         TCCR1A |= ((1<<WGM10)|(1<<COM1A1)|(1<<COM1A0));        /* phase correct PWM inverted  */ \
         OCR1A = (2*x);                              /* set duty cycle, active low */ \
      }
