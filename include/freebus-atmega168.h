@@ -2,10 +2,10 @@
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
-*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \ 
-*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ / 
-*  /_/   /_/ |_/_____/_____/_____/\____//____/  
-*                                      
+*    / /_  / /_/ / __/ / __/ / __  / / / /\__ \
+*   / __/ / _, _/ /___/ /___/ /_/ / /_/ /___/ /
+*  /_/   /_/ |_/_____/_____/_____/\____//____/
+*
 *  Copyright (c) 2008 Matthias Fechner <matthias@fechner.net>
 *  Copyright (c) 2009 Christian Bode <Bode_Christian@t-online.de>
 *
@@ -17,11 +17,11 @@
 * @file   freebus-atmega168.h
 * @author Matthias Fechner, Christian Bode
 * @date   Mon Jun  2 09:14:22 2008
-* 
+*
 * @brief  Hardware specific options for the ATmega168P.
 * DO NOT INCLUDE THAT FILE DIRECTLY, include fb_hardware.h instead.
-* 
-* 
+*
+*
 */
 #if defined(_FB_HARDWARE_H)
 #ifndef _FREEBUS_ATMEGA168_H
@@ -58,7 +58,7 @@
           TCCR0A = (1<<WGM01);     /*  CTC mode  */ \
           OCR0A = vala  ;  /* duration of one bit */ \
           OCR0B = valb  ;  \
-     } 
+     }
 
 #define START_EIB_TIMER(value) { \
           TCNT0  = value             ;            /* set start value */ \
@@ -84,11 +84,11 @@
 /** Clear overrun bit set for application timer */
 #define CLEAR_TIMER1_OVERRUN        TIFR1  = (1U<<OCF1A)
 
-/** 
+/**
 * Enable PWM, PWM pin (PB3) is set by hardware.
-* 
+*
 * @param x Duty-cycle = x/255 active low
-* 
+*
 */
 #define ENABLE_PWM(x)               {                                   \
           TCCR2A = (1<<WGM20)|(1<<COM2A1)|(1<<COM2A0);/* Phase correct PWM and enable OC2a pin */ \
@@ -115,7 +115,7 @@
 #define ENABLE_EEPROM_READY_INT()   {           \
         EECR |= (1U<<EERIE);                    \
     }
-    
+
 /** Disable the EEPROM ready interrupt */
 #define DISABLE_EEPROM_READY_INT()   {           \
         EECR &= ~(1U<<EERIE);                    \
@@ -212,7 +212,7 @@
 /**************************************************************************
 * DECLARATIONS
 **************************************************************************/
- 
+
 
 /*************************************************************************
 * FUNCTION PROTOTYPES

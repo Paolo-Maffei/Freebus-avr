@@ -175,7 +175,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
             app_dat.runningTimer |= 1<<commObjectNumber;
             SET_STATE(TIMER_ACTIVE);
         }
-        
+
         // Check for delay factor for on
         if(((app_dat.portValue & (1<<commObjectNumber)) == 0x00) && timerOnActive && (value == 1)) {
             DEBUG_PUTS("TIMER_ON ");
@@ -210,7 +210,7 @@ void handleTimers( uint8_t commObjectNumber, uint8_t value ) {
                 SET_STATE(TIMER_ACTIVE);
             }
         }
-        
+
         // check how to handle off telegram while in timer modus
         if((app_dat.portValue & (1<<commObjectNumber)) && value == 0) {
             DEBUG_PUTS("TK ");
