@@ -77,13 +77,6 @@
 
 #define NORMAL_EIB_TIMER() \
           TCCR0B &= ~(1<<CS00);
- 
-
-/** Checkcondition for application timer overrun */
-#define TIMER1_OVERRUN              (TIFR1 & (1U<<OCF1A))
-
-/** Clear overrun bit set for application timer */
-#define CLEAR_TIMER1_OVERRUN        TIFR1  = (1U<<OCF1A)
 
 /**
 * Enable PWM, PWM pin (PB3) is set by hardware.
