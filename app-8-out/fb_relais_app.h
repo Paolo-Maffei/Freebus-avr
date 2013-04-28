@@ -49,6 +49,8 @@
 
 #define INPUT_BUTTON (HAND_IN & (1<<HAND_PIN))		/* input of hand actuation pushbutton */
 
+#define APP_PIN_STATE_MEMORY         0x0100 //< store value if the state must be restored after power lose, @TODO, find free byte
+
 #define APP_SPECIAL_FUNC_OBJ_1_2     0x01D8
 #define APP_SPECIAL_FUNC_OBJ_3_4     0x01D9
 #define APP_DELAY_FACTOR_ON          0x01DA
@@ -76,7 +78,7 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 { COMMSTAB_ADDRESS,             0x9A },    /**< COMMSTAB Pointer                             */
 { APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
 
-{ 0x0000,                       0x00 },    /**< default is off                               */
+{ APP_PIN_STATE_MEMORY,         0x00 },    /**< default is off                               */
 { APP_DELAY_ACTIVE,             0x00 },    /**< no timer active                              */
 { APP_CLOSER_MODE,              0x00 },    /**< closer mode for all relais                   */
 { APP_RESTORE_AFTER_PL,         0x55 },    /**< don't save status at power loss (number 1-4) */
