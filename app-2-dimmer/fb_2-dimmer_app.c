@@ -34,12 +34,6 @@
 
 
 #include "fb_2-dimmer_app.h"
-#include "fb_prot.h"
-#include "fb_hal.h"
-#include "fb_io.h"
-#include "freebus-debug.h"
-#include "fb_eeprom.h"
-#include "fb_hardware.h"
 #include "util/twi.h"
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)

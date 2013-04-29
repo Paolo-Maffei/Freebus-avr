@@ -27,7 +27,6 @@
 * INCLUDES
 *************************************************************************/
 #include "fb.h"
-#include "fb_hardware.h"
 #include "fb_ow_lib.h"
 #include <avr/io.h>
 

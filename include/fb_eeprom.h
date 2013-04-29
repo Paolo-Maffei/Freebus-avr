@@ -61,17 +61,16 @@
 #define EEPROM_SIZE                   NODEPARAM_SIZE + APPLICATION_MEM_SIZE + USERRAM_SIZE
 #define MAX_EEPROM_SIZE               EEPROM_SIZE - 1    /**< The maximum size of the eeprom usable */
 
+
+/**************************************************************************
+* DECLARATIONS
+**************************************************************************/
 /** Struktur fuer die Default-Parameter */
 typedef struct
 {
    uint16_t addr;                               /**< EEPROM-Adresse des Parameters  */
    uint8_t defValue;                            /**< Default des Parameters         */
 } STRUCT_DEFPARAM;
-
-
-/**************************************************************************
-* DECLARATIONS
-**************************************************************************/
 
 
 /*************************************************************************

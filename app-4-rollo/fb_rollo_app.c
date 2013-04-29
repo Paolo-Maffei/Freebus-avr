@@ -27,13 +27,12 @@
  *
  * This version is designed to be used with the new API.
  */
-#ifndef _FB_ROLLO_APP_C
-#define _FB_ROLLO_APP_C
+#ifndef _FB_APP_C
+#define _FB_APP_C
 
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-//#include "1wire.h"
 #include "fb_rollo_app.h"
 
 /**************************************************************************

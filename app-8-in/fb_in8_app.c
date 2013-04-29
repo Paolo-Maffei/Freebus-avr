@@ -27,8 +27,8 @@
  *
  * This version is designed to be used with the new API.
  */
-#ifndef _FB_IN8_APP_C
-#define _FB_IN8_APP_C
+#ifndef _FB_APP_C
+#define _FB_APP_C
 
 /*************************************************************************
  * INCLUDES

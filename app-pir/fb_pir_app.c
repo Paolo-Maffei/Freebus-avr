@@ -19,31 +19,18 @@
  *
  * @brief
  */
-#ifndef _FB_PIR_APP_C
-#define _FB_PIR_APP_C
+#ifndef _FB_APP_C
+#define _FB_APP_C
 
 
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-#include "fb.h"
-#include "fb_hardware.h"
-#include "freebus-debug.h"
-#include "fb_eeprom.h"
-#include "msg_queue.h"
-#include "fb_hal.h"
-#include "fb_prot.h"
-#include "timer.h"
-#include "adc.h"
-#include "fb_app.h"
 #include "fb_pir_app.h"
 
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
-
-#define NEXT_STATE(x)	app_state = x
-#define GET_STATE()		app_state
 
 enum PIR_Objects_e {
 	OBJ_MOVEMENT = 0,

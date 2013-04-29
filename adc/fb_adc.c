@@ -30,14 +30,6 @@
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-#include "fb.h"
-#include "fb_hardware.h"
-#include "freebus-debug.h"
-#include "fb_eeprom.h"
-#include "msg_queue.h"
-#include "fb_hal.h"
-#include "fb_prot.h"
-#include "fb_app.h"
 #include "fb_adc.h"
 #include <avr/sleep.h>
 

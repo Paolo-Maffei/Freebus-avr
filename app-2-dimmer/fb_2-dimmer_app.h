@@ -26,7 +26,7 @@
 #ifndef _FB_2_DIMMER_APP_H
 #define _FB_2_DIMMER_APP_H
 
-#include "msg_queue.h"
+#include "fb_lib.h"
 
 /** @todo add documentation */
 uint8_t restartApplication(void);

@@ -26,13 +26,12 @@
  *
  * This version is designed to be used with the new API.
  */
-#ifndef _FB_RELAIS_APP_C
-#define _FB_RELAIS_APP_C
+#ifndef _FB_APP_C
+#define _FB_APP_C
 
 /*************************************************************************
  * INCLUDES
  *************************************************************************/
-//#include "1wire.h"
 #include "fb_relais_app.h"
 
 /**************************************************************************
@@ -439,10 +438,10 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(7,IO_OUTPUT);
     IO_SET_DIR(8,IO_OUTPUT);
 
-#ifdef HAND	
+#ifdef HAND
 	HAND_PORT |= (1<<HAND_PIN);		//set pullup for manual operation button input
 #endif
-	
+
 #ifdef BOARD301
 #if (HARDWARETEST != 1)
     SET_IO_RES1(IO_OUTPUT);
@@ -632,7 +631,7 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
 * @return false:nothing to do    true:change output
 */
 uint8_t checkHandActuation(uint8_t commObjectNumber) {
-	
+
 	uint8_t inputState = INPUT_BUTTON;				//read input level
 	uint8_t portState = getIO(commObjectNumber+1);	//read output level
 	setIO(commObjectNumber+1,portState^0x01);		//toggle output
