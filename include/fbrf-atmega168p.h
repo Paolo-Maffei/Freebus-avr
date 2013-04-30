@@ -124,10 +124,10 @@
         OCR1A = (2*x);                              /* set duty cycle, active low */ \
      }
 
-/** Disable PWM and set PWM pin to high */
+/** Disable PWM and set PWM pin to low */
 #define DISABLE_PWM()               {                                   \
           TCCR1A &= ~((1<<COM1A1)|(1<<COM1A0)); /* disable PWM pin  */  \
-          SETPIN_CTRL(ON);                      /* set port to high */   \
+          SETPIN_CTRL(0x00);                    /* set port to low */   \
      }
 
 /** Execute some EEPROM specific commmands

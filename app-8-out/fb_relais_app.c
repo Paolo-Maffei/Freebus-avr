@@ -604,8 +604,8 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
         DEBUG_PUTS("DISABLE PWM ");
         alloc_timer(&app_dat.pwmTimer, PWM_DELAY_TIME);
         SET_STATE(PWM_TIMER_ACTIVE);
-        ENABLE_PWM(0xFF); // --> This is 100% negative duty cycle (active low)
-    }
+        DISABLE_PWM();
+	}
 
     IO_SET(1,(uint8_t)(port & 1<<0));
     IO_SET(2,(uint8_t)(port & 1<<1));
