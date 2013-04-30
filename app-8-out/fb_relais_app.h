@@ -41,8 +41,8 @@
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
-/** PWM duty cycle. 0 = 0%, 255 = 100% */
-#define PWM_SETPOINT    0x55   /* 33% duty cycle */
+/** PWM duty cycle. 0 = 0%, 100 = 100% */
+#define PWM_SETPOINT    33   /* 33% duty cycle */
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME               3*M2TICS(130)      /* 3 * 130ms */
 
