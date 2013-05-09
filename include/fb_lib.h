@@ -104,6 +104,7 @@ FBAPP_EXT const struct FBAppInfo AppInfo PROGMEM;
 PROT_EXT void SetAndTransmitObject(uint8_t objectNr, void* src, uint8_t len);
 PROT_EXT void SetAndTransmitBit(uint8_t objectNr, uint8_t value);
 PROT_EXT uint8_t TestObject(uint8_t objectNr);
+PROT_EXT uint8_t TestAndCopyObject(uint8_t objectNr, void* dst, uint8_t len);
 PROT_EXT void SetRAMFlags(uint8_t objectNr, uint8_t flags);
 
 FBAPP_EXT uint8_t restartApplication(void);
