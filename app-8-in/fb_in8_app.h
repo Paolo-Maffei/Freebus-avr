@@ -37,7 +37,6 @@
 * INCLUDES
 *************************************************************************/
 #include "fb_lib.h"
-#include "fb_app.h"
 
 /**************************************************************************
 * DEFINITIONS
@@ -78,7 +77,7 @@
                                              // 0 keine, 1 nur EIN, 2 nur Aus, 3 EIn & AUS
                                              // Sperren freigeben, Bit xxxx xxXX
                                              // 00 inaktiv, 01 sperren bei 1, 10 sperren bei 0
-#define APP_PORTFUNC_CYCLIC_FACTOR  0x01D6   // Zeitfaktor für zyklisches senden, Bit xXXX XXXX
+#define APP_PORTFUNC_CYCLIC_FACTOR  0x01D6   // Zeitfaktor fï¿½r zyklisches senden, Bit xXXX XXXX
 #define APP_PORTFUNC_EDGEFUNC       0x01D7   // edge Function
                                              //        xxxx xxXX  falling edge object x.1
                                              //        xxxx XXxx  rising edge object x.1
@@ -86,7 +85,7 @@
                                              //        XXxx xxxx  rising edge object x.2
 #define APP_PORTFUNC_CONFIG2        0x01D8   // Verhalten bei Ende einer Sperrung, Bit xxxx xxXX
                                              // 00 keine, 01 EIN, 10 Aus, 11 aktueller Wert
-#define APP_PORTFUNC_CYCLIC_BASE1   0x01F6   // Zeitbasis für zyklisches senden
+#define APP_PORTFUNC_CYCLIC_BASE1   0x01F6   // Zeitbasis fï¿½r zyklisches senden
                                              // 0x01F6 XXXX xxxx  object 1.1
                                              // 0x01F7 xxxx XXXX  object 2.1
                                              //        XXXX xxxx  object 3.1
@@ -95,7 +94,7 @@
                                              // 0x01F9 xxxx XXXX  object 6.1
                                              //        XXXX xxxx  object 7.1
                                              // 0x01FA xxxx XXXX  object 8.1
-#define APP_PORTFUNC_CYCLIC_BASE2   0x01FA   // Zeitbasis für zyklisches senden
+#define APP_PORTFUNC_CYCLIC_BASE2   0x01FA   // Zeitbasis fï¿½r zyklisches senden
                                              // 0x01FA XXXX xxxx  object 1.2
                                              // 0x01FB xxxx XXXX  object 2.2
                                              //        XXXX xxxx  object 3.2
