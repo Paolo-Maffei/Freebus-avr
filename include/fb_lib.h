@@ -68,6 +68,12 @@
 #define IO_INPUT     0U             /**< Portpin-Direction is Input  */
 #define IO_OUTPUT    1U             /**< Portpin-Direction is Output */
 
+/*********************************/
+/* MACROs for port configuration */
+/*********************************/
+#define OFF          0U             /**< Global Define: OFF = 0     */
+#define ON           1U             /**< Global Define: ON  = 1     */
+
 
 struct FBAppInfo
 {
