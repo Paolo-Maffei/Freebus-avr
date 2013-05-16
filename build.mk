@@ -41,7 +41,7 @@ CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
 	-Wall -Wstrict-prototypes               \
-	-mcall-prologues						\
+	-mcall-prologues -ffunction-sections    \
 	-Wa,-ahlms=$(firstword                  \
 	$(filter %.lst, $(<:.c=.lst)))
 
@@ -63,7 +63,7 @@ ARFLAGS=-rcs
 
 # linker. You may want to specify CUSTOM_LDFLAGS in the makefile of your app
 # (e.g. section start for bootloader)
-LDFLAGS=$(CUSTOM_LDFLAGS) -Wl,-Map,$(TRG).map -mmcu=$(MCU) \
+LDFLAGS=$(CUSTOM_LDFLAGS) -Wl,-Map,$(TRG).map -Wl,--gc-sections -mmcu=$(MCU) \
 	-lm $(LIBS)
 
 ifndef PROJECT_DESCRIPTION
