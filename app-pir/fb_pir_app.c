@@ -48,32 +48,32 @@ enum PIR_Objects_e {
 
 /* Objekte:
 Nr. Objektname         Funktion                     Typ                   Flags
-0   Bewegung           Schalten aufgrund Bewegung   EIS 1 1 Bit           K     Ü
+0   Bewegung           Schalten aufgrund Bewegung   EIS 1 1 Bit           K     ï¿½
 1   Sperre             Sperre des Bewegungsmelders  EIS 1 1 Bit           K   S
-2   Master Trig        Eingang / Ausgang            EIS 1 1 Bit           K L S Ü
+2   Master Trig        Eingang / Ausgang            EIS 1 1 Bit           K L S ï¿½
 3   Helligk. Schw.     abrufen = 01dez (01hex)      DPT. 18.001 1 Byte    K   S
                        speichern = 129dez (81hex)
-4   Helligk. Schwelle  Sollwert                     EIS 5 2 Byte          K L S Ü
-5   Konstantlicht Reg. Dimmer                       EIS 2 4 Bits 1 Byte   K L   Ü
+4   Helligk. Schwelle  Sollwert                     EIS 5 2 Byte          K L S ï¿½
+5   Konstantlicht Reg. Dimmer                       EIS 2 4 Bits 1 Byte   K L   ï¿½
 6   Sperr K.licht Reg. Sperre der Konstantlicht R.  EIS 1 1 Bit           K   S
-7   Helligk. Lichreg.  Sollwert                     EIS 5 2 Byte          K L S Ü
+7   Helligk. Lichreg.  Sollwert                     EIS 5 2 Byte          K L S ï¿½
 8   Helligk. abrf.sp.  abrufen = 01dez (01hex)      DPT. 18.001 1 Byte    K   S
                        speichern = 129dez (81hex)
-9   Helligkeitswert    Helligkeitswert              EIS 5 2 Byte          K     Ü
+9   Helligkeitswert    Helligkeitswert              EIS 5 2 Byte          K     ï¿½
 10  Inbetriebnahme     Eingang                      EIS 1 1 Bit           K   S
 
 # nur Sphinx 332
-11  Bewegung 2         Schalten aufgrund Bewegung 2 EIS 1 1 Bit           K     Ü
+11  Bewegung 2         Schalten aufgrund Bewegung 2 EIS 1 1 Bit           K     ï¿½
 12  Sperre 2           Sperre des Bewegungsms 2     EIS 1 1 Bit           K   S
 13  Helligk. Schw.     abrufen = 01dez (01hex)      DPT. 18.001 1 Byte    K   S
                        speichern = 129dez (81hex)
-14  Helligk. Schwelle  Sollwert                     EIS 5 2 Byte          K L D Ü
+14  Helligk. Schwelle  Sollwert                     EIS 5 2 Byte          K L D ï¿½
 
 Flag  Name              Bedeutung
-K     Kommunikation     Objekt ist kommunikationsfähig
+K     Kommunikation     Objekt ist kommunikationsfï¿½hig
 L     Lesen             Objektstatus kann abgefragt werden (ETS / Display usw.)
 S     Schreiben         Objekt kann empfangen
-Ü     Übertragen        Objekt kann senden
+ï¿½     ï¿½bertragen        Objekt kann senden
 
 */
 
@@ -101,7 +101,7 @@ extern uint8_t userram[USERRAM_SIZE];
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 		{ SOFTWARE_VERSION_NUMBER, 0x12 },    /**< version number                               */
-		{ APPLICATION_RUN_STATUS,  0xFF },    /**< Run-Status (00=stop FF=run)                  */
+		{ RUN_ERROR_STATUS,        0xFF },    /**< Run-Status (00=stop FF=run)                  */
 		{ COMMSTAB_ADDRESS,        0xBE },    /**< COMMSTAB Pointer                             */
 		{ APPLICATION_PROGRAMM,    0x00 },    /**< Port A Direction Bit Setting???              */
 
@@ -151,7 +151,7 @@ uint8_t restartApplication(void)
 
 	app_dat.oldpinstate = 1;
 	/* Reset state */
-	NEXT_STATE(IDLE);
+	SET_STATE(IDLE);
 
 	return 1;
 } /* restartApplication() */
@@ -207,7 +207,7 @@ DEBUG_NEWLINE();
 		/* Motion detected */
 		if (app_dat.inpstate == 1) {
 
-			if (GET_STATE() == IDLE) {
+			if (IN_STATE(IDLE)) {
 				/* First Motion */
 
 				//0x01FD  Bit 7-7  Param-ID: 188177  Timebase for Off-Delay  Schalten aufgrund Bewegung  Master/Slave  Bewegung Kanal 1
@@ -225,7 +225,7 @@ DEBUG_NEWLINE();
 				if (off_delay) {
 					/* Delay given, so start timer */
 					alloc_timer(&app_dat.timer_on, off_delay);
-					NEXT_STATE(WAIT_OFF_TIMER);
+					SET_STATE(WAIT_OFF_TIMER);
 
 				} else {
 					/* No delay, we have to send no off telegram */
@@ -234,14 +234,14 @@ DEBUG_NEWLINE();
 					uint8_t retrigger = mem_ReadByte(0x1f5) >> 4;
 					/* means 0.5 ... 2s */
 					alloc_timer(&app_dat.timer_on, pgm_read_byte(&delay_values[retrigger]));
-					NEXT_STATE(WAIT_RETRIGGER);
+					SET_STATE(WAIT_RETRIGGER);
 				}
 				uint8_t status;
 				/* set comobj and send */
 				status = 1;
 				SetAndTransmitObject(OBJ_MOVEMENT, &status, 0);
 
-			} else 	if (GET_STATE() == WAIT_OFF_TIMER) {
+			} else 	if (IN_STATE(WAIT_OFF_TIMER)) {
 
 				/* First Motion detected during on phase */
 				if (0) {
@@ -260,7 +260,7 @@ DEBUG_NEWLINE();
 		}
 	}
 
-	if (GET_STATE() == WAIT_OFF_TIMER) {
+	if (IN_STATE(WAIT_OFF_TIMER)) {
 		/* already trigger wait for the on timer */
 		if (check_timeout(&app_dat.timer_on)) {
 			/* Timer expired */
@@ -274,15 +274,15 @@ DEBUG_NEWLINE();
 			uint8_t status;
 			status = 0;
 			SetAndTransmitObject(OBJ_MOVEMENT, &status, 0);
-			NEXT_STATE(WAIT_RETRIGGER);
+			SET_STATE(WAIT_RETRIGGER);
 		}
 	}
 
-	if (GET_STATE() == WAIT_RETRIGGER) {
+	if (IN_STATE(WAIT_RETRIGGER)) {
 		/* last phase, do not detect the switch off as motion */
 		if (check_timeout(&app_dat.timer_on)) {
 			/* Timer expired, let's wait for a new motion */
-			NEXT_STATE(IDLE);
+			SET_STATE(IDLE);
 		}
 	}
 }
