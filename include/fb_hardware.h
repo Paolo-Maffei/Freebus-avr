@@ -34,7 +34,7 @@
 #include "freebus-avr.h"
 #endif
 
-#ifdef BOARD301  /* first freebus AVR board rev. 3.01 */
+#if REVISION==1  /* first freebus AVR board rev. 3.01 */
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
     #include "freebus-atmega168.h"

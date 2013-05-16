@@ -1,4 +1,5 @@
 # determine CPU frequency based on media type
+CUSTOM_CFLAGS += -DREVISION=$(REVISION)
 ifeq ($(MEDIATYPE), tp)
 	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TP
 endif
@@ -10,11 +11,6 @@ ifeq ($(MEDIATYPE), rf)
 endif
 ifeq ($MEDIATYPE), tpuart)
 	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TPUART
-endif
-
-# Options for hardware revision
-ifeq ($(REVISION),1)
-	CUSTOM_CFLAGS += -DBOARD301
 endif
 
 # build lib name

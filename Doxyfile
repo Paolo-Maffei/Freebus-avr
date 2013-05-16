@@ -1596,7 +1596,8 @@ PREDEFINED             = DEBUG_UART \
                          __AVR_ATmega168p__ \
                          _FB_HARDWARE_H \
                          FB_TP \
-                         BOARD301 \
+                         REVISION=2 \
+			 MEDIATYPE=tp \
                          FB_RF \
                          USE_UART
                          

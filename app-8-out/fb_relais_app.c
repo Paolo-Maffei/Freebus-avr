@@ -76,20 +76,20 @@ Nr. Objectname        Funktion     Typ             Flags
 9
 10
 11
-12  Rueckm. 1         Rueckmeldung  EIS 1 1 Bit     K     Ü
-13  Rueckm. 2         Rueckmeldung  EIS 1 1 Bit     K     Ü
-14  Rueckm. 3         Rueckmeldung  EIS 1 1 Bit     K     Ü
-15  Rueckm. 4         Rueckmeldung  EIS 1 1 Bit     K     Ü
-16  Rueckm. 5         Rueckmeldung  EIS 1 1 Bit     K     Ü
-17  Rueckm. 6         Rueckmeldung  EIS 1 1 Bit     K     Ü
-18  Rueckm. 7         Rueckmeldung  EIS 1 1 Bit     K     Ü
-19  Rueckm. 8         Rueckmeldung  EIS 1 1 Bit     K     Ü
+12  Rueckm. 1         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+13  Rueckm. 2         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+14  Rueckm. 3         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+15  Rueckm. 4         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+16  Rueckm. 5         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+17  Rueckm. 6         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+18  Rueckm. 7         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
+19  Rueckm. 8         Rueckmeldung  EIS 1 1 Bit     K     ï¿½
 
 Flag  Name            Bedeutung
-K     Kummunikation   Objekt ist kommunikationsfähig
+K     Kummunikation   Objekt ist kommunikationsfï¿½hig
 L     Lesen           Objektstatus kann abgefragt werden (ETS / Display usw.)
 S     Schreiben       Objekt kann empfangen
-Ü     Übertragen      Objekt kann senden
+ï¿½     ï¿½bertragen      Objekt kann senden
 
 */
 
@@ -442,7 +442,7 @@ uint8_t restartApplication(void) {
 	HAND_PORT |= (1<<HAND_PIN);		//set pullup for manual operation button input
 #endif
 
-#ifdef BOARD301
+#if REVISION==1
 #if (HARDWARETEST != 1)
     SET_IO_RES1(IO_OUTPUT);
     SET_IO_RES2(IO_OUTPUT);

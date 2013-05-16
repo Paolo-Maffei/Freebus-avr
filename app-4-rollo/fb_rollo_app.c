@@ -81,10 +81,10 @@ EIS 7   0  UP   / START
         1  DOWN / STOP
 
 Flag  Name            Bedeutung
-K     Kummunikation   Objekt ist kommunikationsfähig
+K     Kummunikation   Objekt ist kommunikationsfï¿½hig
 L     Lesen           Objektstatus kann abgefragt werden (ETS / Display usw.)
 S     Schreiben       Objekt kann empfangen
-Ü     Übertragen      Objekt kann senden
+ï¿½     ï¿½bertragen      Objekt kann senden
 
 */
 
@@ -687,7 +687,7 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(6,IO_OUTPUT);
     IO_SET_DIR(7,IO_OUTPUT);
     IO_SET_DIR(8,IO_OUTPUT);
-#ifdef BOARD301
+#if REVISION==1
     SET_IO_RES1(IO_OUTPUT);
     SET_IO_RES2(IO_OUTPUT);
     SET_IO_RES3(IO_OUTPUT);

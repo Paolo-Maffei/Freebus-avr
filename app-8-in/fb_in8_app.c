@@ -70,42 +70,42 @@ enum EIGHT_IN_Objects_e {
 /* Objekte:
 Nr. Objectname        Function          Typ             Flags
 Funktion: Schalten
-0   Eingang 1         Schalten 1.1      EIS 1   1 Bit   K  S  Ü (L)
-1   Eingang 2         Schalten 2.1      EIS 1   1 Bit   K  S  Ü (L)
-2   Eingang 3         Schalten 3.1      EIS 1   1 Bit   K  S  Ü (L)
-3   Eingang 4         Schalten 4.1      EIS 1   1 Bit   K  S  Ü (L)
-4   Eingang 5         Schalten 5.1      EIS 1   1 Bit   K  S  Ü (L)
-5   Eingang 6         Schalten 6.1      EIS 1   1 Bit   K  S  Ü (L)
-6   Eingang 7         Schalten 7.1      EIS 1   1 Bit   K  S  Ü (L)
-7   Eingang 8         Schalten 8.1      EIS 1   1 Bit   K  S  Ü (L)
-8   Eingang 1         Schalten 1.2      EIS 1   1 Bit   K  S  Ü (L)
-9   Eingang 2         Schalten 2.2      EIS 1   1 Bit   K  S  Ü (L)
-10  Eingang 3         Schalten 3.2      EIS 1   1 Bit   K  S  Ü (L)
-11  Eingang 4         Schalten 4.2      EIS 1   1 Bit   K  S  Ü (L)
-12  Eingang 5         Schalten 5.2      EIS 1   1 Bit   K  S  Ü (L)
-13  Eingang 6         Schalten 6.2      EIS 1   1 Bit   K  S  Ü (L)
-14  Eingang 7         Schalten 7.2      EIS 1   1 Bit   K  S  Ü (L)
-15  Eingang 8         Schalten 8.2      EIS 1   1 Bit   K  S  Ü (L)
+0   Eingang 1         Schalten 1.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+1   Eingang 2         Schalten 2.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+2   Eingang 3         Schalten 3.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+3   Eingang 4         Schalten 4.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+4   Eingang 5         Schalten 5.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+5   Eingang 6         Schalten 6.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+6   Eingang 7         Schalten 7.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+7   Eingang 8         Schalten 8.1      EIS 1   1 Bit   K  S  ï¿½ (L)
+8   Eingang 1         Schalten 1.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+9   Eingang 2         Schalten 2.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+10  Eingang 3         Schalten 3.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+11  Eingang 4         Schalten 4.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+12  Eingang 5         Schalten 5.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+13  Eingang 6         Schalten 6.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+14  Eingang 7         Schalten 7.2      EIS 1   1 Bit   K  S  ï¿½ (L)
+15  Eingang 8         Schalten 8.2      EIS 1   1 Bit   K  S  ï¿½ (L)
 
 Funktion: Dimmen
 
 Funktion: Jalousie
-0   Eingang 1         Kurzzeitbetr. 1   EIS 1   1 Bit   K  S  Ü (L)
-1   Eingang 2         Kurzzeitbetr. 2   EIS 1   1 Bit   K  S  Ü (L)
-2   Eingang 3         Kurzzeitbetr. 3   EIS 1   1 Bit   K  S  Ü (L)
-3   Eingang 4         Kurzzeitbetr. 4   EIS 1   1 Bit   K  S  Ü (L)
-4   Eingang 5         Kurzzeitbetr. 5   EIS 1   1 Bit   K  S  Ü (L)
-5   Eingang 6         Kurzzeitbetr. 6   EIS 1   1 Bit   K  S  Ü (L)
-6   Eingang 7         Kurzzeitbetr. 7   EIS 1   1 Bit   K  S  Ü (L)
-7   Eingang 8         Kurzzeitbetr. 8   EIS 1   1 Bit   K  S  Ü (L)
-8   Eingang 1         Langzeitbetr. 1   EIS 1   1 Bit   K  S  Ü (L)
-9   Eingang 2         Langzeitbetr. 2   EIS 7   1 Bit   K  S  Ü (L)
-10  Eingang 3         Langzeitbetr. 3   EIS 7   1 Bit   K  S  Ü (L)
-11  Eingang 4         Langzeitbetr. 4   EIS 7   1 Bit   K  S  Ü (L)
-12  Eingang 5         Langzeitbetr. 5   EIS 7   1 Bit   K  S  Ü (L)
-13  Eingang 6         Langzeitbetr. 6   EIS 7   1 Bit   K  S  Ü (L)
-14  Eingang 7         Langzeitbetr. 7   EIS 7   1 Bit   K  S  Ü (L)
-15  Eingang 8         Langzeitbetr. 8   EIS 7   1 Bit   K  S  Ü (L)
+0   Eingang 1         Kurzzeitbetr. 1   EIS 1   1 Bit   K  S  ï¿½ (L)
+1   Eingang 2         Kurzzeitbetr. 2   EIS 1   1 Bit   K  S  ï¿½ (L)
+2   Eingang 3         Kurzzeitbetr. 3   EIS 1   1 Bit   K  S  ï¿½ (L)
+3   Eingang 4         Kurzzeitbetr. 4   EIS 1   1 Bit   K  S  ï¿½ (L)
+4   Eingang 5         Kurzzeitbetr. 5   EIS 1   1 Bit   K  S  ï¿½ (L)
+5   Eingang 6         Kurzzeitbetr. 6   EIS 1   1 Bit   K  S  ï¿½ (L)
+6   Eingang 7         Kurzzeitbetr. 7   EIS 1   1 Bit   K  S  ï¿½ (L)
+7   Eingang 8         Kurzzeitbetr. 8   EIS 1   1 Bit   K  S  ï¿½ (L)
+8   Eingang 1         Langzeitbetr. 1   EIS 1   1 Bit   K  S  ï¿½ (L)
+9   Eingang 2         Langzeitbetr. 2   EIS 7   1 Bit   K  S  ï¿½ (L)
+10  Eingang 3         Langzeitbetr. 3   EIS 7   1 Bit   K  S  ï¿½ (L)
+11  Eingang 4         Langzeitbetr. 4   EIS 7   1 Bit   K  S  ï¿½ (L)
+12  Eingang 5         Langzeitbetr. 5   EIS 7   1 Bit   K  S  ï¿½ (L)
+13  Eingang 6         Langzeitbetr. 6   EIS 7   1 Bit   K  S  ï¿½ (L)
+14  Eingang 7         Langzeitbetr. 7   EIS 7   1 Bit   K  S  ï¿½ (L)
+15  Eingang 8         Langzeitbetr. 8   EIS 7   1 Bit   K  S  ï¿½ (L)
 
 Funktion: Wertgeber (Dimmwertgeber)
 
@@ -117,7 +117,7 @@ Funktion: Wertgeber (Helligkeitswertgeber)
 
 Funktion: Impulszaehler (nur Eingang 1 und 2)
 
-Funktion: Schaltzähler (nur Eingang 1 und 2)
+Funktion: Schaltzï¿½hler (nur Eingang 1 und 2)
 
 16  Sperren 1         Sicherheit        EIS 1   1 Bit   K  S  (L)
 17  Sperren 2         Sicherheit        EIS 1   1 Bit   K  S  (L)
@@ -134,10 +134,10 @@ EIS 7   0  UP   / START
         1  DOWN / STOP
 
 Flag  Name            Bedeutung
-K     Kummunikation   Objekt ist kommunikationsfähig
+K     Kummunikation   Objekt ist kommunikationsfï¿½hig
 L     Lesen           Objektstatus kann abgefragt werden (ETS / Display usw.)
 S     Schreiben       Objekt kann empfangen
-Ü     Übertragen      Objekt kann senden
+ï¿½     ï¿½bertragen      Objekt kann senden
 
 */
 
@@ -376,7 +376,7 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(6, IO_INPUT);
     IO_SET_DIR(7, IO_INPUT);
     IO_SET_DIR(8, IO_INPUT);
-#ifdef BOARD301
+#if REVISION==1
     SET_IO_RES1(IO_OUTPUT);
     SET_IO_RES2(IO_OUTPUT);
     SET_IO_RES3(IO_OUTPUT);
