@@ -13,6 +13,8 @@ ifeq ($MEDIATYPE), tpuart)
 	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TPUART
 endif
 
+CUSTOM_CFLAGS += -DUART
+
 INC?=-I../include/
 # build lib name
 LIBS?=-lfb_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG) -L..
