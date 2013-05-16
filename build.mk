@@ -96,6 +96,7 @@ GDBINITFILE=gdbinit-$(PROJECTNAME)$(DEBUG)
 
 # Start by splitting source files by type
 #  C++
+PRJSRC?=$(DEFAULT_TARGET)
 CPPFILES=$(filter %.cpp, $(PRJSRC))
 CCFILES=$(filter %.cc, $(PRJSRC))
 BIGCFILES=$(filter %.C, $(PRJSRC))
