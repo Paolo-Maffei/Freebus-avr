@@ -19,15 +19,22 @@ EEPROM
                                 bit 6 Übertragen
                                 
 
-01 C2: 	XX 		Grundhellikeit bit 0-3=K1 ,4-7=K2   Standart = 0x44
+01 C2: 	XX 		Grundhelligkeit bit 0-3=K1 ,4-7=K2
+				0 = Stufe 1
+  				1 = Stufe 2
+  				2 = Stufe 3 (Glühlampen)
+  				3 = Stufe 4
+  				4 = Stufe 5 (Standard Halogen)
+  				5 = Stufe 6
+  				6 = Stufe 7
+  				7 = Stufe 8
 
 01 C3:	XX		bit 3=1 Sperren invertiert K1, bit 4=1 Sperren invertiert K2
 				bit 6=Wertrückmeldeobjekt vorhanden K1
 				bit 7=Wertrückmeldeobjekt vorhanden K2
 
-01 C4:	XX		Einschalthellikeit 0-3=K1 ,4-7=K2   Standart = 0xBB
-                    
-				1=Grundhellikeit
+01 C4:	XX		Einschalthelligkeit 0-3=K1 ,4-7=K2   Standard = 0xBB
+                    		1=Grundhelligkeit
 				2=10%
 				3=20%
 				4=30%
@@ -37,10 +44,10 @@ EEPROM
 				8=70%
 				9=80%
 				A=90%
-				B=Maximale Hellikeit
+				B=Maximale Helligkeit
 				D=Wert vor dem letzen Ausschalten
 				
-01 C6:	XX		Hellikeitswert andimmen oder anspringen  Bit 3=K1, Bit 7=K2 
+01 C6:	XX		Helligkeitswert andimmen oder anspringen  Bit 3=K1, Bit 7=K2 
 				0=andimmen 
 				1=anspringen
 				Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
@@ -50,13 +57,34 @@ EEPROM
 				4=2,1 s
 				5=33 s
 				
-01 C8:	XX		Zeit zwischen 2 von 255 Dimmstufen K1
-01 C9:	XX		Zeit zwischen 2 von 255 Dimmstufen K2
+01 C8:	XX		Zeit zwischen 2 von 255 Dimmstufen Faktor K1
+01 C9:	XX		Zeit zwischen 2 von 255 Dimmstufen Faktor K2
 
-01 CB:	XX		Auschalten bei hellikeiswert kleiner als .. K1
-01 CC:	XX		Auschalten bei hellikeiswert kleiner als .. K2
+01 CB:	XX		Ausschalten bei Helligkeiswert kleiner als .. K1
+				13  5 % (entspricht Helligkeitswert = 13)
+  				25  10 % (entspricht Helligkeitswert = 25)
+  				38  15 % (entspricht Helligkeitswert = 38)
+  				51  20 % (entspricht Helligkeitswert = 51)
+  				64  25 % (entspricht Helligkeitswert = 64)
+  				77  30 % (entspricht Helligkeitswert = 77)
+  				89  35 % (entspricht Helligkeitswert = 89)
+  				102  40 % (entspricht Helligkeitswert = 102)
+  				115  45 % (entspricht Helligkeitswert = 115)
+  				127  50 % (entspricht Helligkeitswert = 127)
+  				140  55 % (entspricht Helligkeitswert = 140)
+  				153  60 % (entspricht Helligkeitswert = 153)
+  				166  65 % (entspricht Helligkeitswert = 166)
+  				179  70 % (entspricht Helligkeitswert = 179)
+  				191  75 % (entspricht Helligkeitswert = 191)
+  				204  80 % (entspricht Helligkeitswert = 204)
+  				217  85 % (entspricht Helligkeitswert = 217)
+  				230  90 % (entspricht Helligkeitswert = 230)
+  				242  95 % (entspricht Helligkeitswert = 242)
+  				255  max. Helligkeit (entspricht Helligkeitswert = 255)
 
-01 CE:	XX		Auschaltfunktion: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
+01 CC:	XX		Ausschalten bei Helligkeitswert kleiner als .. K2
+
+01 CE:	XX		Ausschaltfunktion: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
 				1=0,5 ms
 				2=8 ms
 				3=130 ms
@@ -64,8 +92,8 @@ EEPROM
 				5=33 s
 				bit 3=1 Funktion Aktiviert K1
 				bit 7=1 Funktion Aktiviert K2
-01 CF:	XX		Auschaltfunktion: Verzögerung bis zum Ausschalten K1
-01 D0:	XX		Auschaltfunktion: Verzögerung bis zum Ausschalten K2
+01 CF:	XX		Ausschaltfunktion: Verzögerung bis zum Ausschalten K1
+01 D0:	XX		Ausschaltfunktion: Verzögerung bis zum Ausschalten K2
 
 
 01 D2:	XX		Zeitfunkion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2 
@@ -75,8 +103,8 @@ EEPROM
 				4=2,1 s
 				5=33 s
 				
-01 D3:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen K1
-01 D4:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen K2
+01 D3:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen Faktor K1
+01 D4:	XX		Zeitfunktion Soft Ein: Zeit zwischen 2 von 255 Dimmstufen Faktor K2
 				
 01 D6:	XX		Zeitfunktion Soft Aus: Zeit zwischen 2 von 255 Dimmstufen Basis Bit 0-2=K1, Bit 4-6=K2
 				1=0,5 ms
@@ -85,8 +113,8 @@ EEPROM
 				4=2,1 s
 				5=33 s
 				
-01 D7:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen K1
-01 D8:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen K2
+01 D7:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen Faktor K1
+01 D8:	XX		Zeitfunktion Soft Aus: Aktiviert wert > 3 : Zeit zwischen 2 von 255 Dimmstufen Faktor K2
 
 
 01 DA:	XX		Zeit Dimmerfunktion Aktivieren bit 3=k1 bit 7=K2
@@ -99,13 +127,13 @@ EEPROM
 				5=33 s
 
 
-01 DC:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen K1
-01 DD:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen K2
+01 DC:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen Faktor K1
+01 DD:	XX		Zeit Dimmerfunktion Aktivieren: Zeit zwischen 2 von 255 Dimmstufen Faktor K2
 
 
-01 DF:	XX		Sperren Bit 0-3 Hellikeit zubeginn der sperrung , 4-7 Hellikeit ende der Sperrung K1
+01 DF:	XX		Sperren Bit 0-3 Helligkeit zu Beginn der Sperrung , 4-7 Helligkeit am Ende der Sperrung K1
 				0=Aus
-				1=Grundhellikeit
+				1=Grundhelligkeit
 				2=10%
 				3=20%
 				4=30%
@@ -115,14 +143,15 @@ EEPROM
 				8=70%
 				9=80%
 				A=90%
-				B=Maximale Hellikeit
+				B=maximale Helligkeit
+				C=keine Aktion
 				D=Wert vor dem letzen Ausschalten
+				E=nachgeführter Helligkeitswert
 
 
-
-01 E0:	XX		Sperren Bit 0-3 Hellikeit zubeginn der sperrung , 4-7 Hellikeit ende der Sperrung K2
+01 E0:	XX		Sperren Bit 0-3 Helligkeit zu Beginn der Sperrung , 4-7 Helligkeit am Ende der Sperrung K2
 				0=Aus
-				1=Grundhellikeit
+				1=Grundhelligkeit
 				2=10%
 				3=20%
 				4=30%
@@ -132,14 +161,16 @@ EEPROM
 				8=70%
 				9=80%
 				A=90%
-				B=Maximale Hellikeit
+				B=maximale Helligkeit
+				C=keine Aktion
 				D=Wert vor dem letzen Ausschalten
+				E=nachgeführter Helligkeitswert
 
 
 
-01 E2:	XX		Verhalten bei Busspannungswiederkehr  bit 0-3=K1 ,4-7=K2   Standart = 0xCC
+01 E2:	XX		Verhalten bei Busspannungswiederkehr  bit 0-3=K1 ,4-7=K2   Standard = 0xCC
 				0=AUS
-				1=Grundhellikeit
+				1=GrundHelligkeit
 				2=10%
 				3=20%
 				4=30%
@@ -149,7 +180,56 @@ EEPROM
 				8=70%
 				9=80%
 				A=90%
-				B=Maximale Hellikeit
-				C=Hellikeitswert vor Busspannungsausfall
+				B=maximale Helligkeit
+				C=Helligkeitswert vor Busspannungsausfall
+
+
+01 E3:	xx		Lichtszenen veränderbar bit 4=K1, bit 5=K2
+
+
+01 E7:	xx		Lichtszene: Helligkeit bei Lichtszene 1  K1
+				0  = AUS
+  				1  = Grundhelligkeit
+ 				25 = 10 %
+  				51 = 20 %
+  				77 = 30 %
+  				102= 40 %
+  				127= 50 %
+  				154= 60 %
+  				179= 70 %
+  				204= 80 %
+  				230= 90 %
+  				255= maximale Helligkeit	
+
+01 E8:	xx		Lichtszene: Helligkeit bei Lichtszene 2  K1
+01 E9:	xx		Lichtszene: Helligkeit bei Lichtszene 3  K1
+01 EA:	xx		Lichtszene: Helligkeit bei Lichtszene 4  K1
+01 EB:	xx		Lichtszene: Helligkeit bei Lichtszene 5  K1
+01 EC:	xx		Lichtszene: Helligkeit bei Lichtszene 6  K1
+01 ED:	xx		Lichtszene: Helligkeit bei Lichtszene 7  K1
+01 EE:	xx		Lichtszene: Helligkeit bei Lichtszene 8  K1
+
+
+01 EF:	xx		Lichtszene: Helligkeit bei Lichtszene 1  K2
+				0  = AUS
+  				1  = Grundhelligkeit
+ 				25 = 10 %
+  				51 = 20 %
+  				77 = 30 %
+  				102= 40 %
+  				127= 50 %
+  				154= 60 %
+  				179= 70 %
+  				204= 80 %
+  				230= 90 %
+  				255= maximale Helligkeit	
+
+01 F0:	xx		Lichtszene: Helligkeit bei Lichtszene 2  K2
+01 F1:	xx		Lichtszene: Helligkeit bei Lichtszene 3  K2
+01 F2:	xx		Lichtszene: Helligkeit bei Lichtszene 4  K2
+01 F3:	xx		Lichtszene: Helligkeit bei Lichtszene 5  K2
+01 F4:	xx		Lichtszene: Helligkeit bei Lichtszene 6  K2
+01 F5:	xx		Lichtszene: Helligkeit bei Lichtszene 7  K2
+01 F6:	xx		Lichtszene: Helligkeit bei Lichtszene 8  K2
 
 
