@@ -100,8 +100,8 @@ uint8_t restartApplication(void) {
 		TCCR1B = (1<<CS10) ;                                              /* no Prescaler  */
 	#endif	
 	
-	#ifdef UART
-		//uart_open(38400, 8, 78, 1);
+	#ifdef USE_UART
+		/*UART 38400, 8, N, 1 */
 		uart_init();
 	#endif
 	
@@ -386,9 +386,13 @@ void SetDimmValue (uint16_t dimmValue){
 		}
 	#endif
 		
-	#ifdef UART
-		uint8_t dimmValue8 = dimmValue/128;
-		uart_hex(dimmValue8);
+	#ifdef USE_UART
+		dimmValue /= 32;               /* auf 10bit umrechnen                     */
+		dimmValue |= (chNr<<15);       /* Bit15=0 --> Kanal1; Bit15=1 --> Kanal2  */
+		uart_hex(dimmValue >> 8);      /* highbyte                                */
+		uart_hex(dimmValue & 0xFF);    /* lowbyte                                 */
+		uart_putc(13);                 /* CR                                      */
+		uart_putc(10);                 /* LF                                      */
 	#endif	
 }
 
