@@ -13,7 +13,7 @@ ifeq ($MEDIATYPE), tpuart)
 	CUSTOM_CFLAGS += -DF_CPU=8000000UL -DFB_TPUART
 endif
 
-CUSTOM_CFLAGS += -DUART
+CUSTOM_CFLAGS += -DUSE_UART
 
 INC?=-I../include/
 # build lib name
