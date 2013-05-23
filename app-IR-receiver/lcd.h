@@ -31,8 +31,6 @@
 
 */
 
-/*@{*/
-
 #if (__GNUC__ * 100 + __GNUC_MINOR__) < 303
 #error "This library requires AVR-GCC 3.3 or later, update to newer AVR-GCC compiler !"
 #endif
@@ -170,13 +168,6 @@
 
 #define LCD_MODE_DEFAULT     ((1<<LCD_ENTRY_MODE) | (1<<LCD_ENTRY_INC) )
 
-
-
-/** 
- *  @name Functions
- */
-
-
 /**
  @brief    Initialize display and select type of cursor
  @param    dispAttr \b LCD_DISP_OFF display off\n
@@ -259,8 +250,8 @@ extern void lcd_data(uint8_t data);
 
 /**
  @brief macros for automatically storing string constant in program memory
+
 */
 #define lcd_puts_P(__s)         lcd_puts_p(PSTR(__s))
 
-/*@}*/
 #endif //LCD_H
