@@ -135,6 +135,45 @@
 #define DEBUG_MSG(x,msg)
 #endif
 
+#if defined USE_UART
+#include "uart.h"
+/** Init the device for uart out */
+#define UART_INIT(x) uart_init()
+/** Display a character on the device */
+#define UART_PUTC(x) uart_putc(x)
+/** Display a character on the device without using the queueing system */
+#define UART_PUTC_BLOCKING(x) uart_putc_blocking(x)
+/** Display a string on the device */
+#define UART_PUTS(x) uart_puts(PSTR(x))
+/** Display a string on the device without using the queueing system */
+#define UART_PUTS_BLOCKING(x) uart_puts_blocking(PSTR(x))
+/** Display a character as hex value on the device */
+#define UART_PUTHEX(x) uart_hex(x)
+/** Display a character as hex value on the device without using the queueing system */
+#define UART_PUTHEX_BLOCKING(x) uart_hex_blocking(x)
+/** Display a newline on the device */
+#define UART_NEWLINE() uart_newline()
+/** Display a newline on the device without using the queueing system */
+#define UART_NEWLINE_BLOCKING() uart_newline_blocking()
+/** Display a space on the device */
+#define UART_SPACE() uart_putc(' ')
+/** Display a space on the device without using the queueing system */
+#define UART_SPACE_BLOCKING() uart_putc_blocking(' ')
+#else
+/** No uart, map to nothing */
+#define UART_INIT(x)
+#define UART_PUTC(x)
+#define UART_PUTC_BLOCKING(x)
+#define UART_PUTS(x)
+#define UART_PUTS_BLOCKING(x)
+#define UART_PUTHEX(x)
+#define UART_PUTHEX_BLOCKING(x)
+#define UART_NEWLINE()
+#define UART_NEWLINE_BLOCKING()
+#define UART_SPACE()
+#define UART_SPACE_BLOCKING()
+#endif
+
 #ifdef DEBUG_TIMING
 #define DEBUG_PIN1_ON(x)            SETPIN_IO1(1)     /** Set debugging pin 1 (PB2) to high (set if start bit received)*/
 #define DEBUG_PIN1_OFF(x)           SETPIN_IO1(0)     /** Set debugging pin 1 (PB2) to low  */
