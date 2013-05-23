@@ -25,6 +25,8 @@
  * To enable IO test compile with -DIO_TEST
  *
  * This version is designed to be used with the new API.
+ *
+ * @bug Restore state after power fail is not working. To solve this we must find a free byte in the eeprom and initialize it with 0x00. Store the free address in APP_PIN_STATE_MEMORY.
  */
 #ifndef _FB_APP_C
 #define _FB_APP_C
