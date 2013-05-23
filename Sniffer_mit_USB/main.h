@@ -10,7 +10,7 @@
 
 #include "cppstuff.h"
 #include "task.h"
-#include "timer.h"
+#include "usb_timer.h"
 #include "application.h"
 #include "led.h"
 #include "uart.h"

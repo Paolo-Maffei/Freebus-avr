@@ -1,3 +1,7 @@
+/**
+ * @file   usb_timer.c
+ */
+
 #include "main.h"
 
 static CTimer *timer_vector[MAX_NUM_TIMERS];
