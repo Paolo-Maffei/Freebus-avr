@@ -14,7 +14,7 @@
  *  published by the Free Software Foundation.
  */
 /**
- * @file	ain10Vnewlib
+ * @file	fb_ain10v.c
  * @author	Gerald Eichler, Uwe S.
  * @date	30.03.2013
  *
