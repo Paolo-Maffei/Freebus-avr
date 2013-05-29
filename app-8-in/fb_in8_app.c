@@ -227,36 +227,42 @@ void app_loop() {
     uint8_t portFunc;
     uint8_t port;
     uint8_t i;
+    uint8_t portmask = 0;
 
     // Iterate over all objects and check if the status has changed
-    // Einlesen der Sperrobjekte
     for(commObjectNumber=0; commObjectNumber<=OBJ_OUT23; commObjectNumber++) {
-        // check if an object has changed its status
-        if(TestObject(commObjectNumber)) {
+        portmask <<= 1;
+        if (portmask == 0)
+            portmask = 1;
+        /* check if an object has changed its status */
+        if (TestAndCopyObject(commObjectNumber, &msgVal, 0)) {
+
             DEBUG_NEWLINE();
             DEBUG_PUTS("OBJ_");
             DEBUG_PUTHEX(commObjectNumber);
             DEBUG_SPACE();
-
-            // get value of object (0=off, 1=on)
-            msgVal = userram[commObjectNumber + 11];
-
-            // reset object status flag
-            SetRAMFlags(commObjectNumber, 0);
-
             DEBUG_PUTHEX(msgVal);
             DEBUG_SPACE();
 
-            // Tranfer MsgData to bit structure (xxValue)
-            if(msgVal == 1) {
-                app_dat.safty |= (1<<(commObjectNumber - OBJ_OUT16));
-            }
-            else if(msgVal == 0) {
-                app_dat.safty &= ~(1<<(commObjectNumber - OBJ_OUT16));
+            if (commObjectNumber <= OBJ_OUT7) {
+                if (msgVal)
+                    app_dat.objVal1 |= portmask;	/* Set value */
+                else
+                    app_dat.objVal1 &= ~(portmask);	/* clear value */
+            } else if (commObjectNumber <= OBJ_OUT15) {
+                if (msgVal)
+                    app_dat.objVal2 |= portmask;	/* Set value */
+                else
+                    app_dat.objVal2 &= ~(portmask);	/* clear value */
+            } else {
+                // Tranfer MsgData to bit structure (xxValue)
+                if(msgVal)
+                    app_dat.safty |= (portmask);	/* Set value */
+                else
+                    app_dat.safty &= ~(portmask);	/* clear value */
             }
         }
     }   // for()
-
 
     // check for power on delay activ
     if(app_dat.runningdefTimer & 0x01) {
