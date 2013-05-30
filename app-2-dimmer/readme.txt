@@ -23,7 +23,7 @@ Funktionen:
 -Empfang & Rückmeldung Ein/Aus Objekt
 -Empfang & Rückmeldung Helligkeitsobjekt
 -Empfang Dimmen 1,5% - 100% auf- abwärts, Dimmen Stopp
-
+-Sperrobjekt
 
 Parameter:
 -Helligkeit bei Busspannungswiederkehr
@@ -33,19 +33,18 @@ Parameter:
 -Helligkeitswert andimmen/anspringen
 -Dimmgeschwindigkeit
 -Ausschaltfunktion / Zeitverzögerung
-
+-Sperrobjekt normal/invertiert
+-Verhalten am Beginn - Ende einer Sperrung
 
 
 
 Todo:
-
 
 -Ausgabe per I2C
 
 -Grundhelligkeit
 -Helligkeitswert beim Ausschalten speichern/wiederherstellen
 -Helligkeitswert bei Busspannungsausfall speichern/wiederherstellen
--Sperrobjekt
 -Lichtszenen
 -Lichtszenen veränderbar
 -Zeitdimmfunktion
