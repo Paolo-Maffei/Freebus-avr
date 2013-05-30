@@ -74,7 +74,7 @@ void StopTimer(void);
 void HandleSwitchOffFunction(void);
 uint8_t GetBrightnessFromList (uint8_t brightnessList);
 uint8_t SelectBits(uint8_t parameterByte);
-
+void SendBrightness(void);
 
 
 
@@ -140,6 +140,7 @@ void app_loop() {
 	/* Dimmobjekt bearbeiten */
 	if (TestAndCopyObject (OBJECT_DIMM + chNr, &objectValue, 0)){
 		StopTimer();
+		SendBrightness();
 		objectValue &= 0b00001111 ;                                 /* Wertbereich von 0x00 bis 0x0F */
 		uint8_t delayBaseIndex = SelectBits(mem_ReadByte(APP_BASE_DIMMING_STEP));
 		delayBaseIndex &= 0b00000111;								/* auf Bits 0-3 begrenzen */
@@ -296,10 +297,8 @@ void HandleDimmValues(void){
 			channel[chNr].switchValue = 0;
 		}
 		/* Dimming Timer läuft nicht, Rückmeldung Helligkeit senden */
-		// todo Rückmeldung Helligkeit bei manuell Dimm Stop
 		if (channel[chNr].runningDimmTimer == 0x00){
-			uint8_t dimmValue = channel[chNr].dimmValue / 128;
-			SetAndTransmitObject(OBJECT_RESPONSE_BRIGHTNESS + chNr, &dimmValue, 1);
+			SendBrightness();
 		}
 		
 		channel[chNr].dimmValueOld = channel[chNr].dimmValue;
@@ -480,6 +479,20 @@ uint8_t SelectBits(uint8_t parameterByte){
 	}
 }
 
+
+/**
+* Rückmeldung Helligkeitsobjekt senden
+*
+*
+* \param  void
+*         Ausführung für aktuellen Kanal chNr 0=Kanal1, 1=Kanal2
+*
+* @return void
+*/
+void SendBrightness(void){
+	uint8_t dimmValue = channel[chNr].dimmValue / 128;
+	SetAndTransmitObject(OBJECT_RESPONSE_BRIGHTNESS + chNr, &dimmValue, 1);
+}
 
 
 #endif /* _FB_APP_C */
