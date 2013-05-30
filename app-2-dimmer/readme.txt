@@ -1,4 +1,4 @@
-Stand 21.05.2013
+Stand 30.05.2013
 Applikation für den GIRA 2 Kanal Dimmaktor 1032 00
 
 
@@ -22,7 +22,7 @@ mögliche Ausgangsoptionen:
 Funktionen:
 -Empfang & Rückmeldung Ein/Aus Objekt
 -Empfang & Rückmeldung Helligkeitsobjekt
--Empfang Dimmen 100% auf- abwärts, Dimmen Stop(todo: Rückmeldung bei Dimmen Stop)
+-Empfang Dimmen 1,5% - 100% auf- abwärts, Dimmen Stopp
 
 
 Parameter:
@@ -39,11 +39,10 @@ Parameter:
 
 Todo:
 
--Ausgabe per Uart
+
 -Ausgabe per I2C
 
 -Grundhelligkeit
--Dimmbefehle 1%-50%
 -Helligkeitswert beim Ausschalten speichern/wiederherstellen
 -Helligkeitswert bei Busspannungsausfall speichern/wiederherstellen
 -Sperrobjekt

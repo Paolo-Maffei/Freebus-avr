@@ -105,9 +105,7 @@ uint8_t restartApplication(void) {
 		uart_init();
 	#endif
 	
-	// Test
-	DDRC = 0b00000011;
-	
+		
 	/* Helligkeit bei Busspannungswiederkehr setzen */
 	/* Kanal 1 */
 	chNr = 0;
@@ -139,22 +137,34 @@ void app_loop() {
 	
 	/* Dimmobjekt bearbeiten */
 	if (TestAndCopyObject (OBJECT_DIMM + chNr, &objectValue, 0)){
-		StopTimer();
-		SendBrightness();
 		objectValue &= 0b00001111 ;                                 /* Wertbereich von 0x00 bis 0x0F */
 		uint8_t delayBaseIndex = SelectBits(mem_ReadByte(APP_BASE_DIMMING_STEP));
 		delayBaseIndex &= 0b00000111;								/* auf Bits 0-3 begrenzen */
 		uint8_t delay_factor = mem_ReadByte(APP_FACTOR_DIMMING_STEP_CH1 + chNr);
 		channel[chNr].dimmTimerReload = (pgm_read_dword(&delay_bases[delayBaseIndex])) * (uint16_t) delay_factor;
-		if (objectValue == 0b00000001){
-			/* Starte DimmTimer abdimmen */
-			channel[chNr].runningDimmTimer = 0x03;
-			channel[chNr].destinationValue = 0;
+	if (objectValue & 0b00000111){
+		/* auf oder abdimmen */
+		uint16_t dimmSteps = 255;
+		/* Schritte für Dimmbefehle 1,5% - 100% ausrechnen */
+		for ( uint8_t i=1; i<(objectValue & 0b00000111); i++){
+			dimmSteps >>= 1;
 		}
-		if (objectValue == 0b00001001){
-			/* Starte DimmTimer aufdimmen */
-			channel[chNr].runningDimmTimer = 0x01;
-			channel[chNr].destinationValue = 255 * 128;
+		dimmSteps *= 128;
+		if (objectValue & 0b00001000){
+			/* aufdimmen */
+			channel[chNr].runningDimmTimer = 0x01;  /*  Timer Richtung heller starten */
+			/* Zielhelligkeit setzen wenn Maximum nicht überschritten wird */
+			channel[chNr].destinationValue = 255*128-channel[chNr].dimmValue > dimmSteps ? channel[chNr].dimmValue + dimmSteps : 255*128;
+		} else {
+			/* abdimmen */
+			channel[chNr].runningDimmTimer = 0x03;  /*  Timer Richtung dunkler starten */
+			/* Zielhelligkeit setzen wenn 0 nicht unterschritten wird */
+			channel[chNr].destinationValue = channel[chNr].dimmValue > dimmSteps ? channel[chNr].dimmValue - dimmSteps : 0;
+		}
+		} else {
+			/* Stopptelegramm */
+			StopTimer();
+			SendBrightness();
 		}
 	}
 	
