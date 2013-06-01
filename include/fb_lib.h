@@ -44,6 +44,9 @@
 #include "timer.h"
 #include "fb_eeprom.h"
 #include "freebus-debug.h"
+#ifdef USE_UART
+#include "uart.h"
+#endif
 
 /**************************************************************************
 * DEFINITIONS

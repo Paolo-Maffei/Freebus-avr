@@ -12,13 +12,13 @@ void app_loop() {
     if (check_timeout(&timer1)){
         /* eine Sekunde um */
         alloc_timer(&timer1, 100);
-        uart_hex(0xAB);
+        UART_PUTHEX(0xAB);
     }
 }
 
 
 uint8_t restartApplication(void) {
-    uart_init();
+    UART_INIT();
     alloc_timer(&timer1, 100);
     return 1;
 }
