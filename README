@@ -94,7 +94,7 @@ REVISION         | Description
 DEBUG            | Description
 ---------------- | -----------
 debug            | With debugging enabled (use with care, it can make problems with timing). It prints information to rs232 interface.
-<empty>          | Debugging is disabled (should be used to build stable hex files)
+\<empty>          | Debugging is disabled (should be used to build stable hex files)
                  
 \subsection example Examples
 <b>libfb_atmega328p_tp_2debug.a</b><br>
