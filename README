@@ -64,11 +64,8 @@ Transfers which a very error phrone are:<br>
 - Receiving of data while a bit is read<br>
 
 The following functions must exist in each application (take as example fb_relais_app.c):
-- \link fb_relais_app.c#main(void) main(void)\endlink<br>
-- \link fb_relais_app.c#runApplication(struct msg *rxmsg) runApplication(struct msg *rxmsg)\endlink<br>
-- \link fb_relais_app.c#readApplication(struct msg *rxmsg) readApplication(struct msg *rxmsg)\endlink<br>
+- \link fb_relais_app.c#app_loop(void) app_loop(void)\endlink<br>
 - \link fb_relais_app.c#restartApplication(void) restartApplication(void)\endlink<br>
-- \link fb_relais_app.c#setApplicationDefaults(void) setApplicationDefaults(void)\endlink<br>
 
 
 \section firmware Firmware to link to
