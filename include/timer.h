@@ -57,7 +57,6 @@ typedef uint32_t timer_t;
 
 TIMER_EXT timer_t get_ticks(void);
 TIMER_EXT void timer_init(void);
-TIMER_EXT void timer_close(void);
 TIMER_EXT void alloc_timer(timer_t *t, timer_t ticks);
 TIMER_EXT uint8_t check_timeout(timer_t *t);
 
