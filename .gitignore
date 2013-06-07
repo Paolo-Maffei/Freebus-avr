@@ -28,3 +28,5 @@ lib
 *.atsuo
 *.cproj
 .gitmodules
+.cproject
+.project

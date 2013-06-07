@@ -40,6 +40,7 @@
 * INCLUDES
 *************************************************************************/
 #include <avr/io.h>
+#include "fb.h"
 #include "fb_hardware.h"
 #include "timer.h"
 #include "fb_eeprom.h"

@@ -37,10 +37,10 @@
 #define UART_EXT extern
 #endif
 
-UART_EXT void uart_init(void);
-UART_EXT void uart_open(uint32_t baud, uint8_t charsize, char parity, uint8_t stopb);
+UART_EXT void uart_init(void) XBOOT_SECTION;
+UART_EXT void uart_open(uint32_t baud, uint8_t charsize, char parity, uint8_t stopb) XBOOT_SECTION;
 UART_EXT void uart_rx_flush(void);
-UART_EXT void uart_rx_enable(void);
+UART_EXT void uart_rx_enable(void) XBOOT_SECTION;
 UART_EXT void uart_rx_disable(void);
 UART_EXT uint8_t uart_rx_empty(void);
 UART_EXT uint8_t uart_rx_get(void);
