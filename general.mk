@@ -19,3 +19,6 @@ INC?=-I../include/
 # build lib name
 LIBS?=-lfb_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG) -L..
 
+# definitions for avrdude
+PROGRAMMER_MCU?=$(MCU)
+

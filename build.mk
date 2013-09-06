@@ -86,9 +86,9 @@ CMP:=cmp
 TRG?=$(PROJECTNAME)_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG).out
 DUMPTRG=$(PROJECTNAME)$(DEBUG).s
 
-HEXROMTRG=$(TRG).hex
-BINROMTRG=$(PROJECTNAME).bin
-HEXTRG=$(HEXROMTRG) $(TRG).ee.hex
+HEXROMTRG=$(TRG:.out=.hex)
+BINROMTRG=$(TRG:.out=.bin)
+HEXTRG=$(HEXROMTRG:.out=.hex) $(TRG:.out=.ee.hex)
 BINTRG=$(BINROMTRG)
 GDBINITFILE=gdbinit-$(PROJECTNAME)$(DEBUG)
 
@@ -153,14 +153,22 @@ hex: $(HEXTRG)
 
 bin: $(BINTRG)
 
-debug-hex: CUSTOM_CFLAGS+=-DDEBUG_UART -g
+debug-hex: CUSTOM_CFLAGS+=-DDEBUG_UART -DDEBUG_LCD -g
 debug-hex: DEBUG=debug
 debug-hex: $(HEXTRG)
 
+debug-bin: CUSTOM_CFLAGS+=-DDEBUG_UART -DDEBUG_LCD -g
 debug-bin: DEBUG=debug
 debug-bin: $(BINTRG)
 
 writeflash: hex
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
+	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
+	 -U flash:w:$(HEXROMTRG)
+
+debug-writeflash: CUSTOM_CFLAGS+=-DDEBUG_UART -DDEBUG_LCD -g
+debug-writeflash: DEBUG=debug
+debug-writeflash: debug-hex
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG)
@@ -204,24 +212,23 @@ $(subst .out,,$(TRG)).out: $(OBJDEPS) linker_flags
 #### Generating hex files ####
 # hex files from elf
 #####  Generating a gdb initialisation file    #####
-%.out.hex: %.out
+%.hex: %.out
 	@echo Build .hex for $(PROJECTNAME)...
 	$(Q)$(OBJCOPY) -j .text  -j .xbootloader    \
 		-j .data                       \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.hex=$(DEBUG).hex)
 
-%.out.bin: %.out
+%.bin: %.out
 	@echo Build bin files
 	$(Q)$(OBJCOPY) -j .text                    \
 		-j .data                       \
-		-O $(BINFORMAT) $< $@
+		-O $(BINFORMAT) $(<:.out=$(DEBUG).out) $(@:.bin=$(DEBUG).bin)
 
-%.out.ee.hex: %.out
+%.ee.hex: %.out
 	@echo Build ee.hex for $(PROJECTNAME)...
 	$(Q)$(OBJCOPY) -j .eeprom                  \
 		--change-section-lma .eeprom=0 \
 		-O $(HEXFORMAT) $(<:.out=$(DEBUG).out) $(@:.ee.hex=$(DEBUG).ee.hex)
-
 
 #####  Generating a gdb initialisation file    #####
 ##### Use by launching simulavr and avr-gdb:   #####
@@ -254,6 +261,7 @@ clean:
 
 distclean: clean
 	$(Q)$(REMOVE) $(HEXTRG)
+	$(Q)$(REMOVE) $(BINTRG)
 
 debug-distclean: DEBUG=debug
 debug-distclean: clean distclean
