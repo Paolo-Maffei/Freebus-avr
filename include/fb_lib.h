@@ -36,11 +36,30 @@
 #define FBAPP_EXT    extern
 #endif
 
+#ifndef FALSE
+#define FALSE (0!=0)         /**< macro which will always return false  */
+#endif
+
+#ifndef TRUE
+#define TRUE  (0==0)         /**< macro which will always return true   */
+#endif
+
+#ifdef BOOTLOADER
+#define XBOOT_SECTION __attribute__((section(".xbootloader")))
+#else
+#define XBOOT_SECTION
+#endif
+
+#ifdef __GNUC__
+#define __UNUSED__  __attribute__ ((unused))
+#else
+#define __UNUSED__
+#endif
+
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
 #include <avr/io.h>
-#include "fb.h"
 #include "fb_hardware.h"
 #include "timer.h"
 #include "fb_eeprom.h"
