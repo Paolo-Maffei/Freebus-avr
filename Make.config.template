@@ -1,3 +1,5 @@
+# IMPORTANT NOTE: if you want to change any setting here, generate a Make.config file and define you option there.
+
 # Name of target controller 
 # (e.g. 'atmega328p', see the available avr-gcc mmcu 
 # options for possible values)
@@ -47,11 +49,11 @@ VPATH?=..
 # one of the valid "-c PROGRAMMER-ID" values 
 # described in the avrdude info page.
 # 
-AVRDUDE_PROGRAMMERID?=stk600
+AVRDUDE_PROGRAMMERID?=avrispmkII
 
 # port--serial or parallel port to which your 
 # hardware programmer is attached
 #
-AVRDUDE_PORT?=/dev/ttyS1
+AVRDUDE_PORT?=usb
 
 # DO NOT DELETE

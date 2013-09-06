@@ -1,3 +1,6 @@
+#include template file which is overwritten by Make.config
+-include ../Make.config.template
+
 # determine CPU frequency based on media type
 CUSTOM_CFLAGS += -DREVISION=$(REVISION)
 ifeq ($(MEDIATYPE), tp)
