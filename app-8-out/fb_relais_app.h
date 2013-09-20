@@ -85,8 +85,13 @@ const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 
 { MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode 0x0004 = Jung                 */
 { MANUFACTORER_ADR_LOW,         0x04 },    /**< Herstellercode 0x0004 = Jung                 */
-{ DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2038.10) 2060h                  */
-{ DEVICE_NUMBER_LOW,            0x60 },    /**<                                              */
+#ifdef CH4
+	{ DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2134.16) 2062h                  */
+	{ DEVICE_NUMBER_LOW,            0x62 },    /**<                                              */
+#else
+	{ DEVICE_NUMBER_HIGH,           0x20 },    /**< device type (2038.10) 2060h                  */
+	{ DEVICE_NUMBER_LOW,            0x60 },    /**<                                              */
+#endif
 
 { 0xFF,                         0xFF }     /**< END-sign; do not change                      */
 };
