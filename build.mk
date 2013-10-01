@@ -173,6 +173,12 @@ debug-writeflash: debug-hex
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG)
 
+release: hex
+	$(info Copy $(HEXROMTRG) in $(CURDIR) to $(CURDIR)/../../releases/$(shell basename $(CURDIR))/$(HEXROMTRG))
+	@mkdir -p $(CURDIR)/../../releases/$(shell basename $(CURDIR))
+	@install -m 664 -p $(HEXROMTRG) $(CURDIR)/../../releases/$(shell basename $(CURDIR))/$(HEXROMTRG)
+	@echo
+
 $(DUMPTRG): $(TRG) 
 	$(OBJDUMP) -S  $< > $@
 

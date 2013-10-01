@@ -36,6 +36,8 @@ debug-distclean:
 
 stats:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i stats; done
+release:
+	@for i in $(DIRECTORIES); do $(MAKE) -C $$i release; done
 
 avrlib:
 	$(MAKE) -C lib
