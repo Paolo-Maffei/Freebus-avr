@@ -48,6 +48,9 @@ debug-avrlib:
 avrlib-clean:
 	$(MAKE) -C lib clean
 
+debug-avrlib-clean:
+	$(MAKE) -C lib debug-clean
+	
 .PHONY: avrlib-distclean avrlib-clean
 avrlib-distclean: avrlib-clean
 	$(RM) *.a
