@@ -1,4 +1,8 @@
 # IMPORTANT NOTE: if you want to change any setting here, generate a Make.config file and define you option there.
+# It can look like (without the # characters):
+# MCU=atmega328p
+# REVISION?=1
+# MEDIATYPE?=tp
 
 # Name of target controller 
 # (e.g. 'atmega328p', see the available avr-gcc mmcu 
@@ -7,11 +11,11 @@ MCU?=atmega328p
 
 # Which hardware revision we build
 # See doxygen output for more details
-REVISION=2
+REVISION?=2
 
 # Which bus connection is used
 # See doxygen output for more details
-MEDIATYPE=tp
+MEDIATYPE?=tp
 
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
