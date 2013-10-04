@@ -124,7 +124,7 @@ ifneq ($(MAKECMDGOALS),clean)
 	-include $(OBJDEPS:.o=.d)
 endif
 
-.PHONY: writeflash stats gdbinit all debug
+.PHONY: writeflash debug-writeflash release hex bin debug-hex debug-bin stats gdbinit all debug
 .SUFFIXES : .a .o .c .h .out .hex
 
 # check if cflags/ldflags are different to the build before
@@ -254,7 +254,7 @@ $(GDBINITFILE): $(TRG)
 
 
 #### Cleanup ####
-.PHONY: clean distclean debug-clean
+.PHONY: clean distclean debug-clean debug-distclean
 clean:
 	@echo Clean target $(PROJECTNAME)...
 	$(Q)$(REMOVE) $(TRG) $(TRG).map $(DUMPTRG)

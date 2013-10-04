@@ -76,12 +76,62 @@ typedef struct
 /*************************************************************************
 * FUNCTION PROTOTYPES
 **************************************************************************/
+/**
+* Read data from the eeprom cache and return it.
+*
+* @param addr The address from the eeprom to read the data
+*
+* @return Value in eeprom on addr
+*/
 EEPROM_EXT uint8_t mem_ReadByte(uint16_t wAdr) XBOOT_SECTION;
+
+/**
+ * Read to bytes from eeprom and return it.
+ *
+ * @param addr The start address to read data from eeprom
+ *
+ * @return 2 byte from eeprom as uint16_t
+ */
 EEPROM_EXT uint16_t mem_Read2Bytes(uint16_t addr) XBOOT_SECTION;
+
+/**
+* Write data to the eeprom cache and trigger background process to write eeprom cache to real eeprom.
+*
+* @param addr   start address of the data in the eeprom
+* @param len    length of data
+* @param dat    data to write in the eeprom
+*/
 EEPROM_EXT void mem_WriteBlock(uint16_t addr, uint8_t len, uint8_t *dat) XBOOT_SECTION;
+
+/**
+* Check if eeprom cache was written completely to eeprom.
+*
+* @return TRUE if eeprom cache is not written completely to eeprom
+*/
 EEPROM_EXT uint8_t eeprom_busy(void) XBOOT_SECTION;
+
+/**
+* store the default parameter directly to the eeprom
+*
+* @param pParam
+*
+*/
 EEPROM_EXT void eeprom_ParamSetDefault(const STRUCT_DEFPARAM *pParam ) XBOOT_SECTION;
+
+/**
+* Read the eeprom to the eeprom cache.
+*
+* @param nodeParam
+* @param paramlen
+*
+*/
 EEPROM_EXT void eeprom_Init(uint8_t *pNodeParam, uint16_t wParamlen) XBOOT_SECTION;
+
+/**
+* Returns the pointer to the eeprom cache.
+* This can be used for an optimized read access.
+*
+*/
 EEPROM_EXT uint8_t *eeprom_GetBase(void) XBOOT_SECTION;
 
 #ifdef DEBUG_UART

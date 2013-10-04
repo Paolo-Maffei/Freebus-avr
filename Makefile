@@ -8,7 +8,7 @@ all:
 debug:
 	@for i in $(DIRECTORIES); do $(MAKE) -C $$i debug; done
 
-doc:
+doc: hex
 	-doxygen
 
 hex:

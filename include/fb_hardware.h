@@ -62,35 +62,26 @@
 
 #endif  /* board selection*/
 
-#define SETPIN_PROG(val)        if(val)                                 \
-                                {                                       \
+#define SETPIN_PROG(val)        if(val) |                               \
                                     PROG_PORT |= (1U<<PROG_PIN);        \
-                                }                                       \
-                                else                                    \
-                                {                                       \
+                                } else {                                \
                                     PROG_PORT &= ~(1U<<PROG_PIN);       \
                                 }
 #define GETPIN_PROG()           ((PROG_IN>>PROG_PIN) & 0x01)
 #define SET_IO_PROG(type)       PROG_DDR = (PROG_DDR & ~(1U<<PROG_PIN)) | (type<<PROG_PIN);\
                                 PROG_PORT = (PROG_PORT & ~(1U<<PROG_PIN)) | ((~type & 0x01)<<PROG_PIN)
                                 
-#define SETPIN_CTRL(val)        if(val)                                 \
-                                {                                       \
+#define SETPIN_CTRL(val)        if(val) {                               \
                                     CTRL_PORT |= (1U<<CTRL_PIN);        \
-                                }                                       \
-                                else                                    \
-                                {                                       \
+                                } else {                                \
                                     CTRL_PORT &= ~(1U<<CTRL_PIN);       \
                                 }
 #define GETPIN_CTRL()           ((CTRL_IN>>CTRL_PIN) & 0x01)
 #define SET_IO_CTRL(type)       CTRL_DDR = (CTRL_DDR & ~(1U<<CTRL_PIN)) | (type<<CTRL_PIN)
 
-#define SETPIN_EIBOUT(val)      if(val)                                 \
-                                {                                       \
+#define SETPIN_EIBOUT(val)      if(val) {                               \
                                     EIBOUT_PORT |= (1U<<EIBOUT_PIN);    \
-                                }                                       \
-                                else                                    \
-                                {                                       \
+                                } else {                                \
                                     EIBOUT_PORT &= ~(1U<<EIBOUT_PIN);   \
                                 }
 #define SET_IO_EIBOUT(type)     EIBOUT_DDR = (EIBOUT_DDR & ~(1U<<EIBOUT_PIN)) | (type<<EIBOUT_PIN)   
@@ -103,12 +94,9 @@
 
 
 
-#define SETPIN_RES1(val)        if(val)                                 \
-                                {                                       \
+#define SETPIN_RES1(val)        if(val) {                               \
                                     IO1_PORT |= (1U<<IO1_PIN);          \
-                                }                                       \
-                                else                                    \
-                                {                                       \
+                                } else {                                \
                                     IO1_PORT &= ~(1U<<IO1_PIN);         \
                                 }
 #define SETPIN_RES1_ON          RES1_PORT |= (1U<<RES1_PIN);

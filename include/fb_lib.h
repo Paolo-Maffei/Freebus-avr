@@ -100,19 +100,19 @@
 
 struct FBAppInfo
 {
-    const uint8_t           FBApiVersion;
-    const STRUCT_DEFPARAM   *pParam;
+    const uint8_t           FBApiVersion;                ///< Version of Freeebus API
+    const STRUCT_DEFPARAM   *pParam;                     ///< Application parameter, see defaultParam which describes the memory layout of the application
 
 /* Not used yet */
-    void (*AppMain)         (void);
-    void (*AppSave)         (void);
-    void (*AppUnload)       (void);
-    uint8_t (*AppReadObject)     (uint8_t objectNr, void* dest, uint8_t len);
-    uint8_t (*AppWriteObject)    (uint8_t objectNr, void* src, uint8_t len);
-    void *ramflags;
-    void *comobjtable;
-    void *assoctable;
-    void *grpaddr;
+    void (*AppMain)         (void);                      ///< Pointer to AppMain function
+    void (*AppSave)         (void);                      ///< Pointer to function in application which must be called if save status is triggered
+    void (*AppUnload)       (void);                      ///< Pointer to function which is called if the application will be unloaded
+    uint8_t (*AppReadObject)     (uint8_t objectNr, void* dest, uint8_t len); ///< Pointer to function to read an object from the application
+    uint8_t (*AppWriteObject)    (uint8_t objectNr, void* src, uint8_t len);  ///< Pointer to function to write an object in the application
+    void *ramflags;                                      ///< Pointer to RAM flag table
+    void *comobjtable;                                   ///< Pointer to communication object table
+    void *assoctable;                                    ///< Pointer to Association table
+    void *grpaddr;                                       ///< Pointer to Group address table
 };
 
 FBAPP_EXT const STRUCT_DEFPARAM defaultParam[] PROGMEM;
@@ -123,21 +123,62 @@ FBAPP_EXT const struct FBAppInfo AppInfo PROGMEM;
 **************************************************************************/
 /* State used for new lib api */
 #define SET_STATE(x) app_state |= (x)          ///< Defined the next state for the application
-#define UNSET_STATE(x) app_state &= ~(x)  ///< disable state defined in x
-#define IN_STATE(x) app_state & (x)      ///< Return true, if state x is active
-#define RESET_STATE() app_state = 0          ///< Clear all bits used in the state variable
+#define UNSET_STATE(x) app_state &= ~(x)       ///< disable state defined in x
+#define IN_STATE(x) app_state & (x)            ///< Return true, if state x is active
+#define RESET_STATE() app_state = 0            ///< Clear all bits used in the state variable
 
 /*************************************************************************
 * LIB FUNCTION PROTOTYPES
 **************************************************************************/
+/**
+* Copies "len" bytes from "src" to the object data and transmits the
+* object specified by "objectNr".
+*
+*/
 PROT_EXT void SetAndTransmitObject(uint8_t objectNr, void* src, uint8_t len);
+
+/**
+* Copies 1 bit to object data and transmits the object specified by objectNr
+*
+*/
 PROT_EXT void SetAndTransmitBit(uint8_t objectNr, uint8_t value);
+
+/**
+* Tests if there was an update for the object specified by "objectNr".
+*
+*/
 PROT_EXT uint8_t TestObject(uint8_t objectNr);
+
+/**
+* This function tests if there was an update for an object given by "objectNr". If this is
+* the case "len" bytes of the object value are copied to "dst".
+*
+*/
 PROT_EXT uint8_t TestAndCopyObject(uint8_t objectNr, void* dst, uint8_t len);
+
+/**
+* Set the RAM flags for the object specified by "objectNr".
+*
+*/
 PROT_EXT void SetRAMFlags(uint8_t objectNr, uint8_t flags);
+
+/**
+* This function transmits the object specified by "objectNr".
+*
+*/
 PROT_EXT void TransmitObject(uint8_t objectNr);
+
+/**
+* Sets the RAM flags to generate a GroupValueRead on the object specified by
+* "objectNr".
+*
+*/
 PROT_EXT uint8_t ReadObject(uint8_t objectNr);
 
+/**
+ * Function which is defined in each application which is called if the application is restarted.
+ * @return
+ */
 FBAPP_EXT uint8_t restartApplication(void);
 
 #endif
