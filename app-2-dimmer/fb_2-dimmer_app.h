@@ -38,17 +38,13 @@
 *************************************************************************/
 #include "fb_lib.h"
 
-#ifdef USE_UART
-	#include "uart.h"
-#endif
-
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
-#define BASIC_BRIGHTNESS_FACTOR              200          /**<  Stufe Grundhelligkeit*Faktor = Dimmwert für Helligkeit=1          */
+#define BASIC_BRIGHTNESS_FACTOR              200          /**<  Stufe Grundhelligkeit*Faktor = Dimmwert fï¿½r Helligkeit=1          */
 
 #define APP_BASIC_BRIGHTNESS                 0x01C2     /**<  Grundhelligkeit Bit0-2 Kanal1; Bit4-6 Kanal2                      */
-#define APP_LOCK_FUNCTION                    0x01C3     /**<  Sperrfunktion Ein/Aus, Polarität                                  */
+#define APP_LOCK_FUNCTION                    0x01C3     /**<  Sperrfunktion Ein/Aus, Polaritï¿½t                                  */
 #define APP_SWITCH_ON_BRIGHTNESS             0x01C4     /**<  Einschalthelligkeit Bit0-3 Kanal1; Bit4-7 Kanal2                  */
 #define APP_BASE_DIMMING_STEP                0x01C6     /**<  Bit0-2 Kanal1; Bit4-6 Kanal2                                      */
 #define APP_FACTOR_DIMMING_STEP_CH1          0x01C8     /**<  Faktor Dimmschritt Kanal1                                         */
@@ -56,8 +52,8 @@
 #define APP_SWITCH_OFF_BRIGHTNESS_CH1        0x01CB     /**<  Ausschalthelligkeit Kanal1                                        */
 #define APP_SWITCH_OFF_BRIGHTNESS_CH2        0x01CC     /**<  Ausschalthelligkeit Kanal2                                        */
 #define APP_SWITCH_OFF_FUNCTION              0x01CE     /**<  Ausschaltfunktion ein/aus; Basis; Bit0-3 Kanal1; Bit4-7 Kanal2    */
-#define APP_SWITCH_OFF_DELAY_FACTOR_CH1      0x01CF     /**<  Ausschaltfunktion Faktor Verzögerung Kanal1                       */
-#define APP_SWITCH_OFF_DELAY_FACTOR_CH2      0x01D0     /**<  Ausschaltfunktion Faktor Verzögerung Kanal2                       */
+#define APP_SWITCH_OFF_DELAY_FACTOR_CH1      0x01CF     /**<  Ausschaltfunktion Faktor Verzï¿½gerung Kanal1                       */
+#define APP_SWITCH_OFF_DELAY_FACTOR_CH2      0x01D0     /**<  Ausschaltfunktion Faktor Verzï¿½gerung Kanal2                       */
 #define APP_SOFT_ON_BASE                     0x01D2     /**<  Soft Ein Basis; Bit0-2 Kanal1; Bit4-6 Kanal2                      */
 #define APP_SOFT_ON_FACTOR_CH1               0x01D3     /**<  Soft Ein Faktor Kanal1; 0=Funktion Aus                            */
 #define APP_SOFT_ON_FACTOR_CH2               0x01D4     /**<  Soft Ein Faktor Kanal2; 0=Funktion Aus                            */
@@ -70,15 +66,15 @@
 #define APP_BRIGHTNESS_BLOCKING_FUNCTION_CH1 0x01DF     /**<  Helligkeit bei Beginn (Bit0-3); Ende (Bit4-7) der Sperrfunktion   */
 #define APP_BRIGHTNESS_BLOCKING_FUNCTION_CH2 0x01E0     /**<  Helligkeit bei Beginn (Bit0-3); Ende (Bit4-7) der Sperrfunktion   */
 #define APP_BUS_ON_BRIGHTNESS                0x01E2     /**<  Wert bei Busspannungswiederkehr 0-3 K1; 4-7 K2                    */
-#define APP_CHANGE_LIGHT_SCENE               0x01E3     /**<  Lichtszene veränderbar Bit4 Kanal1; Bit5 Kanal 2                  */
+#define APP_CHANGE_LIGHT_SCENE               0x01E3     /**<  Lichtszene verï¿½nderbar Bit4 Kanal1; Bit5 Kanal 2                  */
 #define APP_LIGHT_SCENE_CH1                  0x01E7     /**<  Lichtszenen Kanal1                                                */
 #define APP_LIGHT_SCENE_CH2                  0x01E8     /**<  Lichtszenen Kanal2                                                */
 
 #define OBJECT_SWITCH                        0          /**<  1Bit Objekt zum Ein/Aus schalten                                  */
 #define OBJECT_DIMM                          2          /**<  4Bit Objekt zum Auf/Ab Dimmen                                     */
 #define OBJECT_BRIGHTNESS                    4          /**<  1Byte Objekt absolute Helligkeit                                  */
-#define OBJECT_RESPONSE_SWITCH               6          /**<  1Bit Objekt zur Rückmeldung Ein/Aus                               */
-#define OBJECT_RESPONSE_BRIGHTNESS           8          /**<  1Byte Objekt zur Rückmeldung der Helligkeit                       */
+#define OBJECT_RESPONSE_SWITCH               6          /**<  1Bit Objekt zur Rï¿½ckmeldung Ein/Aus                               */
+#define OBJECT_RESPONSE_BRIGHTNESS           8          /**<  1Byte Objekt zur Rï¿½ckmeldung der Helligkeit                       */
 #define OBJECT_BLOCKING_FUNCTION             10         /**<  1Bit Objekt zum Sperren des Dimmkanals                            */
 #define OBJECT_LIGHT_SCENE                   12         /**<  1Byte Objekt zum Abrufen einer Lichtszene                         */
 #define OBJECT_SHORT_CIRCUIT_ALARM           14         /**<  1Bit Objekt zur Meldung eines Kurzschlusses                       */
