@@ -110,7 +110,7 @@ uint8_t restartApplication(void)
 	configureAdc();
 	channelIndex = 0;
 	doAdcMeasurement(channelIndex); // start new measurement
-	return FB_ACK;
+	return 1;
 }
 
 

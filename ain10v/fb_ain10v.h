@@ -47,7 +47,7 @@
 const STRUCT_DEFPARAM defaultParam[] PROGMEM = {
 { SOFTWARE_VERSION_NUMBER,      0x01 },    /**< version number                               */
 { RUN_ERROR_STATUS,             0xFF },    /**< Error-Status (FF=no error)                   */
-{ ASSOCTABPTR,					0x29 },    /**<	ASSOCTAB Pointer							 */
+{ APPLICATION_PROGRAMM,         0x00 },    /**< Port A Direction Bit Setting???              */
 { COMMSTAB_ADDRESS,             0x3A },    /**< COMMSTAB Pointer                             */
 { MANUFACTORER_ADR_HIGH,        0x00 },    /**< Herstellercode					             */
 { MANUFACTORER_ADR_LOW,         0x08 },    /**< Herstellercode						         */
