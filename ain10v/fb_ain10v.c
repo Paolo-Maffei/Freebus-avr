@@ -473,8 +473,8 @@ unsigned char sendDPT9(uint8_t objno, int32_t value)
 
 void configureAdc(void)
 {
-	// set reference to Avcc, right adjusted result
-	ADMUX = (1<<REFS0);
+	// set reference to int 1.1V, right adjusted result
+	ADMUX = (1<<REFS0) | (1<<REFS1);
 
 	// disable DIO of pin
 	DIDR0 |= (1<<ADC0D) | (1<<ADC1D) | (1<<ADC2D) | (1<<ADC3D);
