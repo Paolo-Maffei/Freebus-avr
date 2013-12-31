@@ -61,6 +61,8 @@ const struct FBAppInfo AppInfo PROGMEM = {
     .pParam = defaultParam,
 };
 
+#define RESOLUTION_FACTOR 4					/**< set internal resolution, 1=low, note maximum variable size */
+
 
 /**************************************************************************
 * DECLARATIONS

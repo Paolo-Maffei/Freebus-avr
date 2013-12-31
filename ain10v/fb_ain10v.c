@@ -128,7 +128,7 @@ void app_loop()
 		adcAverageCount++;
 		if (adcAverageCount == 1024)									// nach 1024 Messungen
 		{
-			channelValue[channelIndex] = adcAverage/adcAverageCount;	// Mittelwert bilden
+			channelValue[channelIndex] = adcAverage/(adcAverageCount/RESOLUTION_FACTOR);	// Mittelwert bilden
 			adcAverage=0;
 			adcAverageCount=0;
 			if (firstConversionStatus <= 3)	setPowerOnTimer(channelIndex);			// Meßwert erstmals vorhanden				
@@ -194,8 +194,8 @@ void handleResults(uint8_t channel)
 uint8_t checkLimits(uint8_t channel)
 {
 	uint16_t schwelle1, schwelle2;
-	schwelle1=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x171+channel)&0x7F)/100);
-	schwelle2=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x175+channel)&0x7F)/100);
+	schwelle1=(uint16_t)((1024*RESOLUTION_FACTOR)*(uint32_t)(mem_ReadByte(0x171+channel)&0x7F)/100);
+	schwelle2=(uint16_t)((1024*RESOLUTION_FACTOR)*(uint32_t)(mem_ReadByte(0x175+channel)&0x7F)/100);
 	uint8_t reaction=mem_ReadByte(0x16D+channel);
 	
 	//steigend
@@ -354,7 +354,7 @@ void checkMeasurementDifference (uint8_t channel)
 	
 	if (mem_ReadByte(0x165+channel)&0x80)													//Senden bei Messwertdifferenz
 	{
-		mess_diff=(uint16_t)(1024*(uint32_t)(mem_ReadByte(0x165+channel)&0x7F)/100);
+		mess_diff=(uint16_t)((1024*RESOLUTION_FACTOR)*(uint32_t)(mem_ReadByte(0x165+channel)&0x7F)/100);
 		if (channelValue[channel] <= lastsentValue[channel])
 			mess_change=lastsentValue[channel] - channelValue[channel];
 		else
@@ -415,7 +415,7 @@ void sendValue(uint8_t channel)
 
 	int16_t min = (mem_ReadByte(0x017C + 2 + (channel*9)) << 8) + mem_ReadByte(0x017C + 3 + (channel*9));
 	int16_t max = (mem_ReadByte(0x0180 + 2 + (channel*9)) << 8) + mem_ReadByte(0x0180 + 3 + (channel*9));
-	value = (((int32_t)max-(int32_t)min)*value)/1023;
+	value = (((int32_t)max-(int32_t)min)*value)/(1023*RESOLUTION_FACTOR);
 	value += (int32_t)min;
 	lastsentValue[channel]=channelValue[channel];
 	
