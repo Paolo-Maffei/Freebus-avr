@@ -126,7 +126,7 @@ void app_loop()
 	{
 		adcAverage += ADCW;												// Meßwert für Mittelwertbildung aufsummieren
 		adcAverageCount++;
-		if (adcAverageCount == 1000)									// nach 1000 Messungen
+		if (adcAverageCount == 1024)									// nach 1024 Messungen
 		{
 			channelValue[channelIndex] = adcAverage/adcAverageCount;	// Mittelwert bilden
 			adcAverage=0;
@@ -149,9 +149,20 @@ void app_loop()
 */
 void handleResults(uint8_t channel)
 {
-	uint8_t inputActive_help=(mem_ReadByte(0x16B+(channel>>1)))>>(4*(!(channel&0x01)))&0x0F;
-	if (!((inputActive_help & 0b00000111) == 0b00000111))		// Eingang ist nicht auf "keine Funktion" parametriert
+	uint8_t inputConfig=(mem_ReadByte(0x16B+(channel>>1)))>>(4*(!(channel&0x01)))&0x0F;
+	if (!(inputConfig == 0b00000111))			// Eingang ist nicht auf "keine Funktion" parametriert
 	{
+		#ifdef CURRENT_SENSOR
+			if (inputConfig == 0b00001100)		// Parameter 0-20mA
+			{
+				channelValue[channel] = channelValue[(channel+1) & 0x03];				
+			}
+			if (inputConfig == 0b00001101)		// Parameter 4-20mA
+			{
+				channelValue[channel] = (channelValue[1]+channelValue[2]+channelValue[3])/3;
+			}
+		#endif
+			
 		if (firstConversionStatus <= 3)							// senden der Grenzwerte bei Start ausführen
 		{
 			lastsentValue[channel] = channelValue[channel];
