@@ -100,11 +100,7 @@ const struct FBAppInfo AppInfo PROGMEM = {
 	.pParam = defaultParam,
 };
 
-
-/**************************************************************************
-* DECLARATIONS
-**************************************************************************/
-#ifdef OUT0-10V
+#ifdef OUT10V
     /** Parameter Grundhelligkeit für 0-10V, 1-10V Ausgang
 	    entspricht : 0,1V; 0,5V; 0,9V; 1,0V; 1,1V; 1,2V; 1,3V; 1,4V */ 
 	const uint16_t BasicBrightness[] ={326,1632,2938,3264,3590,3917,4243,4570};
@@ -112,7 +108,11 @@ const struct FBAppInfo AppInfo PROGMEM = {
     /** Parameter Grundhelligkeit für PWM8, PWM10, UART
 	    entspricht : 1%, 2%, 3%, 4%, 5%, 8%, 10%; 12% */ 
 	const uint16_t BasicBrightness[] ={326,653,979,1306,1632,2611,3264,3917};
-#endif	
+#endif
+
+/**************************************************************************
+* DECLARATIONS
+**************************************************************************/
 
 
 /*************************************************************************

@@ -17,7 +17,7 @@ mögliche Ausgangsoptionen:
 			Sendeformat: highbyte hex; lowbyte hex; CR; LF
 			10bit Auflösung; Bit15=0 -> Kanal1; Bit15=1 -> Kanal2
 			
--DOUT0-10V
+-DOUT10V
 			Option zur Verwendung mit der Applikationsplatine 2out_0-10V_2te
 			als 2-fach 0-10V oder 1-10V Ausgang
 			Parameter Grundhelligkeit entspricht folgenden Ausgangsspannungen bei Helligkeitswert 1%:

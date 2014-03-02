@@ -104,6 +104,13 @@ uint8_t restartApplication(void) {
 		TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
 	#endif	
 	
+	#ifdef OUT10V
+	//Timer1
+	DDRB |= (1<<PB2) | (1<<PB1);                                      /* PB1 = OC1A = PIN 15  ;  PB2 = OC1B = PIN 16 als Ausgang  */
+	TCCR1A = (1<<COM1A1) | (1<<COM1B1) | (1<<WGM11) | (1<<WGM10) ;    /* PWM Phase correct 10bit, Clear upcounting, Set downcounting   */
+	TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
+	#endif
+	
 	#ifdef USE_UART
 		/*UART 38400, 8, N, 1 */
 		uart_init();
@@ -432,13 +439,22 @@ void SetOutput(uint16_t outputValue){
 		}
 	#endif
 	
-	#ifdef PWM10 || OUT0-10V
+	#ifdef PWM10
 		if (chNr) {
 			OCR1B = outputValue/32;
 		}
 		else{
 			OCR1A = outputValue/32;
 		}
+	#endif
+	
+	#ifdef OUT10V
+	    if (chNr) {
+	    	OCR1B = outputValue/32;
+	    }
+	    else{
+	    	OCR1A = outputValue/32;
+	    }
 	#endif
 		
 	#ifdef USE_UART
