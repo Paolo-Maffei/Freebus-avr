@@ -100,7 +100,8 @@ uint8_t restartApplication(void) {
 		//Timer1
 		DDRB |= (1<<PB2) | (1<<PB1);                                      /* PB1 = OC1A = PIN 15  ;  PB2 = OC1B = PIN 16 als Ausgang  */
 		TCCR1A = (1<<COM1A1) | (1<<COM1B1) | (1<<WGM11) | (1<<WGM10) ;    /* PWM Phase correct 10bit, Clear upcounting, Set downcounting   */
-		TCCR1B = (1<<CS10) ;                                              /* no Prescaler  */
+		// TCCR1B = (1<<CS10) ;                                              /* no Prescaler  */
+		TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
 	#endif	
 	
 	#ifdef USE_UART
@@ -411,14 +412,17 @@ void HandleSwitchObject (void){
 * @return void
 */
 void SetOutput(uint16_t outputValue){
-	// todo Grundhelligkeit mit einrechnen, funktioniert so noch nicht
-	//if (dimmValue > 0){
-		//uint16_t basicBrightness = SelectBits(mem_ReadByte(APP_BASIC_BRIGHTNESS));
-		//basicBrightness = (basicBrightness &= 0b00000111) * BASIC_BRIGHTNESS_FACTOR;
-		//uint32_t dimmvalue32 = ((32747 - basicBrightness) * dimmValue / 32640;
-		//
-		//dimmValue = offset * dimmValue + basicBrightness; 
-	//}	
+	// Grundhelligkeit berechnen
+	if (outputValue > 325){
+		uint8_t parameterBasicBrightness = SelectBits(mem_ReadByte(APP_BASIC_BRIGHTNESS));
+		parameterBasicBrightness &= 0b00000111;
+		uint32_t temp = BasicBrightness[parameterBasicBrightness];
+		temp = 255*128-temp;
+		temp = temp * (outputValue-326);
+		temp = temp / (32314);
+		outputValue = temp + BasicBrightness[parameterBasicBrightness];
+	}	
+	
 	#ifdef PWM8
 		if (chNr) {
 			OCR2B = outputValue/128;
@@ -428,7 +432,7 @@ void SetOutput(uint16_t outputValue){
 		}
 	#endif
 	
-	#ifdef PWM10
+	#ifdef PWM10 || OUT0-10V
 		if (chNr) {
 			OCR1B = outputValue/32;
 		}
@@ -442,8 +446,8 @@ void SetOutput(uint16_t outputValue){
 		outputValue |= (chNr<<15);       /* Bit15=0 --> Kanal1; Bit15=1 --> Kanal2  */
 		uart_hex(outputValue >> 8);      /* highbyte                                */
 		uart_hex(outputValue & 0xFF);    /* lowbyte                                 */
-		uart_putc(13);                 /* CR                                      */
-		uart_putc(10);                 /* LF                                      */
+		uart_putc(13);                   /* CR                                      */
+		uart_putc(10);                   /* LF                                      */
 	#endif	
 }
 

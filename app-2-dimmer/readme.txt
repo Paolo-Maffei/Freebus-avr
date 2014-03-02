@@ -1,4 +1,4 @@
-Stand 30.05.2013
+Stand 02.03.2014
 Applikation für den GIRA 2 Kanal Dimmaktor 1032 00
 
 
@@ -16,6 +16,19 @@ mögliche Ausgangsoptionen:
 			mit den Parametern:   38400, 8, N, 1
 			Sendeformat: highbyte hex; lowbyte hex; CR; LF
 			10bit Auflösung; Bit15=0 -> Kanal1; Bit15=1 -> Kanal2
+			
+-DOUT0-10V
+			Option zur Verwendung mit der Applikationsplatine 2out_0-10V_2te
+			als 2-fach 0-10V oder 1-10V Ausgang
+			Parameter Grundhelligkeit entspricht folgenden Ausgangsspannungen bei Helligkeitswert 1%:
+			1	0,1V
+			2	0,5V
+			3	0,9V
+			4	1,0V
+			5	1,1V
+			6	1,2V
+			7	1,3V
+			8	1,4V
  
 
 			
@@ -35,6 +48,7 @@ Parameter:
 -Ausschaltfunktion / Zeitverzögerung
 -Sperrobjekt normal/invertiert
 -Verhalten am Beginn - Ende einer Sperrung
+-Grundhelligkeit
 
 
 
@@ -42,7 +56,6 @@ Todo:
 
 -Ausgabe per I2C
 
--Grundhelligkeit
 -Helligkeitswert beim Ausschalten speichern/wiederherstellen
 -Helligkeitswert bei Busspannungsausfall speichern/wiederherstellen
 -Lichtszenen
