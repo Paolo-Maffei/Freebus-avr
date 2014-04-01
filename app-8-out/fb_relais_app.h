@@ -46,7 +46,10 @@
 /** How long we hold the relais at 100% before we enable PWM again */
 #define PWM_DELAY_TIME               3*M2TICS(130)      /* 3 * 130ms */
 
-#define INPUT_BUTTON (HAND_IN & (1<<HAND_PIN))		/* input of hand actuation pushbutton */
+/** Minimum value of PWM_COUNTER (TCNT1L) to have enough time for checking the manual control buttons in PWM-off-state */
+#define HAND_PWM_MIN                 200
+
+#define INPUT_BUTTON                 (HAND_IN & (1<<HAND_PIN))		/* input of manual control button */
 
 #define APP_PIN_STATE_MEMORY         0x0100 //< store value if the state must be restored after power lose, @TODO, find free byte
 

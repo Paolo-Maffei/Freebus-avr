@@ -127,17 +127,20 @@ struct {
     uint8_t blockedStates;      /**< 1 bit per object to mark it "blocked" */
 	uint8_t buttonWasEvaluated; /**< 1 bit per object to mark hand actuation pushbutton was pressed */
 } app_dat;
-uint8_t handActuationCounter;	/* */
+uint8_t handActuationCounter;	/** counter for manual control Obj0-Obj7 & delay to debounce the buttons */
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
  **************************************************************************/
 void switchObjects(void);
 void switchPorts(uint8_t port, uint8_t oldPort);
-uint8_t checkHandActuation(uint8_t commObjectNumber);
+
+#ifdef HAND
+void checkHandActuation(void);
+void toggleObjectState(uint8_t objectNr);
 uint8_t getIO(uint8_t inputNr);
 void setIO(uint8_t ioNr, uint8_t val);
-
+#endif
 
 #ifdef HARDWARETEST
 /** test function: processor and hardware */
@@ -333,11 +336,10 @@ void app_loop() {
 
 	#ifdef HAND
 	// manual Operation is enabled
-	// check one butten every app_loop() passing through
-	if (handActuationCounter <= OBJ_OUT7  &&  checkHandActuation(handActuationCounter)){
-		needToSwitch=1;
+	// check only if PWM is running
+	if(!(IN_STATE(PWM_TIMER_ACTIVE))) {
+		checkHandActuation();
 	}
-	handActuationCounter++;     //count to 255 for debounce buttons, ca. 30ms
 	#endif
 
     // Iterate over all objects and check if the status has changed
@@ -441,7 +443,8 @@ uint8_t restartApplication(void) {
     IO_SET_DIR(8,IO_OUTPUT);
 
 #ifdef HAND
-	HAND_PORT |= (1<<HAND_PIN);		//set pullup for manual operation button input
+	HAND_PORT |= (1<<HAND_PIN);	 /* set pullup for manual operation button input */
+	ENABLE_PWM(PWM_SETPOINT);    /* hand actuation only possible if PWM is running */
 #endif
 
 #if REVISION==1
@@ -624,43 +627,51 @@ void switchPorts(uint8_t port, uint8_t oldPort) {
 
 #ifdef HAND
 /**
-* Function Check whether the hand actuation pushbutton is pressed
+* Function check whether the  manual control button is pressed
 * Remember button status
-* Toggle output status and write to app_dat.portValue
+* call toggleObjectState()
 *
-* \param  Communication object number 0-7
-*
-* @return false:nothing to do    true:change output
 */
-uint8_t checkHandActuation(uint8_t commObjectNumber) {
-
-	uint8_t inputState = INPUT_BUTTON;				//read input level
-	uint8_t portState = getIO(commObjectNumber+1);	//read output level
-	setIO(commObjectNumber+1,portState^0x01);		//toggle output
-	_delay_us(1);									//wait for stable input level
-	uint8_t inputState2 = INPUT_BUTTON;				//read input level again, if he has changed button is pressed
-	setIO(commObjectNumber+1,portState);			//set output to originally level
-	if (inputState == inputState2){
-		//button is not pressed
-		app_dat.buttonWasEvaluated &= ~(1<<commObjectNumber);
-		return 0;
+void checkHandActuation() {
+	/* check one butten every app_loop() passing through */
+	if (handActuationCounter <= OBJ_OUT7) {
+		/* check if we have enough time in PWM-off-state */
+		if (PWM_COUNTER>HAND_PWM_MIN) {
+			uint8_t inputState = INPUT_BUTTON;                  /* read input level */
+			uint8_t portState = getIO(handActuationCounter+1);  /* read output level */
+			setIO(handActuationCounter+1,portState^0x01);       /* toggle output */
+			_delay_us(1);                                       /* wait for stable input level */
+			uint8_t inputState2 = INPUT_BUTTON;                 /* read input level again, if he has changed button is pressed */
+			setIO(handActuationCounter+1,portState);            /* set output to originally level */
+			if (inputState == inputState2){
+				//button is not pressed
+				app_dat.buttonWasEvaluated &= ~(1<<handActuationCounter);
+			} else if (!(app_dat.buttonWasEvaluated & (1<<handActuationCounter))) {
+				//button is pressed & status has changed
+				app_dat.buttonWasEvaluated |= (1<<handActuationCounter);
+				toggleObjectState(handActuationCounter);
+			}
+		handActuationCounter++;	 /* next object */
+		}			
 	}
-	else{
-		//button is pressed
-		if (app_dat.buttonWasEvaluated & (1<<commObjectNumber)){
-			return 0;
-		}
-		else{
-			//first query
-			app_dat.portValue ^= (1<<commObjectNumber);		//toggle port state
-			app_dat.buttonWasEvaluated |= (1<<commObjectNumber);
-			return 1;										//return true for needToSwitch
-		}
+	else {
+		handActuationCounter++;  /* count to 255 for debounce buttons, ca. 30ms */
 	}
 }
-#endif
 
-uint8_t getIO(uint8_t ioNr){
+/**
+* toggle status of object Nr. xx & write to RAM
+*
+*/
+void toggleObjectState(uint8_t objectNr) {
+	uint8_t onOff = (app_dat.portValue>>objectNr) & 0x01; 
+	onOff ^= (1<<0);
+	userram[objectNr + 4] = onOff;
+	SetRAMFlags(objectNr, 1);
+}
+
+
+uint8_t getIO(uint8_t ioNr) {
 	switch(ioNr){
 		case 1: return (uint8_t)IO_GET(1);
 		case 2: return (uint8_t)IO_GET(2);
@@ -675,8 +686,8 @@ uint8_t getIO(uint8_t ioNr){
 }
 
 
-void setIO(uint8_t ioNr, uint8_t val){
-	switch(ioNr){
+void setIO(uint8_t ioNr, uint8_t val) {
+	switch(ioNr) {
 		case 1:
 		IO_SET(1,(uint8_t)val);
 		break;
@@ -703,7 +714,7 @@ void setIO(uint8_t ioNr, uint8_t val){
 		break;
 	}
 }
-
+#endif
 
 #ifdef IO_TEST
 /**

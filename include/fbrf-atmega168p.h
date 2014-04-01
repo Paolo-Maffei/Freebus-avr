@@ -130,6 +130,8 @@
           SETPIN_CTRL(0x00);                    /* set port to low */   \
      }
 
+#define PWM_COUNTER   TCNT1L                    /* used for hand actuation */
+
 /** Execute some EEPROM specific commmands
  * configure eeprom to only write and not delete before, that operation will take 1.8ms
  */
