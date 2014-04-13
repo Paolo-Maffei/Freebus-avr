@@ -41,7 +41,10 @@
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
-// #define BASIC_BRIGHTNESS_FACTOR              200          /**<  Stufe Grundhelligkeit*Faktor = Dimmwert f�r Helligkeit=1          */
+#ifdef SERVO
+#define CENTER                                  187     /**<  Servosignal Mittelpunkt = 1,5ms                                   */
+#define SERVOGAP                                  2     /**<  Periodendauer des Servosignals 2=16,3ms 3=24,5ms                  */
+#endif
 
 #define APP_BASIC_BRIGHTNESS                 0x01C2     /**<  Grundhelligkeit Bit0-2 Kanal1; Bit4-6 Kanal2                      */
 #define APP_LOCK_FUNCTION                    0x01C3     /**<  Sperrfunktion Ein/Aus, Polarit�t                                  */
@@ -104,10 +107,14 @@ const struct FBAppInfo AppInfo PROGMEM = {
     /** Parameter Grundhelligkeit für 0-10V, 1-10V Ausgang
 	    entspricht : 0,1V; 0,5V; 0,9V; 1,0V; 1,1V; 1,2V; 1,3V; 1,4V */ 
 	const uint16_t BasicBrightness[] ={326,1632,2938,3264,3590,3917,4243,4570};
+#elif SERVO 
+    /** Parameter Grundhelligkeit für SERVO, entspricht minimaler und maximaler Pulslänge 
+	    in ms: 0,6-2,4  0,7-2,3  0,8-2,2  0,9-1,1  1,0-2,0  1,1-1,9  1,2-1,8  1,3-1,7 */ 
+	const uint16_t BasicBrightness[] ={145,163,187,218,261,326,435,653};
 #else
-    /** Parameter Grundhelligkeit für PWM8, PWM10, UART
+	/** Parameter Grundhelligkeit für PWM8, PWM10, UART
 	    entspricht : 1%, 2%, 3%, 4%, 5%, 8%, 10%; 12% */ 
-	const uint16_t BasicBrightness[] ={326,653,979,1306,1632,2611,3264,3917};
+	const uint16_t BasicBrightness[] ={326,653,979,1306,1632,2611,3264,3917};		
 #endif
 
 /**************************************************************************

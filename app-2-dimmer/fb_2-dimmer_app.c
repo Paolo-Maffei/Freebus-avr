@@ -36,11 +36,13 @@
 /**************************************************************************
  * DEFINITIONS
  **************************************************************************/
-#define TIMER_UP_RUN 0                 /** Statusbit Timer aufdimmen läuft */
-#define TIMER_DOWN_RUN 1               /** Statusbit Timer aufdimmen läuft */
-#define TIMER_SWITCH_RUN 2            /** Statusbit Timer aufdimmen läuft */
-#define CHANNEL_BLOCKED 3             /** Statusbit Timer aufdimmen läuft */
-
+#define TIMER_UP_RUN     0             /** Statusbit Timer aufdimmen läuft */
+#define TIMER_DOWN_RUN   1             /** Statusbit Timer abdimmen läuft */
+#define TIMER_SWITCH_RUN 2             /** Statusbit Ausschalttimer läuft */
+#define CHANNEL_BLOCKED  3             /** Statusbit Kanal gesperrt */
+#ifdef SERVO
+#define SERVO_REVERSE    4             /** Bewegungsrichtung umkehren */
+#endif
 /**************************************************************************
  * DECLARATIONS
  **************************************************************************/
@@ -49,20 +51,23 @@ static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(1), 1*M2TICS(1), 1*M2TIC
 uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
-uint8_t chNr;                      /**< current channel 0=ch1; 1=ch2    */
+uint8_t chNr;                             /**< current channel 0=ch1; 1=ch2    */
 struct {
-    timer_t dimmTimer;			   /**< stores timer value for dimming timer   */
-	timer_t dimmTimerReload;       /**< value for dimming timer cycle          */
-	timer_t switchTimer;           /**< stores timer value for switch off function  */
-	uint16_t dimmValue;			   /**< dimming value (0*128) - (255*128)    */
-	uint16_t dimmValueOld;         /**< dimming value from last cycle               */
-	uint16_t outputValue;
-	uint16_t destinationValue;     /**< stop dimm timer at this value               */
-	uint8_t status;                /**< bitfield for status bits   */
+    timer_t dimmTimer;                    /**< stores timer value for dimming timer   */
+	timer_t dimmTimerReload;              /**< value for dimming timer cycle          */
+	timer_t switchTimer;                  /**< stores timer value for switch off function  */
+	uint16_t dimmValue;                   /**< dimming value (0*128) - (255*128)    */
+	uint16_t dimmValueOld;                /**< dimming value from last cycle               */
+	uint16_t outputValue;                 
+	uint16_t destinationValue;            /**< stop dimm timer at this value               */
+	uint8_t status;                       /**< bitfield for status bits   */
 	uint8_t switchValue;
-	
-} channel[2];                       /**< all variables for current channel 0=ch1; 1=ch2    */
+} channel[2];                             /**< all variables for current channel 0=ch1; 1=ch2    */
 
+#ifdef SERVO
+volatile uint8_t servoGapA;               /**< counter to generate the servo pulses for ch1   */
+volatile uint8_t servoGapB;               /**< counter to generate the servo pulses for ch2   */
+#endif
 
 /*************************************************************************
  * FUNCTION PROTOTYPES
@@ -71,6 +76,7 @@ void SetBusOnValue(void);
 void SetOutput (uint16_t outputValue);
 void HandleSwitchObject (void);
 void HandleDimmValues(void);
+void HandleBlockingFunction(uint8_t blockingObject);
 void CheckDimmTimers(void);
 void CheckSwitchTimers(void);
 void StopTimer(void);
@@ -78,7 +84,6 @@ void HandleSwitchOffFunction(void);
 uint16_t GetBrightnessFromList (uint8_t brightnessList);
 uint8_t SelectBits(uint8_t parameterByte);
 void SendBrightness(void);
-
 
 
 /**
@@ -89,19 +94,19 @@ void SendBrightness(void);
  */
 uint8_t restartApplication(void) {
 	#ifdef PWM8
-		//Timer2 init
-		DDRB |= (1<<PB3);                                     /* PB3 = OC2A = PIN 17 als Ausgang  */
-		DDRD |= (1<<PD3);                                     /* PD3 = OC2B = PIN 5 als Ausgang  */
-		TCCR2A = (1<<COM2A1) | (1<<COM2B1) | (1<<WGM20);      /* PWM Phase correct, Clear upcounting, Set downcounting    */
-		TCCR2B = (1<<CS21) | (1<<CS20);                       /* Prescaler /8    */
+	//Timer2 init
+	DDRB |= (1<<DDB3);                                    /* PB3 = OC2A = PIN 17 als Ausgang  */
+	DDRD |= (1<<DDD3);                                    /* PD3 = OC2B = PIN 5 als Ausgang  */
+	TCCR2A = (1<<COM2A1) | (1<<COM2B1) | (1<<WGM20);      /* PWM Phase correct, Clear upcounting, Set downcounting    */
+	TCCR2B = (1<<CS21) | (1<<CS20);                       /* Prescaler /8    */
 	#endif
 	
 	#ifdef PWM10
-		//Timer1
-		DDRB |= (1<<PB2) | (1<<PB1);                                      /* PB1 = OC1A = PIN 15  ;  PB2 = OC1B = PIN 16 als Ausgang  */
-		TCCR1A = (1<<COM1A1) | (1<<COM1B1) | (1<<WGM11) | (1<<WGM10) ;    /* PWM Phase correct 10bit, Clear upcounting, Set downcounting   */
-		// TCCR1B = (1<<CS10) ;                                              /* no Prescaler  */
-		TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
+	//Timer1
+	DDRB |= (1<<PB2) | (1<<PB1);                                      /* PB1 = OC1A = PIN 15  ;  PB2 = OC1B = PIN 16 als Ausgang  */
+	TCCR1A = (1<<COM1A1) | (1<<COM1B1) | (1<<WGM11) | (1<<WGM10) ;    /* PWM Phase correct 10bit, Clear upcounting, Set downcounting   */
+	// TCCR1B = (1<<CS10) ;                                              /* no Prescaler  */
+	TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
 	#endif	
 	
 	#ifdef OUT10V
@@ -111,18 +116,29 @@ uint8_t restartApplication(void) {
 	TCCR1B = (1<<CS11) ;                                              /* Prescaler /8  */
 	#endif
 	
+	#ifdef SERVO
+	/* Init Timer1 to generate Servo signal */
+	DDRB |= (1<<DDB2) | (1<<DDB1);                                      /* PB1 = OC1A = PIN 15  ;  PB2 = OC1B = PIN 16 als Ausgang  */
+	TCCR1A = (1<<COM1A1) | (1<<COM1B1) | (1<<WGM11) | (1<<WGM10)   ;    /* Mode 6, Fast PWM 10bit  */
+	TCCR1B = (1<<WGM12) | (1<<CS11) | (1<<CS10);                        /* Prescaler /64  */
+	TIMSK1 = (1<<OCIE1B) | (1<<OCIE1A);                                 /* enable output compare match interrupt for both outputs   */
+	#endif
+
 	#ifdef USE_UART
-		/*UART 38400, 8, N, 1 */
-		uart_init();
+	/* UART 38400, 8, N, 1 */
+	uart_init();
 	#endif
 	
 		
-	/* Helligkeit bei Busspannungswiederkehr setzen */
+	
+	/* Helligkeit bei Busspannungswiederkehr & Sperre setzen */
 	/* Kanal 1 */
 	chNr = 0;
+	HandleBlockingFunction(0);
 	SetBusOnValue();
 	/* Kanal 2 */
 	chNr = 1;
+	HandleBlockingFunction(0);
 	SetBusOnValue();
 	return 1;	
 }
@@ -206,36 +222,7 @@ void app_loop() {
 	
 	/* Sperrobjekt bearbeiten */
 	if (TestAndCopyObject (OBJECT_BLOCKING_FUNCTION + chNr , &objectValue, 0)){
-		StopTimer();
-		uint8_t blockingBrightness = mem_ReadByte(APP_BRIGHTNESS_BLOCKING_FUNCTION_CH1 + chNr);
-		uint8_t polarity = mem_ReadByte(APP_LOCK_FUNCTION);
-		if (chNr) {
-			/* Polarität Sperrobjekt Kanal 2 */
-			polarity &= 0b00010000;
-			polarity >>= 4;
-		} else {
-			/* Polarität Sperrobjekt Kanal 1 */
-			polarity &= 0b00001000;
-			polarity >>= 3;
-		}
-		if (objectValue != polarity){
-			/* Beginn einer Sperrung */
-			blockingBrightness &= 0b00001111;
-			channel[chNr].dimmValue = GetBrightnessFromList(blockingBrightness);
-			/* Helligkeit zu Beginn der Sperrung setzen */
-			HandleDimmValues();
-			/* Sperrflag setzen */
-			channel[chNr].status |= (1<<CHANNEL_BLOCKED);
-		} else {
-			/* Ende einer Sperrung */
-			blockingBrightness &= 0b11110000;
-			blockingBrightness >>=4;
-			channel[chNr].dimmValue = GetBrightnessFromList(blockingBrightness);
-			/* Sperrflag löschen */
-			channel[chNr].status &= ~(1<<CHANNEL_BLOCKED);
-		}
-		
-		
+		HandleBlockingFunction(objectValue);
 	}
 	
 	if (!(channel[chNr].status & (1<<CHANNEL_BLOCKED))){
@@ -410,6 +397,60 @@ void HandleSwitchObject (void){
 
 
 /**
+* Sperrobjekt bearbeiten
+* Status Channel blocked nach Parametrierung setzen
+* für Servo Bewegungsrichtung umkehren 
+*
+* \param  1bit Sperrobjekt
+*         Ausführung für aktuellen Kanal chNr 0=Kanal1, 1=Kanal2
+*
+* @return void
+*/
+void HandleBlockingFunction(uint8_t blockingObject) {
+	/* parametrierte Polarität feststellen */
+	uint8_t polarity = mem_ReadByte(APP_LOCK_FUNCTION);
+	if (chNr) {
+		/* Polarität Sperrobjekt Kanal 2 */
+		polarity &= 0b00010000;
+		polarity >>= 4;
+	} else {
+		/* Polarität Sperrobjekt Kanal 1 */
+		polarity &= 0b00001000;
+		polarity >>= 3;
+	}
+	/* Sperrobjekt bearbeiten */
+	StopTimer();
+	uint8_t blockingBrightness = mem_ReadByte(APP_BRIGHTNESS_BLOCKING_FUNCTION_CH1 + chNr);
+	if (blockingObject != polarity){
+		/* Beginn einer Sperrung */
+		blockingBrightness &= 0b00001111;
+		channel[chNr].dimmValue = GetBrightnessFromList(blockingBrightness);
+		/* Helligkeit zu Beginn der Sperrung setzen */
+		#ifdef SERVO
+		/* Servo, Bewegungsrichtung umkehren, sperren ignorieren */
+		channel[chNr].status |= (1<<SERVO_REVERSE);
+		#else
+		/* kein Servo, Helligkeit zu Beginn einer Sperrung und Sperrflag setzen */
+		HandleDimmValues();
+		channel[chNr].status |= (1<<CHANNEL_BLOCKED);
+		#endif
+	} else {
+		/* Ende einer Sperrung */
+		blockingBrightness &= 0b11110000;
+		blockingBrightness >>=4;
+		channel[chNr].dimmValue = GetBrightnessFromList(blockingBrightness);
+		#ifdef SERVO
+		/* Servo, Bewegungsrichtung normal */
+		channel[chNr].status &= ~(1<<SERVO_REVERSE);
+		#else
+		/* kein Servo, Sperrflag löschen */
+		channel[chNr].status &= ~(1<<CHANNEL_BLOCKED);
+		#endif
+	}
+}
+
+
+/**
 * Ausgänge je nach Compileroption einstellen
 *
 *
@@ -419,7 +460,15 @@ void HandleSwitchObject (void){
 * @return void
 */
 void SetOutput(uint16_t outputValue){
-	// Grundhelligkeit berechnen
+	#ifdef SERVO
+	/* Pulslänge berechnen */
+		uint8_t divisorIndex = SelectBits(mem_ReadByte(APP_BASIC_BRIGHTNESS));
+		divisorIndex &= 0b00000111;
+		uint16_t divisor = BasicBrightness[divisorIndex];
+		uint16_t zeroPoint = CENTER - ((255*128/2) / divisor);          /* Pulslänge für outputvalue=0 */
+		uint16_t steps = outputValue / divisor;
+	#else
+	/* Grundhelligkeit berechnen */
 	if (outputValue > 325){
 		uint8_t parameterBasicBrightness = SelectBits(mem_ReadByte(APP_BASIC_BRIGHTNESS));
 		parameterBasicBrightness &= 0b00000111;
@@ -428,7 +477,8 @@ void SetOutput(uint16_t outputValue){
 		temp = temp * (outputValue-326);
 		temp = temp / (32314);
 		outputValue = temp + BasicBrightness[parameterBasicBrightness];
-	}	
+	}
+	#endif
 	
 	#ifdef PWM8
 		if (chNr) {
@@ -455,6 +505,22 @@ void SetOutput(uint16_t outputValue){
 	    else{
 	    	OCR1A = outputValue/32;
 	    }
+	#endif
+	
+	#ifdef SERVO
+	if(chNr) {
+		if(channel[chNr].status & (1<<SERVO_REVERSE)) {
+			OCR1B = (CENTER * 2) - (zeroPoint + steps);
+		} else {
+			OCR1B = zeroPoint + steps;
+		}		
+	} else {
+		if(channel[chNr].status & (1<<SERVO_REVERSE)) {
+			OCR1A = (CENTER * 2) - (zeroPoint + steps);
+		} else {
+			OCR1A = zeroPoint + steps;
+		}
+	}
 	#endif
 		
 	#ifdef USE_UART
@@ -568,5 +634,25 @@ void SendBrightness(void){
 	SetAndTransmitObject(OBJECT_RESPONSE_BRIGHTNESS + chNr, &dimmValue, 1);
 }
 
+
+#ifdef SERVO
+ISR (TIMER1_COMPA_vect) {
+	TCCR1A &= ~(1<<COM1A1);              /* disconnect output from PWM */
+	servoGapA ++;
+	if (servoGapA == SERVOGAP) {         /* time for next pulse */
+		servoGapA = 0;
+		TCCR1A |= (1<<COM1A1);           /* connect output with PWM */
+	}
+}
+
+ISR (TIMER1_COMPB_vect) {
+	TCCR1A &= ~(1<<COM1B1);
+	servoGapB ++;
+	if (servoGapB == SERVOGAP) {
+		servoGapB = 0;
+		TCCR1A |= (1<<COM1B1);
+	}
+}
+#endif
 
 #endif /* _FB_APP_C */

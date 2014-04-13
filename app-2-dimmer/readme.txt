@@ -1,4 +1,4 @@
-Stand 02.03.2014
+Stand 13.04.2014
 Applikation für den GIRA 2 Kanal Dimmaktor 1032 00
 
 
@@ -29,7 +29,22 @@ mögliche Ausgangsoptionen:
 			6	1,2V
 			7	1,3V
 			8	1,4V
- 
+			
+-DSERVO
+			Option zur Ansteuerung zweier Modellbau Servos an den Ausgängen OC1A und OC1B
+			(Pin 15 und Pin 16 beim ATmega328P)
+			Die Sperrfunktion wird zur Umkehrung der Bewegungsrichtung des Servos benutzt
+			Über den Parameter Grundhelligkeit kann die min. und max. Pulslänge
+			(linker und rechter max. Ausschlag des Servos) eingestellt werden:
+			1	0,6ms - 2,4ms
+			2	0,7ms - 2,3ms
+			3	0,8ms - 2,2ms
+			4	0,9ms - 2,1ms
+			5	1,0ms - 2,0ms
+			6	1,1ms - 1,9ms
+			7	1,2ms - 1,8ms
+			8	1,3ms - 1,7ms
+			
 
 			
 Funktionen:
