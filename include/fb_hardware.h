@@ -32,6 +32,8 @@
 #ifdef __AVR__
 #define pgm_read_ptr(x)         pgm_read_word(x)
 #include "freebus-avr.h"
+#elif __arm__
+#include "freebus-arm.h"
 #endif
 
 #if REVISION==1  /* first freebus AVR board rev. 3.01 */
@@ -45,6 +47,10 @@
 #else
     #error CPU not supported
 #endif
+
+#elif REVISION==3 /* New ARM based controller board using the Atmel SAM4L */
+#if defined(SAM4l)
+    #include "freebus-stsam4l.h"
 
 #else  /* board with RFM22 */
 
