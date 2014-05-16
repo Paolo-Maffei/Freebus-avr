@@ -1,4 +1,3 @@
-/* $Id$ */
 /*
 *      __________  ________________  __  _______
 *     / ____/ __ \/ ____/ ____/ __ )/ / / / ___/
@@ -35,28 +34,52 @@
 /*************************************************************************
 * INCLUDES
 *************************************************************************/
-
+#include "fb_hardware.h"
 
 /**************************************************************************
 * DEFINITIONS
 **************************************************************************/
+#if REVISION==1 || REVISION==2
 /**
- * Calculates how many tics you must wait to reach x miliseconds
+ * Calculates how many tics you must wait to reach x milliseconds
  *
  * 10 ms -> 1 TICKS
  * 100 ms -> 10 TICKS
  */
 #define M2TICS(x) (x / 10)
+#else
+/**
+ * Calculates how many tics we must wait to reach x milliseconds. The value must also a multiplication of 2.
+ *
+ * 2   ms -> 1 TICK
+ * 10  ms -> 5 TICKS
+ * 100 ms -> 50 TICKS
+ */
+static inline uint32_t M2TICS(uint32_t x) {
+    if(x%2!=0) {
+        // only multiple of 2 are allowed as the minimum step is 2ms
+        printf("Wrong timer value, must be dividable by 2\r\n");
+        Assert(false);
+    }
+    return (x/2);
+}
+#endif
 
 /**
  * Calculates how many tics you must wait to reach x seconds
  *
  * 1 sec -> 1000 msec -> 100 TICKS
  */
+#if REVISION==1 || REVISION==2
 #define SEC2TICS(x) (x * 100)
+#else
+static inline uint32_t SEC2TICS(uint32_t x) {
+    return(M2TICS(x*1000));
+}
+#endif
 
 /**
- * Datatype which should be used to store timer tics.
+ * Data type which should be used to store timer tics.
  */
 typedef uint32_t timer_t;
 
@@ -75,7 +98,13 @@ typedef uint32_t timer_t;
  *
  * @return Current tick counter value
  */
+#if REVISION==1 || REVISION==2
 TIMER_EXT timer_t get_ticks(void);
+#else
+static inline timer_t get_ticks(void) {
+    return (ast_read_counter_value(AST));
+}
+#endif
 
 /**
  * Init the generic timer interface to get the internal tick every 10ms increased.
@@ -100,6 +129,12 @@ TIMER_EXT void alloc_timer(timer_t *t, timer_t ticks);
  *
  * @return Return true if the timer has reached its defined end
  */
+#if REVISION==1 || REVISION==2
 TIMER_EXT uint8_t check_timeout(timer_t *t);
+#else
+static inline uint8_t check_timeout(timer_t *t) {
+    return timed_out(get_ticks(), *t);
+}
+#endif
 
 #endif
