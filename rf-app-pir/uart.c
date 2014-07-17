@@ -16,7 +16,7 @@
  *
  */
 /**
- * @file   lib/uart.c
+ * @file
  * @author Dirk Opfer, Matthias Fechner
  * @date   Fri Oct 26 17:18:15 2007
  * 
@@ -274,7 +274,6 @@ void uart_put(unsigned char* dat, unsigned char len)
  * That function was written to use the memory for debugging message more efficient.
  * 
  * @param current Pointer to the message queue
- * @param length Length of characters to append to the message queue
  * @param character Pointer to characters to store in the message queue
  * 
  * @return 

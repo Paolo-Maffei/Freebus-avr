@@ -76,6 +76,7 @@ libfb_(MCU)_(MEDIATYPE)_(REVISION)(DEBUG).a<br>
 MCU              | Description
 ---------------- | -----------
 atmega328p       | Atmel ATMega 328p MCU
+atsam4l          | Atmel ATSam4L ARM MCU
 
 MEDIATYPE        | Description
 ---------------- | -----------
@@ -87,6 +88,7 @@ REVISION         | Description
 ---------------- | -----------
 1                | AVR controller board with hardware revision 3.01
 2                | AVR controller board with possibility to connect radio frequency module (current board)
+3                | ARM controller board
 
 DEBUG            | Description
 ---------------- | -----------

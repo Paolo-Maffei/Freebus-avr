@@ -594,6 +594,7 @@ void switchObjects(void) {
  * @todo check if it is ok to switch all 8 ports at once, or to we have to delay the switches to give the capacity enough time to recharge again.
  *
  * @param port contains values for 8 output pins. They may be on different ports of the avr.
+ * @param oldPort contains the old values of the 8 output pins
  *
  */
 void switchPorts(uint8_t port, uint8_t oldPort) {
