@@ -29,7 +29,18 @@ void app_loop() {
 }
 
 uint8_t restartApplication(void) {
+	delay_init(sysclk_get_cpu_hz());
 	DEBUG_PUTS("Test Application started");
+	DEBUG_NEWLINE();
+	uint32_t flashSize=flashcalw_get_flash_size();
+	DEBUG_PUTS("F_SIZE: ");
+	delay_ms(1000);
+	DEBUG_PUTHEX32(flashSize);
+	DEBUG_NEWLINE();
+
+	uint32_t pageCount=flashcalw_get_page_count();
+	DEBUG_PUTS("Page_COUNT: ");
+	DEBUG_PUTHEX32(pageCount);
 	DEBUG_NEWLINE();
 	return 1;
 }
