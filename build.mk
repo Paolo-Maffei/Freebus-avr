@@ -37,6 +37,18 @@ $(error Please define hardware revision with variable REVISION in Make.config)
 endif
 
 # compiler
+ifeq ($(ARM), 1)
+CUSTOM_CFLAGS+= -x c -mthumb -D__SAM4LC4C__ -Dscanf=iscanf -DARM_MATH_CM4=true -Dprintf=iprintf 
+CUSTOM_CFLAGS+= -O1 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m4 -c -pipe -fno-strict-aliasing -Wall
+CUSTOM_CFLAGS+= -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections
+CUSTOM_CFLAGS+= -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused
+CUSTOM_CFLAGS+= -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return
+CUSTOM_CFLAGS+= -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long
+CUSTOM_CFLAGS+= -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP
+CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) 		\
+	-Wa,-ahlms=$(firstword                  \
+	$(filter %.lst, $(<:.c=.lst)))
+else
 CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
@@ -44,6 +56,7 @@ CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-mcall-prologues -ffunction-sections    \
 	-Wa,-ahlms=$(firstword                  \
 	$(filter %.lst, $(<:.c=.lst)))
+endif
 
 # c++ specific flags
 CPPFLAGS=-fno-exceptions               \
@@ -72,15 +85,16 @@ else
 $(info Work on $(PROJECT_DESCRIPTION) (project: $(PROJECTNAME))...)
 endif
 ##### executables ####
-CC:=avr-gcc
-OBJCOPY:=avr-objcopy
-OBJDUMP:=avr-objdump
-SIZE:=avr-size
-AVRDUDE:=avrdude
-REMOVE:=rm -f
-AR:=avr-ar
-INSTALL:=install
-CMP:=cmp
+CROSS?=avr
+CC:=$(CROSS)-gcc
+OBJCOPY:=$(CROSS)-objcopy
+OBJDUMP:=$(CROSS)-objdump
+SIZE:=$(CROSS)-size
+AR:=$(CROSS)-ar
+AVRDUDE?=avrdude
+REMOVE?=rm -f
+INSTALL?=install
+CMP?=cmp
 
 ##### automatic target names ####
 TRG?=$(PROJECTNAME)_$(MCU)_$(MEDIATYPE)_$(REVISION)$(DEBUG).out
@@ -202,8 +216,8 @@ $(subst .out,,$(TRG)).out: $(OBJDEPS) linker_flags
 #### Generating object files ####
 # object from C
 %.o: %.c compiler_flags
-	$(Q)$(CC) $(CFLAGS) -c $< -o $@
-	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
+	$(Q)$(CC) $(CFLAGS) -MD -MP -MF "$(@:.o=.d)" -MT"$(@:.o=.d)" -MT"$@" -c $< -o $@
+#	@$(CC) -MM $(CFLAGS) -c $< -o $(@:.o=.d)
 
 # object from C++ (.cc, .cpp, .C files)
 %.o: %.cc %.cpp %.C
