@@ -36,8 +36,36 @@ ifeq ($(REVISION),)
 $(error Please define hardware revision with variable REVISION in Make.config)
 endif
 
+# includes
+INC+= -I"src/config"
+INC+= -I"$(ASF)/common/utils"
+INC+= -I"$(ASF)/common/utils/stdio/stdio_serial"
+INC+= -I"$(ASF)/common/services/clock"
+INC+= -I"$(ASF)/common/boards"
+INC+= -I"$(ASF)/common/services/ioport"
+INC+= -I"$(ASF)/common/services/sleepmgr"
+INC+= -I"$(ASF)/common/services/serial/sam_uart"
+INC+= -I"$(ASF)/common/services/serial"
+INC+= -I"$(ASF)/common/services/delay"
+INC+= -I"src"
+
 # compiler
 ifeq ($(ARM), 1)
+INC+= -I"$(ASF)/thirdparty/CMSIS/Lib/GCC"
+INC+= -I"$(ASF)/sam/boards/sam4l_xplained_pro"
+INC+= -I"$(ASF)/sam/utils"
+INC+= -I"$(ASF)/sam/utils/preprocessor"
+INC+= -I"$(ASF)/sam/boards"
+INC+= -I"$(ASF)/sam/utils/header_files"
+INC+= -I"$(ASF)/sam/utils/cmsis/sam4l/source/templates"
+INC+= -I"$(ASF)/sam/drivers/flashcalw"
+INC+= -I"$(ASF)/sam/drivers/bpm"
+INC+= -I"$(ASF)/sam/drivers/wdt"
+INC+= -I"$(ASF)/thirdparty/CMSIS/Include"
+INC+= -I"$(ASF)/sam/utils/cmsis/sam4l/include"
+INC+= -I"$(ASF)/sam/drivers/ast"
+INC+= -I"$(ASF)/sam/drivers/usart"
+
 CUSTOM_CFLAGS+= -x c -mthumb -D__SAM4LC4C__ -Dscanf=iscanf -DARM_MATH_CM4=true -Dprintf=iprintf 
 CUSTOM_CFLAGS+= -O1 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m4 -c -pipe -fno-strict-aliasing -Wall
 CUSTOM_CFLAGS+= -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections
