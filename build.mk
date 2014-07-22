@@ -46,8 +46,7 @@ CUSTOM_CFLAGS+= -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow
 CUSTOM_CFLAGS+= -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long
 CUSTOM_CFLAGS+= -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -MD -MP
 CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) 		\
-	-Wa,-ahlms=$(firstword                  \
-	$(filter %.lst, $(<:.c=.lst)))
+	-Wa,-ahlms=$(@:.o=.lst)
 else
 CFLAGS= $(CUSTOM_CFLAGS) -I. $(INC) -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
