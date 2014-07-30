@@ -24,8 +24,6 @@ linker_flags
 Debug
 lib
 *.bak
-*.atsln
-*.atsuo
 .gitmodules
-.cproject
 .project
+.cproject
