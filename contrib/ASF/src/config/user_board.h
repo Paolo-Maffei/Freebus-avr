@@ -5,8 +5,8 @@
  *
  */
 
-#ifndef CONF_BOARD_H
-#define CONF_BOARD_H
+#ifndef USER_BOARD_H
+#define USER_BOARD_H
 
 /**
  * \ingroup group_common_boards
@@ -663,7 +663,4 @@
 
 /** @} */
 
-#define CONF_BOARD_COM_PORT
-#define CONF_BOARD_USART0
-
-#endif // CONF_BOARD_H
+#endif // USER_BOARD_H

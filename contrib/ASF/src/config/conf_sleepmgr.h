@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief Serial USART service configuration.
+ * \brief Chip-specific sleep manager configuration
  *
- * Copyright (c) 2011-2013 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2012 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,22 +40,10 @@
  * \asf_license_stop
  *
  */
+#ifndef CONF_SLEEPMGR_INCLUDED
+#define CONF_SLEEPMGR_INCLUDED
 
-#ifndef CONF_USART_SERIAL_H
-#define CONF_USART_SERIAL_H
+// Sleep manager options
+#define CONFIG_SLEEPMGR_ENABLE
 
-#define USART_DEBUG             COM_PORT_USART
-#define USART_DEBUG_IRQn		USART1_IRQn
-#define USART_DEBUG_BAUDRATE    115200
-#define USART_DEBUG_CHAR_LENGTH US_MR_CHRL_8_BIT
-#define USART_DEBUG_PARITY      US_MR_PAR_NO
-#define USART_DEBUG_STOP_BIT    0
-
-#define USART_NCN                USART0
-#define USART_NCN_IRQn			 USART0_IRQn
-#define USART_NCN_BAUDRATE       38400
-#define USART_NCN_CHAR_LENGTH	 US_MR_CHRL_8_BIT
-#define USART_NCN_PARITY         US_MR_PAR_NO
-#define USART_NCN_STOP_BIT       0
-
-#endif/* CONF_USART_SERIAL_H_INCLUDED */
+#endif /* CONF_SLEEPMGR_INCLUDED */
