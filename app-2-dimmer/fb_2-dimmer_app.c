@@ -48,7 +48,7 @@
  **************************************************************************/
 static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(1), 1*M2TICS(1), 1*M2TICS(10), 1*M2TICS(130), 16*M2TICS(130), 256*M2TICS(130)};
 
-uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 uint8_t chNr;                             /**< current channel 0=ch1; 1=ch2    */

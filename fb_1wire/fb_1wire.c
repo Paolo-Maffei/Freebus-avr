@@ -84,7 +84,7 @@ uint8_t cycle = 0;
 uint8_t zyk_senden_basis;
 
 
-uint8_t nodeParam[EEPROM_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
@@ -807,7 +807,7 @@ int main(void)
 
     /* init eeprom modul and RAM structure already here,
        because we need eeprom values for fbrfhal_init() */
-    eeprom_Init(&nodeParam[0], EEPROM_SIZE);
+    eeprom_Init(&nodeParam[0], MEMORY_SIZE);
     //DEBUG_PUTS_BLOCKING("eeprom=");
     //DEBUG_PUTHEX_BLOCKING(mem_ReadByte(0x0200));
     //DEBUG_NEWLINE_BLOCKING();
