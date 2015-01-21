@@ -12,12 +12,10 @@
 
 #include "debug_functions.h"
 
-uint8_t nodeParam[EEPROM_SIZE];
-extern uint8_t userram[USERRAM_SIZE];
-
 void app_loop() {
 	// this function is called regularly from the lib
 	// Is button pressed?
+	/*
 	if (ioport_get_pin_level(BUTTON_0_PIN) == BUTTON_0_ACTIVE) {
 		// Yes, so turn LED on.
 		ioport_set_pin_level(LED_0_PIN, LED_0_ACTIVE);
@@ -25,7 +23,7 @@ void app_loop() {
 		// No, so turn LED off.
 		ioport_set_pin_level(LED_0_PIN, !LED_0_ACTIVE);
 	}
-
+	*/
 }
 
 uint8_t restartApplication(void) {
@@ -34,7 +32,6 @@ uint8_t restartApplication(void) {
 	DEBUG_NEWLINE();
 	uint32_t flashSize=flashcalw_get_flash_size();
 	DEBUG_PUTS("F_SIZE: ");
-	delay_ms(1000);
 	DEBUG_PUTHEX32(flashSize);
 	DEBUG_NEWLINE();
 
@@ -42,6 +39,8 @@ uint8_t restartApplication(void) {
 	DEBUG_PUTS("Page_COUNT: ");
 	DEBUG_PUTHEX32(pageCount);
 	DEBUG_NEWLINE();
+
+	delay_ms(1000);
 	return 1;
 }
 
