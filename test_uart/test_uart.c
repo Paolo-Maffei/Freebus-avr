@@ -3,7 +3,7 @@
 
 #include "test_uart.h"
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 timer_t timer1;

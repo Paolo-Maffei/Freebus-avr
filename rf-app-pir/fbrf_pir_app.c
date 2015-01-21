@@ -91,7 +91,7 @@ extern struct grp_addr_s grp_addr;
 static uint8_t portValue;                 /**< state of output port pins */
 static uint8_t pinValue;                  /**< state of input port pins */
 static uint16_t delayValues[8];           /**< save value for delays */
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 static volatile uint8_t ctrlTimer;
 static uint8_t blockedStates;
 static uint16_t objectStates;
@@ -909,7 +909,7 @@ int main(void)
     ENABLE_ALL_INTERRUPTS();
 
     /* init eeprom modul and RAM structure */
-    eeprom_Init(&nodeParam[0], MEMORY_SIZE);
+    freebus_memory_Init(&nodeParam[0], PERSISTENT_MEMORY_SIZE);
     /* we need values from nodeParam for fbrfhal_init() */
     fbrfhal_init();
 

@@ -42,7 +42,7 @@
  **************************************************************************/
 extern struct grp_addr_s grp_addr;
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 
 /** list of the default parameter for this application */
 const STRUCT_DEFPARAM defaultParam[] PROGMEM =
@@ -142,7 +142,7 @@ int main(void)
     ENABLE_ALL_INTERRUPTS();
 
     /* init eeprom modul and RAM structure */ 
-    eeprom_Init(&nodeParam[0], MEMORY_SIZE);
+    freebus_memory_Init(&nodeParam[0], PERSISTENT_MEMORY_SIZE);
 
     /* init protocol layer */
     /* load default values */

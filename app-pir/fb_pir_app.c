@@ -95,7 +95,7 @@ static const uint8_t delay_values[] PROGMEM = 	{M2TICS(500), M2TICS(600), M2TICS
 												 M2TICS(1100), M2TICS(1200), M2TICS(1300), M2TICS(1400), M2TICS(1500), M2TICS(1600),
 												 M2TICS(1700), M2TICS(1800), M2TICS(1900), M2TICS(2000)};
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 /** list of the default parameter for this application */

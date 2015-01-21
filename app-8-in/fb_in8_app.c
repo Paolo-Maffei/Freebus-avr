@@ -179,7 +179,7 @@ static const timer_t delay_bases[] PROGMEM   ={ (timer_t)1*M2TICS(130),         
                                                 (timer_t)16384*M2TICS(130),      // 35 min
                                                 (timer_t)32768*M2TICS(130)};     // 1.2 h
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 

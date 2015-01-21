@@ -1,17 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "debug_functions", "examples\debug_functions\debug_functions.cproj", "{D6DD5220-F7DE-49DE-ACDB-D2321A781F72}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "fb_atsam4l_tp_3", "lib\fb_atsam4l_tp_3\fb_atsam4l_tp_3.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "contrib", "contrib\ASF\contrib.cproj", "{8A372EE3-B82A-42F0-800D-0C2190B43D50}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "debug_functions", "examples\debug_functions\debug_functions.cproj", "{748E0029-D363-4F5D-8D8A-7743B7F2EAB1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897} = {DCE6C7E3-EE26-4D79-826B-08594B9AD897}
 	EndProjectSection
-EndProject
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "fb_atsam4l_tp_3", "lib\fb_atsam4l_tp_3\fb_atsam4l_tp_3.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8A372EE3-B82A-42F0-800D-0C2190B43D50} = {8A372EE3-B82A-42F0-800D-0C2190B43D50}
-	EndProjectSection
-EndProject
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "contrib", "contrib\ASF\contrib.cproj", "{8A372EE3-B82A-42F0-800D-0C2190B43D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +16,6 @@ Global
 		Release|ARM = Release|ARM
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D6DD5220-F7DE-49DE-ACDB-D2321A781F72}.Debug|ARM.ActiveCfg = Debug|ARM
-		{D6DD5220-F7DE-49DE-ACDB-D2321A781F72}.Debug|ARM.Build.0 = Debug|ARM
-		{D6DD5220-F7DE-49DE-ACDB-D2321A781F72}.Release|ARM.ActiveCfg = Release|ARM
-		{D6DD5220-F7DE-49DE-ACDB-D2321A781F72}.Release|ARM.Build.0 = Release|ARM
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|ARM.ActiveCfg = Debug|ARM
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|ARM.Build.0 = Debug|ARM
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|ARM.ActiveCfg = Release|ARM
@@ -31,6 +24,10 @@ Global
 		{8A372EE3-B82A-42F0-800D-0C2190B43D50}.Debug|ARM.Build.0 = Debug|ARM
 		{8A372EE3-B82A-42F0-800D-0C2190B43D50}.Release|ARM.ActiveCfg = Release|ARM
 		{8A372EE3-B82A-42F0-800D-0C2190B43D50}.Release|ARM.Build.0 = Release|ARM
+		{748E0029-D363-4F5D-8D8A-7743B7F2EAB1}.Debug|ARM.ActiveCfg = Debug|ARM
+		{748E0029-D363-4F5D-8D8A-7743B7F2EAB1}.Debug|ARM.Build.0 = Debug|ARM
+		{748E0029-D363-4F5D-8D8A-7743B7F2EAB1}.Release|ARM.ActiveCfg = Release|ARM
+		{748E0029-D363-4F5D-8D8A-7743B7F2EAB1}.Release|ARM.Build.0 = Release|ARM
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -151,7 +151,7 @@ static const timer_t safty_timeout[] PROGMEM ={ 0L*M2TICS(130),          // none
                                                 27692L*M2TICS(130),      // 1 h
                                                 55385L*M2TICS(130)};     // 2 h
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 static enum states_e app_state;     // States for PWM handling

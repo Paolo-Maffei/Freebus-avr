@@ -111,7 +111,7 @@ static const timer_t delay_bases[] PROGMEM = { 1*M2TICS(130), 2*M2TICS(130), 4*M
                                                (timer_t) 4096*M2TICS(130), (timer_t) 8192*M2TICS(130),
                                                (timer_t) 16384*M2TICS(130), (timer_t) 32768*M2TICS(130)};
 
-uint8_t nodeParam[MEMORY_SIZE];           /**< parameterstructure (RAM) */
+uint8_t nodeParam[PERSISTENT_MEMORY_SIZE];           /**< parameterstructure (RAM) */
 extern uint8_t userram[USERRAM_SIZE];
 
 static enum states_e app_state;
