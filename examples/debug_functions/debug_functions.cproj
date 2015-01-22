@@ -419,8 +419,8 @@
       <Value>../src/ASF/common/services/serial</Value>
       <Value>../src/ASF/common/services/sleepmgr</Value>
       <Value>../src/ASF/common/services/delay</Value>
-      <Value>../../../lib/inc</Value>
       <Value>../../../lib</Value>
+      <Value>../../../lib/inc</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>

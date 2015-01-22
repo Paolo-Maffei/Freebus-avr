@@ -24,6 +24,7 @@ void app_loop() {
 		ioport_set_pin_level(LED_0_PIN, !LED_0_ACTIVE);
 	}
 	*/
+	delay_ms(10);
 }
 
 uint8_t restartApplication(void) {
